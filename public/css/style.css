@@ -1,0 +1,2346 @@
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: white;
+}
+
+nav {
+	width: 100%;
+	height: 5.5rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+ul.left-menu,
+ul.right-menu {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+ul.left-menu li,
+ul.left-menu li a,
+ul.right-menu li,
+ul.right-menu li a {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 1rem;
+	font-weight: 600;
+	letter-spacing: -0.6px;
+	line-height: 36px;
+	text-align: center;
+	margin-right: 1rem;
+}
+
+ul.left-menu li.active a,
+ul.right-menu li.active a {
+	color: #0042ff;
+}
+
+.hero {
+	height: 22rem;
+	width: 100%;
+	background: #000;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+
+.hero .content h1 {
+	color: #ffffff;
+	font-family: "Baloo Bhai 2";
+	font-size: 26px;
+	font-weight: bold;
+	letter-spacing: -0.87px;
+	line-height: 20.16px;
+	text-align: center;
+	text-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.65);
+	margin-bottom: 2rem;
+}
+
+.hero .content .input-box {
+	position: relative;
+}
+
+.hero .content input.homesearch {
+	height: 3.125rem;
+	width: 40rem;
+	border-radius: 2px;
+	background-color: #ffffff;
+	outline: 0;
+	border: 0;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	letter-spacing: -0.53px;
+	line-height: 20.16px;
+	padding: 0 1rem;
+}
+
+.hero .content input.homesearch::-webkit-input-placeholder {
+	opacity: 0.5;
+}
+
+.hero .content input.homesearch:-ms-input-placeholder {
+	opacity: 0.5;
+}
+
+.hero .content input.homesearch::-ms-input-placeholder {
+	opacity: 0.5;
+}
+
+.hero .content input.homesearch::placeholder {
+	opacity: 0.5;
+}
+
+.hero .content .home-search-icon {
+	position: absolute;
+	height: 18.5px;
+	width: 19.02px;
+	border: 0.5px solid #0042ff;
+	top: 50%;
+	right: 1rem;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+.logo {
+	width: 18rem;
+	background-color: #0042ff;
+	display: block;
+}
+
+.logo img {
+	width: 100%;
+	height: auto;
+}
+
+.cards {
+	height: 13rem;
+	width: 100%;
+	border-radius: 8px;
+	background-color: #ffffff;
+	-webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+	padding: 1.8rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: 2.5rem auto 0;
+}
+
+.placeholder {
+	width: 45%;
+	height: 100%;
+	background-color: #0042ff;
+}
+
+.placeholder img {
+	width: 100%;
+	height: auto;
+}
+
+.side-info {
+	width: 50%;
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+
+.side-info h3 {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 24px;
+	font-weight: bold;
+	letter-spacing: -0.87px;
+	line-height: 22.16px;
+	margin: 0;
+}
+
+.side-info h3 span {
+	color: #0042ff;
+}
+
+.side-info p.sub-text {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	letter-spacing: 0;
+	line-height: 17.92px;
+	margin: 0;
+}
+
+.side-info .primary-btn {
+	width: 100%;
+	height: 2.8rem;
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	outline: 0;
+}
+
+.getapp {
+	height: 25rem;
+	width: 100%;
+	background-color: rgba(0, 66, 255, 0.04);
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: 4rem auto;
+}
+
+.getapp .content {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.getapp .content .texts {
+	width: 30%;
+}
+
+.getapp .content .texts h1 {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 45px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 66px;
+}
+
+.getapp .content .texts p {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	letter-spacing: 0;
+	line-height: 25px;
+	margin: 0;
+}
+
+.getapp .content .dl-icons {
+	height: 65px;
+	width: auto;
+	margin-left: 2rem;
+}
+
+.getapp .content .dl-icons img {
+	height: 100%;
+	margin-right: 1rem;
+	cursor: pointer;
+}
+
+footer {
+	margin-top: 8rem;
+}
+
+.foot-title {
+	color: #454545;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0;
+}
+
+ul.footer {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.footer li,
+ul.footer li a {
+	color: #454545;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 35px;
+}
+
+ul.footer i {
+	font-size: 14px;
+	padding-right: 1rem;
+}
+
+.site-description {
+	color: #454545;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	letter-spacing: 0;
+	line-height: 25px;
+	border-top: 1px solid #454545;
+	border-bottom: 1px solid #454545;
+	margin: 1.5rem 0;
+	padding: 1.2rem 0;
+}
+
+.copyright {
+	color: #454545;
+	font-family: "Baloo Bhai 2";
+	font-size: 13px;
+	letter-spacing: 0;
+	line-height: 10px;
+	margin-bottom: 5rem;
+}
+
+.intro-text {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 48px;
+	font-weight: bold;
+	letter-spacing: -2px;
+	line-height: 45px;
+	width: 80%;
+	margin: 1rem 0 4rem;
+}
+
+.display-image {
+	width: 100%;
+	height: 36rem;
+	background-color: #f6f6f6;
+}
+
+.input-box {
+	position: relative;
+}
+
+.input-label {
+	position: absolute;
+	background-color: white;
+	padding: 0 3px;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+	left: 6%;
+	top: -11px;
+	z-index: 2;
+}
+
+.input-label.req {
+	font-size: 12px;
+}
+
+.formfield {
+	border: 1px solid #dce1e7;
+	border-radius: 4px;
+	background-color: #ffffff;
+	height: 3rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding-left: 2rem;
+	width: 100%;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+	outline: 0;
+	margin-bottom: 2rem;
+}
+
+.formfield::-webkit-input-placeholder {
+	opacity: 0.3;
+}
+
+.formfield:-ms-input-placeholder {
+	opacity: 0.3;
+}
+
+.formfield::-ms-input-placeholder {
+	opacity: 0.3;
+}
+
+.formfield::placeholder {
+	opacity: 0.3;
+}
+
+.formfield.pass {
+	color: #252427;
+}
+
+.formfield.pass::-webkit-input-placeholder {
+	opacity: 1;
+	font-family: "Baloo Bhai 2";
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+.formfield.pass:-ms-input-placeholder {
+	opacity: 1;
+	font-family: "Baloo Bhai 2";
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+.formfield.pass::-ms-input-placeholder {
+	opacity: 1;
+	font-family: "Baloo Bhai 2";
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+.formfield.pass::placeholder {
+	opacity: 1;
+	font-family: "Baloo Bhai 2";
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+.secondary-btn {
+	color: #ffffff;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	width: 100%;
+	height: 3rem;
+	border-radius: 6px;
+	background-color: #0042ff;
+	border: 0;
+	outline: 0;
+	margin-bottom: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.or {
+	color: rgba(25, 25, 25, 0.5);
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 22px;
+	text-align: center;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.or::before,
+.or::after {
+	height: 1px;
+	background-color: #dce1e7;
+	width: 45%;
+	content: "";
+	position: absolute;
+	top: 50%;
+}
+
+.or::before {
+	left: 0;
+}
+
+.or::after {
+	right: 0;
+}
+
+.other-signup {
+	height: 40px;
+	width: 100%;
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+	padding: 0 5px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.other-signup img {
+	width: 20px;
+}
+
+.other-signup span {
+	margin-left: 1.3rem;
+}
+
+.create-text {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	letter-spacing: 0;
+	line-height: 20px;
+	text-align: center;
+}
+
+a.tc,
+.tc {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: -0.4px;
+	line-height: 20px;
+	text-align: center;
+	margin-bottom: 4rem;
+}
+
+.line {
+	width: 100%;
+	height: 1px;
+	background-color: #dce1e7;
+	margin-bottom: 0.7rem;
+}
+
+.forgot-pass {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: -0.6px;
+	line-height: 29px;
+	text-align: center;
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+}
+
+.fit-it {
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+.page-title {
+	color: #191919;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18px;
+	margin: 2rem 0;
+}
+
+.tabs {
+	height: 48px;
+	width: 100%;
+	border-radius: 4.8px;
+	background-color: #f7f7f7;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	position: relative;
+	padding: 5px;
+	margin-bottom: 4rem;
+	cursor: pointer;
+}
+
+.tabs .texts.current {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 16.8px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 26.52px;
+	text-align: center;
+	opacity: 1;
+}
+
+.tabs .texts {
+	opacity: 0.5;
+	color: #191919;
+	font-family: "Baloo Bhai 2";
+	font-size: 16.8px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 26.52px;
+	text-align: center;
+	z-index: 2;
+}
+
+.tab-bar {
+	width: 49.6%;
+	position: absolute;
+	height: 85%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	border-radius: 2.4px;
+	background-color: #ffffff;
+	-webkit-box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+	z-index: 1;
+	transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tab-bar.req {
+	-webkit-transform: translateX(50%);
+	transform: translateX(50%);
+}
+
+.search-rec {
+	border: 1px solid #dce1e7;
+	border-radius: 4px;
+	background-color: #ffffff;
+	width: 100%;
+	height: 38px;
+	padding-left: 2.3rem;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 22.1px;
+	outline: 0;
+}
+
+.search-box {
+	position: absolute;
+	height: 14.5px;
+	width: 14.91px;
+	border: 1px solid black;
+	top: 50%;
+	left: 4%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.search-box img {
+	width: 100%;
+}
+
+.filter-box {
+	width: 100%;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	margin: 1.5rem 0 2rem;
+}
+
+p.fil {
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	padding: 0 14px;
+	margin-bottom: 0;
+	margin-right: 0.6rem;
+}
+
+p.fil:last-of-type {
+	margin-right: 0;
+}
+
+.filter-imgs {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-bottom: 2rem;
+}
+
+.singlefil {
+	margin-right: 0.9rem;
+}
+
+.singlefil:last-of-type {
+	margin-right: 0;
+}
+
+.iconfil {
+	height: 57px;
+	width: 54px;
+	border: 1px solid #f4f4f4;
+	border-radius: 4px;
+	background-color: #ffffff;
+	padding: 0.5rem;
+}
+
+.iconfil img {
+	width: 100%;
+	height: auto;
+}
+
+.txtfil {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18px;
+	text-align: center;
+	margin-top: 0.2rem;
+}
+
+.counter-pad {
+	border-radius: 4px;
+	background-color: #fcfcfc;
+	width: 100%;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	padding: 1rem;
+	margin-bottom: 0.7rem;
+}
+
+.counter-label {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18px;
+	text-align: center;
+	margin-bottom: 0.3rem;
+}
+
+.counter-box {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+}
+
+.countbtn {
+	height: 2rem;
+	width: 2rem;
+	background-color: #0042ff;
+	border-radius: 50%;
+	color: #ffffff;
+	font-family: "Font Awesome 5 Pro";
+	font-size: 20px;
+	letter-spacing: 0;
+	line-height: 37px;
+	text-align: center;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	outline: 0;
+	border: 0;
+}
+
+.countbox {
+	border: 1px solid #000000;
+	border-radius: 4px;
+	background-color: #fcfcfc;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 21px;
+	font-weight: bold;
+	letter-spacing: -0.7px;
+	line-height: 33px;
+	text-align: center;
+	/* padding: 0 3rem; */
+	height: 2rem;
+	width: 45%;
+}
+
+.joint-btn {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	margin: 2rem 0;
+}
+
+.no-color-btn,
+.color-btn {
+	width: 48%;
+	height: 2.2rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	outline: 0;
+	border-radius: 6px;
+}
+
+.no-color-btn {
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	border: 1px solid #dce1e7;
+	background-color: white;
+}
+
+.color-btn {
+	color: #ffffff;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	background-color: #0042ff;
+	border: 0;
+}
+
+.color-btn.submit {
+	height: 38px;
+	font-size: 14px;
+}
+
+.no-color-btn.draft,
+.color-btn.draft {
+	height: 2.8rem;
+	font-size: 14px;
+}
+
+.listing-cards {
+	min-height: 18rem;
+	width: 100%;
+	border-radius: 7.56px;
+	background-color: #ffffff;
+	-webkit-box-shadow: 0 23px 36px 3px rgba(0, 0, 0, 0.14);
+	box-shadow: 0 23px 36px 3px rgba(0, 0, 0, 0.14);
+	margin-bottom: 1.5rem;
+	cursor: pointer;
+	border: 3.78px solid transparent;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.listing-cards:hover {
+	border: 3.78px solid rgba(0, 66, 255, 0.34);
+	border-radius: 7.56px;
+}
+
+.listing-cards.request {
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+}
+
+.listing-cover-img {
+	height: 7rem;
+	width: 100%;
+	border-radius: 7.56px 7.56px 0 0;
+	position: relative;
+}
+
+.listing-cover-img img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+	-o-object-position: center;
+	object-position: center;
+	border-radius: 7.56px 7.56px 0 0;
+}
+
+.listing-info {
+	padding: 1rem 1rem 0.5rem;
+}
+
+.listing-title {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18.9px;
+	margin-bottom: 0.5rem;
+}
+
+.feature-title {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	letter-spacing: 0;
+	line-height: 18.9px;
+	margin-left: 0.5rem;
+}
+
+.feature-group {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	width: 100%;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.feature-sing {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	margin-right: 1.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.feature-sing:last-child {
+	margin-right: 0;
+}
+
+.feature-sing i {
+	color: #0042ff;
+}
+
+.listing-btn {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+
+.list-no-color-btn,
+.list-color-btn {
+	width: 48%;
+	height: 2rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	outline: 0;
+	border-radius: 5.5px;
+}
+
+.list-no-color-btn {
+	color: rgba(37, 36, 39, 0.5);
+	font-family: "Baloo Bhai 2";
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	border: 1px solid #dce1e7;
+	background-color: white;
+}
+
+.list-color-btn {
+	color: #ffffff;
+	font-family: "Baloo Bhai 2";
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	background-color: #0042ff;
+	border: 0;
+}
+
+.verified i {
+	color: #0042ff;
+	font-size: 18.9px;
+	letter-spacing: 0;
+	line-height: 19px;
+}
+
+.title-group {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: 100%;
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+}
+
+.listing-location {
+	border-radius: 3.78px 0 0 3.78px;
+	background-color: #0042ff;
+	padding: 0.2rem 0.8rem;
+	color: #ffffff;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18.9px;
+	position: absolute;
+	top: 20%;
+	right: 0;
+}
+
+.modal-content {
+	width: 50%;
+	margin: 0 auto 2rem;
+}
+
+.top-section {
+	width: 90%;
+	height: 4.5rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: 0 auto;
+}
+
+.back i {
+	color: #000000;
+	font-size: 10px;
+}
+
+span.backs {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+}
+
+.cover-img {
+	width: 100%;
+	height: 15rem;
+	position: relative;
+}
+
+.cover-img img {
+	height: 100%;
+	width: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
+.content-section {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.property-title {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 18px;
+	margin: 2rem 0;
+}
+
+.overview-section {
+	margin: 2rem 0;
+}
+
+.overview-section p {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+h2.property-info {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+}
+
+.image-gallery,
+.video-gallery {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.single-img {
+	width: 23%;
+	height: 9.3rem;
+	background-color: #d8d8d8;
+	margin-bottom: 1rem;
+	margin-right: 2%;
+	position: relative;
+}
+
+.single-img:last-child {
+	margin-right: 0;
+}
+
+.single-img img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
+.video-overview,
+.map-overview {
+	margin: 2rem 0;
+}
+
+.single-video {
+	width: 48%;
+	height: 9rem;
+	margin-right: 2%;
+	border-radius: 3px;
+	position: relative;
+}
+
+.single-video:last-child {
+	margin-right: 0;
+}
+
+.single-video img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+	border-radius: 3px;
+}
+
+.map-box {
+	background-color: #454545;
+	width: 100%;
+	height: 24rem;
+}
+
+.disclaimer {
+	height: 7rem;
+	width: 100%;
+	border-radius: 4px;
+	padding: 0.5rem 1rem;
+	background-color: rgba(0, 66, 255, 0.03);
+}
+
+.disclaimer h3 {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+}
+
+.disclaimer p {
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 11px;
+	letter-spacing: 0;
+	line-height: 16px;
+}
+
+.preview-btn {
+	outline: 0;
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	height: 3rem;
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	margin-top: 1.5rem;
+}
+
+.contact-section.show-info .contact-info {
+	display: block;
+}
+
+.contact-info {
+	margin: 2rem 0 0;
+	display: none;
+}
+
+.contact-name {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 20px;
+	margin: 0.5rem 0;
+}
+
+.contact-number {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 20px;
+	margin: 0.5rem 0;
+}
+
+.section-title {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 1rem;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 20px;
+	margin: 2rem 0;
+}
+
+.enq-stp {
+	width: 70%;
+	margin-left: 4.5rem;
+}
+
+.oval {
+	height: 2.2rem;
+	width: 2.2rem;
+	border: 1px solid #dce1e7;
+	background-color: #ffffff;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	border-radius: 50%;
+}
+
+.oval i {
+	color: #dce1e7;
+}
+
+.lengthy {
+	height: 100%;
+	width: 2px;
+	background-color: #dce1e7;
+	margin: 0 auto;
+}
+
+.steps {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	margin-bottom: 1.5rem;
+}
+
+.steps.passed .oval {
+	background-color: #2fdf84;
+	border: 1px solid #ffffff;
+}
+
+.steps.passed .oval i {
+	color: white;
+}
+
+.steps.passed .lengthy {
+	background-color: #2fdf84;
+}
+
+.steps-content {
+	margin: 0.5rem 0 1rem 1.5rem;
+	width: 70%;
+}
+
+.divider {
+	width: 1px;
+	background-color: #979797;
+	opacity: 0.5;
+	height: 100%;
+}
+
+.single-step,
+.do-upload {
+	border: 1px solid #dce1e7;
+	border-radius: 4px;
+	background-color: #ffffff;
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: 2.5rem;
+	margin-bottom: 0.5rem;
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	padding: 0 1rem;
+	outline: none;
+}
+
+.single-step i,
+.do-upload i {
+	color: #191919;
+	font-size: 14px;
+	padding-right: 1rem;
+}
+
+.img-step {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	border: 1px solid #dce1e7;
+	border-radius: 4px;
+	background-color: #ffffff;
+	width: 100%;
+	padding: 0.5rem;
+}
+
+.cont {
+	margin-left: 0.5rem;
+}
+
+.agent-avatar {
+	height: 40px;
+	width: 40px;
+	border: 1px solid #979797;
+	border-radius: 50%;
+}
+
+.agent-avatar img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
+p.ss {
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	margin: 0;
+}
+
+.agent-info {
+	margin: 0 0 0.5rem;
+}
+
+.agent-name {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+.agent-number {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+.box {
+	width: 30%;
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+.top-cont {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.close-icon {
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+}
+
+.schedule-title {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	margin-bottom: 1rem;
+}
+
+.date-box {
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.prev-arrow,
+.next-arrow {
+	width: 5%;
+	color: #0042ff;
+}
+
+.prev-arrow i,
+.next-arrow i {
+	font-size: 1.1rem;
+}
+
+.prev-arrow.disabled,
+.next-arrow.disabled {
+	color: #979797;
+}
+
+.dates {
+	width: 85%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.single-date {
+	height: 5rem;
+	width: 28%;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	background-color: white;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-right: 5.3%;
+}
+
+.single-date:last-of-type {
+	margin-right: 0;
+}
+
+.single-date:hover {
+	background-color: rgba(133, 195, 255, 0.14);
+	border: 2px solid #0042ff;
+}
+
+.day,
+.date,
+.month {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+}
+
+.arrow,
+.arrows {
+	background-color: white;
+	height: 2.5rem;
+	width: 3rem;
+	position: absolute;
+	right: 1%;
+	top: 9%;
+	pointer-events: none;
+}
+
+.arrow::after,
+.arrows::after {
+	content: "\f078";
+	color: #252427;
+	font-family: "Font Awesome 5 Pro";
+	font-size: 12px;
+	letter-spacing: -0.4px;
+	line-height: 13px;
+	text-align: center;
+	position: relative;
+	top: 18%;
+}
+
+.arrows::after {
+	content: "\f054";
+	left: 50%;
+}
+
+.select-box {
+	width: 100%;
+	height: 3rem;
+	position: relative;
+	margin-bottom: 2rem;
+}
+
+.select-boxx {
+	height: 2rem;
+	margin-bottom: 2rem;
+}
+
+.select-boxx .formfield {
+	height: 2.5rem;
+}
+
+.select-boxx .arrows {
+	height: 2rem;
+}
+
+.divide {
+	border-bottom: 1px dashed #979797;
+}
+
+.transaction-list {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	width: 100%;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	margin-bottom: 0.3rem;
+}
+
+.font-600 {
+	font-weight: 600 !important;
+}
+
+span.cost {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 26px;
+}
+
+.match-top {
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+}
+
+.match-top .no-color-btn {
+	width: 25%;
+	height: 2.8rem;
+}
+
+.question {
+	color: #191919;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 18px;
+	margin-bottom: 0.5rem;
+}
+
+.add {
+	background-color: #2fdf84 !important;
+}
+
+.del {
+	background-color: #ff101f !important;
+	color: white !important;
+}
+
+.infos {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 1rem;
+	letter-spacing: 0;
+	line-height: 20px;
+	text-align: center;
+	margin-bottom: 2.5rem;
+}
+
+.free-space {
+	min-height: 80vh;
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.free-inner {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-top: 8rem;
+}
+
+.show-image {
+	height: 300px;
+	width: 430.71px;
+	background-color: #979797;
+	margin-bottom: 2rem;
+}
+
+.show-image img {
+	width: 100%;
+	height: auto;
+}
+
+.checktext {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: -0.47px;
+	line-height: 23px;
+	margin-bottom: 0 !important;
+	margin-left: 0.5rem;
+}
+
+.checkbox {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.checkbox [type="checkbox"] {
+	width: 1.1rem;
+	height: 1.1rem;
+	border: 1px solid #0042ff;
+	border-radius: 4px;
+}
+
+.checkbox [type="checkbox"]:not(checked) {
+	border: 1px solid #0042ff !important;
+}
+
+.upload {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	opacity: 0;
+}
+
+.do-upload {
+	height: 3rem;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.mg {
+	margin-top: 6rem;
+}
+
+.pending-tag {
+	background-color: #ffc82c;
+	width: 100%;
+	height: 1.8rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: 0 1rem;
+	margin-top: -1px;
+}
+
+.status {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+.views {
+	height: 40px;
+	width: 48%;
+	border: 1px solid #96ffc9;
+	border-radius: 4px;
+	background-color: #eefff6;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	margin-bottom: 1rem;
+}
+
+.views i {
+	font-size: 18px;
+	color: #252427;
+}
+
+.views.full {
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.count {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: 0;
+	line-height: 20px;
+}
+
+.viewtext {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0;
+	line-height: 20px;
+	margin-right: 2rem;
+}
+
+.activities {
+	margin-bottom: 2rem;
+}
+
+.formfield.textarea {
+	min-height: 12rem;
+	padding-top: 1rem;
+	padding-left: 0;
+}
+
+.actions {
+	position: absolute;
+	height: 3.8rem;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.8);
+	bottom: 0;
+	padding: 1rem;
+}
+
+.actions i {
+	margin-right: 0.8rem;
+}
+
+.set-act {
+	color: #000000;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: -0.4px;
+	line-height: 20px;
+	cursor: pointer;
+}
+
+.vid-actions {
+	border-radius: 0 0 4px 4px;
+	background-color: rgba(255, 255, 255, 0.8);
+	position: absolute;
+	bottom: 0;
+	height: 2.2rem;
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.vid-actions i {
+	padding-right: 0.8rem;
+}
+
+.options {
+	height: 3.8rem;
+	width: 100%;
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	opacity: 0.8;
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+.small-cards {
+	border: 1px solid #dce1e7;
+	border-radius: 6px;
+	background-color: #ffffff;
+	width: 100%;
+	min-height: 6rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: space-evenly;
+	-ms-flex-pack: space-evenly;
+	justify-content: space-evenly;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: 1rem;
+}
+
+.rent-title {
+	color: #0042ff;
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.53px;
+	line-height: 26px;
+}
+
+.rent-sub {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 12px;
+	letter-spacing: 0;
+	line-height: 18px;
+}
+
+.iconsection {
+	background-color: #0042ff;
+	width: 48px;
+	height: 45px;
+	margin-right: 1rem;
+}
+
+.iconsection img {
+	width: 100%;
+	height: auto;
+}
+
+.new-intro {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 1.6rem;
+	font-weight: bold;
+	letter-spacing: -1px;
+	line-height: 36px;
+	margin-bottom: 1.5rem;
+}
+.iconsection {
+	background-color: #0042ff;
+	width: 48px;
+	height: 45px;
+	margin-right: 1rem;
+}
+
+.iconsection img {
+	width: 100%;
+	height: auto;
+}
+
+.new-intro {
+	color: #252427;
+	font-family: "Baloo Bhai 2";
+	font-size: 1.6rem;
+	font-weight: bold;
+	letter-spacing: -1px;
+	line-height: 36px;
+	margin-bottom: 1.5rem;
+}
+
+.icon-small {
+	font-size: 0.6rem;
+	color: #252427;
+	margin-left: 0.5rem;
+}
+
+.hover-dropdown {
+	position: relative;
+	cursor: pointer;
+}
+
+.hover-dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown-content {
+	display: none;
+	background-color: white;
+	position: absolute;
+	min-width: 8rem;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	padding: 1rem 2rem;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	z-index: 4;
+	-webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.14);
+	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.14);
+}
+
+.dropdown-content ul {
+	margin: 0;
+	list-style: none;
+	padding: 0;
+}
+
+.dropdown-content ul li {
+	font-size: 0.9rem;
+	text-align: left;
+	margin: 0;
+	color: #252427;
+	cursor: pointer;
+	min-width: 5rem;
+}
+
+.avatar {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	background-color: #979797;
+	margin-left: 0.5rem;
+}
+
+.avatar img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+	border: none;
+}
+
+.user-info {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+	margin-right: 0;
+}
+
+.hamburger {
+	display: none;
+}
+.overlay-wrapper {
+	z-index: -999;
+}
+.mar-7 {
+	margin: 0;
+}
+.mobile-sec {
+	display: none;
+}
+
+@media screen and (max-width: 1024px) {
+	nav.container {
+		justify-content: center;
+	}
+	nav.container .logo {
+		display: none;
+	}
+	.mobile-sec {
+		display: flex;
+		background-color: white;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		padding: 1rem 0;
+		height: fit-content;
+	}
+	.mobile-sec .mobile-logo {
+		width: 35%;
+		height: auto;
+		background-color: #0042ff;
+	}
+	.mobile-sec .mobile-logo img {
+		width: 100%;
+		height: auto;
+	}
+	.display-image {
+		margin-bottom: 3rem;
+	}
+}
+@media screen and (max-width: 760px) {
+	.overlay-wrapper {
+		display: block;
+		position: fixed;
+		width: 0%;
+		height: 100vh;
+		background-color: rgba(120, 120, 120, 0.192);
+		top: 0;
+		z-index: 8;
+		/* transition: 0.5s ease; */
+	}
+	.overlay-wrapper.disappear {
+		width: 100%;
+	}
+	.mobile-sec {
+		display: flex;
+		background-color: white;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		height: fit-content;
+	}
+	.mobile-sec .mobile-logo {
+		width: 40%;
+		height: auto;
+	}
+	.mobile-sec .mobile-logo img {
+		width: 100%;
+		height: auto;
+	}
+	nav.container {
+		position: fixed;
+		width: 50%;
+		top: 0;
+		z-index: 10;
+		background-color: white;
+		height: 100%;
+		margin: 0 !important;
+		display: block;
+		padding: 1rem 0 1rem 1.5rem;
+		color: white;
+		left: -50%;
+		transition: left 0.3s ease;
+		padding: 1rem 1.5rem;
+	}
+	nav.container.display {
+		left: 0;
+	}
+	.white-bg {
+		height: 6.2rem;
+		position: fixed;
+		z-index: 999;
+		background-color: white;
+		top: 0;
+	}
+	.hero .content input.homesearch {
+		width: 100%;
+	}
+	.getapp {
+		padding: 1rem;
+	}
+	.getapp .content .texts {
+		width: 100%;
+		text-align: center;
+	}
+	.getapp .content {
+		flex-direction: column;
+	}
+
+	.getapp .content .dl-icons {
+		height: 40px;
+		margin: 1rem 0;
+	}
+	footer {
+		margin: 0;
+	}
+	.display-image {
+		display: none;
+	}
+	.fit-it {
+		min-height: 100vh;
+	}
+	.intro-text {
+		margin: 1rem 0 0rem;
+		margin-top: 6rem;
+		font-size: 30px;
+	}
+	.mar-7 {
+		margin-top: 8rem;
+	}
+	nav.container ul {
+		display: block;
+	}
+	nav.container ul li {
+		/* text-align: left; */
+		background-color: #0042ff;
+		margin: 0.7rem 0;
+		text-align: center;
+		color: white;
+		/* background-color: #000; */
+	}
+	.icon-small {
+		color: white;
+	}
+	nav.container ul li a {
+		color: white;
+	}
+	nav.container .logo {
+		width: 80%;
+		position: absolute;
+		top: 3%;
+		display: none;
+	}
+	nav.container ul.left-menu {
+		margin-top: 7rem;
+	}
+	ul.left-menu li.active a,
+	ul.right-menu li.active a {
+		color: white;
+	}
+	.hamburger {
+		width: 2.5rem;
+		height: 3rem;
+		background-color: transparent;
+		margin: 0.5rem 0rem 0.5rem auto;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		z-index: 999;
+	}
+	.hamburger .burger {
+		width: 100%;
+		height: 4px;
+		border-radius: 5px;
+		background-color: #191919;
+		position: relative;
+	}
+	.hamburger .burger::before,
+	.hamburger .burger::after {
+		background-color: #191919;
+		height: 4px;
+		content: "";
+		right: 0;
+		position: absolute;
+		transition: 0.3s;
+	}
+	.hamburger .burger::after {
+		-webkit-transform: translateY(-8px);
+		transform: translateY(-8px);
+		width: 80%;
+	}
+	.hamburger .burger::before {
+		-webkit-transform: translateY(8px);
+		transform: translateY(8px);
+		width: 60%;
+	}
+	.hamburger.opened .burger::before {
+		transform: rotate(45deg);
+		width: 80%;
+	}
+	.hamburger.opened .burger::after {
+		transform: rotate(-45deg);
+		width: 80%;
+	}
+	.hamburger.opened .burger {
+		background-color: transparent;
+	}
+	.user-info {
+		justify-content: center;
+	}
+}
+/*# sourceMappingURL=style.css.map */
+
+/* Custom Styles  */
+.infoo {
+	color: rgba(25, 25, 25, 0.5);
+	font-family: "Baloo Bhai 2";
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 22px;
+	/* text-align: center; */
+	margin-bottom: 1rem;
+}

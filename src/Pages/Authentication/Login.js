@@ -1,0 +1,94 @@
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router";
+import Nav from "../../Components/Navs/Nav";
+import { MainContext } from "../../Context/MainContext";
+import Fetch from "../../Utilities/Fetch";
+import Spinner from "../../Utilities/Spinner";
+
+function Login() {
+	const history = useHistory();
+	const { data, setUser } = useContext(MainContext);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
+	const [loading, setLoading] = useState(false);
+
+	const handleOnChange = (e) => {
+		const { name, value } = e.target;
+		setLoginDetails({ ...loginDetails, [name]: value });
+		console.log(loginDetails);
+	};
+	const logUserIn = async (e) => {
+		setLoading(true);
+		e.preventDefault();
+		var data = await Fetch("", "post", loginDetails);
+		console.log(data);
+		if (data.status) {
+			setLoading(false);
+			localStorage.clear();
+			localStorage.setItem("token", data.data.token);
+			setUser(data.data.user);
+			localStorage.setItem("user", JSON.stringify(data.data.user));
+			history.push("/dashboard");
+		} else {
+			setLoading(false);
+			setErrorMessage(data.message);
+		}
+	};
+
+	return (
+		<>
+			<Nav />
+			<div className="container-fluid">
+				<div className="container fit-it">
+					<div className="row">
+						<div className="col-lg-6">
+							<div className="display-image">
+								<img src alt="Login Image" />
+							</div>
+						</div>
+						<div className="col" />
+						<div className="col-lg-5">
+							<div className="fit-it">
+								{errorMessage ? (
+									<div className="text-center mb-2">
+										<span className="text-danger text-center">
+											{errorMessage}
+										</span>
+									</div>
+								) : null}
+								<form onSubmit={logUserIn}>
+									<div className="input-box">
+										<div className="input-label">Username</div>
+										<input
+											type="text"
+											className="formfield"
+											placeholder="Enter your username"
+											name="username"
+											onChange={handleOnChange}
+										/>
+									</div>
+									<div className="input-box">
+										<div className="input-label">Password</div>
+										<input
+											type="text"
+											className="formfield pass"
+											placeholder="*  *  *  *"
+											name="password"
+											onChange={handleOnChange}
+										/>
+									</div>
+									<button className="secondary-btn">
+										{loading ? <Spinner /> : "Login"}
+									</button>
+								</form>
+								<button className="forgot-pass">Forget Password</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+}
+
+export default Login;
