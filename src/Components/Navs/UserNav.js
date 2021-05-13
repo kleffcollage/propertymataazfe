@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import { MainContext } from "../../Context/MainContext";
 
 function UserNav() {
 	const location = useLocation();
+	const history = useHistory();
+	const { data } = useContext(MainContext);
 	const getNavLinkClass = (path) =>
 		location.pathname.startsWith(path) ? "active" : "";
 
 	const [nav, setNav] = useState(false);
 	const showNav = () => {
 		setNav(!nav);
+	};
+
+	const logoutUser = () => {
+		localStorage.clear();
+		history.push("/login");
 	};
 	return (
 		<div>
@@ -62,12 +70,12 @@ function UserNav() {
 								<ul>
 									<li>My Rents</li>
 									<li>Show Rents</li>
-									<li>Logout</li>
+									<li onClick={logoutUser}>Logout</li>
 								</ul>
 							</div>
 						</li>
 						<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
-							Folabi
+							{data.user.firstName}
 							<div className="avatar">
 								<img src alt />
 							</div>

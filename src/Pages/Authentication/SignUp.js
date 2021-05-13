@@ -10,7 +10,13 @@ function SignUp() {
 	const [errormessage, setErrorMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [step, setStep] = useState("a");
-	const [code, setCode] = useState("");
+	const [passwordMatch, setPasswordMatch] = useState(true);
+	const [token, setToken] = useState("");
+	const [errors, setErrors] = useState({
+		Password: [],
+		Email: [],
+		PhoneNumber: [],
+	});
 	const [userDetails, setUserDetails] = useState({
 		firstName: "",
 		lastName: "",
@@ -36,30 +42,45 @@ function SignUp() {
 		setLoading(true);
 		e.preventDefault();
 		var data = await Fetch("User/register", "post", userDetails);
-		if (data.status) {
+		console.log(data);
+		if (!data.status) {
+			setLoading(false);
+			setErrorMessage(data.message);
+			return;
+		}
+		if (data.status != "400") {
 			setLoading(false);
 			setStep("b");
-		} else {
-			setLoading(false);
-			console.log(data.message);
 		}
+		handleValidationErrors(data.errors);
+		setLoading(false);
 	};
 	const verifyUser = async (e) => {
 		setLoading(true);
 		e.preventDefault();
-		console.log(code);
-		let data = await Fetch("User/verifyUser/{token}/{email}", "get", {
-			code,
-		});
+		console.log(token);
+		let data = await Fetch(
+			`User/verifyUser/${token}/${userDetails.email}`,
+			"get"
+		);
 		console.log(data);
-		if (data.status) {
-			setLoading(false);
-			setStep("e");
-		} else {
+		if (!data.status) {
 			setLoading(false);
 			setErrorMessage(data.message);
+			return;
 		}
+		if (data.status != "400") {
+			setLoading(false);
+			setStep("c");
+		}
+		handleValidationErrors(data.errors);
 	};
+
+	const handleValidationErrors = (errors) => {
+		var ValidationErrors = data.errors;
+		setErrors({ ...errors, ...ValidationErrors });
+	};
+
 	return (
 		<>
 			<Nav />
@@ -76,6 +97,13 @@ function SignUp() {
 						</div>
 						<div className="col" />
 						<div className="col-lg-5">
+							{errormessage ? (
+								<div className="text-center mb-2">
+									<span className="text-danger text-center">
+										{errormessage}
+									</span>
+								</div>
+							) : null}
 							<div className="">
 								{step == "a" ? (
 									<form
@@ -102,6 +130,15 @@ function SignUp() {
 												onChange={handleOnChange}
 											/>
 										</div>
+										{errors ? (
+											<div className="text-center mb-2">
+												<span className="text-danger text-center">
+													{errors.Email.map((error, index) => {
+														return <span>{error}</span>;
+													})}
+												</span>
+											</div>
+										) : null}
 										<div className="input-box">
 											<div className="input-label">Email</div>
 											<input
@@ -112,6 +149,15 @@ function SignUp() {
 												onChange={handleOnChange}
 											/>
 										</div>
+										{errors ? (
+											<div className="text-center mb-2">
+												<span className="text-danger text-center">
+													{errors.PhoneNumber.map((error, index) => {
+														return <span>{error}</span>;
+													})}
+												</span>
+											</div>
+										) : null}
 										<div className="input-box">
 											<div className="input-label">Mobile Number</div>
 											<input
@@ -122,16 +168,30 @@ function SignUp() {
 												onChange={handleOnChange}
 											/>
 										</div>
+										{errors ? (
+											<div className="text-center mb-2">
+												<span className="text-danger text-center">
+													{errors.Password.map((error, index) => {
+														return <span>{error}</span>;
+													})}
+												</span>
+											</div>
+										) : null}
 										<div className="input-box">
 											<div className="input-label">Create a password</div>
 											<input
 												type="text"
 												className="formfield pass"
 												placeholder="*  *  *  *"
-												name="createpassword"
+												name="password"
 												onChange={handleOnChange}
 											/>
 										</div>
+										{!passwordMatch ? (
+											<div className="infoo">Your Password does not match </div>
+										) : (
+											""
+										)}
 										<div className="input-box">
 											<div className="input-label">Repeat your password</div>
 											<input
@@ -139,10 +199,18 @@ function SignUp() {
 												className="formfield pass"
 												placeholder="*  *  *  *"
 												name="repeatPassword"
-												onChange={handleOnChange}
+												onChange={(e) =>
+													e.target.value !== userDetails.password
+														? setPasswordMatch(false)
+														: setPasswordMatch(true)
+												}
 											/>
 										</div>
-										<button className="secondary-btn">
+										<button
+											className="secondary-btn"
+											type="submit"
+											// onClick={setCurrentStep}
+										>
 											{loading ? <Spinner /> : "Sign Up"}
 										</button>
 									</form>
@@ -152,8 +220,8 @@ function SignUp() {
 											A confirmation mail was sent to you. Please check you mail
 											to verify your account.
 										</h4>
-										{errormessage ? errormessage : ""}
-										<form onSubmit={async (e) => await registerUser(e)}>
+										{/* {errormessage ? errormessage : ""} */}
+										<form onSubmit={async (e) => await verifyUser(e)}>
 											<div className="input-box">
 												<div className="input-label">
 													Enter Verification Code
@@ -164,11 +232,11 @@ function SignUp() {
 													placeholder="Enter verification code here"
 													name="verification"
 													onChange={(e) => {
-														setCode(e.target.value);
+														setToken(e.target.value);
 													}}
 												/>
 											</div>
-											<button className="secondary-btn" onClick={verifyUser}>
+											<button className="secondary-btn" type="submit">
 												{loading ? <Spinner /> : "Verify"}
 											</button>
 										</form>
@@ -178,7 +246,9 @@ function SignUp() {
 										<h4 className="infoo text-center">
 											Your Account has been verified succesfully
 										</h4>
-										<Link className="primary-btn">Go to login</Link>
+										<Link to="/login" className="secondary-btn mt-3">
+											Go to login
+										</Link>
 									</div>
 								)}
 								<div className="or">or</div>

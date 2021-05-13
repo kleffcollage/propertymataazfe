@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ROUTES, { RenderRoutes } from "../../Routes";
 import { MainContext } from "../../Context/MainContext";
 import Template from "../Generics/Template";
@@ -32,6 +32,11 @@ function App() {
 			setContextData({ ...data, alert: {} });
 		}, 5000);
 	};
+	useEffect(() => {
+		let user = localStorage.getItem("user");
+		setUser(JSON.parse(user));
+		console.log(JSON.parse(user));
+	}, []);
 
 	return (
 		<>
