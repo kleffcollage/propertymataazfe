@@ -180,7 +180,7 @@ function SignUp() {
 										<div className="input-box">
 											<div className="input-label">Create a password</div>
 											<input
-												type="text"
+												type="password"
 												className="formfield pass"
 												placeholder="*  *  *  *"
 												name="password"
@@ -195,7 +195,7 @@ function SignUp() {
 										<div className="input-box">
 											<div className="input-label">Repeat your password</div>
 											<input
-												type="text"
+												type="password"
 												className="formfield pass"
 												placeholder="*  *  *  *"
 												name="repeatPassword"
