@@ -24,9 +24,11 @@ function UserNav() {
 			<div className="white-bg w-100">
 				<div className="container">
 					<div className="mobile-sec">
-						<div className="mobile-logo">
-							<img src="" alt="Logo" />
-						</div>
+						<Link to="/">
+							<div className="mobile-logo">
+								<img src="/asset/logo.png" alt="Logo" />
+							</div>
+						</Link>
 						<div class={`hamburger ${!nav ? "" : "opened"}`} onClick={showNav}>
 							<div class="burger"></div>
 						</div>
@@ -54,9 +56,11 @@ function UserNav() {
 							</Link>
 						</li>
 					</ul>
-					<div className="logo">
-						<Link to="/" src alt="Logo" />
-					</div>
+					<Link to="/">
+						<div className="logo">
+							<img src="/asset/logo.png" alt="Logo" />
+						</div>
+					</Link>
 					<ul className="right-menu">
 						<li className={`${getNavLinkClass("/verify")}`}>
 							<Link to="/verify">Verify</Link>

@@ -1,6 +1,6 @@
 export default function Fetch(
 	Url,
-	Method,
+	Method = "get",
 	Data = null,
 	isFormData = false,
 	stringify = true

@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Welcome from "./Pages/Account/Welcome";
+import Buy from "./Pages/Account/Buy";
+import Sell from "./Pages/Account/Sell/Sell";
 import Login from "./Pages/Authentication/Login";
 import SignUp from "./Pages/Authentication/SignUp";
 import Home from "./Pages/LandingPage/Home";
@@ -8,7 +9,6 @@ import Home from "./Pages/LandingPage/Home";
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
 	{ path: "/signup", key: "ROOT", exact: true, component: () => <SignUp /> },
-	{ path: "/welcome", key: "ROOT", exact: true, component: () => <Welcome /> },
 	{
 		path: "/login",
 		key: "AUTH",
@@ -20,6 +20,22 @@ const ROUTES = [
 				exact: true,
 				component: () => <Login />,
 			},
+		],
+	},
+	{
+		path: "/sell",
+		key: "SELL",
+		component: RenderRoutes,
+		routes: [
+			{ path: "/sell", key: "SELL", exact: true, component: () => <Sell /> },
+		],
+	},
+	{
+		path: "/buy",
+		key: "BUY",
+		component: RenderRoutes,
+		routes: [
+			{ path: "/buy", key: "BUY", exact: true, component: () => <Buy /> },
 		],
 	},
 ];

@@ -17,6 +17,10 @@ function SignUp() {
 		Email: [],
 		PhoneNumber: [],
 	});
+	// const [offset,setOffset] = useState(0);
+	// const [limit,setLimit] = useState(20);
+	// const [nextUrl,setNextUrl] = useState("");
+	// const [previousUrl,setPreviousUrl] = useState("");
 	const [userDetails, setUserDetails] = useState({
 		firstName: "",
 		lastName: "",
@@ -38,6 +42,16 @@ function SignUp() {
 		setUserDetails({ ...userDetails, [name]: value });
 		console.log(userDetails);
 	};
+
+	// 	const gotoNextPage = () =>{
+	// listUsers(nextUrl);
+	// 	}
+
+	// 	const listUsers = (url = `users/list?offset=${offset}&limit=${limit}`) =>{
+	// 		setNextUrl(data.next.href.split('api/')[1])
+
+	// 	}
+
 	const registerUser = async (e) => {
 		setLoading(true);
 		e.preventDefault();

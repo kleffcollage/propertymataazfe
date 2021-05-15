@@ -55,7 +55,7 @@ ul.right-menu li.active a {
 .hero {
 	height: 22rem;
 	width: 100%;
-	background: #000;
+	background: url(/asset/property_matazz_homepage.jpg) center;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -75,7 +75,7 @@ ul.right-menu li.active a {
 	letter-spacing: -0.87px;
 	line-height: 20.16px;
 	text-align: center;
-	text-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.65);
+	text-shadow: 0 2px 11px rgba(0, 0, 0, 0.65);
 	margin-bottom: 2rem;
 }
 
@@ -118,17 +118,22 @@ ul.right-menu li.active a {
 	position: absolute;
 	height: 18.5px;
 	width: 19.02px;
-	border: 0.5px solid #0042ff;
+	/* border: 0.5px solid #0042ff; */
 	top: 50%;
 	right: 1rem;
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
 	cursor: pointer;
+	display: flex;
+}
+.hero .content .home-search-icon img {
+	width: 100%;
+	height: auto;
 }
 
 .logo {
 	width: 18rem;
-	background-color: #0042ff;
+	/* background-color: #0042ff; */
 	display: block;
 }
 
@@ -158,19 +163,19 @@ ul.right-menu li.active a {
 }
 
 .placeholder {
-	width: 45%;
-	height: 100%;
-	background-color: #0042ff;
+	width: auto;
+	height: 10rem;
+	/* background-color: #0042ff; */
 }
 
 .placeholder img {
-	width: 100%;
-	height: auto;
+	width: auto;
+	height: 100%;
 }
 
 .side-info {
 	width: 50%;
-	height: 100%;
+	min-height: 9rem;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -362,6 +367,27 @@ ul.footer i {
 	width: 100%;
 	height: 36rem;
 	background-color: #f6f6f6;
+}
+.login-image {
+	height: 28rem;
+}
+.display-image img,
+.login-image img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+.align {
+	display: flex;
+	align-items: center;
+	min-height: 85vh;
+}
+.loading {
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .input-box {
@@ -687,14 +713,16 @@ a.tc,
 	position: absolute;
 	height: 14.5px;
 	width: 14.91px;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	top: 50%;
 	left: 4%;
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
+	display: flex;
 }
 
-.search-box img {
+.search-box img,
+.search-box svg {
 	width: 100%;
 }
 
@@ -706,11 +734,11 @@ a.tc,
 	display: -ms-flexbox;
 	display: flex;
 	margin: 1.5rem 0 2rem;
+	justify-content: flex-start;
 }
 
 p.fil {
-	opacity: 0.8;
-	color: #252427;
+	color: rgba(37, 36, 39, 0.8);
 	font-family: "Baloo Bhai 2";
 	font-size: 13px;
 	font-weight: 500;
@@ -723,6 +751,7 @@ p.fil {
 	padding: 0 14px;
 	margin-bottom: 0;
 	margin-right: 0.6rem;
+	margin-bottom: 0.5rem;
 }
 
 p.fil:last-of-type {
@@ -736,6 +765,7 @@ p.fil:last-of-type {
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
 	margin-bottom: 2rem;
+	justify-content: flex-start;
 }
 
 .singlefil {
@@ -753,6 +783,8 @@ p.fil:last-of-type {
 	border-radius: 4px;
 	background-color: #ffffff;
 	padding: 0.5rem;
+	display: flex;
+	align-items: flex-end;
 }
 
 .iconfil img {
@@ -982,13 +1014,14 @@ p.fil:last-of-type {
 	width: 100%;
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
+	justify-content: space-between;
 }
 
 .feature-sing {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	margin-right: 1.5rem;
+	/* margin-right: 1.5rem; */
 	margin-bottom: 0.5rem;
 }
 
@@ -1117,6 +1150,7 @@ span.backs {
 	font-weight: 600;
 	letter-spacing: -0.47px;
 	line-height: 23px;
+	cursor: pointer;
 }
 
 .cover-img {
@@ -1641,7 +1675,9 @@ p.ss {
 .select-boxx .formfield {
 	height: 2.5rem;
 }
-
+.select-box select.formfield {
+	color: rgba(37, 36, 39, 0.3);
+}
 .select-boxx .arrows {
 	height: 2rem;
 }
@@ -1749,13 +1785,13 @@ span.cost {
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
-	margin-top: 8rem;
+	margin-top: 5rem;
 }
 
 .show-image {
 	height: 300px;
 	width: 430.71px;
-	background-color: #979797;
+	/* background-color: #979797; */
 	margin-bottom: 2rem;
 }
 
@@ -1895,9 +1931,10 @@ span.cost {
 }
 
 .formfield.textarea {
-	min-height: 12rem;
+	min-height: 8rem;
 	padding-top: 1rem;
-	padding-left: 0;
+	padding-left: 2rem;
+	resize: none;
 }
 
 .actions {
@@ -2136,6 +2173,12 @@ span.cost {
 	nav.container .logo {
 		display: none;
 	}
+	.filter-box {
+		justify-content: center;
+	}
+	.filter-imgs {
+		justify-content: center;
+	}
 	.mobile-sec {
 		display: flex;
 		background-color: white;
@@ -2146,9 +2189,10 @@ span.cost {
 		height: fit-content;
 	}
 	.mobile-sec .mobile-logo {
-		width: 35%;
+		width: 60%;
+		margin: 0 auto;
 		height: auto;
-		background-color: #0042ff;
+		/* background-color: #0042ff; */
 	}
 	.mobile-sec .mobile-logo img {
 		width: 100%;
@@ -2179,14 +2223,36 @@ span.cost {
 		justify-content: space-between;
 		align-items: center;
 		height: fit-content;
+		padding: 0.5rem 0 0;
 	}
 	.mobile-sec .mobile-logo {
-		width: 40%;
+		width: 60%;
 		height: auto;
+		margin: 0;
 	}
 	.mobile-sec .mobile-logo img {
 		width: 100%;
 		height: auto;
+	}
+	.top-section .logo {
+		width: 60%;
+	}
+	.show-image {
+		width: 100%;
+		height: auto;
+	}
+	.free-space {
+		min-height: fit-content;
+	}
+	.login-image {
+		display: none;
+	}
+	.free-inner {
+		margin-top: 2rem;
+	}
+	.hero {
+		margin-top: 4.5rem;
+		height: 15rem;
 	}
 	nav.container {
 		position: fixed;
@@ -2207,7 +2273,7 @@ span.cost {
 		left: 0;
 	}
 	.white-bg {
-		height: 6.2rem;
+		height: 4.5rem;
 		position: fixed;
 		z-index: 999;
 		background-color: white;
@@ -2272,7 +2338,7 @@ span.cost {
 		display: none;
 	}
 	nav.container ul.left-menu {
-		margin-top: 7rem;
+		margin-top: 5rem;
 	}
 	ul.left-menu li.active a,
 	ul.right-menu li.active a {
@@ -2330,6 +2396,20 @@ span.cost {
 	}
 	.user-info {
 		justify-content: center;
+	}
+	.cards {
+		display: block;
+		padding: 0.8rem;
+	}
+	.placeholder {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+	.side-info {
+		width: 100%;
+		text-align: center;
+		margin-top: 0.8rem;
 	}
 }
 /*# sourceMappingURL=style.css.map */

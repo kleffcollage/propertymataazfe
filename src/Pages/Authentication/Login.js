@@ -36,7 +36,7 @@ function Login() {
 			localStorage.setItem("token", data.data.token);
 			setUser(data.data);
 			localStorage.setItem("user", JSON.stringify(data.data));
-			history.push("/welcome");
+			history.push("/buy");
 			return;
 		}
 		handleValidationErrors(data.errors);
@@ -51,12 +51,12 @@ function Login() {
 	return (
 		<>
 			<Nav />
-			<div className="container-fluid">
+			<div className="container-fluid align">
 				<div className="container fit-it">
 					<div className="row">
 						<div className="col-lg-6">
-							<div className="display-image">
-								<img src alt="Login Image" />
+							<div className="login-image">
+								<img src="/asset/log.jpg" alt="Login Image" />
 							</div>
 						</div>
 						<div className="col" />

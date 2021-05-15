@@ -10,7 +10,7 @@ function Body() {
 							<div className="col-lg-6">
 								<div className="cards">
 									<div className="placeholder">
-										<img src alt="placeholder" />
+										<img src="/asset/sell_illustration.png" alt="placeholder" />
 									</div>
 									<div className="side-info">
 										<h3>
@@ -28,7 +28,7 @@ function Body() {
 							<div className="col-lg-6">
 								<div className="cards">
 									<div className="placeholder">
-										<img src alt="placeholder" />
+										<img src="/asset/buy_illustration.png" alt="placeholder" />
 									</div>
 									<div className="side-info">
 										<h3>
@@ -45,7 +45,7 @@ function Body() {
 							<div className="col-lg-6">
 								<div className="cards">
 									<div className="placeholder">
-										<img src alt="placeholder" />
+										<img src="/asset/rent_illustration.png" alt="placeholder" />
 									</div>
 									<div className="side-info">
 										<h3>
@@ -62,7 +62,10 @@ function Body() {
 							<div className="col-lg-6">
 								<div className="cards">
 									<div className="placeholder">
-										<img src alt="placeholder" />
+										<img
+											src="/asset/clean_illustration.png"
+											alt="placeholder"
+										/>
 									</div>
 									<div className="side-info">
 										<h3>

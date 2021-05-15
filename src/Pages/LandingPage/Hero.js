@@ -11,7 +11,9 @@ function Hero() {
 						className="homesearch"
 						placeholder="Enter an address, state, neighbourhood or area"
 					/>
-					<div className="home-search-icon" />
+					<div className="home-search-icon">
+						<img src="/asset/searchicon.svg" alt="search" />
+					</div>
 				</div>
 			</div>
 		</div>
