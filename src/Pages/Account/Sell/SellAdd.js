@@ -8,20 +8,46 @@ function SellAdd({ close }) {
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [step, setStep] = useState("a");
+	const [bedroomCounter, setBedroomCounter] = useState(1);
+	const [bathroomCounter, setBathroomCounter] = useState(1);
 	const [listingDetails, setListingDetails] = useState({
-		firstName: "",
-		lastName: "",
-		mobileNumber: "",
-		emailAddress: "",
-		surname: "",
-		Nationality: "",
+		name: "",
+		title: "",
+		address: "",
+		description: "",
+		sellMyself: true,
+		price: 0,
+		numberOfBedrooms: 0,
+		numberOfBathrooms: 0,
+		isDraft: true,
+		isActive: true,
+		isForRent: true,
+		isForSale: true,
+		propertyTypeId: 0,
 	});
+	const [details, setDetails] = useState([]);
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
 		setListingDetails({ ...listingDetails, [name]: value });
 		console.log(listingDetails);
 	};
 
+	const bedIncrement = (e) => {
+		e.preventDefault();
+		setBedroomCounter(bedroomCounter + 1);
+	};
+	const bedDecrement = (e) => {
+		e.preventDefault();
+		setBedroomCounter((bedroomCounter) => Math.max(bedroomCounter - 1, 1));
+	};
+	const bathIncrement = (e) => {
+		e.preventDefault();
+		setBathroomCounter(bathroomCounter + 1);
+	};
+	const bathDecrement = (e) => {
+		e.preventDefault();
+		setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
+	};
 	const currentStep = () => {
 		if (step == "a") {
 			setStep("b");
@@ -36,7 +62,7 @@ function SellAdd({ close }) {
 	const submitListingDetails = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		var data = await Fetch("", "post", listingDetails);
+		var data = await Fetch("Property/create", "post", listingDetails);
 
 		if (!data.status) {
 			setLoading(false);
@@ -46,6 +72,8 @@ function SellAdd({ close }) {
 		if (data.status != 400) {
 			setLoading(false);
 			currentStep();
+			setDetails();
+			setListingDetails({});
 		}
 	};
 	return (
@@ -78,7 +106,7 @@ function SellAdd({ close }) {
 							type="text"
 							className="formfield"
 							placeholder="Give your listing a name that makes it easy to find"
-							name="firstName"
+							name="name"
 							onChange={handleOnChange}
 						/>
 					</div>
@@ -89,20 +117,26 @@ function SellAdd({ close }) {
 								<option value="" selected disabled>
 									Choose a property type
 								</option>
+								{details.map((singlelisting, i) => {
+									return (
+										<option value={singlelisting.propertyTypeId}>
+											{singlelisting.propertyType}
+										</option>
+									);
+								})}
 							</select>
 							<div className="arrows" />
 						</div>
 					</div>
 					<div className="input-box">
-						<div className="input-label">Propert Title</div>
-						<div className="select-box">
-							<select className="formfield">
-								<option value="" selected disabled>
-									Certificate of Occupancy, Governor’s Consent etc
-								</option>
-							</select>
-							<div className="arrows" />
-						</div>
+						<div className="input-label">Property Title</div>
+						<input
+							type="text"
+							className="formfield"
+							placeholder="Give your listing a name that makes it easy to find"
+							name="title"
+							onChange={handleOnChange}
+						/>
 					</div>
 
 					<div className="input-box">
@@ -156,6 +190,8 @@ function SellAdd({ close }) {
 							class="formfield textarea"
 							cols="10"
 							placeholder="Description"
+							name="description"
+							onChange={handleOnChange}
 						>
 							{/* Description */}
 						</textarea>
@@ -164,7 +200,7 @@ function SellAdd({ close }) {
 						<input
 							type="checkbox"
 							id="sell"
-							name="firstName"
+							name="sellMyself"
 							onChange={handleOnChange}
 						/>
 						<label htmlFor="sell" className="checktext">
@@ -191,7 +227,13 @@ function SellAdd({ close }) {
 				<form className="content-section mt-4" onSubmit={submitListingDetails}>
 					<div className="input-box">
 						<div className="input-label">Price</div>
-						<input type="text" className="formfield mb-3" placeholder="₦0.00" />
+						<input
+							type="text"
+							className="formfield mb-3"
+							placeholder="₦0.00"
+							name="price"
+							onChange={handleOnChange}
+						/>
 					</div>
 					<button className="do-upload">
 						<input type="file" className="upload" />
@@ -206,17 +248,35 @@ function SellAdd({ close }) {
 					<div className="counter-pad">
 						<div className="counter-label">Bedrooms</div>
 						<div className="counter-box">
-							<button className="countbtn">-</button>
-							<div className="countbox">1</div>
-							<button className="countbtn">+</button>
+							<button className="countbtn" onClick={bedDecrement}>
+								-
+							</button>
+							<input
+								className="countbox"
+								value={bedroomCounter}
+								name="numberOfBedrooms"
+								onChange={handleOnChange}
+							/>
+							<button className="countbtn" onClick={bedIncrement}>
+								+
+							</button>
 						</div>
 					</div>
 					<div className="counter-pad">
 						<div className="counter-label">Bathrooms</div>
 						<div className="counter-box">
-							<button className="countbtn">-</button>
-							<div className="countbox">1</div>
-							<button className="countbtn">+</button>
+							<button className="countbtn" onClick={bathDecrement}>
+								-
+							</button>
+							<input
+								className="countbox"
+								value={bathroomCounter}
+								name="numberOfBathrooms"
+								onChange={handleOnChange}
+							/>
+							<button className="countbtn" onClick={bathIncrement}>
+								+
+							</button>
 						</div>
 					</div>
 					<div className="joint-btn mg">

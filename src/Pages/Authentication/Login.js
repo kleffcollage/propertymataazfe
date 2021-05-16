@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import Nav from "../../Components/Navs/Nav";
 import { MainContext } from "../../Context/MainContext";
 import Fetch from "../../Utilities/Fetch";
@@ -44,7 +45,7 @@ function Login() {
 	};
 
 	const handleValidationErrors = (errors) => {
-		var ValidationErrors = data.errors;
+		var ValidationErrors = errors;
 		setErrors({ ...errors, ...ValidationErrors });
 	};
 
@@ -112,7 +113,9 @@ function Login() {
 										{loading ? <Spinner /> : "Login"}
 									</button>
 								</form>
-								<button className="forgot-pass">Forget Password</button>
+								<Link to="/login/reset" className="forgot-pass">
+									Forget Password
+								</Link>
 							</div>
 						</div>
 					</div>

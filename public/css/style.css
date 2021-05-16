@@ -506,6 +506,11 @@ ul.footer i {
 	justify-content: center;
 	align-items: center;
 }
+.secondary-btn.sec {
+	width: fit-content;
+	padding: 0 1.5rem;
+	height: 2.5rem;
+}
 
 .or {
 	color: rgba(25, 25, 25, 0.5);
@@ -996,6 +1001,7 @@ p.fil:last-of-type {
 	letter-spacing: 0;
 	line-height: 18.9px;
 	margin-bottom: 0.5rem;
+	margin-right: 0.5rem;
 }
 
 .feature-title {
@@ -1081,6 +1087,13 @@ p.fil:last-of-type {
 	text-align: center;
 	background-color: #0042ff;
 	border: 0;
+	transition: 0.5s ease;
+}
+.list-color-btn:hover {
+	color: #ffffff;
+	background-color: rgb(0, 47, 175);
+	text-decoration: none;
+	padding-left: 0.5rem;
 }
 
 .verified i {
@@ -1264,7 +1277,7 @@ h2.property-info {
 }
 
 .disclaimer {
-	height: 7rem;
+	min-height: 7rem;
 	width: 100%;
 	border-radius: 4px;
 	padding: 0.5rem 1rem;
