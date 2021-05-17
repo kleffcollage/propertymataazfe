@@ -19,6 +19,7 @@ function Login() {
 		setLoginDetails({ ...loginDetails, [name]: value });
 		console.log(loginDetails);
 	};
+	
 	const logUserIn = async (e) => {
 		setLoading(true);
 		e.preventDefault();
