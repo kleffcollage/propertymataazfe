@@ -9,7 +9,7 @@ export const ModalWrapper = styled.div`
 	background: white;
 	padding: 20px;
 	width: 40%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 100%;
 	@media (max-width: 768px) {
 		width: 100%;
