@@ -1865,8 +1865,7 @@ span.cost {
 	margin-top: 6rem;
 }
 
-.pending-tag {
-	background-color: #ffc82c;
+.tag {
 	width: 100%;
 	height: 1.8rem;
 	display: -webkit-box;
@@ -1880,6 +1879,15 @@ span.cost {
 	align-items: center;
 	padding: 0 1rem;
 	margin-top: -1px;
+}
+.tag.verified {
+	background-color: #28a745;
+}
+.tag.pending {
+	background-color: #ffc82c;
+}
+.tag.draft {
+	background-color: #6c757d;
 }
 
 .status {
@@ -2099,6 +2107,10 @@ span.cost {
 .hover-dropdown {
 	position: relative;
 	cursor: pointer;
+}
+.hover-dropdown:hover,
+.hover-dropdown:hover .icon-small {
+	color: #0042ff;
 }
 
 .hover-dropdown:hover .dropdown-content {
@@ -2453,4 +2465,4 @@ span.cost {
 	color: #bdbdbd;
 	outline: none;
 	transition: border 0.24s ease-in-out;
-  }
+}

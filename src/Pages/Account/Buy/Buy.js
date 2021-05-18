@@ -12,9 +12,13 @@ function Buy() {
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [offset, setOffset] = useState(1);
-	const [limit, setLimit] = useState(20);
+	const [limit, setLimit] = useState(4);
 	const [seeMore, setSeeMore] = useState(false);
 	const [propertyId, setPropertyId] = useState(0);
+	const [nextUrl, setNextUrl] = useState("");
+	const [prevUrl, setPrevUrl] = useState("");
+	const [lastUrl, setLastUrl] = useState("");
+	const [firstUrl, setFirstUrl] = useState("");
 
 	const currentTab = (tabname) => {
 		setTab(tabname);
@@ -26,6 +30,18 @@ function Buy() {
 	const decrement = () => {
 		setCounter((counter) => Math.max(counter - 1, 1));
 		console.log(counter);
+	};
+	const showNext = async () => {
+		showProperties(nextUrl);
+	};
+	const showPrev = async () => {
+		showProperties(prevUrl);
+	};
+	const showFirst = async () => {
+		showProperties(firstUrl);
+	};
+	const showLast = async () => {
+		showProperties(lastUrl);
 	};
 	const showProperties = async (
 		url = `Property/list?offset=${offset}&limit=${limit}`
@@ -42,6 +58,10 @@ function Buy() {
 		if (data.status != 400) {
 			setLoading(true);
 			setIsProperty(data.data.value);
+			setNextUrl(data.data.next.href.split("api/")[1]);
+			setPrevUrl(data.data.next.href.split("api/")[1]);
+			setFirstUrl(data.data.next.href.split("api/")[1]);
+			setLastUrl(data.data.next.href.split("api/")[1]);
 			setLoading(false);
 			return;
 		}
@@ -191,101 +211,120 @@ function Buy() {
 									<>
 										{isProperty.map((property, i) => {
 											return (
-												<div className="col-lg-4">
-													<div className="listing-cards">
-														<div className="listing-cover-img">
-															{property.mediaFiles.map((media, i) => {
-																return <img src={media.url} />;
-															})}
-															<div
-																className={
-																	property.area == null
-																		? "d-none"
-																		: "listing-location"
-																}
-															>
-																{property.area}
-															</div>
-														</div>
-														<div className="listing-info">
-															<div className="title-group">
-																<div className="listing-title">
-																	{property.name}
-																</div>
-																<div className="verified">
-																	<i
+												<>
+													{property.isDraft == true ||
+													property.verified == false ? null : (
+														<div className="col-lg-4">
+															<div className="listing-cards">
+																<div className="listing-cover-img">
+																	{property.mediaFiles.map((media, i) => {
+																		return <img src={media.url} />;
+																	})}
+																	<div
 																		className={
-																			property.sellMyself
-																				? ""
-																				: "fas fa-badge-check"
+																			property.area == null
+																				? "d-none"
+																				: "listing-location"
 																		}
-																	/>
-																</div>
-															</div>
-															<div className="feature-group">
-																<div className="feature-sing">
-																	<i className="far fa-bed" />
-																	<div className="feature-title">{`${property.numberOfBedrooms} Bedrooms`}</div>
-																</div>
-																<div className="feature-sing">
-																	<i className="far fa-toilet" />
-																	<div className="feature-title">
-																		{" "}
-																		{`${property.numberOfBathrooms} Bathrooms`}
+																	>
+																		{property.area}
 																	</div>
 																</div>
-																<div className="feature-sing">
-																	<i className="far fa-tags" />
-																	<div className="feature-title">{`₦${property.price}`}</div>
-																</div>
-																<div className="feature-sing">
-																	<i className="far fa-award" />
-																	<div className="feature-title">
-																		{property.propertyType.toLowerCase()}
+																<div className="listing-info">
+																	<div className="title-group">
+																		<div className="listing-title">
+																			{property.name}
+																		</div>
+																		<div className="verified">
+																			<i
+																				className={
+																					property.sellMyself
+																						? ""
+																						: "fas fa-badge-check"
+																				}
+																			/>
+																		</div>
+																	</div>
+																	<div className="feature-group">
+																		<div className="feature-sing">
+																			<i className="far fa-bed" />
+																			<div className="feature-title">{`${property.numberOfBedrooms} Bedrooms`}</div>
+																		</div>
+																		<div className="feature-sing">
+																			<i className="far fa-toilet" />
+																			<div className="feature-title">
+																				{" "}
+																				{`${property.numberOfBathrooms} Bathrooms`}
+																			</div>
+																		</div>
+																		<div className="feature-sing">
+																			<i className="far fa-tags" />
+																			<div className="feature-title">{`₦${property.price}`}</div>
+																		</div>
+																		<div className="feature-sing">
+																			<i className="far fa-award" />
+																			<div className="feature-title">
+																				{property.propertyType.toLowerCase()}
+																			</div>
+																		</div>
 																	</div>
 																</div>
-															</div>
-														</div>
-														<div className="line" />
-														<div className="listing-info pt-0">
-															<div className="listing-btn">
-																<button
-																	className="list-no-color-btn"
-																	onClick={() => {
-																		setPropertyId(property.id);
-																		setSeeMore(true);
-																	}}
-																>
-																	See more
-																</button>
-																<>
-																	{property.sellMyself == true ? (
+																<div className="line" />
+																<div className="listing-info pt-0">
+																	<div className="listing-btn">
 																		<button
-																			className="list-color-btn"
+																			className="list-no-color-btn"
 																			onClick={() => {
 																				setPropertyId(property.id);
 																				setSeeMore(true);
 																			}}
 																		>
-																			Contact
+																			See more
 																		</button>
-																	) : (
-																		<Link
-																			to={`/buy/enquires/${property.id}`}
-																			className="list-color-btn"
-																		>
-																			Enquire
-																		</Link>
-																	)}
-																</>
+																		<>
+																			{property.sellMyself == true ? (
+																				<button
+																					className="list-color-btn"
+																					onClick={() => {
+																						setPropertyId(property.id);
+																						setSeeMore(true);
+																					}}
+																				>
+																					Contact
+																				</button>
+																			) : (
+																				<Link
+																					to={`/buy/enquires/${property.id}`}
+																					className="list-color-btn"
+																				>
+																					Enquire
+																				</Link>
+																			)}
+																		</>
+																	</div>
+																</div>
 															</div>
 														</div>
-													</div>
-												</div>
+													)}
+												</>
 											);
 										})}
 									</>
 								)}
+							</div>
+							<div className="d-flex">
+								<button className="secondary-btn" onClick={showFirst}>
+									First
+								</button>
+								<button className="secondary-btn" onClick={showPrev}>
+									Previous
+								</button>
+								<button className="secondary-btn" onClick={showNext}>
+									Next
+								</button>
+								<button className="secondary-btn" onClick={showLast}>
+									Last
+								</button>
 							</div>
 						</div>
 					</div>

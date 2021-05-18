@@ -106,7 +106,10 @@ function SeeMore({ setSeeMore, propertyId }) {
 								</div>
 							</div>
 						) : (
-							<Link to="/buy/enquires" className="color-btn w-100 mt-4">
+							<Link
+								to={`/buy/enquires/${propertyDetails.id}`}
+								className="list-color-btn w-100"
+							>
 								Enquire
 							</Link>
 						)}

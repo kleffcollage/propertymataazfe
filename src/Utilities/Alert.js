@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { MainContext } from "../Context/MainContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Alert(props) {
 	const { data } = useContext(MainContext);

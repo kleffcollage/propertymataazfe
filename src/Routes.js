@@ -2,11 +2,13 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Buy from "./Pages/Account/Buy/Buy";
 import Enquires from "./Pages/Account/Buy/Enquires";
+import Drafts from "./Pages/Account/Sell/Drafts";
 import Sell from "./Pages/Account/Sell/Sell";
 import Login from "./Pages/Authentication/Login";
 import Reset from "./Pages/Authentication/Reset";
 import SignUp from "./Pages/Authentication/SignUp";
 import Home from "./Pages/LandingPage/Home";
+import Rent from "./Pages/Rent/Rent";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -42,6 +44,12 @@ const ROUTES = [
 		component: RenderRoutes,
 		routes: [
 			{ path: "/sell", key: "SELL", exact: true, component: () => <Sell /> },
+			{
+				path: "/sell/drafts",
+				key: "SELL",
+				exact: true,
+				component: () => <Drafts />,
+			},
 		],
 	},
 	{
@@ -56,6 +64,14 @@ const ROUTES = [
 				exact: true,
 				component: () => <Enquires />,
 			},
+		],
+	},
+	{
+		path: "/rent",
+		key: "RENT",
+		component: RenderRoutes,
+		routes: [
+			{ path: "/rent", key: "RENT", exact: true, component: () => <Rent /> },
 		],
 	},
 ];

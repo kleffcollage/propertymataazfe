@@ -38,8 +38,16 @@ function UserNav() {
 			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`}>
 				<nav className={`container ${!nav ? "" : "display"}`}>
 					<ul className="left-menu">
-						<li className={`${getNavLinkClass("/sell")}`}>
-							<Link to="/sell">Sell</Link>
+						<li className={`hover-dropdown ${getNavLinkClass("/sell")}`}>
+							Sell <i className="fas fa-chevron-down icon-small" />
+							<div className="dropdown-content">
+								<ul>
+									<li onClick={() => history.push("/sell")}>My Listings</li>
+									<li onClick={() => history.push("/sell/drafts")}>
+										My Drafts
+									</li>
+								</ul>
+							</div>
 						</li>
 						<li className={`${getNavLinkClass("/buy")}`}>
 							<Link to="/buy">Buy</Link>
