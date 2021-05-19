@@ -57,8 +57,10 @@ function Buy() {
 
 		if (data.status != 400) {
 			setLoading(true);
+			console.log(data.data.value);
 			setIsProperty(data.data.value);
 			setNextUrl(data.data.next.href.split("api/")[1]);
+			console.log(data.data.next.href.split('api/')[1]);
 			setPrevUrl(data.data.next.href.split("api/")[1]);
 			setFirstUrl(data.data.next.href.split("api/")[1]);
 			setLastUrl(data.data.next.href.split("api/")[1]);
@@ -212,14 +214,17 @@ function Buy() {
 										{isProperty.map((property, i) => {
 											return (
 												<>
-													{property.isDraft == true ||
-													property.verified == false ? null : (
+													{property.isDraft == true ? null : (
 														<div className="col-lg-4">
 															<div className="listing-cards">
 																<div className="listing-cover-img">
-																	{property.mediaFiles.map((media, i) => {
-																		return <img src={media.url} />;
-																	})}
+																	{property.mediaFiles.length <= 0 ? 
+																		<img keY={i} src={"https://unsplash.it/g/600/400?image=194"} alt="Property" />
+																		: 
+																	property.mediaFiles.map((media, i) => {
+																		return <img keY={i} src={media.url ? media.url : "https://unsplash.it/g/600/400"} alt="Property" />;
+																	})
+																	}
 																	<div
 																		className={
 																			property.area == null

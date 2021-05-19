@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import PropertyCard from "../../../Components/Generics/PropertyCard";
 import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import Spinner from "../../../Utilities/Spinner";
 import SeeMore from "../Buy/SeeMore";
 import SellAdd from "./SellAdd";
+
 
 function Sell() {
 	const [isProperty, setIsProperty] = useState([]);
@@ -32,6 +34,12 @@ function Sell() {
 			return;
 		}
 	};
+
+	const seeDetails = (id) =>{
+		setPropertyId(id);
+		setSeeMore(true);
+	}
+
 	useEffect(() => {
 		async function fetchListings() {
 			await showProperties();
@@ -89,84 +97,7 @@ function Sell() {
 						</div>
 						<div className="row">
 							{isProperty.map((property, i) => {
-								return (
-									<>
-										{property.isDraft == true ? null : (
-											<div className="col-lg-3">
-												<div className="listing-cards">
-													<div className="listing-cover-img">
-														<img src={property.mediaFiles[0]} />
-														<div className="listing-location">
-															{property.area}
-														</div>
-													</div>
-													<div
-														className={`tag ${
-															property.verified == true ? "verified" : "pending"
-														}`}
-													>
-														<div className="status">
-															{property.verified == true
-																? "Listing has been verified"
-																: "List is Pending"}
-														</div>
-														<div className="status">
-															Edit <i className="fas fa-pen ml-2" />
-														</div>
-													</div>
-													<div className="listing-info">
-														<div className="title-group">
-															<div className="listing-title mb-3">
-																{property.name}
-															</div>
-														</div>
-														<div className="feature-group">
-															<div className="feature-sing">
-																<i className="far fa-bed" />
-																<div className="feature-title">
-																	{`${property.numberOfBedrooms} Bedrooms`}
-																</div>
-															</div>
-															<div className="feature-sing">
-																<i className="far fa-toilet" />
-																<div className="feature-title">
-																	{`${property.numberOfBathrooms} Bathrooms`}
-																</div>
-															</div>
-															<div className="feature-sing">
-																<i className="far fa-tags" />
-																<div className="feature-title">{`₦${property.price}`}</div>
-															</div>
-															<div className="feature-sing">
-																<i className="far fa-award" />
-																<div className="feature-title">
-																	{property.propertyType.toLowerCase()}
-																</div>
-															</div>
-														</div>
-													</div>
-													<div className="line" />
-													<div className="listing-info pt-0">
-														<div className="listing-btn">
-															<button className="list-no-color-btn">
-																Delete
-															</button>
-															<button
-																className="list-color-btn"
-																onClick={() => {
-																	setPropertyId(property.id);
-																	setSeeMore(true);
-																}}
-															>
-																Details
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										)}
-									</>
-								);
+								return <PropertyCard property={property} seeMore={seeDetails}/>
 							})}
 						</div>
 					</>

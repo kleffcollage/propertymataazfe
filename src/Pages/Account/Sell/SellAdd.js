@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import Dropzone from "react-dropzone";
+import Alert from "../../../Utilities/Alert";
+import { MainContext } from "../../../Context/MainContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 function SellAdd({ close }) {
 	const history = useHistory();
-
+	const { showAlert } = useContext(MainContext);
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [step, setStep] = useState("a");
@@ -44,12 +47,16 @@ function SellAdd({ close }) {
 		propertyTypeId: 0,
 		mediafiles: [],
 	});
+
 	const [propertyTypes, setPropertyTypes] = useState([]);
 	const [states, setStates] = useState([]);
 	const [lgas, setLgas] = useState([]);
 	const [cities, setCities] = useState([]);
+	
+	toast("Somethingg is here")
 
 	const handleOnChange = (e) => {
+		showAlert("success","Something toasted","Everything works ")
 		const { name, value } = e.target;
 		setListingDetails({ ...listingDetails, [name]: value });
 		console.log(listingDetails);
@@ -183,6 +190,8 @@ function SellAdd({ close }) {
 		}
 	};
 
+
+
 	const submitListingDetails = async (e) => {
 		console.log(listingDetails);
 		e.preventDefault();
@@ -198,8 +207,7 @@ function SellAdd({ close }) {
 			setLoading(false);
 
 			setListingDetails({});
-			const alert = () => toast(data.message);
-			alert();
+
 			currentStep();
 		}
 		handleValidationErrors(data.errors);
@@ -220,8 +228,6 @@ function SellAdd({ close }) {
 		if (data.status != 400) {
 			setLoading(false);
 			setListingDetails({});
-			const alert = () => toast(data.message);
-			alert();
 			history.push("/sell/drafts");
 		}
 		handleValidationErrors(data.errors);
@@ -271,6 +277,8 @@ function SellAdd({ close }) {
 	};
 	return (
 		<div>
+			<Alert/>
+			<ToastContainer />
 			<div className="top-section">
 				<div className="back">
 					<i className="fas fa-chevron-left" />
@@ -291,16 +299,15 @@ function SellAdd({ close }) {
 					<img src="asset/logo.png" alt="Logo" />
 				</div>
 			</div>
-			<ToastContainer />
 			{step == "a" ? (
 				<form className="content-section mt-4">
-					{errors ? (
+					{/* {errors ? (
 						<div className="text-center mb-2">
 							<span className="text-danger text-center">
 								Please Check.... One or More Field is Incorrect
 							</span>
 						</div>
-					) : null}
+					) : null} */}
 
 					<div className="input-box">
 						<div className="input-label">Name</div>
