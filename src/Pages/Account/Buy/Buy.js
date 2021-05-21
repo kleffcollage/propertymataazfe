@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import Spinner from "../../../Utilities/Spinner";
+import Request from "../../Request/Request";
 import SeeMore from "./SeeMore";
 
 function Buy() {
@@ -12,7 +13,7 @@ function Buy() {
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [offset, setOffset] = useState(1);
-	const [limit, setLimit] = useState(4);
+	const [limit, setLimit] = useState(10);
 	const [seeMore, setSeeMore] = useState(false);
 	const [propertyId, setPropertyId] = useState(0);
 	const [nextUrl, setNextUrl] = useState("");
@@ -41,7 +42,13 @@ function Buy() {
 		showProperties(firstUrl);
 	};
 	const showLast = async () => {
-		showProperties(lastUrl);
+		if (lastUrl == null) {
+			return;
+		}
+		if (lastUrl != null) {
+			showProperties(lastUrl);
+			return;
+		}
 	};
 	const showProperties = async (
 		url = `Property/list?offset=${offset}&limit=${limit}`
@@ -60,7 +67,7 @@ function Buy() {
 			console.log(data.data.value);
 			setIsProperty(data.data.value);
 			setNextUrl(data.data.next.href.split("api/")[1]);
-			console.log(data.data.next.href.split('api/')[1]);
+			console.log(data.data.next.href.split("api/")[1]);
 			setPrevUrl(data.data.next.href.split("api/")[1]);
 			setFirstUrl(data.data.next.href.split("api/")[1]);
 			setLastUrl(data.data.next.href.split("api/")[1]);
@@ -214,17 +221,39 @@ function Buy() {
 										{isProperty.map((property, i) => {
 											return (
 												<>
-													{property.isDraft == true ? null : (
+													{property.isDraft == true ||
+													property.verified == true ? null : (
 														<div className="col-lg-4">
 															<div className="listing-cards">
 																<div className="listing-cover-img">
-																	{property.mediaFiles.length <= 0 ? 
-																		<img keY={i} src={"https://unsplash.it/g/600/400?image=194"} alt="Property" />
-																		: 
-																	property.mediaFiles.map((media, i) => {
-																		return <img keY={i} src={media.url ? media.url : "https://unsplash.it/g/600/400"} alt="Property" />;
-																	})
-																	}
+																	{property.mediaFiles.length <= 0 ? (
+																		<img
+																			keY={i}
+																			src={
+																				"https://unsplash.it/g/600/400?image=194"
+																			}
+																			alt="Property"
+																		/>
+																	) : property.mediaFiles.length > 1 ? (
+																		<img
+																			key={1}
+																			src={property.mediaFiles[0].url}
+																		/>
+																	) : (
+																		property.mediaFiles.map((media, i) => {
+																			return (
+																				<img
+																					keY={i}
+																					src={
+																						media.url
+																							? media.url
+																							: "https://unsplash.it/g/600/400"
+																					}
+																					alt="Property"
+																				/>
+																			);
+																		})
+																	)}
 																	<div
 																		className={
 																			property.area == null
@@ -327,82 +356,14 @@ function Buy() {
 								<button className="secondary-btn" onClick={showNext}>
 									Next
 								</button>
-								<button className="secondary-btn" onClick={showLast}>
+								<button className="secondary-btn" onClick={showLast} disabled>
 									Last
 								</button>
 							</div>
 						</div>
 					</div>
 				) : (
-					<div className="row">
-						<div className="col-lg-3">
-							<div className="input-box">
-								<div className="input-label req">Type</div>
-								<div className="select-boxx">
-									<input type="text" className="formfield" placeholder="John" />
-									<div className="arrows" />
-								</div>
-							</div>
-							<div className="input-box">
-								<div className="input-label req">State</div>
-								<div className="select-boxx">
-									<input type="text" className="formfield" placeholder="John" />
-									<div className="arrows" />
-								</div>
-							</div>
-							<div className="input-box">
-								<div className="input-label req">Locality(Optional)</div>
-								<div className="select-boxx">
-									<input type="text" className="formfield" placeholder="John" />
-									<div className="arrows" />
-								</div>
-							</div>
-							<div className="input-box">
-								<div className="input-label req">Area(Optional)</div>
-								<div className="select-boxx">
-									<input type="text" className="formfield" placeholder="John" />
-									<div className="arrows" />
-								</div>
-							</div>
-							<div className="input-box">
-								<div className="input-label req">Budget</div>
-								<div className="select-boxx">
-									<select className="formfield">
-										<option>Choose an option</option>
-									</select>
-									<div className="arrows" />
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-3">
-							<div className="input-box">
-								<div className="input-label req">Comments</div>
-								<div className="select-boxx mb-4">
-									<input type="text" className="formfield" placeholder="John" />
-									<div className="arrows" />
-								</div>
-							</div>
-							<div className="counter-pad">
-								<div className="counter-label">Bedrooms</div>
-								<div className="counter-box">
-									<button className="countbtn">-</button>
-									<div className="countbox">1</div>
-									<button className="countbtn">+</button>
-								</div>
-							</div>
-							<div className="counter-pad">
-								<div className="counter-label">Bathrooms</div>
-								<div className="counter-box">
-									<button className="countbtn">-</button>
-									<div className="countbox">1</div>
-									<button className="countbtn">+</button>
-								</div>
-							</div>
-							<button className="color-btn submit w-100 mt-3">
-								Submit Request
-							</button>
-						</div>
-					</div>
+					<Request />
 				)}
 			</div>
 		</>

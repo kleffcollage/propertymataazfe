@@ -1880,7 +1880,7 @@ span.cost {
 	padding: 0 1rem;
 	margin-top: -1px;
 }
-.tag.verified {
+.tag.verify {
 	background-color: #28a745;
 }
 .tag.pending {
@@ -2147,6 +2147,9 @@ span.cost {
 	color: #252427;
 	cursor: pointer;
 	min-width: 5rem;
+}
+.dropdown-content ul li:hover {
+	color: #0042ff;
 }
 
 .avatar {

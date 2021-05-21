@@ -55,9 +55,7 @@ function SeeMore({ setSeeMore, propertyId }) {
 						</div>
 					</div>
 					<div className="cover-img">
-						{files.map((media, i) => {
-							return <img src={media.url} alt />;
-						})}
+						{files.length > 1 ? <img src={files[0].url} /> : ""}
 						<div
 							className={
 								propertyDetails.area == null ? "d-none" : "listing-location"

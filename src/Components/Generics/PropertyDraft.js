@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Fetch from "../../Utilities/Fetch";
+import React from "react";
 
-const PropertyCard = ({ property = {}, seeMore }) => {
+const PropertyDraft = ({ property = {}, seeMore }) => {
 	return (
 		<>
-			{property.isDraft == true ? null : (
+			{property.isDraft == false ? null : (
 				<div className="col-lg-3">
 					<div className="listing-cards">
 						<div className="listing-cover-img">
@@ -19,11 +18,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 						</div>
 						<div
 							className={`tag ${
-								property.isDraft == true
-									? "draft"
-									: property.verified == true
-									? "verify"
-									: "pending"
+								property.isDraft == true ? "draft" : "pending"
 							}`}
 						>
 							<div className="status">
@@ -69,7 +64,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 						<div className="line" />
 						<div className="listing-info pt-0">
 							<div className="listing-btn">
-								<button className="list-no-color-btn"></button>
+								<button className="list-no-color-btn">Delete</button>
 								<button
 									className="list-color-btn"
 									onClick={() => {
@@ -87,4 +82,4 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 	);
 };
 
-export default PropertyCard;
+export default PropertyDraft;

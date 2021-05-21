@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropertyCard from "../../../Components/Generics/PropertyCard";
+import PropertyDraft from "../../../Components/Generics/PropertyDraft";
 import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import Spinner from "../../../Utilities/Spinner";
@@ -32,10 +33,10 @@ function Drafts() {
 		}
 	};
 
-	const seeDetails = (id) =>{
+	const seeDetails = (id) => {
 		setPropertyId(id);
 		setSeeMore(true);
-	}
+	};
 
 	useEffect(() => {
 		async function fetchListings() {
@@ -74,8 +75,7 @@ function Drafts() {
 					</div>
 					<div className="row">
 						{isProperty.map((property, i) => {
-							return <PropertyCard property={property} seeMore={seeDetails}/>
-							
+							return <PropertyDraft property={property} seeMore={seeDetails} />;
 						})}
 					</div>
 				</>

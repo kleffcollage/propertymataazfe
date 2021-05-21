@@ -8,7 +8,6 @@ import { MainContext } from "../../../Context/MainContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 function SellAdd({ close }) {
 	const history = useHistory();
 	const { showAlert } = useContext(MainContext);
@@ -52,11 +51,9 @@ function SellAdd({ close }) {
 	const [states, setStates] = useState([]);
 	const [lgas, setLgas] = useState([]);
 	const [cities, setCities] = useState([]);
-	
-	toast("Somethingg is here")
 
 	const handleOnChange = (e) => {
-		showAlert("success","Something toasted","Everything works ")
+		// showAlert("success", "Something toasted", "Everything works ");
 		const { name, value } = e.target;
 		setListingDetails({ ...listingDetails, [name]: value });
 		console.log(listingDetails);
@@ -102,7 +99,7 @@ function SellAdd({ close }) {
 		console.log(listingDetails);
 	};
 
-	const currentStep = () => {
+	const currentStep = async () => {
 		if (step == "a") {
 			setStep("b");
 			return;
@@ -190,8 +187,6 @@ function SellAdd({ close }) {
 		}
 	};
 
-
-
 	const submitListingDetails = async (e) => {
 		console.log(listingDetails);
 		e.preventDefault();
@@ -205,10 +200,11 @@ function SellAdd({ close }) {
 		}
 		if (data.status != 400) {
 			setLoading(false);
-
 			setListingDetails({});
-
-			currentStep();
+			const notify = () => toast(data.message);
+			notify();
+			// history.push("/sell");
+			await currentStep();
 		}
 		handleValidationErrors(data.errors);
 		setLoading(false);
@@ -277,7 +273,7 @@ function SellAdd({ close }) {
 	};
 	return (
 		<div>
-			<Alert/>
+			<Alert />
 			<ToastContainer />
 			<div className="top-section">
 				<div className="back">

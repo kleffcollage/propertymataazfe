@@ -6,7 +6,6 @@ import Spinner from "../../../Utilities/Spinner";
 import SeeMore from "../Buy/SeeMore";
 import SellAdd from "./SellAdd";
 
-
 function Sell() {
 	const [isProperty, setIsProperty] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -35,10 +34,21 @@ function Sell() {
 		}
 	};
 
-	const seeDetails = (id) =>{
+	const seeDetails = (id) => {
 		setPropertyId(id);
 		setSeeMore(true);
-	}
+	};
+	const deleteProperty = async (id) => {
+		var data = await Fetch(`Property/delete/${id}`, "get");
+		console.log(data);
+		if (!data.status) {
+			setErrormessage(data.message);
+			return;
+		}
+		if (data.status != 400) {
+			await showProperties();
+		}
+	};
 
 	useEffect(() => {
 		async function fetchListings() {
@@ -97,7 +107,9 @@ function Sell() {
 						</div>
 						<div className="row">
 							{isProperty.map((property, i) => {
-								return <PropertyCard property={property} seeMore={seeDetails}/>
+								return (
+									<PropertyCard property={property} seeMore={seeDetails} deleteProperty={deleteProperty} />
+								);
 							})}
 						</div>
 					</>
