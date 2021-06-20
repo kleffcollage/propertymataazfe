@@ -69,7 +69,9 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 						<div className="line" />
 						<div className="listing-info pt-0">
 							<div className="listing-btn">
-								<button className="list-no-color-btn"></button>
+								<button className="list-no-color-btn" onClick={() => {
+										seeMore(property.id);
+									}}>See More</button>
 								<button
 									className="list-color-btn"
 									onClick={() => {

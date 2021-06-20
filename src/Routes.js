@@ -31,7 +31,7 @@ const ROUTES = [
 				component: () => <Reset />,
 			},
 			{
-				path: "login/reset:code",
+				path: "/login/reset/:code",
 				key: "AUTH_ROOT",
 				exact: true,
 				component: (props) => <Reset {...props} />,

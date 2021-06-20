@@ -7,10 +7,9 @@ function Template(props) {
 	return (
 		<>
 			{location.pathname == "/" ||
-			location.pathname == "/login" ||
-			location.pathname == "/login/reset" ||
-			location.pathname == "/login/reset:code" ||
-			location.pathname == "/signup" ? (
+			location.pathname.startsWith("/login") ||
+			location.pathname.startsWith("/login/reset:code") ||
+			location.pathname.startsWith("/signup") ? (
 				<>{props.children}</>
 			) : (
 				<>

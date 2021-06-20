@@ -87,7 +87,7 @@ function Sell() {
 					<div className="free-space">
 						<div className="free-inner">
 							<div className="show-image">
-								<img src="asset/buyorsell.png" alt />
+								<img src="/asset/buyorsell.png" alt />
 							</div>
 							<div className="infos">
 								You currently have no properties listed for sale.{" "}

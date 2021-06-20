@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ListedCard from "../../../Components/Generics/ListedCard";
+import PropertyCard from "../../../Components/Generics/PropertyCard";
 import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import Spinner from "../../../Utilities/Spinner";
 import Request from "../../Request/Request";
 import SeeMore from "./SeeMore";
+
 
 function Buy() {
 	const [tab, setTab] = useState("listed");
@@ -220,133 +223,13 @@ function Buy() {
 									<>
 										{isProperty.map((property, i) => {
 											return (
-												<>
-													{property.isDraft == true ||
-													property.verified == true ? null : (
-														<div className="col-lg-4">
-															<div className="listing-cards">
-																<div className="listing-cover-img">
-																	{property.mediaFiles.length <= 0 ? (
-																		<img
-																			keY={i}
-																			src={
-																				"https://unsplash.it/g/600/400?image=194"
-																			}
-																			alt="Property"
-																		/>
-																	) : property.mediaFiles.length > 1 ? (
-																		<img
-																			key={1}
-																			src={property.mediaFiles[0].url}
-																		/>
-																	) : (
-																		property.mediaFiles.map((media, i) => {
-																			return (
-																				<img
-																					keY={i}
-																					src={
-																						media.url
-																							? media.url
-																							: "https://unsplash.it/g/600/400"
-																					}
-																					alt="Property"
-																				/>
-																			);
-																		})
-																	)}
-																	<div
-																		className={
-																			property.area == null
-																				? "d-none"
-																				: "listing-location"
-																		}
-																	>
-																		{property.area}
-																	</div>
-																</div>
-																<div className="listing-info">
-																	<div className="title-group">
-																		<div className="listing-title">
-																			{property.name}
-																		</div>
-																		<div className="verified">
-																			<i
-																				className={
-																					property.sellMyself
-																						? ""
-																						: "fas fa-badge-check"
-																				}
-																			/>
-																		</div>
-																	</div>
-																	<div className="feature-group">
-																		<div className="feature-sing">
-																			<i className="far fa-bed" />
-																			<div className="feature-title">{`${property.numberOfBedrooms} Bedrooms`}</div>
-																		</div>
-																		<div className="feature-sing">
-																			<i className="far fa-toilet" />
-																			<div className="feature-title">
-																				{" "}
-																				{`${property.numberOfBathrooms} Bathrooms`}
-																			</div>
-																		</div>
-																		<div className="feature-sing">
-																			<i className="far fa-tags" />
-																			<div className="feature-title">{`₦${property.price}`}</div>
-																		</div>
-																		<div className="feature-sing">
-																			<i className="far fa-award" />
-																			<div className="feature-title">
-																				{property.propertyType.toLowerCase()}
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div className="line" />
-																<div className="listing-info pt-0">
-																	<div className="listing-btn">
-																		<button
-																			className="list-no-color-btn"
-																			onClick={() => {
-																				setPropertyId(property.id);
-																				setSeeMore(true);
-																			}}
-																		>
-																			See more
-																		</button>
-																		<>
-																			{property.sellMyself == true ? (
-																				<button
-																					className="list-color-btn"
-																					onClick={() => {
-																						setPropertyId(property.id);
-																						setSeeMore(true);
-																					}}
-																				>
-																					Contact
-																				</button>
-																			) : (
-																				<Link
-																					to={`/buy/enquires/${property.id}`}
-																					className="list-color-btn"
-																				>
-																					Enquire
-																				</Link>
-																			)}
-																		</>
-																	</div>
-																</div>
-															</div>
-														</div>
-													)}
-												</>
-											);
+												<ListedCard property={property} />
+												);
 										})}
 									</>
 								)}
 							</div>
-							<div className="d-flex">
+							{/* <div className="d-flex">
 								<button className="secondary-btn" onClick={showFirst}>
 									First
 								</button>
@@ -359,7 +242,7 @@ function Buy() {
 								<button className="secondary-btn" onClick={showLast} disabled>
 									Last
 								</button>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				) : (

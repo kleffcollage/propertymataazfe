@@ -1,20 +1,31 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link,useParams } from "react-router-dom";
 import Nav from "../../Components/Navs/Nav";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
 
+
 function Reset(props) {
+	const {code} = useParams();
 	const [loading, setLoading] = useState(false);
+	const [resetCode,setResetCode] = useState('');
 	const [email, setEmail] = useState("");
-	const [emailsent, setEmailSent] = useState(false);
+	const [emailSent, setEmailSent] = useState(false);
 	const [errors, setErrors] = useState({ Password: [], Email: [] });
-	const [errormessage, setErrormessage] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 	const [resetDone, setResetDone] = useState(false);
 	const [newPassword, setNewPassword] = useState({
 		code: "",
 		newPassword: "",
 	});
+
+	useEffect(() => {
+		console.log(code);
+		if(code) {
+			setEmailSent(true) 
+			setResetCode(code) 
+		}
+	},[])
 
 	const initiateReset = async (e) => {
 		e.preventDefault();
@@ -23,7 +34,7 @@ function Reset(props) {
 		console.log(data);
 		if (!data.status) {
 			setLoading(false);
-			setErrormessage(data.message);
+			setErrorMessage(data.message);
 			return;
 		}
 		if (data.status != 400) {
@@ -34,13 +45,15 @@ function Reset(props) {
 		handleValidationErrors(data.errors);
 		setLoading(false);
 	};
+
 	const resetComplete = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		var data = await Fetch("User/reset/complete", "post", newPassword);
+		setNewPassword({...newPassword,code:code})
+		var data = await Fetch("User/reset/complete", "post", {...newPassword,code:code});
 		if (!data.status) {
 			setLoading(false);
-			setErrormessage(data.message);
+			setErrorMessage(data.message);
 			return;
 		}
 		if (data.status != 400) {
@@ -57,6 +70,7 @@ function Reset(props) {
 		setErrors({ ...errors, ...ValidationErrors });
 	};
 
+
 	return (
 		<>
 			<Nav />
@@ -71,7 +85,7 @@ function Reset(props) {
 						<div className="col" />
 						<div className="col-lg-5">
 							<div className="fit-it">
-								{!emailsent ? (
+								{!emailSent && !resetDone ? (
 									<>
 										{errors ? (
 											<div className="text-center mb-2">
@@ -98,13 +112,13 @@ function Reset(props) {
 											</button>
 										</form>
 									</>
-								) : (
+								) : emailSent && !resetDone && !resetCode ?  (
 									<div className="infoo">
 										An email has been sent to you with instructions and next
 										steps
 									</div>
-								)}
-								{emailsent && !resetDone ? (
+								) : null}
+								{emailSent && resetCode && !resetDone ? (
 									<>
 										{errors ? (
 											<div className="text-center mb-2">
@@ -116,6 +130,7 @@ function Reset(props) {
 											</div>
 										) : null}
 										<form onSubmit={resetComplete}>
+												<p className='text-danger'>{errorMessage}</p>
 											<div className="input-box">
 												<div className="input-label">Set New Password</div>
 												<input
@@ -126,8 +141,20 @@ function Reset(props) {
 													onChange={(e) =>
 														setNewPassword({
 															...newPassword,
-															password: e.target.value,
+															newPassword: e.target.value,
 														})
+													}
+												/>
+											</div>
+											<div className="input-box">
+												<div className="input-label">Repeat Password</div>
+												<input
+													type="password"
+													className="formfield pass"
+													placeholder="*  *  *  *"
+													name="password"
+													onChange={(e) =>
+														{e.target.value != newPassword.newPassword ? setErrorMessage("Both passwords must match") : setErrorMessage('')}
 													}
 												/>
 											</div>
@@ -137,7 +164,7 @@ function Reset(props) {
 										</form>
 									</>
 								) : null}
-								{emailsent && resetDone ? (
+								{emailSent && resetCode &&  resetDone ? (
 									<>
 										<div className="infoo">
 											Your Password reset was successful!

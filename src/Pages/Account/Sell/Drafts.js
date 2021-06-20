@@ -63,7 +63,7 @@ function Drafts() {
 				<div className="free-space">
 					<div className="free-inner">
 						<div className="show-image">
-							<img src="asset/buyorsell.png" alt />
+							<img src="/asset/buyorsell.png" alt />
 						</div>
 						<div className="infos">You have no properties in your Draft</div>
 					</div>
