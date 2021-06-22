@@ -11,7 +11,7 @@ export default function ListedCard({ property = {}, seeMore }) {
                             src={
                                 property.mediaFiles.length > 0
                                     ? property.mediaFiles[0].url
-                                    : ""
+                                    : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
                         />
                         <div className="listing-location">{property.area}</div>

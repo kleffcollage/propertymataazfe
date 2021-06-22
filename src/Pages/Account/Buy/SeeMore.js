@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Statuses } from "../../../Utilities/Enums";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 
@@ -55,7 +56,10 @@ function SeeMore({ setSeeMore, propertyId }) {
 						</div>
 					</div>
 					<div className="cover-img">
-						{files.length > 0 ? <img src={files[0].url} /> : ""}
+						{files.length > 0 
+						? <img src={files[0].url} /> 
+						: <img src={'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'} /> 
+						}
 						<div
 							className={
 								propertyDetails.area == null ? "d-none" : "listing-location"
@@ -89,7 +93,7 @@ function SeeMore({ setSeeMore, propertyId }) {
 								</div>
 							</div>
 						</div>
-						{propertyDetails.sellMyself == true ? (
+						{propertyDetails.status == Statuses.VERIFIED ? (
 							<div
 								className={`contact-section ${showContact ? "show-info" : ""}`}
 								onClick={() => {

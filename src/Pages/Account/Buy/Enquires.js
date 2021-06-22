@@ -111,9 +111,7 @@ function Enquires() {
 					<div className="divider" />
 					<div className="enq-stp">
 						<div className="cover-img">
-							{files.map((media, i) => {
-								return <img src={media.url} alt />;
-							})}
+							 <img src={files.length > 0 ? files[0].url : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"} alt />
 							<div
 								className={
 									propertyDetails.area == null ? "d-none" : "listing-location"

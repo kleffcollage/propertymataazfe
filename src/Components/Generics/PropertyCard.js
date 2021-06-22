@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Statuses } from "../../Utilities/Enums";
 import Fetch from "../../Utilities/Fetch";
 
 const PropertyCard = ({ property = {}, seeMore }) => {
@@ -12,7 +13,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 								src={
 									property.mediaFiles.length > 0
 										? property.mediaFiles[0].url
-										: ""
+										: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
 								}
 							/>
 							<div className="listing-location">{property.area}</div>
@@ -21,16 +22,16 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							className={`tag ${
 								property.isDraft == true
 									? "draft"
-									: property.verified == true
-									? "verify"
+									: property.status == Statuses.VERIFIED
+									? "verify" 
 									: "pending"
 							}`}
 						>
 							<div className="status">
 								{property.isDraft == true
 									? "Only visible to you"
-									: property.verified == true
-									? "Listing is verified"
+									: property.status == Statuses.VERIFIED
+									? "Live"
 									: "Listing is pending"}
 							</div>
 							<div className="status">

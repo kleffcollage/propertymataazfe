@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 function SellAdd({ close }) {
 	const history = useHistory();
 	const { showAlert } = useContext(MainContext);
+	const [drafting,setDrafting] = useState(false)
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [step, setStep] = useState("a");
@@ -155,7 +156,7 @@ function SellAdd({ close }) {
 		console.log(files);
 		setListingDetails({
 			...listingDetails,
-			mediafiles: [...listingDetails.mediafiles, ...files],
+			mediafiles: [...listingDetails.mediafiles, newMedia],
 		});
 	};
 
@@ -213,16 +214,16 @@ function SellAdd({ close }) {
 	const submitListingToDraft = async (e) => {
 		console.log(listingDetails);
 		e.preventDefault();
-		setLoading(true);
+		setDrafting(true);
 		var data = await Fetch("Property/create", "post", listingDetails);
 		console.log(data);
 		if (!data.status) {
-			setLoading(false);
+			setDrafting(false);
 			setErrormessage(data.message);
 			return;
 		}
 		if (data.status != 400) {
-			setLoading(false);
+			setDrafting(false);
 			setListingDetails({});
 			history.push("/sell/drafts");
 		}
@@ -244,6 +245,8 @@ function SellAdd({ close }) {
 			console.log(error);
 		}
 	};
+
+	
 	const getCities = async (state) => {
 		try {
 			let data = await fetch(
@@ -251,9 +254,12 @@ function SellAdd({ close }) {
 			);
 			data = await data.json();
 			console.log(data);
-			setCities(data);
-			handleValidationErrors(data.errors);
-			setLoading(false);
+			if(data.status != 404){
+				setCities(data);
+				handleValidationErrors(data.errors);
+				setLoading(false);
+			}
+			setCities([...cities,state]);
 		} catch (error) {
 			console.log(error);
 		}
@@ -271,6 +277,7 @@ function SellAdd({ close }) {
 		var ValidationErrors = errors;
 		setErrors({ ...errors, ...ValidationErrors });
 	};
+
 	return (
 		<div>
 			<Alert />
@@ -484,7 +491,7 @@ function SellAdd({ close }) {
 					</div>
 
 					<Dropzone
-						accept="jpeg"
+						accept="image/jpeg, image/png"
 						maxFiles={6}
 						onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
 					>
@@ -553,7 +560,7 @@ function SellAdd({ close }) {
 								setListingDetails({ ...listingDetails, isDraft: true });
 							}}
 						>
-							{loading ? <Spinner color={"primary"} /> : "Save to Draft"}
+							{drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
 						</button>
 						<button
 							className="color-btn draft"
