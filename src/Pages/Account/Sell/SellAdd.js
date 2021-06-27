@@ -299,7 +299,7 @@ function SellAdd({ close }) {
 					</span>
 				</div>
 				<div className="logo">
-					<img src="asset/logo.png" alt="Logo" />
+					<img src="/asset/logo.png" alt="Logo" />
 				</div>
 			</div>
 			{step == "a" ? (

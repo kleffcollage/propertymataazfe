@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Toastify__toast--info {
+  background-color: #ffc82c;
+}
+.Toastify__toast--success {
+  background-color: #28a745;
+}

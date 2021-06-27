@@ -93,7 +93,7 @@ function SeeMore({ setSeeMore, propertyId }) {
 								</div>
 							</div>
 						</div>
-						{propertyDetails.status == Statuses.VERIFIED ? (
+						{propertyDetails.status != Statuses.VERIFIED ? (
 							<div
 								className={`contact-section ${showContact ? "show-info" : ""}`}
 								onClick={() => {

@@ -3,6 +3,7 @@ import ROUTES, { RenderRoutes } from "../../Routes";
 import { MainContext } from "../../Context/MainContext";
 import Template from "../Generics/Template";
 import "./App.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
 	const sampledata = {
@@ -41,6 +42,7 @@ function App() {
 	return (
 		<>
 			<MainContext.Provider value={{ data, setUser, showAlert }}>
+				<ToastContainer/>
 				<Template>
 					<RenderRoutes routes={ROUTES} />
 				</Template>

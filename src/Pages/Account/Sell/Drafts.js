@@ -5,6 +5,7 @@ import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import Spinner from "../../../Utilities/Spinner";
 import SeeMore from "../Buy/SeeMore";
+import SellAdd from "./SellAdd";
 
 function Drafts() {
 	const [isProperty, setIsProperty] = useState([]);
@@ -14,6 +15,7 @@ function Drafts() {
 	const [errormessage, setErrormessage] = useState("");
 	const [offset, setOffset] = useState(1);
 	const [limit, setLimit] = useState(20);
+	const [listings, setListings] = useState(false);
 
 	const showProperties = async (url = "Property/user/drafts") => {
 		setLoading(true);
@@ -45,6 +47,14 @@ function Drafts() {
 
 		fetchListings();
 	}, []);
+
+	const openModalBox = () => {
+		setListings(!listings);
+	};
+	const close = async () => {
+		setListings(false);
+		await showProperties();
+	};
 	return (
 		<div>
 			<Modal
@@ -54,6 +64,9 @@ function Drafts() {
 				}}
 			>
 				<SeeMore propertyId={propertyId} setSeeMore={setSeeMore} />
+			</Modal>
+			<Modal open={listings} onclose={close}>
+				<SellAdd close={close} />
 			</Modal>
 			{loading ? (
 				<div className="loading">
@@ -66,6 +79,9 @@ function Drafts() {
 							<img src="/asset/buyorsell.png" alt />
 						</div>
 						<div className="infos">You have no properties in your Draft</div>
+					<button className="secondary-btn sec" onClick={openModalBox}>
+								+ Add Property
+							</button>
 					</div>
 				</div>
 			) : (

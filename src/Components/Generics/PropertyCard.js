@@ -1,8 +1,30 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { Statuses } from "../../Utilities/Enums";
 import Fetch from "../../Utilities/Fetch";
+import Spinner from "../../Utilities/Spinner";
 
 const PropertyCard = ({ property = {}, seeMore }) => {
+	const [deleting,setDeleting] = useState(false)
+
+	const deActivate = async(id) =>{
+		try{
+			setDeleting(true)
+			const data = await Fetch(`property/deactivate/${id}`);
+			if(data.status){
+				toast.success("This property has been deleted successfully");
+				setDeleting(false);
+				window.location.reload();
+				return;
+			}
+			setDeleting(false);
+			toast.error("There was an error deleting this property. Please try again after sometime");
+		}catch(error){
+			setDeleting(false);
+			toast.error("There was an error deleting this property. Please try again after sometime");
+			console.log(error);
+		}
+	} 
 	return (
 		<>
 			{property.isDraft == true ? null : (
@@ -72,14 +94,14 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							<div className="listing-btn">
 								<button className="list-no-color-btn" onClick={() => {
 										seeMore(property.id);
-									}}>See More</button>
+									}}>Details</button>
 								<button
-									className="list-color-btn"
+									className="list-no-color-btn"
 									onClick={() => {
-										seeMore(property.id);
+										deActivate(property.id);
 									}}
 								>
-									Details
+									{deleting ? <Spinner color='primary'/> : "Delete" }
 								</button>
 							</div>
 						</div>
