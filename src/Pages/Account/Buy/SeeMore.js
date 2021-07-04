@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import { Statuses } from "../../../Utilities/Enums";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
+import Modal from "../../../Utilities/Modal";
+import { ReportProperty } from "../../../Components/Generics/ReportProperty";
 
 function SeeMore({ setSeeMore, propertyId }) {
 	const [propertyDetails, setPropertyDetails] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [showContact, setShowContact] = useState(false);
 	const [files, setFiles] = useState([]);
+	const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
 	const getPropertyDetails = async () => {
 		setLoading(true);
@@ -34,6 +37,13 @@ function SeeMore({ setSeeMore, propertyId }) {
 
 	return (
 		<>
+		<Modal 
+			open = {isReportModalOpen}
+				onClose = { () => setIsReportModalOpen(false)
+				}
+		>
+			<ReportProperty property={propertyDetails} close = { () => setIsReportModalOpen(false) } />
+		</Modal>
 			{loading ? (
 				<div className="loading">
 					{" "}
@@ -160,7 +170,7 @@ function SeeMore({ setSeeMore, propertyId }) {
 								application, website or App.
 							</p>
 						</div>
-						<button className="preview-btn">Report This Listing</button>
+						<button onClick={() => setIsReportModalOpen(true)} className="preview-btn">Report This Listing</button>
 						<button className="preview-btn">Share This Listing</button>
 					</div>
 				</div>

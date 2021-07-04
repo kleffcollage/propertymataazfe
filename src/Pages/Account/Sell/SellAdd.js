@@ -202,8 +202,7 @@ function SellAdd({ close }) {
 		if (data.status != 400) {
 			setLoading(false);
 			setListingDetails({});
-			const notify = () => toast(data.message);
-			notify();
+			toast.success(data.message);
 			// history.push("/sell");
 			await currentStep();
 		}
@@ -281,7 +280,6 @@ function SellAdd({ close }) {
 	return (
 		<div>
 			<Alert />
-			<ToastContainer />
 			<div className="top-section">
 				<div className="back">
 					<i className="fas fa-chevron-left" />

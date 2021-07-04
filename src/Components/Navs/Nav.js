@@ -33,7 +33,7 @@ function Nav() {
 							<Link to="/login">Sell</Link>
 						</li>
 						<li>
-							<Link to="/login">Buy</Link>
+							<Link to="/Buy">Buy</Link>
 						</li>
 						<li>
 							<Link to="/login">Rent</Link>

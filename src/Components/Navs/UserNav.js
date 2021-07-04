@@ -86,12 +86,15 @@ function UserNav() {
 								</ul>
 							</div>
 						</li>
-						<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
+						{data.user  ?
+							<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
 							{data.user.firstName}
 							<div className="avatar">
 								<img src alt />
 							</div>
 						</li>
+						: null}
+						
 					</ul>
 				</nav>
 			</div>
