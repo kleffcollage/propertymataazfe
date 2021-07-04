@@ -21,6 +21,7 @@ export const  ReportProperty = ({property, close}) => {
         userId: 0,
         email: "",
         description: "",
+        usersName: ''
     });
 
     const handleOnChange = (e) => {
@@ -31,13 +32,14 @@ export const  ReportProperty = ({property, close}) => {
 
     const submitReport = async (e) => {
         e.preventDefault();
+        console.log(user);
         if(user){
-            reportDetails.userName = user.id;
+            reportDetails.userId = user.id;
             reportDetails.email = user.email;
         }
         // console.log("Here");
         setLoading(true);
-        //var data = {reportDetails};
+        // var data = {reportDetails};
         var data = await Fetch("Report/create", "post", reportDetails);
         if(!data.status) {
             setLoading(false);
