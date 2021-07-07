@@ -1,6 +1,26 @@
 import React from 'react'
+import SeeMore from '../../Pages/Account/Buy/SeeMore';
+import Fetch from '../../Utilities/Fetch';
 
 export default function ListedCard({ property = {}, seeMore }) {
+    const incrementView = async (id) => {
+		var sendData = await Fetch(`Property/addview/${id}`, "get");
+		//console.log("This is an Id " + id);
+		if(!sendData.status){
+			console.log(sendData.message)
+			return;
+		}
+		if(sendData.status != 400 ){
+			console.log("Issokay");
+		}
+	};
+
+    const onSeeMoreClicked = async () => {
+        console.log(property);
+        seeMore(property.id);
+        await incrementView(property.id);
+    };
+
     return (
         <>
         {property.isDraft == true ? null : (
@@ -48,8 +68,8 @@ export default function ListedCard({ property = {}, seeMore }) {
                     <div className="line" />
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className="list-no-color-btn" onClick={() => {
-                                    seeMore(property.id);
+                            <button className="list-no-color-btn" onClick={ async () => {
+                                   await onSeeMoreClicked();
                                 }}>See More</button>
                             <button
                                 className="list-color-btn"

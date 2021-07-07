@@ -27,8 +27,27 @@ function SeeMore({ setSeeMore, propertyId }) {
 			setFiles(data.data.mediaFiles);
 			setPropertyDetails(data.data);
 			// setId(data.data);
+
 		}
 	};
+
+	const incrementEnquire = async (id) => {
+		var sendData = await Fetch(`Property/addenquiries/${id}`, "get");
+		
+		if(!sendData.status){
+			console.log(sendData.message)
+			return;
+		}
+		if(sendData.status != 400 ){
+			console.log("Issokay");
+		}
+	};
+
+	// const onEnquireClicked = async () => {
+	// 	console.log("This is the property id: " + propertyId)
+	// 	await incrementEnquire(propertyId);
+	// }
+
 	useEffect(() => {
 		console.log("asdfghjkjhgfdsa");
 		console.log(propertyId);
@@ -121,6 +140,9 @@ function SeeMore({ setSeeMore, propertyId }) {
 							<Link
 								to={`/buy/enquires/${propertyDetails.id}`}
 								className="list-color-btn w-100"
+								onClick={ async () =>{
+									await incrementEnquire(propertyId);
+								}}
 							>
 								Enquire
 							</Link>
