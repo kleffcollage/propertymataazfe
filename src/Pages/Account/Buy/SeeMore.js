@@ -43,10 +43,6 @@ function SeeMore({ setSeeMore, propertyId }) {
 		}
 	};
 
-	// const onEnquireClicked = async () => {
-	// 	console.log("This is the property id: " + propertyId)
-	// 	await incrementEnquire(propertyId);
-	// }
 
 	useEffect(() => {
 		console.log("asdfghjkjhgfdsa");
