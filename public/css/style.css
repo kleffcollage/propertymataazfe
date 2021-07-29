@@ -1457,6 +1457,10 @@ h2.property-info {
 	outline: none;
 }
 
+.uploaded{
+	background-color: #2fdf84 !important;
+}
+
 .single-step i,
 .do-upload i {
 	color: #191919;
