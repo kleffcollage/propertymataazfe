@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
+import NaijaStates from "naija-state-local-government";
 
 function Request() {
 	const [loading, setLoading] = useState(false);
@@ -119,20 +120,24 @@ function Request() {
 			console.log(error);
 		}
 	};
+
 	const getCities = async (state) => {
 		try {
-			let data = await fetch(
-				`http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-			);
-			data = await data.json();
-			console.log(data);
+		  let data = await fetch(
+			`http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
+		  );
+		  data = await data.json();
+		  console.log(data);
+		  if (data.status != 404) {
 			setCities(data);
 			handleValidationErrors(data.errors);
 			setLoading(false);
+		  }
+		  setCities([...cities, state]);
 		} catch (error) {
-			console.log(error);
+		  console.log(error);
 		}
-	};
+	  };
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -195,8 +200,7 @@ function Request() {
 								name="state"
 								className="formfield"
 								onChange={async (e) => {
-									await getLgas(e.target.value);
-									await getCities(e.target.value);
+									
 									setRequest({
 										...request,
 										state: e.target.value,
@@ -206,8 +210,8 @@ function Request() {
 								<option value="" selected disabled>
 									What state in Nigeria do you want the property
 								</option>
-								{states.map((state, i) => {
-									return <option value={state.name}>{state.name}</option>;
+								{NaijaStates.states().map((state, i) => {
+									return <option value={state}>{state}</option>;
 								})}
 							</select>
 							<div className="arrows" />
@@ -215,7 +219,8 @@ function Request() {
 					</div>
 					<div className="input-box">
 						<div className="input-label">Locality (Optional)</div>
-						<div className="select-box">
+						{request.state ? (
+							<div className="select-box">
 							<select
 								name="lga"
 								onChange={handleOnChange}
@@ -224,12 +229,13 @@ function Request() {
 								<option value="" selected disabled>
 									Choose a locality
 								</option>
-								{lgas.map((lga, i) => {
+								{NaijaStates.lgas(request.state).lgas.map((lga, i) => {
 									return <option value={lga}>{lga}</option>;
 								})}
 							</select>
 							<div className="arrows" />
 						</div>
+						) : null}
 					</div>
 
 					<div className="input-box">
