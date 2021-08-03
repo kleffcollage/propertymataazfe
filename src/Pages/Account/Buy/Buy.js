@@ -75,7 +75,7 @@ function Buy() {
       setFirstUrl(data.data.next && data.data.next.href.split("api/")[1]);
       setLastUrl(data.data.next && data.data.next.href.split("api/")[1]);
       setLoading(false);
-      return;
+      return; 
     }
   };
 
