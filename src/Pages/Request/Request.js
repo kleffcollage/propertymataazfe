@@ -7,28 +7,18 @@ import Spinner from "../../Utilities/Spinner";
 import NaijaStates from "naija-state-local-government";
 
 function Request() {
+	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	const [errormessage, setErrormessage] = useState("");
 	const [errors, setErrors] = useState({});
 	const [request, setRequest] = useState({
-		name: "",
-		title: "",
-		address: "",
+		propertyTypeId: 0,
 		state: "",
 		lga: "",
-		area: "",
-		description: "",
-		sellMySelf: false,
-		price: 0,
+		comment: "",
+		budget: 0,
 		numberOfBedrooms: 0,
 		numberOfBathrooms: 0,
-		isDraft: false,
-		isActive: true,
-		isForRent: false,
-		isForSale: true,
-		propertyTypeId: 0,
-		mediafiles: [],
-		isRequest: true,
 	});
 	const [propertyTypes, setPropertyTypes] = useState([]);
 	const [states, setStates] = useState([]);
@@ -142,7 +132,7 @@ function Request() {
 	useEffect(() => {
 		const fetchData = async () => {
 			await getPropertyTypes();
-			await getStates();
+			//await getStates();
 		};
 		fetchData();
 	}, []);
@@ -150,9 +140,11 @@ function Request() {
 	const submitRequets = async (e) => {
 		console.log(request);
 		e.preventDefault();
+		
 		setLoading(true);
-		var data = await Fetch("Property/create", "post", request);
+		var data = await Fetch("PropertyRequest/new", "post", request);
 		console.log(data);
+		//return;
 		if (!data.status) {
 			setLoading(false);
 			setErrormessage(data.message);
@@ -161,6 +153,7 @@ function Request() {
 		if (data.status != 400) {
 			setLoading(false);
 			setRequest({});
+			//history.push("")
 			const notify = () => toast(data.message);
 			notify();
 		}
@@ -238,7 +231,7 @@ function Request() {
 						) : null}
 					</div>
 
-					<div className="input-box">
+					{/* <div className="input-box">
 						<div className="input-label">Area (Optional)</div>
 						<div className="select-box">
 							<select
@@ -255,14 +248,14 @@ function Request() {
 							</select>
 							<div className="arrows" />
 						</div>
-					</div>
+					</div> */}
 					<div className="input-box">
 						<div className="input-label">Budget</div>
 						<input
 							type="text"
 							className="formfield"
 							placeholder="Give your listing a name that makes it easy to find"
-							name=""
+							name="budget"
 							onChange={handleOnChange}
 						/>
 					</div>
@@ -270,16 +263,13 @@ function Request() {
 				<div className="col-lg-3">
 					<div className="input-box">
 						<div className="input-label req">Comments</div>
-						<div className="select-boxx mb-4">
-							<input
+							<textarea
 								type="text"
 								className="formfield"
 								placeholder="Your Comment Here"
-								name="description"
+								name="comment"
 								onChange={handleOnChange}
 							/>
-							<div className="arrows" />
-						</div>
 					</div>
 					<div className="counter-pad">
 						<div className="counter-label">Bedrooms</div>
@@ -315,8 +305,12 @@ function Request() {
 						</div>
 					</div>
 
-					<button className="color-btn submit w-100 mt-3">
-						Submit Request
+					<button 
+						className="color-btn submit w-100 mt-3"
+						type="submit"
+						onClick={submitRequets}
+						>
+							{loading ? <Spinner /> : "Submit Request"}
 					</button>
 				</div>
 			</form>
