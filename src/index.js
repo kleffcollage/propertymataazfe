@@ -4,14 +4,17 @@ import "./index.css";
 import App from "./Components/App/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import SimpleReactLightbox from "simple-react-lightbox-pro";
 
 ReactDOM.render(
-	<React.StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</React.StrictMode>,
-	document.getElementById("root")
+  <React.StrictMode>
+    <BrowserRouter>
+      <SimpleReactLightbox>
+        <App />
+      </SimpleReactLightbox>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

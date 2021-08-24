@@ -5,10 +5,11 @@ import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import Modal from "../../../Utilities/Modal";
 import { ReportProperty } from "../../../Components/Generics/ReportProperty";
-import {withGoogleMap, GoogleMap,withScriptjs } from "react-google-maps";
+import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
+import { SRLWrapper } from "simple-react-lightbox-pro";
 
-export const  SeeMore = ({ setSeeMore, propertyId }) => {
+export const SeeMore = ({ setSeeMore, propertyId }) => {
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
@@ -155,39 +156,53 @@ export const  SeeMore = ({ setSeeMore, propertyId }) => {
               <h2 className="property-info">Overview</h2>
               <p>{propertyDetails.description}</p>
             </div>
-            <div className="picture-overview">
-              <h2 className="property-info">Pictures</h2>
-              <div className="image-gallery">
-                {files.map((singleImage, i) => {
-                  return (
-                    <div className="single-img">
-                      <img src={singleImage.url} alt />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="video-overview">
-              <h2 className="property-info">Video Tour</h2>
-              <div className="video-gallery">
-                <div className="single-video">
-                  <img src alt />
-                </div>
-                <div className="single-video">
-                  <img src alt />
+            <SRLWrapper>
+              <div className="picture-overview">
+                <h2 className="property-info">Pictures</h2>
+                <div className="image-gallery">
+                  {files
+                    .filter((m) => m.isImage)
+                    .map((singleImage, i) => {
+                      return (
+                        <div className="single-img">
+                          <img src={singleImage.url} alt="" />
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
-            </div>
+              <div className="video-overview">
+                <h2 className="property-info">Video Tour</h2>
+                <div className="video-gallery">
+                  {files
+                    .filter((m) => m.isVideo)
+                    .map((video, index) => {
+                      return (
+                        <div className="single-img">
+                          <video
+                            src={video.url}
+                            className="single-img"
+                            srl_video_controls={true}
+                            controls
+                          >
+                            <source src={video.url} />
+                          </video>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </SRLWrapper>
             <div className="map-overview">
               <h2 className="property-info">Map/Street view</h2>
               <div className="map-box">
                 <MapView
-				isMarkerShown
-				googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
-				loadingElement={<div style={{ height: `100%` }} />}
-				containerElement={<div style={{ height: `400px` }} />}
-				mapElement={<div style={{ height: `100%` }} />}
-				/>
+                  isMarkerShown
+                  googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={<div style={{ height: `400px` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
               </div>
             </div>
             <div className="disclaimer">
@@ -215,6 +230,6 @@ export const  SeeMore = ({ setSeeMore, propertyId }) => {
       )}
     </>
   );
-}
+};
 
 export default SeeMore;
