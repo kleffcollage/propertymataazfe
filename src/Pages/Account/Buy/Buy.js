@@ -101,7 +101,7 @@ function Buy() {
           setSeeMore(false);
         }}
       >
-        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} />
+        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false}/>
       </Modal>
       <div>
         <div className="page-title">

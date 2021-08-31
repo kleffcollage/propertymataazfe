@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Statuses } from "../../../Utilities/Enums";
 import Fetch from "../../../Utilities/Fetch";
@@ -8,13 +8,21 @@ import { ReportProperty } from "../../../Components/Generics/ReportProperty";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox-pro";
+import { MainContext } from "../../../Context/MainContext";
 
-export const SeeMore = ({ setSeeMore, propertyId }) => {
+
+
+export const SeeMore = ({ setSeeMore, propertyId, seller }) => {
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+
+  const user = useContext(MainContext)
+  // console.log(user.data.user.id);
+  console.log(propertyDetails);
 
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -127,6 +135,29 @@ export const SeeMore = ({ setSeeMore, propertyId }) => {
               </div>
             </div>
             {propertyDetails.status != Statuses.VERIFIED ? (
+              seller ? 
+              <div className="activities">
+                <div className="d-flex justify-content-between">
+                    <div className="views">
+                        <i className="fal fa-eye"></i>
+                        <div className="count">{propertyDetails.views}</div>
+                        <div className="viewtext">Views</div>
+                    </div>
+                    <div className="views">
+                        <i className="fal fa-eye"></i>
+                        <div className="count">{propertyDetails.enquiries}</div>
+                        <div className="viewtext">Enquires</div>
+                    </div>
+                </div>
+                <div className="views full">
+                    <div className="groups d-flex ml-5">
+                        <i className="far fa-scroll mr-5"></i>
+                        <div className="count">Payment</div>
+                    </div>
+                    <div className="viewtext">Pending Sale</div>
+                </div>
+            </div>
+              :
               <div
                 className={`contact-section ${showContact ? "show-info" : ""}`}
                 onClick={() => {

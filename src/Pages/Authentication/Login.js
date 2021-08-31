@@ -23,6 +23,7 @@ function Login() {
 	const logUserIn = async (e) => {
 		setLoading(true);
 		e.preventDefault();
+		try {
 		var data = await Fetch("user/token", "post", loginDetails);
 		console.log(data);
 
@@ -43,6 +44,10 @@ function Login() {
 		}
 		handleValidationErrors(data.errors);
 		setLoading(false);
+		} catch (error) {
+			console.log(error);
+		}
+		
 	};
 
 	const handleValidationErrors = (errors) => {

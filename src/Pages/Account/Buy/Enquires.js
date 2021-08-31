@@ -3,6 +3,8 @@ import { useParams } from "react-router";
 import Fetch from "../../../Utilities/Fetch";
 import { SRLWrapper } from "simple-react-lightbox-pro";
 import { MapView } from "../../../Components/Generics/MapView";
+import  Modal  from "../../../Utilities/Modal";
+import ApplicationForm from "./Application";
 
 function Enquires() {
   const { propertyId } = useParams();
@@ -10,6 +12,7 @@ function Enquires() {
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [seeMore, setSeeMore] = useState(false)
   const [propertyDetails, setPropertyDetails] = useState([]);
 
   const getPropertyDetails = async () => {
@@ -32,6 +35,15 @@ function Enquires() {
     getPropertyDetails();
   }, []);
   return (
+    <>
+    	<Modal
+				open={seeMore}
+				onClose={() => {
+				setSeeMore(false);
+				}}
+			>
+        <ApplicationForm />
+			</Modal>
     <div className="row">
       <div className="col-lg-4">
         <div className="steps passed">
@@ -75,7 +87,7 @@ function Enquires() {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 2 - Payment</h2>
-            <button className="single-step">
+            <button className="single-step" onClick={()=>setSeeMore(true)}>
               <i className="far fa-paper-plane" />
               Submit Application
             </button>
@@ -209,6 +221,7 @@ function Enquires() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

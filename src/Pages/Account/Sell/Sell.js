@@ -76,7 +76,7 @@ function Sell() {
 					setSeeMore(false);
 				}}
 			>
-				<SeeMore propertyId={propertyId} setSeeMore={setSeeMore} />
+				<SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={true}/>
 			</Modal>
 			<div>
 				{loading ? (
