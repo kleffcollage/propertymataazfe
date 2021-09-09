@@ -131,7 +131,7 @@ function Enquires() {
                     ? files[0].url
                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                 }
-                alt
+                alt={propertyDetails.name}
               />
               <div
                 className={

@@ -394,6 +394,13 @@ ul.footer i {
   position: relative;
 }
 
+.field-title {
+  color: #252427;
+  font-family: "Baloo Bhai 2";
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
 .input-label {
   position: absolute;
   background-color: white;
@@ -2037,13 +2044,14 @@ span.cost {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
+  -webkit-box-pack: flex-start;
+  -ms-flex-pack: flex-start;
+  justify-content: flex-start;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   padding: 1rem;
+  cursor: pointer;
 }
 
 .rent-title {
@@ -2119,6 +2127,13 @@ span.cost {
 .hover-dropdown:hover,
 .hover-dropdown:hover .icon-small {
   color: #0042ff;
+}
+
+@media only screen and (max-width: 760px) {
+  .hover-dropdown:hover,
+  .hover-dropdown:hover .icon-small {
+    color: #ffffff;
+  }
 }
 
 .hover-dropdown:hover .dropdown-content {
