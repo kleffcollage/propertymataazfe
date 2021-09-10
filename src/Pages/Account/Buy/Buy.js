@@ -8,9 +8,10 @@ import Spinner from "../../../Utilities/Spinner";
 import Request from "../../Request/Request";
 import SeeMore from "./SeeMore";
 
-function Buy() {
+function Buy({ toBuy }) {
   const [tab, setTab] = useState("listed");
   const [counter, setCounter] = useState(1);
+  const [bathroomCounter, setBathroomCounter] = useState(1)
   const [isProperty, setIsProperty] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
@@ -33,6 +34,14 @@ function Buy() {
   const decrement = () => {
     setCounter((counter) => Math.max(counter - 1, 1));
     console.log(counter);
+  };
+  const bathIncrement = () => {
+    setBathroomCounter(bathroomCounter + 1)
+    console.log(bathroomCounter);
+  };
+  const bathDecrement = () => {
+    setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
+    console.log(bathroomCounter);
   };
   const showNext = async () => {
     showProperties(nextUrl);
@@ -85,7 +94,7 @@ function Buy() {
       await showProperties();
 	  setLoading(false);
     }
-
+    console.log('Buy: ', toBuy)
     fetchListings();
   }, []);
 
@@ -101,11 +110,15 @@ function Buy() {
           setSeeMore(false);
         }}
       >
-        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false}/>
+        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false} tenant={true} />
       </Modal>
+      
+      
       <div>
         <div className="page-title">
-          Find a property to buy with the safety of 103% money back guarantee
+          { toBuy ? "Find a property to buy with the safety of 103% money back guarantee"
+            : "Find the perfect property to rent from our wide range of options"
+          }
         </div>
         <div className="tabs">
           <div
@@ -122,6 +135,7 @@ function Buy() {
           </div>
           <div className={tab == "listed" ? "tab-bar" : "tab-bar req"} />
         </div>
+        
         {tab == "listed" ? (
           <div className="row">
             <div className="col-lg-3">
@@ -210,9 +224,9 @@ function Buy() {
               <div className="counter-pad">
                 <div className="counter-label">Bathrooms</div>
                 <div className="counter-box">
-                  <button className="countbtn">-</button>
-                  <div className="countbox">1</div>
-                  <button className="countbtn">+</button>
+                  <button className="countbtn" onClick={bathDecrement}>-</button>
+                  <input className="countbox" value={bathroomCounter} />
+                  <button className="countbtn" onClick={bathIncrement}>+</button>
                 </div>
               </div>
               <div className="joint-btn">

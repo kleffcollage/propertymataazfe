@@ -57,7 +57,7 @@ const ROUTES = [
 		key: "BUY",
 		component: RenderRoutes,
 		routes: [
-			{ path: "/buy", key: "BUY", exact: true, component: () => <Buy /> },
+			{ path: "/buy", key: "BUY", exact: true, component: () => <Buy toBuy={true} /> },
 			{
 				path: "/buy/enquires/:propertyId",
 				key: "BUY",
@@ -72,6 +72,8 @@ const ROUTES = [
 		component: RenderRoutes,
 		routes: [
 			{ path: "/rent", key: "RENT", exact: true, component: () => <Rent /> },
+			{ path: "/rent/rentProperty", key: "RENT", exact: true, component: () => <Buy toBuy={false} /> },
+			{ path: "/rent/enquires/:propertyId", key: "RENT", exact: true, component: () => <Enquires /> },
 		],
 	},
 ];

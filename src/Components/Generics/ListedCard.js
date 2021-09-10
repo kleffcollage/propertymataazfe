@@ -70,7 +70,10 @@ export default function ListedCard({ property = {}, seeMore }) {
                         <div className="listing-btn">
                             <button className="list-no-color-btn" onClick={ async () => {
                                    await onSeeMoreClicked();
-                                }}>See More</button>
+                                }}> 
+                                See More 
+                            </button>
+                                
                             <button
                                 className="list-color-btn"
                                 onClick={() => {

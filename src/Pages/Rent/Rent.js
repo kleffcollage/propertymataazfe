@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Modal from "../../Utilities/Modal";
 import RentOption from "./RentOption";
+import ReliefForm from "./ReliefForm";
 
 function Rent() {
 	const [rentOption, setRentOption] = useState(false);
+	const [rentRelief, setRentRelief] = useState(false)
+	
 	
 	return (
 		<div>
-			<Modal
-				open={rentOption}
+			<Modal open={rentOption}
 				close={() => {
 					setRentOption(false);
 				}}
@@ -29,8 +32,9 @@ function Rent() {
 						</div>
 					</div>
 				</div>
+				
 				<div className="col-lg-4 my-2">
-					<div className="small-cards">
+					<Link to="/rent/rentProperty" className="small-cards">
 						<div className="iconsection" />
 						<div className="text-sections">
 							<div className="rent-title">Rent a property</div>
@@ -38,10 +42,19 @@ function Rent() {
 								Find the perfect property from a wide range of options
 							</div>
 						</div>
-					</div>
+					</Link>
 				</div>
+				
+				<Modal open={rentRelief} 
+					close={ () => {
+						setRentRelief(false);
+					} }
+				>
+					<ReliefForm close={() => setRentRelief(false)} />
+				</Modal>
+				
 				<div className="col-lg-4 my-2">
-					<div className="small-cards">
+					<div className="small-cards" onClick={() => setRentRelief(true)}>
 						<div className="iconsection flex-shrink-1" />
 						<div className="text-sections">
 							<div className="rent-title">Get Rent Relief</div>

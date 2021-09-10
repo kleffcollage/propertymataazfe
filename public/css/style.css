@@ -9,6 +9,8 @@ body {
   background-color: white;
 }
 
+a { text-decoration: none; }
+
 nav {
   width: 100%;
   height: 5.5rem;
@@ -138,7 +140,8 @@ ul.right-menu li.active a {
 }
 
 .logo img {
-  width: 100%;
+  width: 250px;
+  max-width: 100%;
   height: auto;
 }
 
@@ -414,6 +417,12 @@ ul.footer i {
   left: 6%;
   top: -11px;
   z-index: 2;
+}
+
+@media only screen and (max-width: 760px) {
+  .input-label, .formfield {
+    font-size: 0.82rem;
+  }
 }
 
 .input-label.req {
@@ -2035,6 +2044,10 @@ span.cost {
   margin-bottom: 1.5rem;
 }
 
+a.small-cards {
+  text-decoration: none;
+}
+
 .small-cards {
   border: 1px solid #dce1e7;
   border-radius: 6px;
@@ -2491,4 +2504,24 @@ span.cost {
   color: #bdbdbd;
   outline: none;
   transition: border 0.24s ease-in-out;
+}
+
+.relief-preview {
+  border-radius: 4px;
+  background-color: rgba(0, 68, 255, 0.02);
+  color: #191919;
+}
+
+h6 .relief-preview-title {
+  color: #252427;
+  font-family: "Baloo Bhai 2";
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
+.relief-preview .tab h5 {
+  color: #606061;
+  font-family: "Baloo Bhai 2";
+  font-size: 0.783rem;
+  font-weight: 600;
 }

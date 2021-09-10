@@ -219,7 +219,7 @@ function RentForm({ close }) {
     console.log(rentDetails);
     
     var data = await Fetch("Property/create", "post", rentDetails);
-    console.log(data);
+    console.log('Rent property: ', data);
     if (!data.status) {
       setLoading(false);
       setErrormessage(data.message);
@@ -331,7 +331,9 @@ function RentForm({ close }) {
 
   return (
     <div>
+        
       <Alert />
+      
       <div className="top-section">
         <div className="back">
           <i className="fas fa-chevron-left" />
@@ -731,7 +733,7 @@ function RentForm({ close }) {
         
       ) : step == 3 ? (
           
-        <form className="content-section mt-4" onSubmit={submitRentRequest}>
+        <form className="content-section mt-4">
             <div className="input-box">
                 <div className="input-label">Your Full Name</div>
                 <input
@@ -827,16 +829,16 @@ function RentForm({ close }) {
                 </div>
             </div>
             <div className="joint-btn mg">
-                <button
+                {/* <button
                 className="no-color-btn draft"
                 onClick={() => {
                     setRentDetails({ ...rentDetails, isDraft: true });
                 }}
                 >
                 {drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
-                </button>
+                </button> */}
                 <button
-                className="color-btn draft"
+                className="secondary-btn draft"
                 type="submit"
                 onClick={submitRentRequest}
                 >
