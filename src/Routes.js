@@ -9,6 +9,7 @@ import Reset from "./Pages/Authentication/Reset";
 import SignUp from "./Pages/Authentication/SignUp";
 import Home from "./Pages/LandingPage/Home";
 import Rent from "./Pages/Rent/Rent";
+import RentPropertyList from "./Pages/Rent/RentPropertyList";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -57,12 +58,12 @@ const ROUTES = [
 		key: "BUY",
 		component: RenderRoutes,
 		routes: [
-			{ path: "/buy", key: "BUY", exact: true, component: () => <Buy toBuy={true} /> },
+			{ path: "/buy", key: "BUY", exact: true, component: () => <Buy /> },
 			{
 				path: "/buy/enquires/:propertyId",
 				key: "BUY",
 				exact: true,
-				component: () => <Enquires />,
+				component: () => <Enquires isRent={false} />,
 			},
 		],
 	},
@@ -72,8 +73,8 @@ const ROUTES = [
 		component: RenderRoutes,
 		routes: [
 			{ path: "/rent", key: "RENT", exact: true, component: () => <Rent /> },
-			{ path: "/rent/rentProperty", key: "RENT", exact: true, component: () => <Buy toBuy={false} /> },
-			{ path: "/rent/enquires/:propertyId", key: "RENT", exact: true, component: () => <Enquires /> },
+			{ path: "/rent/rentProperty", key: "RENT", exact: true, component: () => <RentPropertyList /> },
+			{ path: "/rent/enquires/:propertyId", key: "RENT", exact: true, component: () => <Enquires isRent={true} /> },
 		],
 	},
 ];
