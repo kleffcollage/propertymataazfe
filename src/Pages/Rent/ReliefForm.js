@@ -53,6 +53,7 @@ function ReliefForm({ close }) {
     isForRent: true,
     isForSale: false,
     mediafiles: [],
+    passport: [],
     longitude: 0,
     latitude: 0,
   });
@@ -103,6 +104,30 @@ function ReliefForm({ close }) {
       reader.readAsDataURL(file);
     });
   };
+  
+  const grabPassportFile = (uploadedFile) => {
+    uploadedFile.forEach((file) => {
+        const reader = new FileReader();
+    
+        reader.onabort = () => {
+          console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        };
+        reader.onerror = () => {
+          console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        };
+        reader.onload = () => {
+          // Do whatever you want with the file contents
+          const binaryStr = reader.result.split(",")[1];
+          console.log(reader.result);
+          //console.log(binaryStr);
+          console.log(binaryStr);
+          composeMedia(binaryStr, file);
+        };
+        console.log(file);
+        reader.readAsDataURL(file);
+        
+    })
+  };
 
   const composeMedia = (bytes, file) => {
     var files = [];
@@ -123,7 +148,7 @@ function ReliefForm({ close }) {
     };
 
     files.push(newMedia);
-    console.log(files);
+    console.log('Compose file: ', files);
     setRentDetails({
       ...rentDetails,
       mediafiles: [...rentDetails.mediafiles, newMedia],
@@ -512,18 +537,18 @@ function ReliefForm({ close }) {
             <Dropzone
                 accept="image/jpeg, image/png"
                 maxFiles={6}
-                onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+                onDrop={(acceptedFiles) => grabPassportFile(acceptedFiles)}
             >
                 { ({ getRootProps, getInputProps }) => (
                     <section>
                         <div
-                        {...getRootProps()}
-                        className={
-                            rentDetails.mediafiles.filter((m) => m.isImage).length >
-                            0
-                            ? "do-upload uploaded"
-                            : "do-upload"
-                        }
+                            {...getRootProps()}
+                            className={
+                                rentDetails.mediafiles.filter((m) => m.isImage).length >
+                                0
+                                ? "do-upload uploaded"
+                                : "do-upload"
+                            }
                         >
                         <input {...getInputProps()} />
                         {rentDetails.mediafiles.filter((m) => m.isImage).length >
@@ -655,19 +680,28 @@ function ReliefForm({ close }) {
                 </div>
             </div>
             
-            <Box display="flex" flexDirection="column" className="relief-preview p-2 mt-3 mb-4">
+            <Box display="flex" flexDirection="column" className="relief-preview p-3 mt-3 mb-4">
                 <h6 className="relief-preview-title">Preview</h6>
-                <Box display="flex" width="100%" flexDirection="row" justifyContent="space-between" className="tab">
+                <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
                     <div className="tab">
                         <h5>Loan Amount</h5>
+                        <p className="amount">₦4,500,000</p>
                     </div>
-                    <div className="">
+                    <div className="tab text-right">
                         <h5>Interest</h5>
+                        <p className="rate">15% monthly</p>
                     </div>
                 </Box>
-                <div className="tab">
-                    <div className="">Relationship</div>
-                </div>
+                <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
+                    <div className="tab">
+                        <h5>Total Repayment</h5>
+                        <p className="amount">₦4,782,372</p>
+                    </div>
+                    <div className="tab text-right">
+                        <h5>Instalments</h5>
+                        <p className="rate">₦797,062/Monthly</p>
+                    </div>
+                </Box>
             </Box>
             
             <div className="joint-btn mg">
