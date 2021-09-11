@@ -13,6 +13,7 @@ import RentPropertyList from "./Pages/Rent/RentPropertyList";
 import Dashboard from "./Pages/Account/Dashboard";
 import Verify from "./Pages/Verify";
 import Clean from "./Pages/Clean";
+import NotFound from "./Components/Generics/NotFound";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -103,7 +104,7 @@ export function RenderRoutes({ routes }) {
 				{routes.map((route, i) => {
 					return <RouteWithSubRoutes key={route.key} {...route} />;
 				})}
-				<Route component={() => <h1>Not Found!</h1>} />
+				<Route component={() => <NotFound /> } />
 			</Switch>
 		</>
 	);

@@ -9,62 +9,84 @@ import { Link } from "@material-ui/core";
 
 
 function Application({ clean, close }) {
+    const [rooms, setRooms] = useState(0);
+    const [bathroom, setBathroom] = useState(0);
+    const [floor, setFloors] = useState(0);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const user = useContext(MainContext)
+    console.log(user);
+  
+    const roomIncrease = () => {
+        setRooms(rooms + 1);
+    };
+    const roomDecrease = () => {
+        setRooms((rooms) => Math.max(rooms - 1, 1));
+        // console.log(counter);
+    };
+    const bathRoomIncrease = () => {
+        setBathroom(bathroom + 1);
+    };
+    const bathRoomDecrease = () => {
+        setBathroom((bathroom) => Math.max(bathroom - 1, 1));
+    };
+    const floorIncrease = () => {
+        setFloors(floor + 1);
+    };
+    const floorDecrease = () => {
+        setFloors((floor) => Math.max(floor - 1, 1));
+    };
 
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const user = useContext(MainContext)
-  console.log(user);
-
-  const [userDetails, setUserDetails] = useState({
-    firstName: user.data.user.firstName,
-    middleName: "",
-    lastName: user.data.user.lastName,
-    email: user.data.user.email,
-    mobileNumber: user.data.user.phoneNumber,
-    address: "",
-    state: "",
-    service: "",
-    fileName: "",
-    fileNumber: "",
-  });
+    const [userDetails, setUserDetails] = useState({
+        firstName: user.data.user.firstName,
+        middleName: "",
+        lastName: user.data.user.lastName,
+        email: user.data.user.email,
+        mobileNumber: user.data.user.phoneNumber,
+        address: "",
+        state: "",
+        service: "",
+        fileName: "",
+        fileNumber: "",
+    });
   
   
 	const handleOnChange = (e) => {
-		const { name, value } = e.target;
-		setUserDetails({ ...userDetails, [name]: value });
-		console.log(userDetails);
-  };
+        const { name, value } = e.target;
+        setUserDetails({ ...userDetails, [name]: value });
+        console.log(userDetails);
+    };
   
-  const handleSubmit = async (e) => {
-    setLoading(true)
-    e.preventDefault()
-    const data = {
-        register: userDetails
-    }
-    console.log(data);
-    
-    try {
-      let res = await Fetch("Application/new", "post", data);
-      console.log(res);
-      if (!data.status) {
-        setLoading(false);
-        setErrorMessage(data.message);
-        console.log(errorMessage);
-        return;
-      }
-      if (data.status != "400") {
-        setLoading(false);
+    const handleSubmit = async (e) => {
+        setLoading(true)
+        e.preventDefault()
+        const data = {
+            register: userDetails
+        }
         console.log(data);
-      } else {
-        toast.error(errorMessage)
-        console.log(errorMessage);
-      }
-    } catch (error) {
-      setLoading(false)
-      toast.error(error.message)
+        
+        try {
+        let res = await Fetch("Application/new", "post", data);
+        console.log(res);
+        if (!data.status) {
+            setLoading(false);
+            setErrorMessage(data.message);
+            console.log(errorMessage);
+            return;
+        }
+        if (data.status != "400") {
+            setLoading(false);
+            console.log(data);
+        } else {
+            toast.error(errorMessage)
+            console.log(errorMessage);
+        }
+        } catch (error) {
+        setLoading(false)
+        toast.error(error.message)
+        }
     }
-  }
 
 
     // useEffect(() => {
@@ -135,25 +157,25 @@ function Application({ clean, close }) {
                     <div className="counter-pad">
                         <div className="counter-label">Number of Rooms</div>
                         <div className="counter-box">
-                            <button className="countbtn" onClick>-</button>
-                            <input className="countbox" value="2" />
-                            <button className="countbtn" >+</button>
+                            <button className="countbtn" onClick={roomDecrease}>-</button>
+                            <input className="countbox" value={rooms} />
+                            <button className="countbtn" onClick={roomIncrease}>+</button>
                         </div>
                     </div>
                     <div className="counter-pad">
                         <div className="counter-label">Number of Bathrooms/Toilets</div>
                         <div className="counter-box">
-                            <button className="countbtn" onClick>-</button>
-                            <input className="countbox" value="2" />
-                            <button className="countbtn" >+</button>
+                            <button className="countbtn" onClick={bathRoomDecrease}>-</button>
+                            <input className="countbox" value={bathroom} />
+                            <button className="countbtn" onClick={bathRoomIncrease}>+</button>
                         </div>
                     </div>
                     <div className="counter-pad">
                         <div className="counter-label">Number of Floors</div>
                         <div className="counter-box">
-                            <button className="countbtn" onClick>-</button>
-                            <input className="countbox" value="2" />
-                            <button className="countbtn" >+</button>
+                            <button className="countbtn" onClick={floorDecrease}>-</button>
+                            <input className="countbox" value={floor} />
+                            <button className="countbtn" onClick={floorIncrease}>+</button>
                         </div>
                     </div>
                 </>

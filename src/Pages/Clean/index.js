@@ -33,12 +33,12 @@ const Clean = () => {
                 </div>
                 
                 <div className="row">
-                    <div className="col-lg-4 my-2">
+                    <div className="col-lg-12 my-2">
                         <div className="mt-4">
                             <h5>My Requests</h5>
                         </div>
                         
-                        <Box display="flex" flexDirection="column" width="100%" alignItems="center">
+                        <Box display="flex" flexDirection="column" width="100%" alignItems="center" className="mt-3">
                             <div className="iconsection mb-3" />
                             <span>You currently have no  Cleaning sessions Booked.</span>
                         </Box>

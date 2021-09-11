@@ -42,19 +42,23 @@ const Rent = () => {
     
     return (
         <Wrapper className="row">
-            { loading && 
+            { loading ?
                 <Box display="flex" width="100%" height="100" justifyContent="center" alignItems="center"> 
                     <Spinner size={40} color={"primary"} /> 
                 </Box> 
+                : (
+                    <>
+                        <h5 className="mb-3">My Tenancy</h5>
+                        
+                        { isProperty.map((property, index) => {
+                            return (
+                                <ListedCard property={property} seeMore={showDetails} key={index} />                    
+                            )
+                        })}
+                    </>
+                )
             }
             
-            <h5 className="mb-3">My Tenancy</h5>
-            
-            { isProperty.map((property, index) => {
-                return (
-                    <ListedCard property={property} seeMore={showDetails} key={index} />                    
-                )
-            })}
         </Wrapper>
     )
 }
