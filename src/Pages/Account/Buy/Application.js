@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Dropzone from "react-dropzone";
@@ -6,7 +7,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 
-
+fff
 function ApplicationForm({ property, isRentForm, close }) {
 
   const [page, setPage] = useState(1);
@@ -85,29 +86,7 @@ function ApplicationForm({ property, isRentForm, close }) {
     }
   }
   
-  const grabUploadedWorkId = (uploadedFiles) => {
-    uploadedFiles.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
-        composeMedia(binaryStr, file);
-      };
-      console.log(file);
-      reader.readAsDataURL(file);
-    });
-  };
-  const grabUploadedFile = (uploadedFiles) => {
+  const grabUploadedFile = (uploadedFiles, isPassport = true ) => {
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -123,14 +102,14 @@ function ApplicationForm({ property, isRentForm, close }) {
         // console.log(reader.result);
         //console.log(binaryStr);
         // console.log("GrabUp", binaryStr);
-        composeMedia(binaryStr, file);
+        composeMedia(binaryStr, file, isPassport);
       };
       console.log(file);
       reader.readAsDataURL(file);
     });
   };
   
-  const composeMedia = (bytes, file) => {
+  const composeMedia = (bytes, file, isPassport) => {
     var files = [];
 
     var newMedia = {
@@ -150,9 +129,18 @@ function ApplicationForm({ property, isRentForm, close }) {
 
     files.push(newMedia);
     console.log(files);
+    
+    if(isPassport) {
+      setUserDetails({
+        ...userDetails,
+        passport: [...userDetails.passport, newMedia],
+      });
+      return
+    }
+    
     setUserDetails({
       ...userDetails,
-      passport: [...userDetails.passport, newMedia],
+      workId: [...userDetails.workId, newMedia],
     });
   };
 
@@ -187,191 +175,244 @@ function ApplicationForm({ property, isRentForm, close }) {
         </div>
       </div>
       
-      {page == 1 ? (
-        <div className="modal-content">
-          <div className="content-section mt-4">
-            <div className="schedule-title mb-4">
-              { property ? property.name : null }
-            </div>
-            <h3 className="section-title"> Application Form</h3>
-            <div className="input-box">
-              <div className="input-label">First Name</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="firstName" value={userDetails.firstName} onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Middle Name</div>
-              <input type="text" className="formfield" placeholder="John" name="middleName" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Mobile Number</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="mobileNumber" value={userDetails.mobileNumber} onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Surname</div>
-              <input type="text" className="formfield" placeholder="John" name="lastName" value={userDetails.lastName} onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Email Address</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="email" value={userDetails.email} onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Residential Address</div>
-              <input type="text" className="formfield" placeholder="John" name="address" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Date of Birth</div>
-              <input type="date" className="formfield" placeholder="John" name="dateOfBirth" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Nationality</div>
-              <input type="text" className="formfield" placeholder="John" name="dateOfBirth" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Marital status</div>
-              <div className="select-box">
-                <select className="formfield" name="maritalStatus" onChange={handleOnChange} required>
-                  <option>Single</option>
-                  <option>Married</option>
-                  <option>Divorced</option>
-                </select>
-                <div className="arrows"></div>
-              </div>
-            </div>
-            <button className="secondary-btn" onClick={() => setPage(page + 1)}>
-              Next
-            </button>
-          </div>
-        </div>
-      ) : page == 2 ? (
-        <div className="modal-content">
-          <div className="content-section mt-4">
-            <div className="input-box">
-              <div className="input-label">Occupation</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="occupation" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Employer</div>
-              <input type="text" className="formfield" placeholder="John" name="employer" onChange={handleOnChange} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Work adress</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="workAddress" onChange={handleOnChange} required/>
-            </div>
+      <Formik
+        initialValues={{ 
+            firstName: user.data.user.firstName,
+            middleName: "",
+            lastName: user.data.user.lastName,
+            email: user.data.user.email,
+            mobileNumber: user.data.user.phoneNumber,
+            address: "",
+            state: "",
             
-            { isRentForm ?
-              <>
-                <div className="input-box">
-                  <div className="input-label">What is your annual income?</div>
-                  <input type="text" className="formfield" placeholder="This can be your annual salary of an estimated income" name="annualIncome" onChange={handleOnChange} required/>
+            typeofBuilding: "",
+            stateofBuilding: "",
+            timeforCleaning: "",
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+            }, 400);
+        }}
+      >
+        <Form>
+          {page == 1 ? (
+            <div className="modal-content">
+              <div className="content-section mt-4">
+                <div className="schedule-title mb-4">
+                  { property ? property.name : null }
                 </div>
                 
-                <Dropzone
-                  accept="image/jpeg, image/png"
-                  maxFiles={1}
-                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
-                >
-                  { ({ getRootProps, getInputProps }) => (
-                      <section>
-                          <div
-                          {...getRootProps()}
-                          className={
-                              userDetails.passport.filter((m) => m.isImage).length >
-                              0
-                              ? "do-upload uploaded"
-                              : "do-upload"
-                          }
-                          >
-                          <input {...getInputProps()} />
-                          {userDetails.passport.filter((m) => m.isImage).length >
-                          0 ? (
-                              <>
-                              <i className="far fa-check" />
-                              {`${
-                                  userDetails.passport.filter((m) => m.isImage)
-                                  .length
-                              }  Pictures Uploaded`}
-                              </>
-                          ) : (
-                              <>
-                              <i className="far fa-image" />
-                              'Upload pictures'
-                              </>
-                          )}
-                          </div>
-                      </section>
-                  )}
-                </Dropzone>
-              
-                <Dropzone
-                    accept="image/jpeg, image/png"
-                    maxFiles={1}
-                    onDrop={(acceptedFiles) => grabUploadedWorkId(acceptedFiles)}
-                >
-                    {({ getRootProps, getInputProps }) => (
-                    <section>
-                        <div
-                            {...getRootProps()}
-                            className={
-                                userDetails.workId.filter((m) => m.isImage).length >
-                                0
-                                ? "do-upload uploaded"
-                                : "do-upload"
-                            }
-                        >
-                        <input {...getInputProps()} />
-                        {userDetails.workId.filter((m) => m.isImage).length >
-                        0 ? (
-                            <>
-                                <i className="far fa-check" />
-                                {`${
-                                    userDetails.workId.filter((m) => m.isImage)
-                                    .length
-                                }  Videos Uploaded`}
-                            </>
-                        ) : (
-                            <>
-                                <i className="far fa-video" />
-                                Upload Videos
-                            </>
-                        )}
-                        </div>
-                    </section>
-                    )}
-                </Dropzone>
-              </>
-            : null}
-            
-            <div className="schedule-title my-4">Next of Kin</div>
-            <div className="input-box">
-              <div className="input-label">First Name</div>
-              <input type="text" className="formfield" placeholder="John" name="firstName" value={nok.firstName} onChange={handleNok} required/>
+                <h3 className="section-title"> Application Form</h3>
+                
+                <div className="input-box">
+                    <label htmlFor="firstName" className="input-label">First Name</label>
+                    <Field name="firstName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="firstName" />
+                </div>
+                <div className="input-box">
+                    <label htmlFor="middleName" className="input-label">Middle Name</label>
+                    <Field name="middleName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="middleName" />
+                </div>
+                <div className="input-box">
+                    <label htmlFor="lastName" className="input-label">Last Name</label>
+                    <Field name="lastName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="lastName" />
+                </div>
+                <div className="input-box">
+                    <label htmlFor="mobileNumber" className="input-label">Mobile Number</label>
+                    <Field name="mobileNumber" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="mobileNumber" />
+                </div>
+                <div className="input-box">
+                    <label htmlFor="email" className="input-label">Email Address</label>
+                    <Field name="email" type="email" placeholder="Your email address" className="formfield" />
+                    <ErrorMessage name="email" />
+                </div>
+				<div className="input-box">
+                    <label htmlFor="address" className="input-label">Residential Address</label>
+                    <Field name="address" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="address" />
+                </div>
+				<div className="input-box">
+                    <label htmlFor="dateOfBirth" className="input-label">Date of Birth</label>
+                    <Field name="dateOfBirth" type="date" className="formfield" />
+                    <ErrorMessage name="dateOfBirth" />
+                </div>
+				<div className="input-box">
+                    <label htmlFor="nationality" className="input-label">Nationality</label>
+                    <Field name="nationality" type="date" className="formfield" />
+                    <ErrorMessage name="nationality" />
+                </div>
+				<div className="input-box">
+                    <label htmlFor="maritalStatus" className="input-label">Marital status</label>
+                    <div className="select-box">
+                        <Field name="maritalStatus" as="select" className="formfield">
+                            <option>Choose an option</option>
+                            <option>Single</option>
+							<option>Married</option>
+							<option>Divorced</option>
+                        </Field>
+                        <div className="arrows"></div>
+                    </div>
+                    <ErrorMessage name="maritalStatus" />
+                </div>
+				
+                <button className="secondary-btn" onClick={() => setPage(page + 1)}>
+                  Next
+                </button>
+              </div>
             </div>
-            <div className="input-box">
-              <div className="input-label">Surname</div>
-              <input type="text" className="formfield" placeholder="John" name="lastName" value={nok.lastName} onChange={handleNok} required/>
+          ) : page == 2 ? (
+            <div className="modal-content">
+            	<div className="content-section mt-4">
+                	<div className="input-box">
+				
+						<div className="input-box">
+							<label htmlFor="occupation" className="input-label">Occupation</label>
+							<Field name="occupation" type="date" className="formfield" />
+							<ErrorMessage name="occupation" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="employer" className="input-label">Employer</label>
+							<Field name="employer" type="text" className="formfield" />
+							<ErrorMessage name="employer" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="workAddress" className="input-label">Work Address</label>
+							<Field name="workAddress" type="text" className="formfield" />
+							<ErrorMessage name="workAddress" />
+						</div>
+						
+					
+						{ isRentForm ?
+						<>
+						
+							<div className="input-box">
+						<label htmlFor="annualIncome" className="input-label">What is your annual income?</label>
+							<Field name="annualIncome" type="text" placeholder="This can be your annual salary of an estimated income" className="formfield" />
+							<ErrorMessage name="annualIncome" />
+						    </div>
+							
+							
+							<Dropzone
+							accept="image/jpeg, image/png"
+							maxFiles={1}
+							onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+							>
+							{ ({ getRootProps, getInputProps }) => (
+								<section>
+									<div
+									{...getRootProps()}
+									className={
+										userDetails.passport.filter((m) => m.isImage).length >
+										0
+										? "do-upload uploaded"
+										: "do-upload"
+									}
+									>
+									<input {...getInputProps()} />
+									{userDetails.passport.filter((m) => m.isImage).length >
+									0 ? (
+										<>
+										<i className="far fa-check" />
+										{`${
+											userDetails.passport.filter((m) => m.isImage)
+											.length
+										}  Passport Uploaded`}
+										</>
+									) : (
+										<>
+										<i className="far fa-image" />
+										Upload Passport Photograph
+										</>
+									)}
+									</div>
+								</section>
+							)}
+							</Dropzone>
+						
+							<Dropzone
+								accept="image/jpeg, image/png"
+								maxFiles={1}
+								onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles, false)}
+							>
+								{({ getRootProps, getInputProps }) => (
+								<section>
+									<div
+										{...getRootProps()}
+										className={
+											userDetails.workId.filter((m) => m.isImage).length >
+											0
+											? "do-upload uploaded"
+											: "do-upload"
+										}
+									>
+									<input {...getInputProps()} />
+									{userDetails.workId.filter((m) => m.isImage).length >
+									0 ? (
+										<>
+											<i className="far fa-check" />
+											{`${
+												userDetails.workId.filter((m) => m.isImage)
+												.length
+											}  Copy of Work Id Uploaded`}
+										</>
+									) : (
+										<>
+											<i className="far fa-video" />
+											Upload a Copy of Work Id
+										</>
+									)}
+									</div>
+								</section>
+								)}
+							</Dropzone>
+						</> 
+						: null }
+					
+						<div className="schedule-title my-4">Next of Kin</div>
+						
+						<div className="input-box">
+							<label htmlFor="nokFirstName" className="input-label">First Name</label>
+							<Field name="nokFirstName" type="text" className="formfield" />
+							<ErrorMessage name="nokFirstName" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="nokMiddleName" className="input-label">Middle Name</label>
+							<Field name="nokMiddleName" type="text" className="formfield" />
+							<ErrorMessage name="nokMiddleName" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="nokLastName" className="input-label">Surname</label>
+							<Field name="nokLastName" type="text" className="formfield" />
+							<ErrorMessage name="nokLastName" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="nokMobileNumber" className="input-label">Mobile Number</label>
+							<Field name="nokMobileNumber" type="text" className="formfield" />
+							<ErrorMessage name="nokMobileNumber" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="nokEmail" className="input-label">Email</label>
+							<Field name="nokEmail" type="email" className="formfield" />
+							<ErrorMessage name="nokEmail" />
+						</div>
+						<div className="input-box">
+							<label htmlFor="nokRelationship" className="input-label">Relationship</label>
+							<Field name="nokRelationship" type="text" className="formfield" />
+							<ErrorMessage name="nokRelationship" />
+						</div>
+					
+						<button className="secondary-btn mt-5" type="submit">{ loading ? <Spinner /> : "Submit" }</button>
+					</div>
+            	</div>
             </div>
-            <div className="input-box">
-              <div className="input-label">Mobile Number</div>
-              <input type="text" className="formfield" placeholder="John" name="phoneNumber" value={nok.phoneNumber} onChange={handleNok} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Email</div>
-              <input type="text" className="formfield" placeholder="Ezra" name="email" value={nok.email} onChange={handleNok} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Middle Name</div>
-              <input type="text" className="formfield" placeholder="John" name="middleName" value={nok.middleName} onChange={handleNok} required/>
-            </div>
-            <div className="input-box">
-              <div className="input-label">Relationship</div>
-              <input type="text" className="formfield" placeholder="John" name="relationship" value={nok.relationship} onChange={handleNok} required/>
-            </div>
-            
-            <button className="secondary-btn mt-5" onClick={formSubmit}>{loading ? <Spinner /> : "Submit"}</button>
-            
-          </div>
-        </div>
-      ) : null }
+          ) : null }
+        </Form>
+      </Formik>
     </>
   );
 }

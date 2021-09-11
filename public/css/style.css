@@ -2566,3 +2566,19 @@ h6.relief-preview-title {
   color: #0042ff;
   text-decoration: underline;
 }
+
+/* Generic => Application  */
+.typeof-building {
+  font-family: "Baloo Bhai 2";
+  width: 380px;
+  cursor: pointer;
+}
+
+.typeof-building .tab {
+  border: 1px solid #DCE1E7;
+  border-radius: 6px;
+  padding: 5px 50px;
+}
+.typeof-building .tab.active {
+  border: 1px solid #0042ff;
+}

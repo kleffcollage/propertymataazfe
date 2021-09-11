@@ -13,12 +13,14 @@ import RentPropertyList from "./Pages/Rent/RentPropertyList";
 import Dashboard from "./Pages/Account/Dashboard";
 import Verify from "./Pages/Verify";
 import Clean from "./Pages/Clean";
+import Fix from "./Pages/Fix";
 import NotFound from "./Components/Generics/NotFound";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
 	{ path: "/verify", key: "ROOT", exact: true, component: () => <Verify /> },
 	{ path: "/clean", key: "ROOT", exact: true, component: () => <Clean /> },
+	{ path: "/fix", key: "ROOT", exact: true, component: () => <Fix /> },
 	{ path: "/signup", key: "ROOT", exact: true, component: () => <SignUp /> },
 	{
 		path: "/login",

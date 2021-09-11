@@ -52,7 +52,7 @@ function ReliefForm({ close }) {
     isActive: true,
     isForRent: true,
     isForSale: false,
-    mediafiles: [],
+    workId: [],
     passport: [],
     longitude: 0,
     latitude: 0,
@@ -82,7 +82,7 @@ function ReliefForm({ close }) {
     }
   };
 
-  const grabUploadedFile = (uploadedFiles) => {
+  const grabUploadedFile = (uploadedFiles, isPassport = true ) => {
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -95,41 +95,18 @@ function ReliefForm({ close }) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
+        // console.log(reader.result);
         //console.log(binaryStr);
-        console.log(binaryStr);
-        composeMedia(binaryStr, file);
+        // console.log("GrabUp", binaryStr);
+        composeMedia(binaryStr, file, isPassport);
       };
       console.log(file);
       reader.readAsDataURL(file);
     });
   };
   
-  const grabPassportFile = (uploadedFile) => {
-    uploadedFile.forEach((file) => {
-        const reader = new FileReader();
-    
-        reader.onabort = () => {
-          console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-        };
-        reader.onerror = () => {
-          console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-        };
-        reader.onload = () => {
-          // Do whatever you want with the file contents
-          const binaryStr = reader.result.split(",")[1];
-          console.log(reader.result);
-          //console.log(binaryStr);
-          console.log(binaryStr);
-          composeMedia(binaryStr, file);
-        };
-        console.log(file);
-        reader.readAsDataURL(file);
-        
-    })
-  };
 
-  const composeMedia = (bytes, file) => {
+  const composeMedia = (bytes, file, isPassport) => {
     var files = [];
 
     var newMedia = {
@@ -149,9 +126,17 @@ function ReliefForm({ close }) {
 
     files.push(newMedia);
     console.log('Compose file: ', files);
+    if(isPassport) {
+      setRentDetails({
+        ...rentDetails,
+        passport: [...rentDetails.passport, newMedia],
+      });
+      return
+    }
+    
     setRentDetails({
       ...rentDetails,
-      mediafiles: [...rentDetails.mediafiles, newMedia],
+      workId: [...rentDetails.workId, newMedia],
     });
   };
 
@@ -507,19 +492,19 @@ function ReliefForm({ close }) {
                         <div
                         {...getRootProps()}
                         className={
-                            rentDetails.mediafiles.filter((m) => m.isImage).length >
+                            rentDetails.passport.filter((m) => m.isImage).length >
                             0
                             ? "do-upload uploaded"
                             : "do-upload"
                         }
                         >
                         <input {...getInputProps()} />
-                        {rentDetails.mediafiles.filter((m) => m.isImage).length >
+                        {rentDetails.passport.filter((m) => m.isImage).length >
                         0 ? (
                             <>
                             <i className="far fa-check" />
                             {`${
-                                rentDetails.mediafiles.filter((m) => m.isImage)
+                                rentDetails.passport.filter((m) => m.isImage)
                                 .length
                             }  Pictures Uploaded`}
                             </>
@@ -537,26 +522,26 @@ function ReliefForm({ close }) {
             <Dropzone
                 accept="image/jpeg, image/png"
                 maxFiles={6}
-                onDrop={(acceptedFiles) => grabPassportFile(acceptedFiles)}
+                onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles, false)}
             >
                 { ({ getRootProps, getInputProps }) => (
                     <section>
                         <div
                             {...getRootProps()}
                             className={
-                                rentDetails.mediafiles.filter((m) => m.isImage).length >
+                                rentDetails.workId.filter((m) => m.isImage).length >
                                 0
                                 ? "do-upload uploaded"
                                 : "do-upload"
                             }
                         >
                         <input {...getInputProps()} />
-                        {rentDetails.mediafiles.filter((m) => m.isImage).length >
+                        {rentDetails.workId.filter((m) => m.isImage).length >
                         0 ? (
                             <>
                             <i className="far fa-check" />
                             {`${
-                                rentDetails.mediafiles.filter((m) => m.isImage)
+                                rentDetails.workId.filter((m) => m.isImage)
                                 .length
                             }  Pictures Uploaded`}
                             </>
