@@ -191,7 +191,7 @@ function ApplicationForm({ property, isRentForm, close }) {
         <div className="modal-content">
           <div className="content-section mt-4">
             <div className="schedule-title mb-4">
-              { property.name }
+              { property ? property.name : null }
             </div>
             <h3 className="section-title"> Application Form</h3>
             <div className="input-box">
@@ -367,15 +367,8 @@ function ApplicationForm({ property, isRentForm, close }) {
               <input type="text" className="formfield" placeholder="John" name="relationship" value={nok.relationship} onChange={handleNok} required/>
             </div>
             
-            {
-              isRentForm ? 
-              <button className="secondary-btn" onClick={() => setPage(page + 1)}>
-                Next
-              </button>
-              
-              :
-              <button className="secondary-btn mt-5" onClick={formSubmit}>{loading ? <Spinner /> : "Submit"}</button>
-            }
+            <button className="secondary-btn mt-5" onClick={formSubmit}>{loading ? <Spinner /> : "Submit"}</button>
+            
           </div>
         </div>
       ) : null }

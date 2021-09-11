@@ -77,7 +77,7 @@ function UserNav() {
 							<Link to="/getloan">Get Loan</Link>
 						</li>
 						<li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-							My Mattaz <i className="fas fa-chevron-down icon-small" />
+							<Link to="/my-mattaz"> My Mattaz </Link><i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
 									<li>My Rents</li>

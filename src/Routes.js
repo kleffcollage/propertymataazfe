@@ -10,9 +10,14 @@ import SignUp from "./Pages/Authentication/SignUp";
 import Home from "./Pages/LandingPage/Home";
 import Rent from "./Pages/Rent/Rent";
 import RentPropertyList from "./Pages/Rent/RentPropertyList";
+import Dashboard from "./Pages/Account/Dashboard";
+import Verify from "./Pages/Verify";
+import Clean from "./Pages/Clean";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
+	{ path: "/verify", key: "ROOT", exact: true, component: () => <Verify /> },
+	{ path: "/clean", key: "ROOT", exact: true, component: () => <Clean /> },
 	{ path: "/signup", key: "ROOT", exact: true, component: () => <SignUp /> },
 	{
 		path: "/login",
@@ -77,6 +82,7 @@ const ROUTES = [
 			{ path: "/rent/enquires/:propertyId", key: "RENT", exact: true, component: () => <Enquires isRent={true} /> },
 		],
 	},
+	{ path: "/my-mattaz", key: "ROOT", exact: true, component: () => <Dashboard /> },
 ];
 export default ROUTES;
 
