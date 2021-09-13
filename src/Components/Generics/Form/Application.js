@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Formik, Field, Form, ErrorMessage, setNestedObjectValues } from "formik";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Dropzone from "react-dropzone";
@@ -8,6 +8,7 @@ import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import { Link } from "@material-ui/core";
 import { BuildingType } from "../../../Utilities/Enums";
+import Alert from "../../../Utilities/Alert";
 
 
 function Application({ clean, fix, close }) {
@@ -25,7 +26,8 @@ function Application({ clean, fix, close }) {
     
     const user = useContext(MainContext)
     console.log(user);
-  
+
+    
     const selectType = (type) => {
         setType(type)
     }
@@ -142,12 +144,13 @@ function Application({ clean, fix, close }) {
   return (
     <>
       <ToastContainer />
+      <Alert />
       
         <div className="top-section">
             <div className="back">
             <i className="fas fa-chevron-left"></i>
             <span className="backs" 
-                onClick={ page == "2" ? () => { setPage(page - 1 ); } : close
+                onClick={ page > 1 ? () => { setPage(page - 1 ); } : close
                 }
             >
                 Back          

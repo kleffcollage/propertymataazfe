@@ -309,7 +309,7 @@ function ReliefForm({ close }) {
           <span
             className="backs"
             onClick={
-              step == "3" ? () => { setStep(step - 1 ); } : close
+              step > 1 ? () => { setStep(step - 1 ); } : close
             }
           >
             Back

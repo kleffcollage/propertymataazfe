@@ -24,6 +24,7 @@ function RentForm({ close }) {
   const [step, setStep] = useState(1);
   const [bedroomCounter, setBedroomCounter] = useState(0);
   const [bathroomCounter, setBathroomCounter] = useState(0);
+  const [applicationTypes, setApplicationTypes] = useState([]);
 
   console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -65,6 +66,7 @@ function RentForm({ close }) {
     latitude: 0,
 	bank: "",
 	accountno: "",
+	applicationTypeId: 0,
   });
 
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -201,8 +203,19 @@ function RentForm({ close }) {
         "http://locationsng-api.herokuapp.com/api/v1/states"
       );
       data = await data.json();
-      console.log(data);
+    //   console.log(data);
       setStates(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const getApplicationTypes = async () => {
+    try {
+      let { data } = await Fetch("Application/types");
+    //   data = await data.json();
+    //   console.log("Application types: ", data);
+      setApplicationTypes(data);
     } catch (error) {
       console.log(error);
     }
@@ -219,31 +232,40 @@ function RentForm({ close }) {
   };
 
 	const submitRentRequest = async (e) => {
-		console.log(rentDetails);
 		
 		e.preventDefault();
 		setLoading(true);
-		await getLongAndLat(rentDetails.address);
-		console.log(rentDetails);
+		// await getLongAndLat(rentDetails.address);
+		// rentDetails.applicationTypeId = applicationTypes.find( type => type.name == "RENT").id
+		// console.log({rentDetails});
 		
-		// var data = await Fetch("Property/create", "post", rentDetails);
-		// console.log('Rent property: ', data);
-		// if (!data.status) {
-		// 	setLoading(false);
-		// 	setErrormessage(data.message);
-		// 	return;
-		// }
-		// if (data.status != 400) {
-		// 	setLoading(false);
-		// 	//   setListingDetails({});
-		// 	close(true);
-		// 	history.push("/rent");
-		// 	toast.success(data.message);
-		// 	// history.push("/sell");
-		// 	await currentStep();
-		// }
-		// handleValidationErrors(data.errors);
-		setLoading(false);
+		try {
+			var data = await Fetch("Property/create", "post", rentDetails);
+			console.log('Rent property: ', data);
+			if (!data.status) {
+				setLoading(false);
+				setErrormessage(data.message);
+				return;
+			}
+			if (data.status != 400) {
+				setLoading(false);
+				//   setListingDetails({});
+				close(true);
+				history.push("/rent");
+				toast.success(data.message);
+				// history.push("/sell");
+				// await currentStep();
+				return
+			}
+			history.push("/rent");
+			toast.success("Property Successfully added.");
+			handleValidationErrors(data.errors);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false)
+			console.error(error)
+		}
+		
 	};
 
   const grabUploadedVideoFile = (uploadedFiles) => {
@@ -328,6 +350,7 @@ function RentForm({ close }) {
   useEffect(() => {
     const fetchData = async () => {
       await getPropertyTypes();
+	  await getApplicationTypes();
       // await getStates();
     };
     fetchData();
@@ -416,20 +439,21 @@ function RentForm({ close }) {
                     name="state"
                     className="formfield"
 					value={rentDetails.state}
-                    onChange={async (e) => {
-                    await getLgas(e.target.value);
-                    await getCities(e.target.value);
-                    setRentDetails({
-                        ...rentDetails,
-                        state: e.target.value,
-                    });
+                    onChange={(e) => {
+						// console.log(e.target.value);
+						// await getLgas(e.target.value);
+						// await getCities(e.target.value);
+						setRentDetails({
+							...rentDetails,
+							state: e.target.value,
+						});
                     }}
                 >
                     <option value="" selected disabled>
                     What state in Nigeria do you want the property
                     </option>
                     {NaijaStates.states().map((state, i) => {
-                    return <option value={state}>{state}</option>;
+                    return <option key={state.id} value={state}>{state}</option>;
                     })}
                 </select>
                 <div className="arrows" />
@@ -448,9 +472,9 @@ function RentForm({ close }) {
                     <option value="" selected disabled>
                         Choose a locality
                     </option>
-                    {NaijaStates.lgas(rentDetails.state).lgas.map((lga, i) => {
+                    { NaijaStates.lgas(rentDetails.state).lgas.map((lga, i) => {
                         return <option key={i} value={lga}>{lga}</option>;
-                    })}
+                    }) }
                     </select>
                     <div className="arrows" />
                 </div>	
@@ -460,20 +484,14 @@ function RentForm({ close }) {
             <div className="input-box">
                 <div className="input-label">Area (Optional)</div>
                 <div className="select-box">
-                    <select
-                        name="area"
-                        className="formfield"
-						value={rentDetails.area}
-                        onChange={handleOnChange}
-                    >
-                        <option value="" selected disabled>
-                        Choose an area
-                        </option>
-                        {cities.map((city, i) => {
-                        return <option value={city}>{city}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
+				<input
+					type="text"
+					className="formfield"
+					placeholder="House No, Street, Estate"
+					name="area"
+					value={rentDetails.area}
+					onChange={handleOnChange}
+                />
                 </div>
             </div>
             <div className="input-box">
@@ -485,6 +503,7 @@ function RentForm({ close }) {
                 name="address"
 				value={rentDetails.address}
                 onChange={handleOnChange}
+				required
                 />
             </div>
             <div class="input-box">
@@ -542,8 +561,8 @@ function RentForm({ close }) {
                             </>
                         ) : (
                             <>
-                            <i className="far fa-image" />
-                            'Upload pictures'
+								<i className="far fa-image" />
+								Upload pictures
                             </>
                         )}
                         </div>
@@ -580,7 +599,7 @@ function RentForm({ close }) {
                     ) : (
                         <>
                             <i className="far fa-video" />
-                            Upload Videos
+                            Upload Video
                         </>
                     )}
                     </div>
@@ -630,8 +649,8 @@ function RentForm({ close }) {
                     onChange={(e) => {
                         console.log(e.target.checked);
                         setRentDetails({
-                        ...rentDetails,
-                        sellMySelf: e.target.checked,
+							...rentDetails,
+							sellMySelf: e.target.checked,
                         });
                     }}
                 />
@@ -668,9 +687,7 @@ function RentForm({ close }) {
 							<option value="" selected disabled>
 								Individual, family, company, choose
 							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
-							})}
+							<option value=""></option>
 						</select>
 						<div className="arrows" />
 					</div>
@@ -791,7 +808,7 @@ function RentForm({ close }) {
 					<div className="input-label">Propery Type</div>
 					<div className="select-box">
 						<select
-							name="propertyType"
+							name="propertyTypeId"
 							value={rentDetails.propertyTypeId}
 							onChange={handleOnChange}
 							className="formfield"
@@ -812,8 +829,8 @@ function RentForm({ close }) {
 						type="text"
 						className="formfield"
 						placeholder="Enter the address of the property you want to list"
-						name="propertyAddress"
-						value={rentDetails.propertyAddress}
+						name="address"
+						value={rentDetails.address}
 						onChange={handleOnChange}
 					/>
 				</div>
@@ -829,9 +846,8 @@ function RentForm({ close }) {
 							<option value="" selected disabled>
 								Owner, Agent, Lawyer etc
 							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
-							})}
+							<option value="owner">Owner</option>
+							<option value="agent">Agent</option>
 						</select>
 						<div className="arrows" />
 					</div>

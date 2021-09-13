@@ -78,11 +78,14 @@ function Buy() {
       setLoading(true);
       console.log(data.data.value);
       setIsProperty(data.data.value);
-      setNextUrl(data.data.next && data.data.next.href.split("api/")[1]);
-      console.log(data.data.next && data.data.next.href.split("api/")[1]);
-      setPrevUrl(data.data.next && data.data.next.href.split("api/")[1]);
-      setFirstUrl(data.data.next && data.data.next.href.split("api/")[1]);
-      setLastUrl(data.data.next && data.data.next.href.split("api/")[1]);
+      
+      setNextUrl(data.data.next && data.data.next.href.split("/list")[1]);
+      console.log(data.data.next && data.data.next.href.split("/list")[1]);
+      
+      setPrevUrl(data.data.next && data.data.next.href.split("/list")[1]);
+      setFirstUrl(data.data.next && data.data.next.href.split("/list")[1]);
+      
+      setLastUrl(data.data.next && data.data.next.href.split("/list")[1]);
       setLoading(false);
       return; 
     }
