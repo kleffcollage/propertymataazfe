@@ -7,8 +7,8 @@ function UserNav() {
 	const location = useLocation();
 	const history = useHistory();
 	const { data } = useContext(MainContext);
-	const getNavLinkClass = (path) =>
-		location.pathname.startsWith(path) ? "active" : "";
+	
+	const getNavLinkClass = (path) => location.pathname.startsWith(path) ? "active" : "";
 
 	const [nav, setNav] = useState(false);
 	const showNav = () => {
@@ -29,8 +29,8 @@ function UserNav() {
 								<img src="/asset/logo.png" alt="Logo" />
 							</div>
 						</Link>
-						<div class={`hamburger ${!nav ? "" : "opened"}`} onClick={showNav}>
-							<div class="burger"></div>
+						<div className={`hamburger ${!nav ? "" : "opened"}`} onClick={showNav}>
+							<div className="burger"></div>
 						</div>
 					</div>
 				</div>

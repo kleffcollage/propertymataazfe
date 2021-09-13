@@ -19,7 +19,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 			}
 			setDeleting(false);
 			toast.error("There was an error deleting this property. Please try again after sometime");
-		}catch(error){
+		} catch(error){
 			setDeleting(false);
 			toast.error("There was an error deleting this property. Please try again after sometime");
 			console.log(error);

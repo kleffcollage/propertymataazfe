@@ -140,7 +140,7 @@ function Buy() {
                 <input
                   type="search"
                   className="search-rec"
-                  placeholder="search"
+                  placeholder="Search"
                 />
                 <div className="search-box">
                   {/* <img src="asset/searchicon.svg" alt /> */}

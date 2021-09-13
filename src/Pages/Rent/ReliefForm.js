@@ -36,18 +36,33 @@ function ReliefForm({ close }) {
     Area: [],
     Price: [],
   });
-  const [rentDetails, setRentDetails] = useState({
-    name: "",
-    title: "",
-    address: "",
-    state: "",
-    lga: "",
-    area: "",
-    description: "",
-    sellMySelf: false,
-    price: 0,
-    numberOfBedrooms: 0,
-    numberOfBathrooms: 0,
+  const [reliefData, setReliefData] = useState({
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    phoneNumber: "",
+    email: "",
+    dateOfBirth: "",
+    propertyAddress: "",
+    nationality: "",
+    martialStatus: "",
+    occupation: "",
+    employer: "",
+    workAddress: "",
+    annualIncome: "",
+    
+    nk_firstName: "",
+    nk_lastName: "",
+    nk_email: "",
+    nk_phoneNumber: "",
+    nk_address: "",
+    nk_relationship: "",
+    
+    reliefAmount: "",
+    paybackDate: "",
+    paybackMethod: "",
+    
+    
     isDraft: false,
     isActive: true,
     isForRent: true,
@@ -65,8 +80,8 @@ function ReliefForm({ close }) {
   const handleOnChange = (e) => {
     // showAlert("success", "Something toasted", "Everything works ");
     const { name, value } = e.target;
-    setRentDetails({ ...rentDetails, [name]: value });
-    console.log(rentDetails);
+    setReliefData({ ...reliefData, [name]: value });
+    console.log(reliefData);
   };
 
 
@@ -127,16 +142,16 @@ function ReliefForm({ close }) {
     files.push(newMedia);
     console.log('Compose file: ', files);
     if(isPassport) {
-      setRentDetails({
-        ...rentDetails,
-        passport: [...rentDetails.passport, newMedia],
+      setReliefData({
+        ...reliefData,
+        passport: [...reliefData.passport, newMedia],
       });
       return
     }
     
-    setRentDetails({
-      ...rentDetails,
-      workId: [...rentDetails.workId, newMedia],
+    setReliefData({
+      ...reliefData,
+      workId: [...reliefData.workId, newMedia],
     });
   };
 
@@ -159,8 +174,8 @@ function ReliefForm({ close }) {
 
   const getLongAndLat = async (address) => {
     const { results } = await Geocode.fromAddress(address);
-    setRentDetails({
-      ...rentDetails,
+    setReliefData({
+      ...reliefData,
       latitude: results[0].geometry.location.lat,
       longitude: results[0].geometry.location.lng,
     });
@@ -168,14 +183,14 @@ function ReliefForm({ close }) {
   };
 
   const submitRentRequest = async (e) => {
-    console.log(rentDetails);
+    console.log(reliefData);
     
     e.preventDefault();
     setLoading(true);
-    await getLongAndLat(rentDetails.address);
-    console.log(rentDetails);
+    await getLongAndLat(reliefData.address);
+    console.log(reliefData);
     
-    var data = await Fetch("Property/create", "post", rentDetails);
+    var data = await Fetch("Property/create", "post", reliefData);
     console.log('Rent property: ', data);
     if (!data.status) {
       setLoading(false);
@@ -220,10 +235,10 @@ function ReliefForm({ close }) {
   };
 
   const submitRentToDraft = async (e) => {
-    console.log(rentDetails);
+    console.log(reliefData);
     e.preventDefault();
     setDrafting(true);
-    var data = await Fetch("Property/create", "post", rentDetails);
+    var data = await Fetch("Property/create", "post", reliefData);
     console.log(data);
     if (!data.status) {
       setDrafting(false);
@@ -232,7 +247,7 @@ function ReliefForm({ close }) {
     }
     if (data.status != 400) {
       setDrafting(false);
-      setRentDetails({});
+      setReliefData({});
       history.push("/rents");
     }
     handleValidationErrors(data.errors);
@@ -320,7 +335,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
-                    name="name"
+                    name="firstName"
+                    value={reliefData.firstName}
                     onChange={handleOnChange}
                 />
             </div>
@@ -331,7 +347,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
-                    name="name"
+                    name="middleName"
+                    value={reliefData.middleName}
                     onChange={handleOnChange}
                 />
             </div>
@@ -353,7 +370,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Phone number"
-                    name="name"
+                    name="phoneNumber"
+                    value={reliefData.phoneNumber}
                     onChange={handleOnChange}
                 />
             </div>
@@ -364,7 +382,8 @@ function ReliefForm({ close }) {
                     type="email"
                     className="formfield"
                     placeholder="Email Address"
-                    name="name"
+                    name="email"
+                    value={reliefData.email}
                     onChange={handleOnChange}
                 />
             </div>
@@ -375,7 +394,8 @@ function ReliefForm({ close }) {
                 type="text"
                 className="formfield"
                 placeholder="Give your listing a name that makes it easy to find"
-                name="title"
+                name="propertyAddress"
+                value={reliefData.propertyAddress}
                 onChange={handleOnChange}
                 />
             </div>
@@ -386,7 +406,8 @@ function ReliefForm({ close }) {
                 type="text"
                 className="formfield"
                 placeholder="Give your listing a name that makes it easy to find"
-                name="title"
+                name="dateOfBirth"
+                value={reliefData.dateOfBirth}
                 onChange={handleOnChange}
                 />
             </div>
@@ -396,6 +417,7 @@ function ReliefForm({ close }) {
                 <div className="select-box">
                 <select
                     name="nationality"
+                    value={reliefData.nationality}
                     className="formfield"
                     onChange={ (e) => { }}
                 >
@@ -411,7 +433,8 @@ function ReliefForm({ close }) {
                 <div className="input-label">Marital Status</div>
                 <div className="select-box">
                 <select
-                    name="nationality"
+                    name="martialStatus"
+                    value={reliefData.martialStatus}
                     className="formfield"
                     onChange={ (e) => { }}
                 >
@@ -439,7 +462,8 @@ function ReliefForm({ close }) {
                 type="text"
                 className="formfield"
                 placeholder="House No, Street, Estate"
-                name="address"
+                name="occupation"
+                value={reliefData.occupation}
                 onChange={handleOnChange}
                 />
             </div>
@@ -450,7 +474,8 @@ function ReliefForm({ close }) {
                 type="text"
                 className="formfield"
                 placeholder=""
-                name="emplayer"
+                name="employer"
+                value={reliefData.employer}
                 onChange={handleOnChange}
                 />
             </div>
@@ -462,6 +487,7 @@ function ReliefForm({ close }) {
                 className="formfield"
                 placeholder="House No, Street, Estate"
                 name="workAddress"
+                value={reliefData.workAddress}
                 onChange={handleOnChange}
                 />
             </div>
@@ -470,7 +496,8 @@ function ReliefForm({ close }) {
                 <div className="input-label">what is you Annual Income?</div>
                 <div className="select-box">
                     <select
-                        name="tenantAnnualIncome"
+                        name="annualIncome"
+                        value={reliefData.annualIncome}
                         onChange={handleOnChange}
                         className="formfield"
                     >
@@ -492,19 +519,19 @@ function ReliefForm({ close }) {
                         <div
                         {...getRootProps()}
                         className={
-                            rentDetails.passport.filter((m) => m.isImage).length >
+                            reliefData.passport.filter((m) => m.isImage).length >
                             0
                             ? "do-upload uploaded"
                             : "do-upload"
                         }
                         >
                         <input {...getInputProps()} />
-                        {rentDetails.passport.filter((m) => m.isImage).length >
+                        {reliefData.passport.filter((m) => m.isImage).length >
                         0 ? (
                             <>
                             <i className="far fa-check" />
                             {`${
-                                rentDetails.passport.filter((m) => m.isImage)
+                                reliefData.passport.filter((m) => m.isImage)
                                 .length
                             }  Pictures Uploaded`}
                             </>
@@ -529,19 +556,19 @@ function ReliefForm({ close }) {
                         <div
                             {...getRootProps()}
                             className={
-                                rentDetails.workId.filter((m) => m.isImage).length >
+                                reliefData.workId.filter((m) => m.isImage).length >
                                 0
                                 ? "do-upload uploaded"
                                 : "do-upload"
                             }
                         >
                         <input {...getInputProps()} />
-                        {rentDetails.workId.filter((m) => m.isImage).length >
+                        {reliefData.workId.filter((m) => m.isImage).length >
                         0 ? (
                             <>
                             <i className="far fa-check" />
                             {`${
-                                rentDetails.workId.filter((m) => m.isImage)
+                                reliefData.workId.filter((m) => m.isImage)
                                 .length
                             }  Pictures Uploaded`}
                             </>
@@ -565,6 +592,7 @@ function ReliefForm({ close }) {
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
                     name="nk_firstName"
+                    value={reliefData.nk_firstName}
                     onChange={handleOnChange}
                 />
             </div>
@@ -574,7 +602,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
-                    name="mk_Surname"
+                    name="nk_lastName"
+                    value={reliefData.nk_lastName}
                     onChange={handleOnChange}
                 />
             </div>
@@ -585,7 +614,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
-                    name="mk_Surname"
+                    name="nk_phoneNumber"
+                    value={reliefData.nk_phoneNumber}
                     onChange={handleOnChange}
                 />
             </div>
@@ -596,7 +626,8 @@ function ReliefForm({ close }) {
                     type="email"
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
-                    name="mk_Surname"
+                    name="nk_email"
+                    value={reliefData.nk_email}
                     onChange={handleOnChange}
                 />
             </div>
@@ -606,7 +637,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
-                    name="mk_Surname"
+                    name="nk_address"
+                    value={reliefData.nk_address}
                     onChange={handleOnChange}
                 />
             </div>
@@ -616,7 +648,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Enter your placeholder text or enter space bar"
-                    name="mk_Surname"
+                    name="nk_relationship"
+                    value={reliefData.nk_relationship}
                     onChange={handleOnChange}
                 />
             </div>
@@ -635,7 +668,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
-                    name="accountno"
+                    name="reliefAmount"
+                    value={reliefData.reliefAmount}
                     onChange={handleOnChange}
                 />
             </div>
@@ -645,7 +679,8 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
-                    name="accountno"
+                    name="paybackDate"
+                    value={reliefData.paybackDate}
                     onChange={handleOnChange}
                 />
             </div>
@@ -653,7 +688,8 @@ function ReliefForm({ close }) {
                 <div className="input-label">How do you want to pay back?</div>
                 <div className="select-box">
                     <select
-                        name="propertyType"
+                        name="paybackMethod"
+                        value={reliefData.paybackMethod}
                         onChange={handleOnChange}
                         className="formfield"
                     >

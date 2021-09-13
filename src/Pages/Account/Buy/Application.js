@@ -7,7 +7,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 
-fff
+
 function ApplicationForm({ property, isRentForm, close }) {
 
   const [page, setPage] = useState(1);
@@ -16,137 +16,126 @@ function ApplicationForm({ property, isRentForm, close }) {
   const user = useContext(MainContext)
   console.log(user);
 
-  const [userDetails, setUserDetails] = useState({
-    firstName: user.data.user.firstName,
-    middleName: "",
-    lastName: user.data.user.lastName,
-    email: user.data.user.email,
-    mobileNumber: user.data.user.phoneNumber,
-    address: "",
-    nationality: "",
-    dateOfBirth: "",
-    maritalStatus: "",
-    employer: "",
-    occupation: "",
-    workAddress: "",
-    annualIncome: "",
-    passport: [],
-    workId: [],
-  });
   
-  const [nok, setNok] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    relationship: ""
-  });
   
-	const handleOnChange = (e) => {
-		const { name, value } = e.target;
-		setUserDetails({ ...userDetails, [name]: value });
-		console.log(userDetails);
-  };
-  
-  const handleNok = (e) => {
-    const { name, value } = e.target;
-    setNok({ ...nok, [name]: value });
-    console.log(userDetails);
-  };
+	const [userDetails, setUserDetails] = useState({
+		firstName: user.data.user.firstName,
+		middleName: "",
+		lastName: user.data.user.lastName,
+		email: user.data.user.email,
+		mobileNumber: user.data.user.phoneNumber,
+		address: "",
+		nationality: "",
+		dateOfBirth: "",
+		nationality: "",
+		maritalStatus: "",
+		occupation: "",
+		employer: "",
+		workAddress: "",
+		annualIncome: "",
+		
+		nokFirstName: "",
+		nokLastName: "",
+		nokEmail: "",
+		nokMobileNumber: "",
+		nokRelationship: "",
+		passport: [],
+		workId: [],
+		isRent: isRentForm,
+	});
     
-  const formSubmit = async (e) => {
-    setLoading(true)
-    e.preventDefault()
-    const data = {
-        register: userDetails,
-        nextOfKin: nok
-    }
-    console.log(data);
-    
-    try {
-      let res = await Fetch("Application/new", "post", data);
-      console.log(res);
-      if (!data.status) {
-        setLoading(false);
-        setErrorMessage(data.message);
-        console.log(errorMessage);
-        return;
-      }
-      if (data.status != "400") {
-        setLoading(false);
-        console.log(data);
-      } else {
-        toast.error(errorMessage)
-        console.log(errorMessage);
-      }
-    } catch (error) {
-      setLoading(false)
-      toast.error(error.message)
-    }
-  }
+	const formSubmit = async (e) => {
+		setLoading(true)
+		e.preventDefault()
+		const data = {
+			register: userDetails,
+			nextOfKin: userDetails,
+		}
+		console.log(data);
+		
+		try {
+			let res = await Fetch("Application/new", "post", data);
+			console.log(res);
+			if (!data.status) {
+				setLoading(false);
+				setErrorMessage(data.message);
+				console.log(errorMessage);
+				return;
+			}
+			if (data.status != "400") {
+				setLoading(false);
+				console.log(data);
+			} else {
+				toast.error(errorMessage)
+				console.log(errorMessage);
+			}
+		} catch (error) {
+			setLoading(false)
+			toast.error(error.message)
+		}
+	}
   
-  const grabUploadedFile = (uploadedFiles, isPassport = true ) => {
-    uploadedFiles.forEach((file) => {
-      const reader = new FileReader();
+	const grabUploadedFile = (uploadedFiles, isPassport = true ) => {
+		uploadedFiles.forEach((file) => {
+		const reader = new FileReader();
 
-      reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result.split(",")[1];
-        // console.log(reader.result);
-        //console.log(binaryStr);
-        // console.log("GrabUp", binaryStr);
-        composeMedia(binaryStr, file, isPassport);
-      };
-      console.log(file);
-      reader.readAsDataURL(file);
-    });
-  };
+		reader.onabort = () => {
+			console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+		};
+		reader.onerror = () => {
+			console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+		};
+		reader.onload = () => {
+			// Do whatever you want with the file contents
+			const binaryStr = reader.result.split(",")[1];
+			// console.log(reader.result);
+			//console.log(binaryStr);
+			// console.log("GrabUp", binaryStr);
+			composeMedia(binaryStr, file, isPassport);
+		};
+		console.log(file);
+		reader.readAsDataURL(file);
+		});
+	};
   
-  const composeMedia = (bytes, file, isPassport) => {
-    var files = [];
+	const composeMedia = (bytes, file, isPassport) => {
+		var files = [];
 
-    var newMedia = {
-      name: file.name,
-      extention: getFileExtention(file.name),
-      base64String: bytes,
-      propertyId: 0,
-      isImage:
-        getFileExtention(file.name) == "jpeg" ||
-        getFileExtention(file.name) == "jpg" ||
-        getFileExtention(file.name) == "png"
-          ? true
-          : false,
-      isVideo: getFileExtention(file.name) == "mp4" ? true : false,
-      isDocument: getFileExtention(file.name) == "pdf" ? true : false,
-    };
+		var newMedia = {
+		name: file.name,
+		extention: getFileExtention(file.name),
+		base64String: bytes,
+		propertyId: 0,
+		isImage:
+			getFileExtention(file.name) == "jpeg" ||
+			getFileExtention(file.name) == "jpg" ||
+			getFileExtention(file.name) == "png"
+			? true
+			: false,
+		isVideo: getFileExtention(file.name) == "mp4" ? true : false,
+		isDocument: getFileExtention(file.name) == "pdf" ? true : false,
+		};
 
-    files.push(newMedia);
-    console.log(files);
-    
-    if(isPassport) {
-      setUserDetails({
-        ...userDetails,
-        passport: [...userDetails.passport, newMedia],
-      });
-      return
-    }
-    
-    setUserDetails({
-      ...userDetails,
-      workId: [...userDetails.workId, newMedia],
-    });
-  };
+		files.push(newMedia);
+		console.log(files);
+		
+		if(isPassport) {
+		setUserDetails({
+			...userDetails,
+			passport: [...userDetails.passport, newMedia],
+		});
+		return
+		}
+		
+		setUserDetails({
+		...userDetails,
+		workId: [...userDetails.workId, newMedia],
+		});
+	};
 
-  const getFileExtention = (fileName) => {
-    return fileName.split(".")[1];
-  };
+	const getFileExtention = (fileName) => {
+		return fileName.split(".")[1];
+	};
 
     // useEffect(() => {
     //   window.scrollTo({
@@ -176,23 +165,11 @@ function ApplicationForm({ property, isRentForm, close }) {
       </div>
       
       <Formik
-        initialValues={{ 
-            firstName: user.data.user.firstName,
-            middleName: "",
-            lastName: user.data.user.lastName,
-            email: user.data.user.email,
-            mobileNumber: user.data.user.phoneNumber,
-            address: "",
-            state: "",
-            
-            typeofBuilding: "",
-            stateofBuilding: "",
-            timeforCleaning: "",
-        }}
+        initialValues={userDetails}
         onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
+				alert(JSON.stringify(values, null, 2));
+				setSubmitting(false);
             }, 400);
         }}
       >
@@ -291,9 +268,9 @@ function ApplicationForm({ property, isRentForm, close }) {
 						<>
 						
 							<div className="input-box">
-						<label htmlFor="annualIncome" className="input-label">What is your annual income?</label>
-							<Field name="annualIncome" type="text" placeholder="This can be your annual salary of an estimated income" className="formfield" />
-							<ErrorMessage name="annualIncome" />
+								<label htmlFor="annualIncome" className="input-label">What is your annual income?</label>
+								<Field name="annualIncome" type="text" placeholder="This can be your annual salary of an estimated income" className="formfield" />
+								<ErrorMessage name="annualIncome" />
 						    </div>
 							
 							

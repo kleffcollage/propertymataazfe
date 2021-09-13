@@ -46,6 +46,7 @@ function Enquires({ isRent }) {
         <ApplicationForm property={propertyDetails} isRentForm={isRent} close={() => setSeeMore(false)} /> 
         
 			</Modal>
+      
     <div className="row">
       <div className="col-lg-4">
         <div className="steps passed">

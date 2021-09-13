@@ -39,6 +39,8 @@ function RentForm({ close }) {
   });
   const [rentDetails, setRentDetails] = useState({
     name: "",
+	email: "",
+	mobileNumber: "",
     title: "",
     address: "",
     state: "",
@@ -47,6 +49,10 @@ function RentForm({ close }) {
     description: "",
     sellMySelf: false,
     price: 0,
+	tenantType: "",
+	tenantAnnualIncome: "",
+	rentCollection: "",
+	interest: "",
     numberOfBedrooms: 0,
     numberOfBathrooms: 0,
     isDraft: false,
@@ -57,6 +63,8 @@ function RentForm({ close }) {
     mediafiles: [],
     longitude: 0,
     latitude: 0,
+	bank: "",
+	accountno: "",
   });
 
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -101,27 +109,27 @@ function RentForm({ close }) {
     console.log(rentDetails);
   };
 
-  const bathDecrement = (e) => {
-    e.preventDefault();
-    setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
-    setRentDetails({
-      ...rentDetails,
-      numberOfBathrooms: Math.max(bathroomCounter - 1, 1),
-    });
-    console.log(rentDetails);
-  };
+	const bathDecrement = (e) => {
+		e.preventDefault();
+		setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
+		setRentDetails({
+			...rentDetails,
+			numberOfBathrooms: Math.max(bathroomCounter - 1, 1),
+		});
+		console.log(rentDetails);
+	};
 
-  const currentStep = async () => {
-    if (step < 3 ) {
-      setStep( step + 1);
-      return;
-    }
-    if (step == 3) {
-      close(true);
-      history.push("/rent");
-      return;
-    }
-  };
+//   const currentStep = async () => {
+//     if (step < 3 ) {
+//       setStep( step + 1);
+//       return;
+//     }
+//     if (step == 3) {
+// 		close(true);
+// 		history.push("/rent");
+// 		return;
+//     }
+//   };
 
   const grabUploadedFile = (uploadedFiles) => {
     uploadedFiles.forEach((file) => {
@@ -207,36 +215,36 @@ function RentForm({ close }) {
       latitude: results[0].geometry.location.lat,
       longitude: results[0].geometry.location.lng,
     });
-    console.log(results);
+    console.log("LongAndLat: ", results);
   };
 
-  const submitRentRequest = async (e) => {
-    console.log(rentDetails);
-    
-    e.preventDefault();
-    setLoading(true);
-    await getLongAndLat(rentDetails.address);
-    console.log(rentDetails);
-    
-    var data = await Fetch("Property/create", "post", rentDetails);
-    console.log('Rent property: ', data);
-    if (!data.status) {
-      setLoading(false);
-      setErrormessage(data.message);
-      return;
-    }
-    if (data.status != 400) {
-      setLoading(false);
-    //   setListingDetails({});
-	close(true);
-      history.push("/rent");
-      toast.success(data.message);
-      // history.push("/sell");
-      await currentStep();
-    }
-    handleValidationErrors(data.errors);
-    setLoading(false);
-  };
+	const submitRentRequest = async (e) => {
+		console.log(rentDetails);
+		
+		e.preventDefault();
+		setLoading(true);
+		await getLongAndLat(rentDetails.address);
+		console.log(rentDetails);
+		
+		// var data = await Fetch("Property/create", "post", rentDetails);
+		// console.log('Rent property: ', data);
+		// if (!data.status) {
+		// 	setLoading(false);
+		// 	setErrormessage(data.message);
+		// 	return;
+		// }
+		// if (data.status != 400) {
+		// 	setLoading(false);
+		// 	//   setListingDetails({});
+		// 	close(true);
+		// 	history.push("/rent");
+		// 	toast.success(data.message);
+		// 	// history.push("/sell");
+		// 	await currentStep();
+		// }
+		// handleValidationErrors(data.errors);
+		setLoading(false);
+	};
 
   const grabUploadedVideoFile = (uploadedFiles) => {
     console.log(uploadedFiles);
@@ -269,17 +277,18 @@ function RentForm({ close }) {
     var data = await Fetch("Property/create", "post", rentDetails);
     console.log(data);
     if (!data.status) {
-      setDrafting(false);
-      setErrormessage(data.message);
-      return;
+		setDrafting(false);
+		setErrormessage(data.message);
+		return;
     }
     if (data.status != 400) {
-      setDrafting(false);
-      setRentDetails({});
-      history.push("/rents");
+		setDrafting(false);
+		setRentDetails({});
+		history.push("/rents");
+		return
     }
     handleValidationErrors(data.errors);
-    setLoading(false);
+    setDrafting(false);
   };
 
   const getLgas = async (state) => {
@@ -330,24 +339,21 @@ function RentForm({ close }) {
   };
 
   return (
-    <div>
-        
-      <Alert />
-      
+    <div>      
       <div className="top-section">
         <div className="back">
-          <i className="fas fa-chevron-left" />
-          <span
-            className="backs"
-            onClick={
-              step == "3" ? () => { setStep(step - 1 ); } : close
-            }
-          >
-            Back
-          </span>
+			<i className="fas fa-chevron-left mr-1" />
+			<span
+				className="backs"
+				onClick= {
+					(step > 1 ) ? () => { setStep( step - 1 ); } : close
+				}
+			>
+				Back
+			</span>
         </div>
         <div className="logo">
-          <img  src="/asset/logo.png" alt="Logo" />
+          	<img  src="/asset/logo.png" alt="Logo" />
         </div>
       </div>
         { step == 1 ? (
@@ -367,6 +373,7 @@ function RentForm({ close }) {
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
                     name="name"
+					value={rentDetails.name}
                     onChange={handleOnChange}
                 />
             </div>
@@ -374,30 +381,32 @@ function RentForm({ close }) {
             <div className="input-box">
                 <div className="input-label">Type</div>
                 <div className="select-box">
-                <select
-                    name="propertyTypeId"
-                    onChange={handleOnChange}
-                    className="formfield"
-                >
-                    <option value="" selected disabled>
-                    Choose a property type
-                    </option>
-                    {propertyTypes.map((type, i) => {
-                    return <option value={type.id}>{type.name}</option>;
-                    })}
-                </select>
-                <div className="arrows" />
+					<select
+						name="propertyTypeId"
+						value={rentDetails.propertyTypeId}
+						onChange={handleOnChange}
+						className="formfield"
+					>
+						<option value="" selected disabled>
+							Choose a property type
+						</option>
+						{ propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+						})}
+					</select>
+					<div className="arrows" />
                 </div>
             </div>
 
             <div className="input-box">
                 <div className="input-label">Property Title</div>
                 <input
-                type="text"
-                className="formfield"
-                placeholder="Give your listing a name that makes it easy to find"
-                name="title"
-                onChange={handleOnChange}
+					type="text"
+					className="formfield"
+					placeholder="Give your listing a name that makes it easy to find"
+					name="title"
+					value={rentDetails.title}
+					onChange={handleOnChange}
                 />
             </div>
             <div className="input-box">
@@ -406,6 +415,7 @@ function RentForm({ close }) {
                 <select
                     name="state"
                     className="formfield"
+					value={rentDetails.state}
                     onChange={async (e) => {
                     await getLgas(e.target.value);
                     await getCities(e.target.value);
@@ -431,6 +441,7 @@ function RentForm({ close }) {
                 <div className="select-box">
                     <select
                     name="lga"
+					value={rentDetails.lga}
                     onChange={handleOnChange}
                     className="formfield"
                     >
@@ -452,6 +463,7 @@ function RentForm({ close }) {
                     <select
                         name="area"
                         className="formfield"
+						value={rentDetails.area}
                         onChange={handleOnChange}
                     >
                         <option value="" selected disabled>
@@ -471,6 +483,7 @@ function RentForm({ close }) {
                 className="formfield"
                 placeholder="House No, Street, Estate"
                 name="address"
+				value={rentDetails.address}
                 onChange={handleOnChange}
                 />
             </div>
@@ -482,6 +495,7 @@ function RentForm({ close }) {
                     cols="10"
                     placeholder="Description"
                     name="description"
+					value={rentDetails.description}
                     onChange={handleOnChange}
                 >
                 {/* Description */}
@@ -494,7 +508,8 @@ function RentForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="₦0.00"
-                    name="rent"
+                    name="price"
+					value={rentDetails.price}
                     onChange={handleOnChange}
                 />
             </div>
@@ -632,221 +647,227 @@ function RentForm({ close }) {
                 <i className="fas fa-info-circle ml-2" />
             </div>
          
-          <button className="secondary-btn" onClick={currentStep}>
-            Next
-          </button>
+			<button type="button" className="secondary-btn" onClick={() => setStep(step + 1)}>
+				Next
+			</button>
         </form>
         
         ) : step == 2 ? (
             
-        <form className="content-section mt-4">
-            <h6 className="field-title mb-4 mt-2">What kind of tenants do you want?</h6>
-            <div className="input-box">
-                <div className="input-label">Type</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Individual, family, company, choose
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="input-box">
-                <div className="input-label">Annual Income Bracket</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Choose an income bracket for your tenant
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            
-            <h6 className="field-title mb-4 mt-2">Rent Collection</h6>
-            <div className="input-box">
-                <div className="input-label">How Frequently do you want to collect rent?</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Weekly, monthly, yearly
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="input-box">
-                <div className="input-label">Your Bank</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Choose your bank
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="input-box">
-                <div className="input-label">Your Account Number</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your bank account number"
-                    name="accountno"
-                    onChange={handleOnChange}
-                />
-            </div>
-            
-            <button className="secondary-btn" onClick={currentStep}>
-                Next
-            </button>
-        </form>
-        
-      ) : step == 3 ? (
-          
-        <form className="content-section mt-4">
-            <div className="input-box">
-                <div className="input-label">Your Full Name</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="accountno"
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Your Email</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="accountno"
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Your Mobile Number</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your active mobile number"
-                    name="accountno"
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Propery Type</div>
-                <div className="select-box">
-                    <select
-                        name="propertyType"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Choose a property type
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="input-box">
-                <div className="input-label">Property Address</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter the address of the property you want to list"
-                    name="accountno"
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Nature of Interest in Property</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Owner, Agent, Lawyer etc
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="input-box">
-                <div className="input-label">Proposed Inspection Date</div>
-                <div className="select-box">
-                    <select
-                        name="tenantAnnualIncome"
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            A date and time when we can come see the property
-                        </option>
-                        {propertyTypes.map((type, i) => {
-                        return <option value={type.id}>{type.name}</option>;
-                        })}
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
-            <div className="joint-btn mg">
-                {/* <button
-                className="no-color-btn draft"
-                onClick={() => {
-                    setRentDetails({ ...rentDetails, isDraft: true });
-                }}
-                >
-                {drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
-                </button> */}
-                <button
-                className="secondary-btn draft"
-                type="submit"
-                onClick={submitRentRequest}
-                >
-                {loading ? <Spinner /> : "Submit"}
-                </button>
-            </div>
-        </form>
-      ) : null}
+			<form className="content-section mt-4">
+				<h6 className="field-title mb-4 mt-2">What kind of tenants do you want?</h6>
+				<div className="input-box">
+					<div className="input-label">Type</div>
+					<div className="select-box">
+						<select
+							name="tenantType"
+							value={rentDetails.tenantType}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Individual, family, company, choose
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Annual Income Bracket</div>
+					<div className="select-box">
+						<select
+							name="tenantAnnualIncome"
+							value={rentDetails.tenantAnnualIncome}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Choose an income bracket for your tenant
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				
+				<h6 className="field-title mb-4 mt-2">Rent Collection</h6>
+				<div className="input-box">
+					<div className="input-label">How Frequently do you want to collect rent?</div>
+					<div className="select-box">
+						<select
+							name="rentCollection"
+							value={rentDetails.rentCollection}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Weekly, monthly, yearly
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Your Bank</div>
+					<div className="select-box">
+						<select
+							name="bank"
+							value={rentDetails.bank}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Choose your bank
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Your Account Number</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Enter your bank account number"
+						name="accountno"
+						value={rentDetails.accountno}
+						onChange={handleOnChange}
+					/>
+				</div>
+				
+				<button className="secondary-btn" onClick={() => setStep(step + 1)}>
+					Next
+				</button>
+			</form>
+			
+		) : step == 3 ? (
+			
+			<form className="content-section mt-4">
+				<div className="input-box">
+					<div className="input-label">Your Full Name</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Give your listing a name that makes it easy to find"
+						value={rentDetails.name}
+						name="name"
+						onChange={handleOnChange}
+					/>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Your Email</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Give your listing a name that makes it easy to find"
+						name="email"
+						value={rentDetails.email}
+						onChange={handleOnChange}
+					/>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Your Mobile Number</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Enter your active mobile number"
+						name="mobileNumber"
+						value={rentDetails.mobileNumber}
+						onChange={handleOnChange}
+					/>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Propery Type</div>
+					<div className="select-box">
+						<select
+							name="propertyType"
+							value={rentDetails.propertyTypeId}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Choose a property type
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Property Address</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Enter the address of the property you want to list"
+						name="propertyAddress"
+						value={rentDetails.propertyAddress}
+						onChange={handleOnChange}
+					/>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Nature of Interest in Property</div>
+					<div className="select-box">
+						<select
+							name="interest"
+							value={rentDetails.interest}
+							onChange={handleOnChange}
+							className="formfield"
+						>
+							<option value="" selected disabled>
+								Owner, Agent, Lawyer etc
+							</option>
+							{propertyTypes.map((type, i) => {
+							return <option value={type.id}>{type.name}</option>;
+							})}
+						</select>
+						<div className="arrows" />
+					</div>
+				</div>
+				<div className="input-box">
+					<div className="input-label">Proposed Inspection Date</div>
+					<div className="select-box">
+						<input
+							type="date"
+							className="formfield"
+							placeholder="A date and time when we can come see the property"
+							name="inspectionDate"
+							value={rentDetails.inspectionDate}
+							onChange={handleOnChange}
+						/>
+					</div>
+				</div>
+				<div className="joint-btn mg">
+					{/* <button
+					className="no-color-btn draft"
+					onClick={() => {
+						setRentDetails({ ...rentDetails, isDraft: true });
+					}}
+					>
+					{drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
+					</button> */}
+					<button
+						className="secondary-btn draft"
+						type="submit"
+						onClick={submitRentRequest}
+					>
+					{loading ? <Spinner /> : "Submit"}
+					</button>
+				</div>
+			</form>
+		) : null}
     </div>
   );
 }

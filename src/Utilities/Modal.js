@@ -9,7 +9,6 @@ function Modal(props) {
 			onClose={props.onClose}
 			aria-labelledby="This is a modal"
 			aria-describedby="A modal description"
-			fullWidth={true}
 			disableBackdropClick={false}
 		>
 			<ModalWrapper>{props.children}</ModalWrapper>

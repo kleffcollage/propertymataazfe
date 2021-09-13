@@ -15,7 +15,7 @@ function RentOption({ setRentOption }) {
 	return (
 		<div>
 			<Modal open={rentModal} close={() => { setRentModal(false)}}>
-				<RentForm close={close} />
+				<RentForm close={() => setRentModal(false)} />
 			</Modal>
 			
 			<div

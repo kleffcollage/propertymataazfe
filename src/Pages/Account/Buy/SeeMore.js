@@ -174,7 +174,7 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant }) => {
             ) : (
               <Link
                 to={ tenant ? `/rent/enquires/${propertyDetails.id}` : `/buy/enquires/${propertyDetails.id}`}
-                className="list-color-btn w-100"
+                className="list-color-btn w-100 mt-4 mb-3f"
                 onClick={async () => {
                   await incrementEnquire(propertyId);
                 }}
