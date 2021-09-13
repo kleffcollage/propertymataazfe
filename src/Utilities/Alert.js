@@ -5,26 +5,26 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Alert(props) {
   const { data } = useContext(MainContext);
-
-
+  
   const displayToast = () => {
 	  console.log(data.alert.message);
 	  toast(data.alert.message);
   }
 
   useEffect(() => {
-	displayToast();
-  },[])
+	  displayToast();
+  }, [])
 
   toast(data.message);
   return (
     <>
-      {data.alert.show ? (
+      { data.alert.show ? (
         <div className={`alert alert-${data.alert.type}`} role="alert">
           <h4 className="alert-heading">{data.alert.title}</h4>
           <p>{data.alert.message}</p>
         </div>
-      ) : null}
+      ) : null }
+      
 	  {!data.alert.show ?
       <ToastContainer
         position="top-right"

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ListedCard from "../../../Components/Generics/ListedCard";
-import PropertyCard from "../../../Components/Generics/PropertyCard";
-import Fetch from "../../../Utilities/Fetch";
-import Modal from "../../../Utilities/Modal";
-import Spinner from "../../../Utilities/Spinner";
-import Request from "../../Request/Request";
-import SeeMore from "./SeeMore";
+import ListedCard from "../../Components/Generics/ListedCard";
+import PropertyCard from "../../Components/Generics/PropertyCard";
+import Fetch from "../../Utilities/Fetch";
+import Modal from "../../Utilities/Modal";
+import Spinner from "../../Utilities/Spinner";
+import Request from "../Request/Request";
+import SeeMore from "../Account/Buy/SeeMore";
 
-function Buy() {
+function RentPropertyList() {
   const [tab, setTab] = useState("listed");
   const [counter, setCounter] = useState(1);
   const [bathroomCounter, setBathroomCounter] = useState(1)
@@ -78,14 +78,11 @@ function Buy() {
       setLoading(true);
       console.log(data.data.value);
       setIsProperty(data.data.value);
-      
-      setNextUrl(data.data.next && data.data.next.href.split("/list")[1]);
-      console.log(data.data.next && data.data.next.href.split("/list")[1]);
-      
-      setPrevUrl(data.data.next && data.data.next.href.split("/list")[1]);
-      setFirstUrl(data.data.next && data.data.next.href.split("/list")[1]);
-      
-      setLastUrl(data.data.next && data.data.next.href.split("/list")[1]);
+      setNextUrl(data.data.next && data.data.next.href.split("api/")[1]);
+      console.log(data.data.next && data.data.next.href.split("api/")[1]);
+      setPrevUrl(data.data.next && data.data.next.href.split("api/")[1]);
+      setFirstUrl(data.data.next && data.data.next.href.split("api/")[1]);
+      setLastUrl(data.data.next && data.data.next.href.split("api/")[1]);
       setLoading(false);
       return; 
     }
@@ -112,13 +109,13 @@ function Buy() {
           setSeeMore(false);
         }}
       >
-        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false} tenant={false} />
+        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false} tenant={true} />
       </Modal>
       
       
       <div>
         <div className="page-title">
-          "Find a property to buy with the safety of 103% money back guarantee"
+            "Find the perfect property to rent from our wide range of options"
         </div>
         <div className="tabs">
           <div
@@ -180,25 +177,25 @@ function Buy() {
               <div className="filter-imgs">
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/bungalow-1.png" alt />
+                    <img src="../asset/bungalow-1.png" alt />
                   </div>
                   <div className="txtfil">Bungalow</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/apartment.png" alt />
+                    <img src="../asset/apartment.png" alt />
                   </div>
                   <div className="txtfil">Flat</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/duplex-1.png" alt />
+                    <img src="../asset/duplex-1.png" alt />
                   </div>
                   <div className="txtfil">Duplex</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/terrace-1.png" alt />
+                    <img src="../asset/terrace-1.png" alt />
                   </div>
                   <div className="txtfil">Terrace</div>
                 </div>
@@ -212,9 +209,6 @@ function Buy() {
                   <input
                     className="countbox"
                     value={counter}
-                    // ['onChange={(e) =>
-                    // 	setUserOption({ ...userOption, bathroom: e.target.value })
-                    // }']
                   />
                   <button className="countbtn" onClick={increment}>
                     +
@@ -252,19 +246,19 @@ function Buy() {
                 )}
               </div>
               {/* <div className="d-flex">
-								<button className="secondary-btn" onClick={showFirst}>
-									First
-								</button>
-								<button className="secondary-btn" onClick={showPrev}>
-									Previous
-								</button>
-								<button className="secondary-btn" onClick={showNext}>
-									Next
-								</button>
-								<button className="secondary-btn" onClick={showLast} disabled>
-									Last
-								</button>
-							</div> */}
+			    	<button className="secondary-btn" onClick={showFirst}>
+			    		First
+			    	</button>
+			    	<button className="secondary-btn" onClick={showPrev}>
+			    		Previous
+			    	</button>
+			    	<button className="secondary-btn" onClick={showNext}>
+			    		Next
+			    	</button>
+			    	<button className="secondary-btn" onClick={showLast} disabled>
+			    		Last
+			    	</button>
+			    </div> */}
             </div>
           </div>
         ) : (
@@ -275,4 +269,4 @@ function Buy() {
   );
 }
 
-export default Buy;
+export default RentPropertyList;

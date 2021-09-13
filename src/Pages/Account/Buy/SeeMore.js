@@ -12,7 +12,7 @@ import { MainContext } from "../../../Context/MainContext";
 
 
 
-export const SeeMore = ({ setSeeMore, propertyId, seller }) => {
+export const SeeMore = ({ setSeeMore, propertyId, seller, tenant }) => {
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
@@ -173,8 +173,8 @@ export const SeeMore = ({ setSeeMore, propertyId, seller }) => {
               </div>
             ) : (
               <Link
-                to={`/buy/enquires/${propertyDetails.id}`}
-                className="list-color-btn w-100"
+                to={ tenant ? `/rent/enquires/${propertyDetails.id}` : `/buy/enquires/${propertyDetails.id}`}
+                className="list-color-btn w-100 mt-4 mb-3f"
                 onClick={async () => {
                   await incrementEnquire(propertyId);
                 }}

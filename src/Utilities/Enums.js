@@ -6,3 +6,8 @@ export const Statuses = {
     VERIFIED: "VERIFIED",
     DRAFTED: "DRAFTED",
 }
+
+export const BuildingType = {
+    RESIDENTIAL: "RESIDENTIAL",
+    COMMERCIAL: "COMMERCIAL",
+}

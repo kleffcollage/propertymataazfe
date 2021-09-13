@@ -6,7 +6,7 @@ import { MapView } from "../../../Components/Generics/MapView";
 import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
 
-function Enquires() {
+function Enquires({ isRent }) {
   const { propertyId } = useParams();
   console.log(propertyId);
 
@@ -42,8 +42,11 @@ function Enquires() {
 				setSeeMore(false);
 				}}
 			>
-        <ApplicationForm />
+        
+        <ApplicationForm property={propertyDetails} isRentForm={isRent} close={() => setSeeMore(false)} /> 
+        
 			</Modal>
+      
     <div className="row">
       <div className="col-lg-4">
         <div className="steps passed">
@@ -131,7 +134,7 @@ function Enquires() {
                     ? files[0].url
                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                 }
-                alt
+                alt={propertyDetails.name}
               />
               <div
                 className={

@@ -9,9 +9,18 @@ import Reset from "./Pages/Authentication/Reset";
 import SignUp from "./Pages/Authentication/SignUp";
 import Home from "./Pages/LandingPage/Home";
 import Rent from "./Pages/Rent/Rent";
+import RentPropertyList from "./Pages/Rent/RentPropertyList";
+import Dashboard from "./Pages/Account/Dashboard";
+import Verify from "./Pages/Verify";
+import Clean from "./Pages/Clean";
+import Fix from "./Pages/Fix";
+import NotFound from "./Components/Generics/NotFound";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
+	{ path: "/verify", key: "ROOT", exact: true, component: () => <Verify /> },
+	{ path: "/clean", key: "ROOT", exact: true, component: () => <Clean /> },
+	{ path: "/fix", key: "ROOT", exact: true, component: () => <Fix /> },
 	{ path: "/signup", key: "ROOT", exact: true, component: () => <SignUp /> },
 	{
 		path: "/login",
@@ -62,7 +71,7 @@ const ROUTES = [
 				path: "/buy/enquires/:propertyId",
 				key: "BUY",
 				exact: true,
-				component: () => <Enquires />,
+				component: () => <Enquires isRent={false} />,
 			},
 		],
 	},
@@ -72,8 +81,11 @@ const ROUTES = [
 		component: RenderRoutes,
 		routes: [
 			{ path: "/rent", key: "RENT", exact: true, component: () => <Rent /> },
+			{ path: "/rent/rentProperty", key: "RENT", exact: true, component: () => <RentPropertyList /> },
+			{ path: "/rent/enquires/:propertyId", key: "RENT", exact: true, component: () => <Enquires isRent={true} /> },
 		],
 	},
+	{ path: "/my-mattaz", key: "ROOT", exact: true, component: () => <Dashboard /> },
 ];
 export default ROUTES;
 
@@ -94,7 +106,7 @@ export function RenderRoutes({ routes }) {
 				{routes.map((route, i) => {
 					return <RouteWithSubRoutes key={route.key} {...route} />;
 				})}
-				<Route component={() => <h1>Not Found!</h1>} />
+				<Route component={() => <NotFound /> } />
 			</Switch>
 		</>
 	);
