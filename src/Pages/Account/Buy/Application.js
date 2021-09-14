@@ -13,49 +13,76 @@ function ApplicationForm({ property, isRentForm, close }) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const user = useContext(MainContext)
+  const {user, setApplicationType} = useContext(MainContext)
   console.log(user);
-
+  const [applicationTypes, setApplicationTypes] = useState([]);
+  const [mediafiles, setMediaFiles ] = useState({
+	passport: null,
+	workId: null,
+  });
   
-  
-	const [userDetails, setUserDetails] = useState({
-		firstName: user.data.user.firstName,
-		middleName: "",
-		lastName: user.data.user.lastName,
-		email: user.data.user.email,
-		mobileNumber: user.data.user.phoneNumber,
-		address: "",
-		nationality: "",
-		dateOfBirth: "",
-		nationality: "",
-		maritalStatus: "",
-		occupation: "",
-		employer: "",
-		workAddress: "",
-		annualIncome: "",
-		
-		nokFirstName: "",
-		nokLastName: "",
-		nokEmail: "",
-		nokMobileNumber: "",
-		nokRelationship: "",
-		passport: [],
-		workId: [],
-		isRent: isRentForm,
-	});
-    
-	const formSubmit = async (e) => {
-		setLoading(true)
-		e.preventDefault()
-		const data = {
-			register: userDetails,
-			nextOfKin: userDetails,
+	const userDetails = {
+		register: {
+			firstName: user.data.user.firstName,
+			middleName: "",
+			lastName: user.data.user.lastName,
+			email: user.data.user.email,
+			mobileNumber: user.data.user.phoneNumber,
+			address: "",
+			nationality: "",
+			dateOfBirth: "",
+			nationality: "",
+			maritalStatus: "",
+			occupation: "",
+			employer: "",
+			workAddress: "",
+			annualIncome: "",
+			passport: mediafiles.passport,
+			workId: mediafiles.workId,
+		},
+		nextOfKin: {
+			nokFirstName: "",
+			nokLastName: "",
+			nokEmail: "",
+			nokMobileNumber: "",
+			nokRelationship: "",
+		},
+		propertyId: 0,
+		applicationTypeId: 0,
+	};
+	
+	const getApplicationTypes = async () => {
+		try {
+		  	let { data } = await Fetch("Application/types");
+			// console.log("Application types: ", data);
+		  	setApplicationTypes(data);
+			setApplicationType(data)
+		} catch (error) {
+		  console.log(error);
 		}
-		console.log(data);
+	};
+	
+	// console.log(userDetails.workId.length)
+	
+    
+	const formSubmit = async values => {
+		setLoading(true)
+		
+		values.register.passport = mediafiles.passport
+		values.register.workId = mediafiles.workId
+		
+		console.log({values});
+		
+		values.applicationTypeId = applicationTypes.find( type => type.name == "RENT").id
+		console.log(applicationTypes)
 		
 		try {
-			let res = await Fetch("Application/new", "post", data);
-			console.log(res);
+			const { workId, passport} = values.register
+			if(workId == null && passport == null ) return
+			
+			let data = await Fetch("Application/new", "post", values);
+			console.log("Enquire Rent:", data);
+			
 			if (!data.status) {
 				setLoading(false);
 				setErrorMessage(data.message);
@@ -66,6 +93,7 @@ function ApplicationForm({ property, isRentForm, close }) {
 				setLoading(false);
 				console.log(data);
 			} else {
+				setLoading(false)
 				toast.error(errorMessage)
 				console.log(errorMessage);
 			}
@@ -120,16 +148,16 @@ function ApplicationForm({ property, isRentForm, close }) {
 		console.log(files);
 		
 		if(isPassport) {
-		setUserDetails({
-			...userDetails,
-			passport: [...userDetails.passport, newMedia],
-		});
-		return
+			setMediaFiles({
+				...mediafiles,
+				passport: newMedia,
+			});
+			return
 		}
 		
-		setUserDetails({
-		...userDetails,
-		workId: [...userDetails.workId, newMedia],
+		setMediaFiles({
+			...mediafiles,
+			workId: newMedia,
 		});
 	};
 
@@ -137,13 +165,18 @@ function ApplicationForm({ property, isRentForm, close }) {
 		return fileName.split(".")[1];
 	};
 
-    // useEffect(() => {
+    useEffect(() => {
     //   window.scrollTo({
     //     top: 0,
     //     left: 0,
     //     behavior: 'smooth'
     //   });
-    // }, [page])
+		const fetchData = async () => {
+			await getApplicationTypes();
+		}
+		
+		fetchData();
+    }, [])
 
   return (
     <>
@@ -166,11 +199,10 @@ function ApplicationForm({ property, isRentForm, close }) {
       
       <Formik
         initialValues={userDetails}
-        onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-				alert(JSON.stringify(values, null, 2));
-				setSubmitting(false);
-            }, 400);
+        onSubmit={ async (values, { setSubmitting }) => {
+			await formSubmit(values)
+			// console.log({values})
+			// alert(JSON.stringify(values, null, 2));
         }}
       >
         <Form>
@@ -184,49 +216,49 @@ function ApplicationForm({ property, isRentForm, close }) {
                 <h3 className="section-title"> Application Form</h3>
                 
                 <div className="input-box">
-                    <label htmlFor="firstName" className="input-label">First Name</label>
-                    <Field name="firstName" placeholder="Ezra" className="formfield" />
-                    <ErrorMessage name="firstName" />
+                    <label htmlFor="register.firstName" className="input-label">First Name</label>
+                    <Field name="register.firstName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="register.firstName" />
                 </div>
                 <div className="input-box">
                     <label htmlFor="middleName" className="input-label">Middle Name</label>
-                    <Field name="middleName" placeholder="Ezra" className="formfield" />
-                    <ErrorMessage name="middleName" />
+                    <Field name="register.middleName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="register.middleName" />
                 </div>
                 <div className="input-box">
-                    <label htmlFor="lastName" className="input-label">Last Name</label>
-                    <Field name="lastName" placeholder="Ezra" className="formfield" />
-                    <ErrorMessage name="lastName" />
+                    <label htmlFor="register.lastName" className="input-label">Last Name</label>
+                    <Field name="register.lastName" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="register.lastName" />
                 </div>
                 <div className="input-box">
-                    <label htmlFor="mobileNumber" className="input-label">Mobile Number</label>
-                    <Field name="mobileNumber" placeholder="Ezra" className="formfield" />
-                    <ErrorMessage name="mobileNumber" />
+                    <label htmlFor="register.mobileNumber" className="input-label">Mobile Number</label>
+                    <Field name="register.mobileNumber" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="register.mobileNumber" />
                 </div>
                 <div className="input-box">
-                    <label htmlFor="email" className="input-label">Email Address</label>
-                    <Field name="email" type="email" placeholder="Your email address" className="formfield" />
+                    <label htmlFor="register.email" className="input-label">Email Address</label>
+                    <Field name="register.email" type="email" placeholder="Your email address" className="formfield" />
                     <ErrorMessage name="email" />
                 </div>
 				<div className="input-box">
-                    <label htmlFor="address" className="input-label">Residential Address</label>
-                    <Field name="address" placeholder="Ezra" className="formfield" />
-                    <ErrorMessage name="address" />
+                    <label htmlFor="register.address" className="input-label">Residential Address</label>
+                    <Field name="register.address" placeholder="Ezra" className="formfield" />
+                    <ErrorMessage name="register.address" />
                 </div>
 				<div className="input-box">
-                    <label htmlFor="dateOfBirth" className="input-label">Date of Birth</label>
-                    <Field name="dateOfBirth" type="date" className="formfield" />
-                    <ErrorMessage name="dateOfBirth" />
+                    <label htmlFor="register.dateOfBirth" className="input-label">Date of Birth</label>
+                    <Field name="register.dateOfBirth" type="date" className="formfield" />
+                    <ErrorMessage name="register.dateOfBirth" />
                 </div>
 				<div className="input-box">
-                    <label htmlFor="nationality" className="input-label">Nationality</label>
-                    <Field name="nationality" type="date" className="formfield" />
-                    <ErrorMessage name="nationality" />
+                    <label htmlFor="register.nationality" className="input-label">Nationality</label>
+                    <Field name="register.nationality" type="text" className="formfield" />
+                    <ErrorMessage name="register.nationality" />
                 </div>
 				<div className="input-box">
-                    <label htmlFor="maritalStatus" className="input-label">Marital status</label>
+                    <label htmlFor="register.maritalStatus" className="input-label">Marital status</label>
                     <div className="select-box">
-                        <Field name="maritalStatus" as="select" className="formfield">
+                        <Field name="register.maritalStatus" as="select" className="formfield">
                             <option>Choose an option</option>
                             <option>Single</option>
 							<option>Married</option>
@@ -234,7 +266,7 @@ function ApplicationForm({ property, isRentForm, close }) {
                         </Field>
                         <div className="arrows"></div>
                     </div>
-                    <ErrorMessage name="maritalStatus" />
+                    <ErrorMessage name="register.maritalStatus" />
                 </div>
 				
                 <button className="secondary-btn" onClick={() => setPage(page + 1)}>
@@ -248,19 +280,19 @@ function ApplicationForm({ property, isRentForm, close }) {
                 	<div className="input-box">
 				
 						<div className="input-box">
-							<label htmlFor="occupation" className="input-label">Occupation</label>
-							<Field name="occupation" type="date" className="formfield" />
-							<ErrorMessage name="occupation" />
+							<label htmlFor="register.occupation" className="input-label">Occupation</label>
+							<Field name="register.occupation" type="text" className="formfield" />
+							<ErrorMessage name="register.occupation" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="employer" className="input-label">Employer</label>
-							<Field name="employer" type="text" className="formfield" />
-							<ErrorMessage name="employer" />
+							<label htmlFor="register.employer" className="input-label">Employer</label>
+							<Field name="register.employer" type="text" className="formfield" />
+							<ErrorMessage name="register.employer" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="workAddress" className="input-label">Work Address</label>
-							<Field name="workAddress" type="text" className="formfield" />
-							<ErrorMessage name="workAddress" />
+							<label htmlFor="register.workAddress" className="input-label">Work Address</label>
+							<Field name="register.workAddress" type="text" className="formfield" />
+							<ErrorMessage name="register.workAddress" />
 						</div>
 						
 					
@@ -268,9 +300,9 @@ function ApplicationForm({ property, isRentForm, close }) {
 						<>
 						
 							<div className="input-box">
-								<label htmlFor="annualIncome" className="input-label">What is your annual income?</label>
-								<Field name="annualIncome" type="text" placeholder="This can be your annual salary of an estimated income" className="formfield" />
-								<ErrorMessage name="annualIncome" />
+								<label htmlFor="register.annualIncome" className="input-label">What is your annual income?</label>
+								<Field name="register.annualIncome" type="text" placeholder="This can be your annual salary of an estimated income" className="formfield" />
+								<ErrorMessage name="register.annualIncome" />
 						    </div>
 							
 							
@@ -284,21 +316,16 @@ function ApplicationForm({ property, isRentForm, close }) {
 									<div
 									{...getRootProps()}
 									className={
-										userDetails.passport.filter((m) => m.isImage).length >
-										0
+										mediafiles.passport 
 										? "do-upload uploaded"
 										: "do-upload"
 									}
 									>
 									<input {...getInputProps()} />
-									{userDetails.passport.filter((m) => m.isImage).length >
-									0 ? (
+									{ mediafiles.passport ? (
 										<>
 										<i className="far fa-check" />
-										{`${
-											userDetails.passport.filter((m) => m.isImage)
-											.length
-										}  Passport Uploaded`}
+										{`Passport Uploaded`}
 										</>
 									) : (
 										<>
@@ -321,21 +348,16 @@ function ApplicationForm({ property, isRentForm, close }) {
 									<div
 										{...getRootProps()}
 										className={
-											userDetails.workId.filter((m) => m.isImage).length >
-											0
+											mediafiles.workId 
 											? "do-upload uploaded"
 											: "do-upload"
 										}
 									>
 									<input {...getInputProps()} />
-									{userDetails.workId.filter((m) => m.isImage).length >
-									0 ? (
+									{mediafiles.workId ? (
 										<>
 											<i className="far fa-check" />
-											{`${
-												userDetails.workId.filter((m) => m.isImage)
-												.length
-											}  Copy of Work Id Uploaded`}
+											{`Copy of Work Id Uploaded`}
 										</>
 									) : (
 										<>
@@ -353,34 +375,34 @@ function ApplicationForm({ property, isRentForm, close }) {
 						<div className="schedule-title my-4">Next of Kin</div>
 						
 						<div className="input-box">
-							<label htmlFor="nokFirstName" className="input-label">First Name</label>
-							<Field name="nokFirstName" type="text" className="formfield" />
-							<ErrorMessage name="nokFirstName" />
+							<label htmlFor="nextOfKin.nokFirstName" className="input-label">First Name</label>
+							<Field name="nextOfKin.nokFirstName" type="text" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokFirstName" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="nokMiddleName" className="input-label">Middle Name</label>
-							<Field name="nokMiddleName" type="text" className="formfield" />
-							<ErrorMessage name="nokMiddleName" />
+							<label htmlFor="nextOfKin.nokMiddleName" className="input-label">Middle Name</label>
+							<Field name="nextOfKin.nokMiddleName" type="text" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokMiddleName" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="nokLastName" className="input-label">Surname</label>
-							<Field name="nokLastName" type="text" className="formfield" />
-							<ErrorMessage name="nokLastName" />
+							<label htmlFor="nextOfKin.nokLastName" className="input-label">Surname</label>
+							<Field name="nextOfKin.nokLastName" type="text" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokLastName" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="nokMobileNumber" className="input-label">Mobile Number</label>
-							<Field name="nokMobileNumber" type="text" className="formfield" />
-							<ErrorMessage name="nokMobileNumber" />
+							<label htmlFor="nextOfKin.nokMobileNumber" className="input-label">Mobile Number</label>
+							<Field name="nextOfKin.nokMobileNumber" type="text" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokMobileNumber" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="nokEmail" className="input-label">Email</label>
-							<Field name="nokEmail" type="email" className="formfield" />
-							<ErrorMessage name="nokEmail" />
+							<label htmlFor="nextOfKin.nokEmail" className="input-label">Email</label>
+							<Field name="nextOfKin.nokEmail" type="email" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokEmail" />
 						</div>
 						<div className="input-box">
-							<label htmlFor="nokRelationship" className="input-label">Relationship</label>
-							<Field name="nokRelationship" type="text" className="formfield" />
-							<ErrorMessage name="nokRelationship" />
+							<label htmlFor="nextOfKin.nokRelationship" className="input-label">Relationship</label>
+							<Field name="nextOfKin.nokRelationship" type="text" className="formfield" />
+							<ErrorMessage name="nextOfKin.nokRelationship" />
 						</div>
 					
 						<button className="secondary-btn mt-5" type="submit">{ loading ? <Spinner /> : "Submit" }</button>

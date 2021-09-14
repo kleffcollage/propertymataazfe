@@ -10,6 +10,7 @@ const Rent = () => {
     const [limit, setLimit] = useState(25);
     const [errormessage, setErrormessage] = useState("");
     const [isProperty, setIsProperty] = useState([]);
+    const [requestRents, setRequestRents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false)
     
@@ -17,13 +18,16 @@ const Rent = () => {
         setShowInfo(true)
     }
     
-    const fetchAppliedRents = async (url = `Property/list?offset=${offset}&limit=${limit}`) => {
+    const fetchAppliedRents = async (url = `User/enquiries/user?offset=${offset}&limit=${limit}`) => {
         setLoading(true)
         const data = await Fetch(url)
+        
+        console.log('Enquired Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
+            return
         }
         if(data.status != 400) {
             setLoading(true)
@@ -33,9 +37,29 @@ const Rent = () => {
             return
         }
     }
+    const fetchRequestRents = async (url = `PropertyRequest/list/user?offset=${offset}&limit=${limit}`) => {
+        setLoading(true)
+        const data = await Fetch(url)
+        
+        console.log('Requested Rents: ', data)
+        
+        if(!data.status) {
+            setLoading(false)
+            setErrormessage(data.message)
+            return
+        }
+        if(data.status != 400) {
+            setLoading(true)
+            setRequestRents(data.data.value)
+            console.log('Req rents: ', data.data.value)
+            setLoading(false)
+            return
+        }
+    }
     
     useEffect(() => {
-        fetchAppliedRents()
+        fetchRequestRents();
+        fetchAppliedRents();
     }, [])
     
     
@@ -48,13 +72,35 @@ const Rent = () => {
                 </Box> 
                 : (
                     <>
-                        <h5 className="mb-3">My Tenancy</h5>
+                        <div className="my-3">
+                            <h5 className="mb-3">Enquiries</h5>
+                            { isProperty.length == 0 
+                                ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                : <>
+                                    { isProperty.map((property, index) => {
+                                        return (
+                                            <ListedCard property={property} seeMore={showDetails} key={index} />                    
+                                        )
+                                    })}
+                                </>
+                            }
+                            
+                        </div>
                         
-                        { isProperty.map((property, index) => {
-                            return (
-                                <ListedCard property={property} seeMore={showDetails} key={index} />                    
-                            )
-                        })}
+                        <div className="my-3">
+                            <h5 className="mb-3">Requests</h5>
+                            
+                            { requestRents.length == 0 
+                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                : <>
+                                    { requestRents.map((rents, index) => {
+                                        return (
+                                            <ListedCard property={rents} seeMore={showDetails} key={index} />                    
+                                        )
+                                    })}
+                                </>
+                            }
+                        </div>
                     </>
                 )
             }

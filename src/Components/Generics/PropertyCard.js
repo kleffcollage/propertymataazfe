@@ -27,7 +27,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 	} 
 	return (
 		<>
-			{property.isDraft == true ? null : (
+			{property.isDraft === true ? null : (
 				<div className="col-lg-3">
 					<div className="listing-cards">
 						<div className="listing-cover-img">
@@ -37,22 +37,23 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 										? property.mediaFiles[0].url
 										: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
 								}
+								alt={property.name}
 							/>
 							<div className="listing-location">{property.area}</div>
 						</div>
 						<div
 							className={`tag ${
-								property.isDraft == true
+								property.isDraft === true
 									? "draft"
-									: property.status == Statuses.VERIFIED
+									: property.status === Statuses.VERIFIED
 									? "verify" 
 									: "pending"
 							}`}
 						>
 							<div className="status">
-								{property.isDraft == true
+								{property.isDraft === true
 									? "Only visible to you"
-									: property.status == Statuses.VERIFIED
+									: property.status === Statuses.VERIFIED
 									? "Live"
 									: "Listing is pending"}
 							</div>

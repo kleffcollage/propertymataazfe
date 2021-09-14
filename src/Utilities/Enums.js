@@ -11,3 +11,12 @@ export const BuildingType = {
     RESIDENTIAL: "RESIDENTIAL",
     COMMERCIAL: "COMMERCIAL",
 }
+
+export const typeOfApplications = {
+    BUY: "BUY",
+    RENT: "RENT",
+    CLEAN: "CLEAN",
+    FIX: "FIX",
+    VERIFY: "VERIFY",
+    LOAN: "LOAN",
+}

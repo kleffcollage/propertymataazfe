@@ -7,4 +7,9 @@ export const Wrapper = styled.div`
         font-size: 16.8px;
         font-weight: bold;
     }
+    h6 {
+        color: #121212;
+        font-family: "Baloo Bhai 2";
+        font-size: 0.89rem;
+    }
 `
