@@ -24,92 +24,90 @@ function RentForm({ close }) {
   const [step, setStep] = useState(1);
   const [bedroomCounter, setBedroomCounter] = useState(0);
   const [bathroomCounter, setBathroomCounter] = useState(0);
-  const [applicationTypes, setApplicationTypes] = useState([]);
 
-  console.log(NaijaStates.states());
-  const [errors, setErrors] = useState({
-    Name: [],
-    PropertyTypeId: [],
-    Address: [],
-    Title: [],
-    State: [],
-    Description: [],
-    Lga: [],
-    Area: [],
-    Price: [],
-  });
-  const [rentDetails, setRentDetails] = useState({
-    name: "",
-	email: "",
-	mobileNumber: "",
-    title: "",
-    address: "",
-    state: "",
-    lga: "",
-    area: "",
-    description: "",
-    sellMySelf: false,
-    price: 0,
-	tenantType: "",
-	tenantAnnualIncome: "",
-	rentCollection: "",
-	interest: "",
-    numberOfBedrooms: 0,
-    numberOfBathrooms: 0,
-    isDraft: false,
-    isActive: true,
-    isForRent: true,
-    isForSale: false,
-    propertyTypeId: 0,
-    mediafiles: [],
-    longitude: 0,
-    latitude: 0,
-	bank: "",
-	accountno: "",
-	applicationTypeId: 0,
-  });
+//   console.log(NaijaStates.states());
+	const [errors, setErrors] = useState({
+		Name: [],
+		PropertyTypeId: [],
+		Address: [],
+		Title: [],
+		State: [],
+		Description: [],
+		Lga: [],
+		Area: [],
+		Price: [],
+	});
+	const [rentDetails, setRentDetails] = useState({
+		name: "",
+		title: "",
+		address: "",
+		state: "",
+		lga: "",
+		area: "",
+		description: "",
+		sellMySelf: false,
+		price: 0,
+		tenantTypeId: 0,
+		rentCollectionTypeId: 0,
+		tenantAnnualIncome: "",
+		numberOfBedrooms: 0,
+		numberOfBathrooms: 0,
+		isDraft: false,
+		isActive: true,
+		isForRent: true,
+		isForSale: false,
+		mediafiles: [],
+		longitude: 0,
+		latitude: 0,
+		bank: "",
+		accountno: "",
+		applicationTypeId: 0,
+		propertyTypeId: 0,
+	});
 
-  const [propertyTypes, setPropertyTypes] = useState([]);
-  const [states, setStates] = useState([]);
-  const [lgas, setLgas] = useState([]);
-  const [cities, setCities] = useState([]);
+	const [propertyTypes, setPropertyTypes] = useState([]);
+	const [states, setStates] = useState([]);
+	const [lgas, setLgas] = useState([]);
+	const [cities, setCities] = useState([]);
+	const [tenantType, setTenantTypes] = useState([]);
+	const [rentCollection, setRentCollection] = useState([]);
 
-  const handleOnChange = (e) => {
-    // showAlert("success", "Something toasted", "Everything works ");
-    const { name, value } = e.target;
-    setRentDetails({ ...rentDetails, [name]: value });
-    console.log(rentDetails);
-  };
+	const handleOnChange = (e) => {
+		// showAlert("success", "Something toasted", "Everything works ");
+		const { name, value } = e.target;
+		setRentDetails({ ...rentDetails, [name]: value });
+		// console.log(rentDetails);
+	};
 
-  const bedIncrement = (e) => {
-    e.preventDefault();
-    setBedroomCounter(bedroomCounter + 1);
-    setRentDetails({
-      ...rentDetails,
-      numberOfBedrooms: bedroomCounter + 1,
-    });
-    console.log(rentDetails);
-  };
+	const bedIncrement = (e) => {
+		e.preventDefault();
+		setBedroomCounter(bedroomCounter + 1);
+		setRentDetails({
+		...rentDetails,
+		numberOfBedrooms: bedroomCounter + 1,
+		});
+		console.log(rentDetails);
+	};
 
-  const bedDecrement = (e) => {
-    e.preventDefault();
-    setBedroomCounter((bedroomCounter) => Math.max(bedroomCounter - 1, 1));
-    setRentDetails({
-      ...rentDetails,
-      numberOfBedrooms: Math.max(bedroomCounter - 1, 1),
-    });
-    console.log(rentDetails);
-  };
+	const bedDecrement = (e) => {
+		e.preventDefault();
+		setBedroomCounter((bedroomCounter) => Math.max(bedroomCounter - 1, 1));
+		setRentDetails({
+		...rentDetails,
+		numberOfBedrooms: Math.max(bedroomCounter - 1, 1),
+		});
+		console.log(rentDetails);
+	};
 
-  const bathIncrement = (e) => {
-    e.preventDefault();
-    setBathroomCounter(bathroomCounter + 1);
-    setRentDetails({
-      ...rentDetails,
-      numberOfBathrooms: bathroomCounter + 1,
-    });
-    console.log(rentDetails);
-  };
+	const bathIncrement = (e) => {
+		e.preventDefault();
+		setBathroomCounter(bathroomCounter + 1);
+		setRentDetails({
+		...rentDetails,
+		numberOfBathrooms: bathroomCounter + 1,
+		});
+		console.log(rentDetails);
+	};
 
 	const bathDecrement = (e) => {
 		e.preventDefault();
@@ -133,111 +131,119 @@ function RentForm({ close }) {
 //     }
 //   };
 
-  const grabUploadedFile = (uploadedFiles) => {
-    uploadedFiles.forEach((file) => {
-      const reader = new FileReader();
+	const grabUploadedFile = (uploadedFiles) => {
+		uploadedFiles.forEach((file) => {
+			const reader = new FileReader();
 
-      reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
-        composeMedia(binaryStr, file);
-      };
-      console.log(file);
-      reader.readAsDataURL(file);
-    });
-  };
+			reader.onabort = () => {
+				console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+			};
+			reader.onerror = () => {
+				console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+			};
+			reader.onload = () => {
+				// Do whatever you want with the file contents
+				const binaryStr = reader.result.split(",")[1];
+				console.log(reader.result);
+				//console.log(binaryStr);
+				console.log(binaryStr);
+				composeMedia(binaryStr, file);
+			};
+			console.log(file);
+			reader.readAsDataURL(file);
+		});
+	};
 
-  const composeMedia = (bytes, file) => {
-    var files = [];
+	const composeMedia = (bytes, file) => {
+		var files = [];
 
-    var newMedia = {
-      name: file.name,
-      extention: getFileExtention(file.name),
-      base64String: bytes,
-      propertyId: 0,
-      isImage:
-        getFileExtention(file.name) == "jpeg" ||
-        getFileExtention(file.name) == "jpg" ||
-        getFileExtention(file.name) == "png"
-          ? true
-          : false,
-      isVideo: getFileExtention(file.name) == "mp4" ? true : false,
-      isDocument: getFileExtention(file.name) == "pdf" ? true : false,
-    };
+		var newMedia = {
+		name: file.name,
+		extention: getFileExtention(file.name),
+		base64String: bytes,
+		propertyId: 0,
+		isImage:
+			getFileExtention(file.name) == "jpeg" ||
+			getFileExtention(file.name) == "jpg" ||
+			getFileExtention(file.name) == "png"
+			? true
+			: false,
+		isVideo: getFileExtention(file.name) == "mp4" ? true : false,
+		isDocument: getFileExtention(file.name) == "pdf" ? true : false,
+		};
 
-    files.push(newMedia);
-    console.log(files);
-    setRentDetails({
-      ...rentDetails,
-      mediafiles: [...rentDetails.mediafiles, newMedia],
-    });
-  };
+		files.push(newMedia);
+		console.log(files);
+		setRentDetails({
+		...rentDetails,
+		mediafiles: [...rentDetails.mediafiles, newMedia],
+		});
+	};
 
-  const getFileExtention = (fileName) => {
-    return fileName.split(".")[1];
-  };
+	const getFileExtention = (fileName) => {
+		return fileName.split(".")[1];
+	};
 
-  const getPropertyTypes = async () => {
-    try {
-      const data = await Fetch("property/types", "get");
-      if (!data.status) return;
+	const getPropertyTypes = async () => {
+		try {
+		const data = await Fetch("property/types", "get");
+		if (!data.status) return;
 
-      setPropertyTypes(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+		setPropertyTypes(data.data);
+		} catch (error) {
+		console.log(error);
+		}
+	};
 
-  const getStates = async () => {
-    try {
-      let data = await fetch(
-        "http://locationsng-api.herokuapp.com/api/v1/states"
-      );
-      data = await data.json();
-    //   console.log(data);
-      setStates(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  const getApplicationTypes = async () => {
-    try {
-      let { data } = await Fetch("Application/types");
-    //   data = await data.json();
-    //   console.log("Application types: ", data);
-      setApplicationTypes(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const getStates = async () => {
+		try {
+		let data = await fetch(
+			"http://locationsng-api.herokuapp.com/api/v1/states"
+		);
+		data = await data.json();
+		//   console.log(data);
+		setStates(data);
+		} catch (error) {
+		console.log(error);
+		}
+	};
 
-  const getLongAndLat = async (address) => {
-    const { results } = await Geocode.fromAddress(address);
-    setRentDetails({
-      ...rentDetails,
-      latitude: results[0].geometry.location.lat,
-      longitude: results[0].geometry.location.lng,
-    });
-    console.log("LongAndLat: ", results);
-  };
+	const getLongAndLat = async (address) => {
+		const { results } = await Geocode.fromAddress(address);
+		setRentDetails({
+		...rentDetails,
+		latitude: results[0].geometry.location.lat,
+		longitude: results[0].geometry.location.lng,
+		});
+		console.log("LongAndLat: ", results);
+	};
+	
+	const getTenantTypes = async () => {
+		try {
+		const { status, data } = await Fetch("Property/tenants/types");
+		if (!status) return;
+		setTenantTypes(data);
+		} catch (error) {
+		console.log(error);
+		}
+	};
+	const getRentCollection = async () => {
+		try {
+			const {status, data} = await Fetch("Property/collection/types");
+			// console.log(data)
+			if (!status) return;
+			setRentCollection(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const submitRentRequest = async (e) => {
 		
 		e.preventDefault();
 		setLoading(true);
-		// await getLongAndLat(rentDetails.address);
-		// rentDetails.applicationTypeId = applicationTypes.find( type => type.name == "RENT").id
 		// console.log({rentDetails});
+		
 		
 		try {
 			var data = await Fetch("Property/create", "post", rentDetails);
@@ -245,22 +251,25 @@ function RentForm({ close }) {
 			if (!data.status) {
 				setLoading(false);
 				setErrormessage(data.message);
+				toast.error(data.message);
 				return;
 			}
 			if (data.status != 400) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				history.push("/rent");
-				toast.success(data.message);
+				toast.success("Property Successfully added.");
+				history.push("/my-mattaz");
 				// history.push("/sell");
 				// await currentStep();
 				return
 			}
-			history.push("/rent");
-			toast.success("Property Successfully added.");
+			
+			toast.success(data.message);
+			history.push("/my-mattaz");
 			handleValidationErrors(data.errors);
 			setLoading(false);
+			
 		} catch (error) {
 			setLoading(false)
 			console.error(error)
@@ -268,93 +277,74 @@ function RentForm({ close }) {
 		
 	};
 
-  const grabUploadedVideoFile = (uploadedFiles) => {
-    console.log(uploadedFiles);
-    uploadedFiles.forEach((file) => {
-      const reader = new FileReader();
+	const grabUploadedVideoFile = (uploadedFiles) => {
+		console.log(uploadedFiles);
+		uploadedFiles.forEach((file) => {
+		const reader = new FileReader();
 
-      reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
-      };
-      reader.onload = async () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
-        await composeMedia(binaryStr, file);
-      };
-      console.log(file);
-      reader.readAsDataURL(file);
-    });
-  };
+		reader.onabort = () => {
+			console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+		};
+		reader.onerror = () => {
+			console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+		};
+		reader.onload = async () => {
+			// Do whatever you want with the file contents
+			const binaryStr = reader.result.split(",")[1];
+			console.log(reader.result);
+			//console.log(binaryStr);
+			console.log(binaryStr);
+			await composeMedia(binaryStr, file);
+		};
+		console.log(file);
+		reader.readAsDataURL(file);
+		});
+	};
 
-  const submitRentToDraft = async (e) => {
-    console.log(rentDetails);
-    e.preventDefault();
-    setDrafting(true);
-    var data = await Fetch("Property/create", "post", rentDetails);
-    console.log(data);
-    if (!data.status) {
-		setDrafting(false);
-		setErrormessage(data.message);
-		return;
-    }
-    if (data.status != 400) {
-		setDrafting(false);
-		setRentDetails({});
-		history.push("/rents");
-		return
-    }
-    handleValidationErrors(data.errors);
-    setDrafting(false);
-  };
+	const getLgas = async (state) => {
+		try {
+		let data = await fetch(
+			`http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
+		);
+		data = await data.json();
+		console.log(data);
+		setLgas(data);
+		handleValidationErrors(data.errors);
+		setLoading(false);
+		} catch (error) {
+		console.log(error);
+		}
+	};
 
-  const getLgas = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-      );
-      data = await data.json();
-      console.log(data);
-      setLgas(data);
-      handleValidationErrors(data.errors);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const getCities = async (state) => {
+		try {
+		let data = await fetch(
+			`http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
+		);
+		data = await data.json();
+		console.log(data);
+		if (data.status != 404) {
+			setCities(data);
+			handleValidationErrors(data.errors);
+			setLoading(false);
+		}
+		setCities([...cities, state]);
+		} catch (error) {
+		console.log(error);
+		}
+	};
+//   console.log(NaijaStates.lgas("oyo"));
 
-  const getCities = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-      );
-      data = await data.json();
-      console.log(data);
-      if (data.status != 404) {
-        setCities(data);
-        handleValidationErrors(data.errors);
-        setLoading(false);
-      }
-      setCities([...cities, state]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  console.log(NaijaStates.lgas("oyo"));
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getPropertyTypes();
-	  await getApplicationTypes();
-      // await getStates();
-    };
-    fetchData();
-  }, []);
+	useEffect(() => {
+		const fetchData = async () => {
+			await getPropertyTypes();
+			await getTenantTypes();
+			await getRentCollection();
+			// await getStates();
+		};
+		
+		fetchData();
+	}, []);
 
   const handleValidationErrors = (errors) => {
     var ValidationErrors = errors;
@@ -369,7 +359,7 @@ function RentForm({ close }) {
 			<span
 				className="backs"
 				onClick= {
-					(step > 1 ) ? () => { setStep( step - 1 ); } : close
+					(step > 1 ) ? () => { setStep( step - 1 ) } : close
 				}
 			>
 				Back
@@ -410,11 +400,11 @@ function RentForm({ close }) {
 						onChange={handleOnChange}
 						className="formfield"
 					>
-						<option value="" selected disabled>
+						<option selected disabled>
 							Choose a property type
 						</option>
 						{ propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
+							return <option key={i} value={ parseInt(type.id)} > { type.name} </option>;
 						})}
 					</select>
 					<div className="arrows" />
@@ -452,8 +442,8 @@ function RentForm({ close }) {
                     <option value="" selected disabled>
                     What state in Nigeria do you want the property
                     </option>
-                    {NaijaStates.states().map((state, i) => {
-                    return <option key={state.id} value={state}>{state}</option>;
+                    { NaijaStates.states().map((state, i) => {
+                    	return <option key={state.id} value={state}>{state}</option>
                     })}
                 </select>
                 <div className="arrows" />
@@ -483,16 +473,14 @@ function RentForm({ close }) {
 
             <div className="input-box">
                 <div className="input-label">Area (Optional)</div>
-                <div className="select-box">
-				<input
+                <input
 					type="text"
 					className="formfield"
-					placeholder="House No, Street, Estate"
+					placeholder=""
 					name="area"
 					value={rentDetails.area}
 					onChange={handleOnChange}
                 />
-                </div>
             </div>
             <div className="input-box">
                 <div className="input-label">Address</div>
@@ -679,37 +667,31 @@ function RentForm({ close }) {
 					<div className="input-label">Type</div>
 					<div className="select-box">
 						<select
-							name="tenantType"
-							value={rentDetails.tenantType}
+							name="tenantTypeId"
+							value={rentDetails.tenantTypeId}
 							onChange={handleOnChange}
 							className="formfield"
 						>
-							<option value="" selected disabled>
-								Individual, family, company, choose
+							<option selected disabled>
+								Choose an option
 							</option>
-							<option value=""></option>
+							{ tenantType.map((type, i) => {
+								return <option value={type.id}>{type.name}</option>
+							})}
 						</select>
 						<div className="arrows" />
 					</div>
 				</div>
 				<div className="input-box">
 					<div className="input-label">Annual Income Bracket</div>
-					<div className="select-box">
-						<select
-							name="tenantAnnualIncome"
-							value={rentDetails.tenantAnnualIncome}
-							onChange={handleOnChange}
-							className="formfield"
-						>
-							<option value="" selected disabled>
-								Choose an income bracket for your tenant
-							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
-							})}
-						</select>
-						<div className="arrows" />
-					</div>
+					<input
+						type="text"
+						className="formfield"
+						placeholder="Preferred tenant annual salary/income"
+						name="tenantAnnualIncome"
+						value={rentDetails.tenantAnnualIncome}
+						onChange={handleOnChange}
+					/>
 				</div>
 				
 				<h6 className="field-title mb-4 mt-2">Rent Collection</h6>
@@ -717,16 +699,16 @@ function RentForm({ close }) {
 					<div className="input-label">How Frequently do you want to collect rent?</div>
 					<div className="select-box">
 						<select
-							name="rentCollection"
-							value={rentDetails.rentCollection}
+							name="rentCollectionTypeId"
+							value={rentDetails.rentCollectionTypeId}
 							onChange={handleOnChange}
 							className="formfield"
 						>
 							<option value="" selected disabled>
-								Weekly, monthly, yearly
+								Choose option: Weekly, monthly, yearly
 							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
+							{rentCollection.map((type, i) => {
+								return <option value={type.id}>{type.name}</option>;
 							})}
 						</select>
 						<div className="arrows" />
@@ -741,12 +723,12 @@ function RentForm({ close }) {
 							onChange={handleOnChange}
 							className="formfield"
 						>
-							<option value="" selected disabled>
+							<option selected disabled>
 								Choose your bank
 							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
-							})}
+							<option value="gtb"> GTB </option>
+							<option value="access"> ACCESS </option>
+							<option value="polaris"> POLARIS </option>
 						</select>
 						<div className="arrows" />
 					</div>
@@ -763,126 +745,17 @@ function RentForm({ close }) {
 					/>
 				</div>
 				
-				<button className="secondary-btn" onClick={() => setStep(step + 1)}>
-					Next
-				</button>
-			</form>
-			
-		) : step == 3 ? (
-			
-			<form className="content-section mt-4">
-				<div className="input-box">
-					<div className="input-label">Your Full Name</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Give your listing a name that makes it easy to find"
-						value={rentDetails.name}
-						name="name"
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Your Email</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Give your listing a name that makes it easy to find"
-						name="email"
-						value={rentDetails.email}
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Your Mobile Number</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Enter your active mobile number"
-						name="mobileNumber"
-						value={rentDetails.mobileNumber}
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Propery Type</div>
-					<div className="select-box">
-						<select
-							name="propertyTypeId"
-							value={rentDetails.propertyTypeId}
-							onChange={handleOnChange}
-							className="formfield"
-						>
-							<option value="" selected disabled>
-								Choose a property type
-							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
-							})}
-						</select>
-						<div className="arrows" />
-					</div>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Property Address</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Enter the address of the property you want to list"
-						name="address"
-						value={rentDetails.address}
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Nature of Interest in Property</div>
-					<div className="select-box">
-						<select
-							name="interest"
-							value={rentDetails.interest}
-							onChange={handleOnChange}
-							className="formfield"
-						>
-							<option value="" selected disabled>
-								Owner, Agent, Lawyer etc
-							</option>
-							<option value="owner">Owner</option>
-							<option value="agent">Agent</option>
-						</select>
-						<div className="arrows" />
-					</div>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Proposed Inspection Date</div>
-					<div className="select-box">
-						<input
-							type="date"
-							className="formfield"
-							placeholder="A date and time when we can come see the property"
-							name="inspectionDate"
-							value={rentDetails.inspectionDate}
-							onChange={handleOnChange}
-						/>
-					</div>
-				</div>
 				<div className="joint-btn mg">
-					{/* <button
-					className="no-color-btn draft"
-					onClick={() => {
-						setRentDetails({ ...rentDetails, isDraft: true });
-					}}
-					>
-					{drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
-					</button> */}
 					<button
 						className="secondary-btn draft"
 						type="submit"
 						onClick={submitRentRequest}
 					>
-					{loading ? <Spinner /> : "Submit"}
+						{ loading ? <Spinner /> : "Submit" }
 					</button>
 				</div>
 			</form>
+			
 		) : null}
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Wrapper } from "./Dashboard.styles";
 // Tabs
 import Rent from "./Tabs/Rent";
+import Listing from "./Tabs/Listings";
 
 const Dashboard = () => {
     const [tab, setTab] = useState("rent");
@@ -33,7 +34,7 @@ const Dashboard = () => {
                 <div className="row">
                     {   
                         tab == "sessions" ? "Hello Sessions" :
-                        tab == "listings" ? "Hello Listing" : 
+                        tab == "listings" ? <Listing /> : 
                         tab == "rent" ? <Rent /> : null
                     }
                 </div>

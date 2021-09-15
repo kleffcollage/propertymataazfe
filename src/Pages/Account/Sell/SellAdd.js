@@ -214,26 +214,36 @@ function SellAdd({ close }) {
     console.log(listingDetails);
     e.preventDefault();
     setLoading(true);
-    await getLongAndLat(listingDetails.address);
-    console.log(listingDetails);
-    var data = await Fetch("Property/create", "post", listingDetails);
-    console.log(data);
-    if (!data.status) {
+    // await getLongAndLat(listingDetails.address);
+    // console.log(listingDetails);
+    
+    try {
+      var data = await Fetch("Property/create", "post", listingDetails);
+      console.log(data);
+      
+      if (!data.status) {
+        setLoading(false);
+        setErrormessage(data.message);
+        toast.error(data.message);
+        return;
+      }
+      if (data.status != 400) {
+        setLoading(false);
+        // setListingDetails({});
+        close(true);
+        toast.success("Property Successfully added.");
+        history.push("/sell");
+        // history.push("/sell");
+        await currentStep();
+        return
+      }
+      handleValidationErrors(data.errors);
       setLoading(false);
-      setErrormessage(data.message);
-      return;
+      
+    } catch (error) {
+      console.error(error)
     }
-    if (data.status != 400) {
-      setLoading(false);
-    //   setListingDetails({});
-	close(true);
-      history.push("/sell");
-      toast.success(data.message);
-      // history.push("/sell");
-      await currentStep();
-    }
-    handleValidationErrors(data.errors);
-    setLoading(false);
+    
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {

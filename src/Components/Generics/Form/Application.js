@@ -7,7 +7,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import { Link } from "@material-ui/core";
-import { BuildingType } from "../../../Utilities/Enums";
+import { BuildingType, typeOfApplications } from "../../../Utilities/Enums";
 import Alert from "../../../Utilities/Alert";
 
 
@@ -22,9 +22,11 @@ function Application({ clean, fix, close }) {
     
     // Prefetched Data list
     const [buildingType, setBuildingType] = useState([]);
+    const [applicationTypes, setApplicationTypes] = useState([]);
     const [states, setStates] = useState([]);
     
     const user = useContext(MainContext)
+    
     console.log(user);
 
     
@@ -72,12 +74,22 @@ function Application({ clean, fix, close }) {
         bathrooms: bathroom,
         floors: floor,
         
+        fixDate: "",
         fixDescription: "",
-        
-        isClean: clean,
-        isFix: fix,
+        propertyId: 0,
+        applicationTypeId: 0,
     };
   
+    const fetchApplicationTypes = async () => {
+		try {
+		  	let { data } = await Fetch("Application/types");
+			// console.log("Application types: ", data);
+		  	setApplicationTypes(data);
+		} catch (error) {
+		  console.log(error);
+		}
+	};
+    
     const fetchBuildingTypes = async () => {
         try {
             let { data } = await Fetch('Property/types')
@@ -88,6 +100,7 @@ function Application({ clean, fix, close }) {
             // console.log("building error: ", error)
         }
     }
+    
     const fetchStates = async () => {
         try {
             let data = await (await fetch("http://locationsng-api.herokuapp.com/api/v1/states")).json()
@@ -99,34 +112,41 @@ function Application({ clean, fix, close }) {
         }
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const handleApplicationSubmit = async ( data ) => {
         setLoading(true)
-        const data = {
-            register: userDetails
-        }
-        console.log(data);
         
-        try {
-            let res = await Fetch("Application/new", "post", data);
-            console.log(res);
-            if (!data.status) {
-                setLoading(false);
-                setErrorMessage(data.message);
-                console.log(errorMessage);
-                return;
-            }
-            if (data.status != "400") {
-                setLoading(false);
-                console.log(data);
-            } else {
-                toast.error(errorMessage)
-                console.log(errorMessage);
-            }
-        } catch (error) {
-            setLoading(false)
-            toast.error(error.message)
+        if(clean) {
+            data.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.CLEAN).id
+        } else if (fix) {
+            data.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.FIX).id
+        } else {
+            data.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.VERIFY).id            
         }
+        
+        console.log({applicationTypes})
+        console.log({data})
+        
+        // try {
+        //     let res = await Fetch("Application/new", "post", data);
+        //     console.log(res);
+        //     if (!data.status) {
+        //         setLoading(false);
+        //         setErrorMessage(data.message);
+        //         console.log(errorMessage);
+        //         return;
+        //     }
+        //     if (data.status != "400") {
+        //         setLoading(false);
+        //         console.log(data);
+        //     } else {
+        //         toast.error(errorMessage)
+        //         console.log(errorMessage);
+        //     }
+            
+        // } catch (error) {
+        //     setLoading(false)
+        //     toast.error(error.message)
+        // }
     }
 
 
@@ -139,6 +159,7 @@ function Application({ clean, fix, close }) {
         
         fetchBuildingTypes();
         fetchStates();
+        fetchApplicationTypes();  
     }, [])
 
   return (
@@ -169,12 +190,8 @@ function Application({ clean, fix, close }) {
                     <Formik
                         enableReinitialize={true}
                         initialValues={userDetails}
-                        onSubmit={(values, { setSubmitting }) => {
-                            // setTimeout(() => {
-                            //     alert(JSON.stringify(values, null, 2));
-                            //     setSubmitting(false);
-                            // }, 400);
-                            alert(JSON.stringify(values, null, 2));
+                        onSubmit={ async (values, { setSubmitting }) => {
+                            await handleApplicationSubmit(values)
                         }}
                     >
                         <Form>
@@ -187,17 +204,17 @@ function Application({ clean, fix, close }) {
                                     </div>
                                     
                                     <div className="input-box">
-                                        <label htmlFor="typeofBuilding" className="input-label">What type of building is it?</label>
+                                        <label htmlFor="propertyId" className="input-label">What type of building is it?</label>
                                         <div className="select-box">
-                                            <Field name="typeofBuilding" as="select" className="formfield">
+                                            <Field name="propertyId" as="select" className="formfield">
                                                 <option>Choose an option</option>
                                                 { buildingType.map((_building, index) => {
-                                                    return <option key={index} value={_building.name}>{ _building.name }</option> 
+                                                    return <option key={index} value={_building.id}>{ _building.name }</option> 
                                                 })}
                                             </Field>
                                             <div className="arrows"></div>
                                         </div>
-                                        <ErrorMessage name="typeofBuilding" />
+                                        <ErrorMessage name="propertyId" />
                                     </div>
                                     <div className="input-box">
                                         <label htmlFor="stateofBuilding" className="input-label">What is the state of the building?</label>
@@ -214,15 +231,7 @@ function Application({ clean, fix, close }) {
                                     </div>
                                     <div className="input-box">
                                         <label htmlFor="timeforCleaning" className="input-label">When do you want the cleaning done?</label>
-                                        <div className="select-box">
-                                            <Field name="timeforCleaning" as="select" className="formfield">
-                                                <option>Choose an option</option>
-                                                { buildingType.map((_building, index) => {
-                                                    return <option key={index} value={_building.name}>{ _building.name }</option> 
-                                                })}
-                                            </Field>
-                                            <div className="arrows"></div>
-                                        </div>
+                                        <Field name="timeforCleaning" type="date" placeholder="" className="formfield" />
                                         <ErrorMessage name="timeforCleaning" />
                                     </div>
                                     
@@ -260,9 +269,9 @@ function Application({ clean, fix, close }) {
                                         <div className={`tab ${type == BuildingType.COMMERCIAL ? "active" : ""}`} onClick={() => selectType(BuildingType.COMMERCIAL)}> Commercial </div>
                                     </div>
                                     <div className="input-box">
-                                        <label htmlFor="typeofBuilding" className="input-label">What type of building is it?</label>
+                                        <label htmlFor="propertyId" className="input-label">What type of building is it?</label>
                                         <div className="select-box">
-                                            <Field name="typeofBuilding" as="select" className="formfield">
+                                            <Field name="propertyId" as="select" className="formfield">
                                                 <option>Choose an option</option>
                                                 { buildingType.map((_building, index) => {
                                                     return <option key={index} value={_building.name}>{ _building.name }</option> 
@@ -270,10 +279,10 @@ function Application({ clean, fix, close }) {
                                             </Field>
                                             <div className="arrows"></div>
                                         </div>
-                                        <ErrorMessage name="typeofBuilding" />
+                                        <ErrorMessage name="propertyId" />
                                     </div>
                                     <div className="input-box">
-                                        <label htmlFor="stateofBuilding" className="input-label">What type of building is it?</label>
+                                        <label htmlFor="stateofBuilding" className="input-label">What is the state of the building?</label>
                                         <div className="select-box">
                                             <Field name="stateofBuilding" as="select" className="formfield">
                                                 <option>Choose an option</option>
@@ -289,6 +298,11 @@ function Application({ clean, fix, close }) {
                                         <label htmlFor="fixDescription" className="input-label">What do you need us to fix?</label>
                                         <Field name="fixDescription" as="textarea" placeholder="An detailed explanation of what we need to do" className="formfield textarea" />
                                         <ErrorMessage name="fixDescription" />
+                                    </div>
+                                    <div className="input-box">
+                                        <label htmlFor="fixDate" className="input-label">When do you want us to fix it?</label>
+                                        <Field name="fixDate" type="date" placeholder="" className="formfield" />
+                                        <ErrorMessage name="fixDate" />
                                     </div>
                                     <div className="counter-pad">
                                         <div className="counter-label">Number of Rooms</div>

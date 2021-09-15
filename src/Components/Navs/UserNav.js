@@ -86,9 +86,9 @@ function UserNav() {
 								</ul>
 							</div>
 						</li>
-						{data.user  ?
+						{ data.user  ?
 							<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
-							{data.user.firstName}
+							{ data.user.firstName }
 							<div className="avatar">
 								<img src alt />
 							</div>

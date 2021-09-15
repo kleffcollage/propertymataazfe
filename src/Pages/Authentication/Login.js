@@ -8,7 +8,7 @@ import Spinner from "../../Utilities/Spinner";
 
 function Login() {
 	const history = useHistory();
-	const { data, setUser } = useContext(MainContext);
+	const { data, setUser, setApplication } = useContext(MainContext);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
 	const [loading, setLoading] = useState(false);
@@ -19,6 +19,16 @@ function Login() {
 		setLoginDetails({ ...loginDetails, [name]: value });
 		console.log(loginDetails);
 	};
+	
+	const getApplicationTypes = async () => {
+		try {
+		  let { data } = await Fetch("Application/types");
+		//   data = await data.json();
+		  setApplication(data);
+		} catch (error) {
+		  console.log(error);
+		}
+	  };
 	
 	const logUserIn = async (e) => {
 		setLoading(true);

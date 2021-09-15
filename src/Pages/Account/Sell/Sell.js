@@ -90,7 +90,7 @@ function Sell() {
 								<img src="/asset/buyorsell.png" alt />
 							</div>
 							<div className="infos">
-								You currently have no properties listed for sale.{" "}
+								You currently have no properties listed for sale.
 							</div>
 							<button className="secondary-btn w-75" onClick={openModalBox}>
 								+ Add Property
@@ -106,7 +106,7 @@ function Sell() {
 							</button>
 						</div>
 						<div className="row">
-							{isProperty.map((property, i) => {
+							{ isProperty.filter(p => p.isForSale ).map((property, i) => {
 								return (
 									<PropertyCard property={property} seeMore={seeDetails} deleteProperty={deleteProperty} />
 								);
