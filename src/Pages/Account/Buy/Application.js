@@ -76,8 +76,11 @@ function ApplicationForm({ property, isRentForm, close }) {
 		console.log(applicationTypes)
 		
 		try {
-			const { workId, passport} = values.register
-			if(workId == null && passport == null ) return
+			// const { workId, passport} = values.register
+			// if(workId == null || passport == null ) {
+			// 	toast.info("Please, upload a copy of work Id and a passport.")
+			// 	return
+			// }
 			
 			let data = await Fetch("Application/new", "post", values);
 			console.log("Enquire Rent:", data);
