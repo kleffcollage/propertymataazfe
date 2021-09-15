@@ -13,8 +13,8 @@ function ApplicationForm({ property, isRentForm, close }) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const {user, setApplicationType} = useContext(MainContext)
-  console.log(user);
+  const user = useContext(MainContext)
+  console.log({user});
   const [applicationTypes, setApplicationTypes] = useState([]);
   const [mediafiles, setMediaFiles ] = useState({
 	passport: null,
@@ -56,7 +56,6 @@ function ApplicationForm({ property, isRentForm, close }) {
 		  	let { data } = await Fetch("Application/types");
 			// console.log("Application types: ", data);
 		  	setApplicationTypes(data);
-			setApplicationType(data)
 		} catch (error) {
 		  console.log(error);
 		}

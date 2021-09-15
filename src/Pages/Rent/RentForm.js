@@ -40,9 +40,6 @@ function RentForm({ close }) {
 	const [rentDetails, setRentDetails] = useState({
 		name: "",
 		title: "",
-		listerName: "",
-		email: "",
-		mobileNumber: "",
 		address: "",
 		state: "",
 		lga: "",
@@ -50,10 +47,9 @@ function RentForm({ close }) {
 		description: "",
 		sellMySelf: false,
 		price: 0,
-		tenantType: "",
+		tenantTypeId: 0,
+		rentCollectionTypeId: 0,
 		tenantAnnualIncome: "",
-		rentCollection: "",
-		interest: "",
 		numberOfBedrooms: 0,
 		numberOfBathrooms: 0,
 		isDraft: false,
@@ -73,6 +69,8 @@ function RentForm({ close }) {
 	const [states, setStates] = useState([]);
 	const [lgas, setLgas] = useState([]);
 	const [cities, setCities] = useState([]);
+	const [tenantType, setTenantTypes] = useState([]);
+	const [rentCollection, setRentCollection] = useState([]);
 
 	const handleOnChange = (e) => {
 		// showAlert("success", "Something toasted", "Everything works ");
@@ -219,41 +217,63 @@ function RentForm({ close }) {
 		});
 		console.log("LongAndLat: ", results);
 	};
+	
+	const getTenantTypes = async () => {
+		try {
+		const { status, data } = await Fetch("Property/tenants/types");
+		if (!status) return;
+		setTenantTypes(data);
+		} catch (error) {
+		console.log(error);
+		}
+	};
+	const getRentCollection = async () => {
+		try {
+			const {status, data} = await Fetch("Property/collection/types");
+			// console.log(data)
+			if (!status) return;
+			setRentCollection(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const submitRentRequest = async (e) => {
 		
 		e.preventDefault();
 		setLoading(true);
-		console.log({rentDetails});
+		// console.log({rentDetails});
 		
 		
-		// try {
-		// 	var data = await Fetch("Property/create", "post", rentDetails);
-		// 	console.log('Rent property: ', data);
-		// 	if (!data.status) {
-		// 		setLoading(false);
-		// 		setErrormessage(data.message);
-		// 		return;
-		// 	}
-		// 	if (data.status != 400) {
-		// 		setLoading(false);
-		// 		//   setListingDetails({});
-		// 		close(true);
-		// 		// history.push("/rent");
-		// 		toast.error(data.message);
-		// 		// history.push("/sell");
-		// 		// await currentStep();
-		// 		return
-		// 	}
-		// 	// history.push("/rent");
-		// 	toast.success("Property Successfully added.");
-		// 	handleValidationErrors(data.errors);
-		// 	setLoading(false);
+		try {
+			var data = await Fetch("Property/create", "post", rentDetails);
+			console.log('Rent property: ', data);
+			if (!data.status) {
+				setLoading(false);
+				setErrormessage(data.message);
+				toast.error(data.message);
+				return;
+			}
+			if (data.status != 400) {
+				setLoading(false);
+				//   setListingDetails({});
+				close(true);
+				toast.success("Property Successfully added.");
+				history.push("/my-mattaz");
+				// history.push("/sell");
+				// await currentStep();
+				return
+			}
 			
-		// } catch (error) {
-		// 	setLoading(false)
-		// 	console.error(error)
-		// }
+			toast.success(data.message);
+			history.push("/my-mattaz");
+			handleValidationErrors(data.errors);
+			setLoading(false);
+			
+		} catch (error) {
+			setLoading(false)
+			console.error(error)
+		}
 		
 	};
 
@@ -315,14 +335,16 @@ function RentForm({ close }) {
 	};
 //   console.log(NaijaStates.lgas("oyo"));
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getPropertyTypes();
-      // await getStates();
-    };
-	
-    fetchData();
-  }, []);
+	useEffect(() => {
+		const fetchData = async () => {
+			await getPropertyTypes();
+			await getTenantTypes();
+			await getRentCollection();
+			// await getStates();
+		};
+		
+		fetchData();
+	}, []);
 
   const handleValidationErrors = (errors) => {
     var ValidationErrors = errors;
@@ -645,15 +667,17 @@ function RentForm({ close }) {
 					<div className="input-label">Type</div>
 					<div className="select-box">
 						<select
-							name="tenantType"
-							value={rentDetails.tenantType}
+							name="tenantTypeId"
+							value={rentDetails.tenantTypeId}
 							onChange={handleOnChange}
 							className="formfield"
 						>
-							<option value="" selected disabled>
-								Individual, family, company, choose
+							<option selected disabled>
+								Choose an option
 							</option>
-							<option value=""></option>
+							{ tenantType.map((type, i) => {
+								return <option value={type.id}>{type.name}</option>
+							})}
 						</select>
 						<div className="arrows" />
 					</div>
@@ -675,16 +699,16 @@ function RentForm({ close }) {
 					<div className="input-label">How Frequently do you want to collect rent?</div>
 					<div className="select-box">
 						<select
-							name="rentCollection"
-							value={rentDetails.rentCollection}
+							name="rentCollectionTypeId"
+							value={rentDetails.rentCollectionTypeId}
 							onChange={handleOnChange}
 							className="formfield"
 						>
 							<option value="" selected disabled>
-								Weekly, monthly, yearly
+								Choose option: Weekly, monthly, yearly
 							</option>
-							{propertyTypes.map((type, i) => {
-							return <option value={type.id}>{type.name}</option>;
+							{rentCollection.map((type, i) => {
+								return <option value={type.id}>{type.name}</option>;
 							})}
 						</select>
 						<div className="arrows" />
@@ -702,9 +726,9 @@ function RentForm({ close }) {
 							<option selected disabled>
 								Choose your bank
 							</option>
-							<option value="1"> GTB </option>
-							<option value="2"> ACCESS </option>
-							<option value="3"> POLARIS </option>
+							<option value="gtb"> GTB </option>
+							<option value="access"> ACCESS </option>
+							<option value="polaris"> POLARIS </option>
 						</select>
 						<div className="arrows" />
 					</div>
@@ -721,117 +745,7 @@ function RentForm({ close }) {
 					/>
 				</div>
 				
-				<button className="secondary-btn" onClick={() => setStep(step + 1)}>
-					Next
-				</button>
-			</form>
-			
-		) : step == 3 ? (
-			
-			<form className="content-section mt-4">
-				<div className="input-box">
-					<div className="input-label">Your Full Name</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Your name"
-						value={rentDetails.listerName}
-						name="listerName"
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Your Email</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Your email"
-						name="email"
-						value={rentDetails.email}
-						onChange={handleOnChange}
-					/>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Your Mobile Number</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Enter your active mobile number"
-						name="mobileNumber"
-						value={rentDetails.mobileNumber}
-						onChange={handleOnChange}
-					/>
-				</div>
-				{/* <div className="input-box">
-					<div className="input-label">Propery Type</div>
-					<div className="select-box">
-						<select
-							name="propertyTypeId"
-							value={rentDetails.propertyTypeId}
-							onChange={handleOnChange}
-							className="formfield"
-						>
-							<option value="" selected disabled>
-								Choose a property type
-							</option>
-							{propertyTypes.map((type, i) => {
-								return <option value={type.id}>{type.name}</option>;
-							})}
-						</select>
-						<div className="arrows" />
-					</div>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Property Address</div>
-					<input
-						type="text"
-						className="formfield"
-						placeholder="Enter the address of the property you want to list"
-						name="address"
-						value={rentDetails.address}
-						onChange={handleOnChange}
-					/>
-				</div> */}
-				<div className="input-box">
-					<div className="input-label">Nature of Interest in Property</div>
-					<div className="select-box">
-						<select
-							name="interest"
-							value={rentDetails.interest}
-							onChange={handleOnChange}
-							className="formfield"
-						>
-							<option value="" selected disabled>
-								Owner, Agent, Lawyer etc
-							</option>
-							<option value="owner">Owner</option>
-							<option value="agent">Agent</option>
-						</select>
-						<div className="arrows" />
-					</div>
-				</div>
-				<div className="input-box">
-					<div className="input-label">Proposed Inspection Date</div>
-					<div className="select-box">
-						<input
-							type="date"
-							className="formfield"
-							placeholder="A date and time when we can come see the property"
-							name="inspectionDate"
-							value={rentDetails.inspectionDate}
-							onChange={handleOnChange}
-						/>
-					</div>
-				</div>
 				<div className="joint-btn mg">
-					{/* <button
-					className="no-color-btn draft"
-					onClick={() => {
-						setRentDetails({ ...rentDetails, isDraft: true });
-					}}
-					>
-					{drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
-					</button> */}
 					<button
 						className="secondary-btn draft"
 						type="submit"
@@ -841,6 +755,7 @@ function RentForm({ close }) {
 					</button>
 				</div>
 			</form>
+			
 		) : null}
     </div>
   );
