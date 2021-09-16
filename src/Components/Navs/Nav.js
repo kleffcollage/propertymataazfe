@@ -58,7 +58,7 @@ function Nav() {
 							<Link to="/login">Verify</Link>
 						</li>
 						<li>
-							<Link to="/login">Get Loan</Link>
+							<Link to="/login">Get Rent Loan</Link>
 						</li>
 						<li className={`${getNavLinkClass("/login")}`}>
 							<Link to="/login">Login</Link>

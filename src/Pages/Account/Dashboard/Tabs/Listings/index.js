@@ -20,7 +20,7 @@ const Listings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        console.log('For Sale P: ', data)
+        // console.log('For Sale P: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -29,7 +29,7 @@ const Listings = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setIsForSale(data.data)
+            setIsForSale(data.data.value)
             // console.log('Properties sale: ', data.data)
             setLoading(false)
             return
@@ -39,7 +39,7 @@ const Listings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        console.log('For Rent P: ', data)
+        // console.log('For Rent P: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -48,7 +48,7 @@ const Listings = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setIsForRent(data.data)
+            setIsForRent(data.data.value)
             // console.log('Req rents: ', data.data)
             setLoading(false)
             return

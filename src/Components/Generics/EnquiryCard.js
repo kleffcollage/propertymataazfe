@@ -2,7 +2,7 @@ import React from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 
-export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
+export default function EnquiryCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);
@@ -20,47 +20,49 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
         seeMore(property.id);
         await incrementView(property.id);
     };
+    console.log({property})
 
     return (
+        
         <>
-        {(property.isDraft == true && !isProperty)  ? null : (
+        { (property.isDraft == true && !isProperty)  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
                     <div className="listing-cover-img">
                         <img
                             src={
-                                property.mediaFiles && property.mediaFiles.length > 0
+                                property.property.mediaFiles.length !== 0
                                     ? property.mediaFiles[0].url
                                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
                         />
-                        <div className="listing-location">{property.area}</div>
+                        <div className="listing-location">{property.property.area}</div>
                     </div>
                     <div className="listing-info">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.name}</div>
+                            <div className="listing-title mb-3">{property.property.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">
                                 <i className="far fa-bed" />
                                 <div className="feature-title">
-                                    {`${property.numberOfBedrooms} Bedrooms`}
+                                    {`${property.property.numberOfBedrooms} Bedrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-toilet" />
                                 <div className="feature-title">
-                                    {`${property.numberOfBathrooms} Bathrooms`}
+                                    {`${property.property.numberOfBathrooms} Bathrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title">{`₦${property.price}`}</div>
+                                <div className="feature-title">{`₦${property.property.price }`}</div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />
                                 <div className="feature-title">
-                                    {property.propertyType.toLowerCase()}
+                                    { property.property.propertyType.name.toLowerCase()}
                                 </div>
                             </div>
                         </div>
@@ -77,7 +79,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                             <button
                                 className="list-color-btn"
                                 onClick={() => {
-                                    seeMore(property.id);
+                                    seeMore(property.property.id);
                                 }}
                             >
                                 Details
