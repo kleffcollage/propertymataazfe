@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Wrapper } from "./Rent.styles";
 import Fetch from "../../../../../Utilities/Fetch";
-import ListedCard from "../../../../../Components/Generics/ListedCard";
+import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
@@ -32,7 +32,7 @@ const Rent = () => {
         if(data.status != 400) {
             setLoading(true)
             setIsProperty(data.data.value)
-            console.log('Properties: ', data.data.value)
+            console.log('Enquired Properties: ', data.data.value)
             setLoading(false)
             return
         }
@@ -51,7 +51,7 @@ const Rent = () => {
         if(data.status != 400) {
             setLoading(true)
             setRequestRents(data.data.value)
-            console.log('Req rents: ', data.data.value)
+            console.log('Requested rents: ', data.data.value)
             setLoading(false)
             return
         }
@@ -74,14 +74,16 @@ const Rent = () => {
                     <>
                         <div className="my-3">
                             <h5 className="mb-3">Enquiries</h5>
-                            { isProperty.length == 0 
+                            { isProperty.length === 0 
                                 ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
                                 : <>
-                                    { isProperty.map((property, index) => {
-                                        return (
-                                            <ListedCard property={property} seeMore={showDetails} key={index} />                    
-                                        )
-                                    })}
+                                    <div className="row">
+                                        { isProperty.map((property, index) => {
+                                            return (
+                                                <EnquiryCard property={property} seeMore={showDetails} key={index}  />                   
+                                            )
+                                        })}
+                                    </div>
                                 </>
                             }
                             
@@ -90,16 +92,18 @@ const Rent = () => {
                         <div className="my-3">
                             <h5 className="mb-3">Requests</h5>
                             
-                            { requestRents.length == 0 
+                            {/* { requestRents.length === 0 
                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                 : <>
-                                    { requestRents.map((rents, index) => {
-                                        return (
-                                            <ListedCard property={rents} seeMore={showDetails} key={index} />                    
-                                        )
-                                    })}
+                                    <div className="row">
+                                        { requestRents.map((rents, index) => {
+                                            return (
+                                                <EnquiryCard property={rents} seeMore={showDetails} key={index}  />                   
+                                            )
+                                        })}
+                                    </div>
                                 </>
-                            }
+                            } */}
                         </div>
                     </>
                 )
