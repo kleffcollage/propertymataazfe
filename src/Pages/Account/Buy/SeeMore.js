@@ -12,7 +12,7 @@ import { MainContext } from "../../../Context/MainContext";
 
 
 
-export const SeeMore = ({ setSeeMore, propertyId, seller, tenant }) => {
+export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => {
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
@@ -171,7 +171,7 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant }) => {
                   <div className="contact-number">segepampam@gmail.com.com</div>
                 </div>
               </div>
-            ) : (
+            ) : !isDraft ? (
               <Link
                 to={ tenant ? `/rent/enquires/${propertyDetails.id}` : `/buy/enquires/${propertyDetails.id}`}
                 className="list-color-btn w-100 mt-4 mb-3f"
@@ -181,7 +181,7 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant }) => {
               >
                 Enquire
               </Link>
-            )}
+            ) : null}
 
             <div className="overview-section">
               <h2 className="property-info">Overview</h2>

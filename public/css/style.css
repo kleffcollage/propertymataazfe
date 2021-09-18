@@ -1020,6 +1020,11 @@ p.fil:last-of-type {
   padding: 1rem 1rem 0.5rem;
 }
 
+.listing-info.for-sell {
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: calc(145px - 57px);
+}
+
 .listing-title {
   color: #252427;
   font-family: "Baloo Bhai 2";

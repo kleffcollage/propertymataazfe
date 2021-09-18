@@ -28,7 +28,7 @@ function Sell() {
 
 		if (data.status != 400) {
 			setLoading(true);
-			setIsProperty(data.data);
+			setIsProperty(data.data.value);
 			setLoading(false);
 			return;
 		}
@@ -105,10 +105,10 @@ function Sell() {
 								+ Add Property
 							</button>
 						</div>
-						<div className="row">
+						<div className="row pt-4">
 							{ isProperty.filter(p => p.isForSale ).map((property, i) => {
 								return (
-									<PropertyCard property={property} seeMore={seeDetails} deleteProperty={deleteProperty} />
+									<PropertyCard key={i} property={property} seeMore={seeDetails} deleteProperty={deleteProperty} />
 								);
 							})}
 						</div>

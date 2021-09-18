@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import Dropzone from "react-dropzone";
@@ -9,13 +10,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
+// console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
-function SellAdd({ close }) {
+function SellAdd({ close, existingProperty = {} }) {
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
@@ -24,8 +26,9 @@ function SellAdd({ close }) {
   const [step, setStep] = useState("a");
   const [bedroomCounter, setBedroomCounter] = useState(0);
   const [bathroomCounter, setBathroomCounter] = useState(0);
+  console.log({existingProperty})
 
-  console.log(NaijaStates.states());
+  // console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
     Name: [],
     PropertyTypeId: [],
@@ -37,78 +40,62 @@ function SellAdd({ close }) {
     Area: [],
     Price: [],
   });
-  const [listingDetails, setListingDetails] = useState({
-    name: "",
-    title: "",
-    address: "",
-    state: "",
-    lga: "",
-    area: "",
-    description: "",
+  
+  const [data, setData] = useState({
+    state: existingProperty.state ? existingProperty.state : "",
+    isDraft: existingProperty.isDraft ? existingProperty.isDraft : false,
+    sellMySelf: existingProperty.sellMySelf ? existingProperty.sellMySelf : false,
+    mediafiles: [],
+    longitude: existingProperty.longitude ? existingProperty.longitude : 0,
+    latitude: existingProperty.latitude ? existingProperty.latitude : 0,
+  });
+  
+  const listingDetails = {
+    name: existingProperty.name ? existingProperty.name : "",
+    title: existingProperty.title ? existingProperty.title : "",
+    address: existingProperty.address ? existingProperty.address : "",
+    state: existingProperty.state ? existingProperty.state : "",
+    lga: existingProperty.lga ? existingProperty.lga : "",
+    area: existingProperty.area ? existingProperty.area : "",
+    description: existingProperty.description ? existingProperty.description : "",
     sellMySelf: false,
-    price: 0,
-    numberOfBedrooms: 0,
-    numberOfBathrooms: 0,
+    price: existingProperty.price ? existingProperty.price : 0,
+    numberOfBedrooms: existingProperty.numberOfBedrooms ? existingProperty.numberOfBedrooms : bedroomCounter,
+    numberOfBathrooms: existingProperty.numberOfBathrooms ? existingProperty.numberOfBathrooms : bathroomCounter,
     isDraft: false,
-    isActive: true,
-    isForRent: false,
-    isForSale: true,
-    propertyTypeId: 0,
+    isActive: existingProperty.isActive ? existingProperty.isActive : true,
+    isForRent: existingProperty.isForRent ? existingProperty.isForRent : false,
+    isForSale: existingProperty.isForSale ? existingProperty.isForSale : true,
+    propertyTypeId: existingProperty.propertyTypeId ? existingProperty.propertyTypeId : 0,
     mediafiles: [],
     longitude: 0,
     latitude: 0,
-  });
+  };
+  // FIX: existingProperty.propertyType ? propertyTypes && propertyTypes.first(t => t.name == existingProperty.propertyType).id : 0,
 
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [states, setStates] = useState([]);
   const [lgas, setLgas] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const handleOnChange = (e) => {
-    // showAlert("success", "Something toasted", "Everything works ");
-    const { name, value } = e.target;
-    setListingDetails({ ...listingDetails, [name]: value });
-    console.log(listingDetails);
-  };
-
   const bedIncrement = (e) => {
     e.preventDefault();
     setBedroomCounter(bedroomCounter + 1);
-    setListingDetails({
-      ...listingDetails,
-      numberOfBedrooms: bedroomCounter + 1,
-    });
-    console.log(listingDetails);
   };
 
   const bedDecrement = (e) => {
     e.preventDefault();
     setBedroomCounter((bedroomCounter) => Math.max(bedroomCounter - 1, 1));
-    setListingDetails({
-      ...listingDetails,
-      numberOfBedrooms: Math.max(bedroomCounter - 1, 1),
-    });
-    console.log(listingDetails);
   };
 
   const bathIncrement = (e) => {
     e.preventDefault();
     setBathroomCounter(bathroomCounter + 1);
-    setListingDetails({
-      ...listingDetails,
-      numberOfBathrooms: bathroomCounter + 1,
-    });
-    console.log(listingDetails);
   };
 
   const bathDecrement = (e) => {
     e.preventDefault();
     setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
-    setListingDetails({
-      ...listingDetails,
-      numberOfBathrooms: Math.max(bathroomCounter - 1, 1),
-    });
-    console.log(listingDetails);
   };
 
   const currentStep = async () => {
@@ -166,9 +153,9 @@ function SellAdd({ close }) {
 
     files.push(newMedia);
     console.log(files);
-    setListingDetails({
-      ...listingDetails,
-      mediafiles: [...listingDetails.mediafiles, newMedia],
+    setData({
+      ...data,
+      mediafiles: [...data.mediafiles, newMedia],
     });
   };
 
@@ -199,35 +186,60 @@ function SellAdd({ close }) {
       console.log(error);
     }
   };
-
+  
   const getLongAndLat = async (address) => {
     const { results } = await Geocode.fromAddress(address);
-    setListingDetails({
-      ...listingDetails,
+    setData({
+      ...data,
       latitude: results[0].geometry.location.lat,
       longitude: results[0].geometry.location.lng,
     });
     console.log(results);
   };
-
-  const submitListingDetails = async (e) => {
-    console.log(listingDetails);
-    e.preventDefault();
-    setLoading(true);
-    // await getLongAndLat(listingDetails.address);
-    // console.log(listingDetails);
+  
+  const updateListingDetails = async (values) => {
+    values.id = existingProperty.id
     
     try {
-      var data = await Fetch("Property/create", "post", listingDetails);
-      console.log(data);
+      var response = await Fetch("Property/update", "post", values);
+      console.log(response);
       
-      if (!data.status) {
+      if (!response.status) {
         setLoading(false);
-        setErrormessage(data.message);
-        toast.error(data.message);
+        setErrormessage(response.message);
+        toast.error(response.message);
         return;
       }
-      if (data.status != 400) {
+      if (response.status != 400) {
+        setLoading(false);
+        // setListingDetails({});
+        close(true);
+        toast.success("Property successfully updated.");
+        history.go(0);
+        // history.push("/sell");
+        await currentStep();
+        return
+      }
+      handleValidationErrors(response.errors);
+      setLoading(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
+  const createListingDetails = async values => {
+    try {
+      var response = await Fetch("Property/create", "post", values);
+      console.log(response);
+      
+      if (!response.status) {
+        setLoading(false);
+        setErrormessage(response.message);
+        toast.error(response.message);
+        return;
+      }
+      if (response.status != 400) {
         setLoading(false);
         // setListingDetails({});
         close(true);
@@ -237,12 +249,36 @@ function SellAdd({ close }) {
         await currentStep();
         return
       }
-      handleValidationErrors(data.errors);
+      handleValidationErrors(response.errors);
       setLoading(false);
       
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const submitListingDetails = async (values) => {
+    console.log({listingDetails});
+    setLoading(true);
+    // await getLongAndLat(listingDetails.address);
+    // console.log(listingDetails);
+    
+    
+    values.sellMySelf = data.sellMySelf 
+    values.state = data.state
+    values.isDraft = false
+    values.isForSale = true
+    values.mediafiles = data.mediafiles
+    values.numberOfBathrooms = bathroomCounter
+    values.numberOfBedrooms = bedroomCounter
+    
+    console.log({values})
+    
+    if(existingProperty.name) {
+      await updateListingDetails(values)
+      return
+    }
+    await createListingDetails(values);
     
   };
 
@@ -269,25 +305,48 @@ function SellAdd({ close }) {
       reader.readAsDataURL(file);
     });
   };
+  
+  // TODO: provide user option to toggle draft
 
-  const submitListingToDraft = async (e) => {
-    console.log(listingDetails);
-    e.preventDefault();
+  const submitListingToDraft = async (values) => {
     setDrafting(true);
-    var data = await Fetch("Property/create", "post", listingDetails);
-    console.log(data);
-    if (!data.status) {
-      setDrafting(false);
-      setErrormessage(data.message);
-      return;
+    
+    values.sellMySelf = data.sellMySelf 
+    values.state = data.state
+    values.isDraft = data.isDraft
+    values.isForSale = false
+    values.mediafiles = data.mediafiles
+    values.numberOfBathrooms = bathroomCounter
+    values.numberOfBedrooms = bedroomCounter
+        
+    console.log({values})
+    
+    if(existingProperty.name) {
+      await updateListingDetails(values)
+      return
     }
-    if (data.status != 400) {
-      setDrafting(false);
-      setListingDetails({});
-      history.push("/sell/drafts");
+    
+    try {
+      
+      var response = await Fetch("Property/create", "post", values);
+      console.log(response);
+      if (!response.status) {
+        setDrafting(false);
+        setErrormessage(response.message);
+        return;
+      }
+      if (response.status != 400) {
+        setDrafting(false);
+        // listingDetails = {};
+        toast.success("Property saved to draft.");
+        history.push("/sell/drafts");
+      }
+      handleValidationErrors(response.errors);
+      setLoading(false);
+      
+    } catch (error) {
+      console.error(error)
     }
-    handleValidationErrors(data.errors);
-    setLoading(false);
   };
 
   const getLgas = async (state) => {
@@ -305,25 +364,6 @@ function SellAdd({ close }) {
     }
   };
 
-  const getCities = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-      );
-      data = await data.json();
-      console.log(data);
-      if (data.status != 404) {
-        setCities(data);
-        handleValidationErrors(data.errors);
-        setLoading(false);
-      }
-      setCities([...cities, state]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  console.log(NaijaStates.lgas("oyo"));
-
   useEffect(() => {
     const fetchData = async () => {
       await getPropertyTypes();
@@ -339,7 +379,7 @@ function SellAdd({ close }) {
 
   return (
     <div>
-      <Alert />
+      {/* <Alert /> */}
       <div className="top-section">
         <div className="back">
           <i className="fas fa-chevron-left" />
@@ -360,308 +400,276 @@ function SellAdd({ close }) {
           <img src="/asset/logo.png" alt="Logo" />
         </div>
       </div>
-      {step == "a" ? (
-        <form className="content-section mt-4">
-          {/* {errors ? (
-						<div className="text-center mb-2">
-							<span className="text-danger text-center">
-								Please Check.... One or More Field is Incorrect
-							</span>
-						</div>
-					) : null} */}
-
-          <div className="input-box">
-            <div className="input-label">Name</div>
-            <input
-              type="text"
-              className="formfield"
-              placeholder="Give your listing a name that makes it easy to find"
-              name="name"
-              onChange={handleOnChange}
-            />
-          </div>
-
-          <div className="input-box">
-            <div className="input-label">Type</div>
-            <div className="select-box">
-              <select
-                name="propertyTypeId"
-                onChange={handleOnChange}
-                className="formfield"
-              >
-                <option value="" selected disabled>
-                  Choose a property type
-                </option>
-                {propertyTypes.map((type, i) => {
-                  return <option value={type.id}>{type.name}</option>;
-                })}
-              </select>
-              <div className="arrows" />
-            </div>
-          </div>
-
-          <div className="input-box">
-            <div className="input-label">Property Title</div>
-            <input
-              type="text"
-              className="formfield"
-              placeholder="Give your listing a name that makes it easy to find"
-              name="title"
-              onChange={handleOnChange}
-            />
-          </div>
-          <div className="input-box">
-            <div className="input-label">State</div>
-            <div className="select-box">
-              <select
-                name="state"
-                className="formfield"
-                onChange={async (e) => {
-                  await getLgas(e.target.value);
-                  await getCities(e.target.value);
-                  setListingDetails({
-                    ...listingDetails,
-                    state: e.target.value,
-                  });
-                }}
-              >
-                <option value="" selected disabled>
-                  What state in Nigeria do you want the property
-                </option>
-                {NaijaStates.states().map((state, i) => {
-                  return <option value={state}>{state}</option>;
-                })}
-              </select>
-              <div className="arrows" />
-            </div>
-          </div>
-          <div className="input-box">
-            <div className="input-label">Locality (Optional)</div>
-            {listingDetails.state ? (
-              <div className="select-box">
-                <select
-                  name="lga"
-                  onChange={handleOnChange}
-                  className="formfield"
-                >
-                  <option value="" selected disabled>
-                    Choose a locality
-                  </option>
-                  {NaijaStates.lgas(listingDetails.state).lgas.map((lga, i) => {
-                    return <option value={lga}>{lga}</option>;
-                  })}
-                </select>
-                <div className="arrows" />
-              </div>	
-            ) : null}
-          </div>
-
-          <div className="input-box">
-            <div className="input-label">Area (Optional)</div>
-            <div className="select-box">
-              <select
-                name="area"
-                className="formfield"
-                onChange={handleOnChange}
-              >
-                <option value="" selected disabled>
-                  Choose an area
-                </option>
-                {cities.map((city, i) => {
-                  return <option value={city}>{city}</option>;
-                })}
-              </select>
-              <div className="arrows" />
-            </div>
-          </div>
-          <div className="input-box">
-            <div className="input-label">Address</div>
-            <input
-              type="text"
-              className="formfield"
-              placeholder="House No, Street, Estate"
-              name="address"
-              onChange={handleOnChange}
-            />
-          </div>
-          <div class="input-box">
-            <div class="input-label">Description</div>
-            <textarea
-              type="text"
-              class="formfield textarea"
-              cols="10"
-              placeholder="Description"
-              name="description"
-              onChange={handleOnChange}
-            >
-              {/* Description */}
-            </textarea>
-          </div>
-          <div className="checkbox">
-            <input
-              type="checkbox"
-              id="sell"
-              name="sellMyself"
-              onChange={(e) => {
-                console.log(e.target.checked);
-                setListingDetails({
-                  ...listingDetails,
-                  sellMySelf: e.target.checked,
-                });
-              }}
-            />
-            <label htmlFor="sell" className="checktext">
-              I want to sell myself
-            </label>
-          </div>
-          <div className="checkbox">
-            <input type="checkbox" id="buy" name="firstName" />
-            <label htmlFor="buy" className="checktext">
-              Help me sell
-            </label>
-            <i className="fas fa-info-circle ml-2" />
-          </div>
-          <button className="secondary-btn" onClick={currentStep}>
-            Next
-          </button>
-        </form>
-      ) : step == "b" ? (
-        <form className="content-section mt-4" onSubmit={submitListingToDraft}>
-          <div className="input-box">
-            <div className="input-label">Price</div>
-            <input
-              type="text"
-              className="formfield mb-3"
-              placeholder="₦0.00"
-              name="price"
-              onChange={handleOnChange}
-            />
-          </div>
-
-          <Dropzone
-            accept="image/jpeg, image/png"
-            maxFiles={6}
-            onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div
-                  {...getRootProps()}
-                  className={
-                    listingDetails.mediafiles.filter((m) => m.isImage).length >
-                    0
-                      ? "do-upload uploaded"
-                      : "do-upload"
-                  }
-                >
-                  <input {...getInputProps()} />
-                  {listingDetails.mediafiles.filter((m) => m.isImage).length >
-                  0 ? (
-                    <>
-                      <i className="far fa-check" />
-                      {`${
-                        listingDetails.mediafiles.filter((m) => m.isImage)
-                          .length
-                      }  Pictures Uploaded`}
-                    </>
-                  ) : (
-                    <>
-                      <i className="far fa-image" />
-                      'Upload pictures'
-                    </>
-                  )}
+      
+      <Formik
+        initialValues={listingDetails}
+        onSubmit={ async (values, { setSubmitting }) => {
+          if(data.isDraft === true) {
+            await submitListingToDraft(values)
+            return
+          }
+          await submitListingDetails(values)
+          // console.log({values})
+          // alert(JSON.stringify(values, null, 2));
+        }}
+      >
+        <Form>
+          {step == "a" ? (
+            <div className="content-section mt-4">
+              {/* {errors ? (
+                <div className="text-center mb-2">
+                  <span className="text-danger text-center">
+                    Please Check.... One or More Field is Incorrect
+                  </span>
                 </div>
-              </section>
-            )}
-          </Dropzone>
-          <Dropzone
-            accept="video/mp4"
-            maxFiles={6}
-            onDrop={(acceptedFiles) => grabUploadedVideoFile(acceptedFiles)}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div
-                  {...getRootProps()}
-                  className={
-                    listingDetails.mediafiles.filter((m) => m.isVideo).length >
-                    0
-                      ? "do-upload uploaded"
-                      : "do-upload"
-                  }
-                >
-                  <input {...getInputProps()} />
-                  {listingDetails.mediafiles.filter((m) => m.isVideo).length >
-                  0 ? (
-                    <>
-                      <i className="far fa-check" />
-                      {`${
-                        listingDetails.mediafiles.filter((m) => m.isVideo)
-                          .length
-                      }  Videos Uploaded`}
-                    </>
-                  ) : (
-                    <>
-                      <i className="far fa-video" />
-                      Upload Videos
-                    </>
-                  )}
+              ) : null} */}
+              
+              <div className="input-box">
+                <label htmlFor="name" className="input-label">Name</label>
+                <Field name="name" placeholder="Give your listing a name that makes it easy to find" className="formfield" />
+                <ErrorMessage name="name" />
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="propertyTypeId" className="input-label">Type</label>
+                <div className="select-box">
+                    <Field name="propertyTypeId" as="select" className="formfield">
+                      <option> Choose a property type </option>
+                      {propertyTypes.map((type, i) => {
+                        return <option key={i} value={type.id}>{type.name}</option>;
+                      })}
+                    </Field>
+                    <div className="arrows"></div>
                 </div>
-              </section>
-            )}
-          </Dropzone>
-          <div className="counter-pad">
-            <div className="counter-label">Bedrooms</div>
-            <div className="counter-box">
-              <button className="countbtn" onClick={bedDecrement}>
-                -
-              </button>
-              <input
-                className="countbox"
-                value={bedroomCounter}
-                name="numberOfBedrooms"
-              />
-              <button className="countbtn" onClick={bedIncrement}>
-                +
+                <ErrorMessage name="propertyTypeId" />
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="title" className="input-label">Property Title</label>
+                <Field name="title" placeholder="Give your listing a name that makes it easy to find" className="formfield" />
+                <ErrorMessage name="title" />
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="state" className="input-label">State</label>
+                <div className="select-box">
+                  <Field name="state" as="select" value={data.state} className="formfield"
+                    onChange={ (e) => {
+                      setData({
+                        ...data,
+                        state: e.target.value,
+                      });
+                    }}
+                  >
+                      <option disabled> What state in Nigeria do you want the property </option>
+                      { NaijaStates.states().map((state, i) => {
+                        return <option key={i} value={state}>{state}</option>;
+                      })}
+                  </Field>
+                  <div className="arrows"></div>
+                </div>
+                <ErrorMessage name="state" />
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="lga" className="input-label">Locality (Optional)</label>
+                {data.state ? (
+                  <>
+                  <div className="select-box">
+                      <Field name="lga" as="select" className="formfield">
+                        <option>Choose an locality</option>
+                        {NaijaStates.lgas(data.state).lgas.map((lga, i) => {
+                          return <option key={i*2} value={lga}>{lga}</option>;
+                        })}
+                      </Field>
+                      <div className="arrows"></div>
+                  </div>
+                  <ErrorMessage name="lga" />
+                  </>
+                ): null }
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="area" className="input-label">Area (Optional)</label>
+                <Field name="area" placeholder="Your area" className="formfield " />
+                <ErrorMessage name="area" />
+              </div>
+              
+              <div className="input-box">
+                  <label htmlFor="address" className="input-label">Address</label>
+                  <Field name="address" type="text" placeholder="House No, Street, estate number" className="formfield" />
+                  <ErrorMessage name="address" />
+              </div>
+              
+              <div className="input-box">
+                <label htmlFor="description" className="input-label">Description</label>
+                <Field name="description" as="textarea" placeholder="Description" className="formfield textarea" />
+                <ErrorMessage name="description" />
+              </div>
+              
+              
+              <div className="checkbox">
+                <input type="checkbox" id="sell" name="sellMySelf"
+                  onChange={(e) => {
+                    setData({
+                      ...data,
+                      sellMySelf: e.target.checked,
+                    });
+                  }} 
+                />
+                <label htmlFor="sellMySelf" className="checktext">
+                  I want to sell myself
+                </label>
+              </div>
+              
+              <div className="checkbox">
+                <input type="checkbox" id="buy" name="firstName" />
+                <label htmlFor="buy" className="checktext">
+                  Help me sell
+                </label>
+                <i className="fas fa-info-circle ml-2" />
+              </div>
+              
+              <button className="secondary-btn" onClick={currentStep}>
+                Next
               </button>
             </div>
-          </div>
-          <div className="counter-pad">
-            <div className="counter-label">Bathrooms</div>
-            <div className="counter-box">
-              <button className="countbtn" onClick={bathDecrement}>
-                -
-              </button>
-              <input
-                className="countbox"
-                value={bathroomCounter}
-                name="numberOfBathrooms"
-                onChange={handleOnChange}
-              />
-              <button className="countbtn" onClick={bathIncrement}>
-                +
-              </button>
+          ) : step == "b" ? (
+            <div className="content-section mt-4">
+              <div className="input-box">
+                <label htmlFor="price" className="input-label">Price</label>
+                <Field name="price" type="text" placeholder="₦0.00" className="formfield" />
+                <ErrorMessage name="price" />
+              </div>
+
+              <Dropzone
+                accept="image/jpeg, image/png"
+                maxFiles={6}
+                onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div
+                      {...getRootProps()}
+                      className={
+                        data.mediafiles.filter((m) => m.isImage).length >
+                        0
+                          ? "do-upload uploaded"
+                          : "do-upload"
+                      }
+                    >
+                      <input {...getInputProps()} />
+                      {data.mediafiles.filter((m) => m.isImage).length >
+                      0 ? (
+                        <>
+                          <i className="far fa-check" />
+                          {`${
+                            data.mediafiles.filter((m) => m.isImage)
+                              .length
+                          }  Pictures Uploaded`}
+                        </>
+                      ) : (
+                        <>
+                          <i className="far fa-image" />
+                          Upload pictures
+                        </>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+              
+              <Dropzone
+                accept="video/mp4"
+                maxFiles={6}
+                onDrop={(acceptedFiles) => grabUploadedVideoFile(acceptedFiles)}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div
+                      {...getRootProps()}
+                      className={
+                        data.mediafiles.filter((m) => m.isVideo).length >
+                        0
+                          ? "do-upload uploaded"
+                          : "do-upload"
+                      }
+                    >
+                      <input {...getInputProps()} />
+                      {data.mediafiles.filter((m) => m.isVideo).length >
+                      0 ? (
+                        <>
+                          <i className="far fa-check" />
+                          {`${
+                            data.mediafiles.filter((m) => m.isVideo)
+                              .length
+                          }  Videos Uploaded`}
+                        </>
+                      ) : (
+                        <>
+                          <i className="far fa-video" />
+                          Upload Videos
+                        </>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+              
+              <div className="counter-pad">
+                <div className="counter-label">Bedrooms</div>
+                <div className="counter-box">
+                  <button className="countbtn" onClick={bedDecrement}>
+                    -
+                  </button>
+                  <input
+                    className="countbox"
+                    value={bedroomCounter}
+                    name="numberOfBedrooms"
+                  />
+                  <button className="countbtn" onClick={bedIncrement}>
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="counter-pad">
+                <div className="counter-label">Bathrooms</div>
+                <div className="counter-box">
+                  <button className="countbtn" onClick={bathDecrement}>
+                    -
+                  </button>
+                  <input
+                    className="countbox"
+                    value={bathroomCounter}
+                    name="numberOfBathrooms"
+                  />
+                  <button className="countbtn" onClick={bathIncrement}>
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="joint-btn mg">
+                <button
+                  className="no-color-btn draft"
+                  type="submit"
+                  onClick={() => {
+                    setData({ ...data, isDraft: true });
+                  }}
+                >
+                  {drafting ? <Spinner color={"primary"} /> : existingProperty.name ? "Update draft" : "Save to Draft"}
+                </button>
+                
+                <button
+                  className="color-btn draft"
+                  type="submit"
+                >
+                  { loading ? <Spinner /> : existingProperty.name ? "Update" : "Submit" }
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="joint-btn mg">
-            <button
-              className="no-color-btn draft"
-              onClick={() => {
-                setListingDetails({ ...listingDetails, isDraft: true });
-              }}
-            >
-              {drafting ? <Spinner color={"primary"} /> : "Save to Draft"}
-            </button>
-            <button
-              className="color-btn draft"
-              type="submit"
-              onClick={submitListingDetails}
-            >
-              {loading ? <Spinner /> : "Submit"}
-            </button>
-          </div>
-        </form>
-      ) : null}
+          ) : null}
+        </Form>
+      </Formik>
     </div>
   );
 }

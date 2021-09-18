@@ -10,16 +10,18 @@ import Spinner from "../../../Utilities/Spinner";
 
 function ApplicationForm({ property, isRentForm, close }) {
 
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const user = useContext(MainContext)
-  console.log({user});
-  const [applicationTypes, setApplicationTypes] = useState([]);
-  const [mediafiles, setMediaFiles ] = useState({
-	passport: null,
-	workId: null,
-  });
+	const [page, setPage] = useState(1);
+	const [loading, setLoading] = useState(false)
+	const [errorMessage, setErrorMessage] = useState('')
+	const user = useContext(MainContext)
+	const applicationTypes = useContext(MainContext)
+	// console.log({user});
+	// console.log({applicationTypes});
+//   const [applicationTypes, setApplicationTypes] = useState([]);
+	const [mediafiles, setMediaFiles ] = useState({
+		passport: null,
+		workId: null,
+	});
   
 	const userDetails = {
 		register: {
@@ -55,7 +57,7 @@ function ApplicationForm({ property, isRentForm, close }) {
 		try {
 		  	let { data } = await Fetch("Application/types");
 			// console.log("Application types: ", data);
-		  	setApplicationTypes(data);
+		  	// setApplicationTypes(data);
 		} catch (error) {
 		  console.log(error);
 		}
@@ -72,7 +74,9 @@ function ApplicationForm({ property, isRentForm, close }) {
 		
 		console.log({values});
 		
-		values.applicationTypeId = applicationTypes.find( type => type.name == "RENT").id
+		const { data } = applicationTypes
+		// console.log(data.applicationTypes)
+		values.applicationTypeId = data.applicationTypes.find( type => type.name == "RENT").id
 		console.log(applicationTypes)
 		
 		try {
