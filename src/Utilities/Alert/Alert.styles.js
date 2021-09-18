@@ -40,6 +40,7 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
     font-family: "Baloo Bhai 2";
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;

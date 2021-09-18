@@ -5,14 +5,16 @@ import { SRLWrapper } from "simple-react-lightbox-pro";
 import { MapView } from "../../../Components/Generics/MapView";
 import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
+import Pay from "./Pay";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
-  console.log(propertyId);
+  // console.log(propertyId);
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [seeMore, setSeeMore] = useState(false)
+  const [seeMore, setSeeMore] = useState(false);
+  const [payModal, setPayModal ] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
 
   const getPropertyDetails = async () => {
@@ -33,7 +35,10 @@ function Enquires({ isRent }) {
   };
   useEffect(() => {
     getPropertyDetails();
+    
   }, []);
+  
+  
   return (
     <>
     	<Modal
@@ -43,11 +48,15 @@ function Enquires({ isRent }) {
 				}}
 			>
         
-        <ApplicationForm property={propertyDetails} isRentForm={isRent} close={() => setSeeMore(false)} /> 
+        <ApplicationForm property={propertyDetails} isRentForm={isRent} propertyId={propertyId} close={() => setSeeMore(false)} /> 
         
 			</Modal>
       
-    <div className="row">
+      <Modal open={payModal} onClose={() => setPayModal(false)}>
+        <Pay close={() => setPayModal(false)} property={propertyDetails} />
+      </Modal>
+      
+    <div className="row mt-5">
       <div className="col-lg-4">
         <div className="steps passed">
           <div className="steps-show">
@@ -94,7 +103,7 @@ function Enquires({ isRent }) {
               <i className="far fa-paper-plane" />
               Submit Application
             </button>
-            <button className="single-step">
+            <button className="single-step" onClick={() => setPayModal(true)}>
               <i className="far fa-lock" />
               Pay securely
             </button>

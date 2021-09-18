@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Wrapper } from "./Rent.styles";
 import Fetch from "../../../../../Utilities/Fetch";
 import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
+import RequestCard from "../../../../../Components/Generics/RequestCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
@@ -92,18 +93,18 @@ const Rent = () => {
                         <div className="my-3">
                             <h5 className="mb-3">Requests</h5>
                             
-                            {/* { requestRents.length === 0 
+                            { requestRents.length === 0 
                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                 : <>
                                     <div className="row">
                                         { requestRents.map((rents, index) => {
                                             return (
-                                                <EnquiryCard property={rents} seeMore={showDetails} key={index}  />                   
+                                                <RequestCard property={rents} seeMore={showDetails} key={index} />                   
                                             )
                                         })}
                                     </div>
                                 </>
-                            } */}
+                            }
                         </div>
                     </>
                 )

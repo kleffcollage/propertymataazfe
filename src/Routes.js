@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Buy from "./Pages/Account/Buy/Buy";
 import Enquires from "./Pages/Account/Buy/Enquires";
+import ConfirmPay from "./Pages/Account/Buy/ConfirmPay";
 import Drafts from "./Pages/Account/Sell/Drafts";
 import Sell from "./Pages/Account/Sell/Sell";
 import Login from "./Pages/Authentication/Login";
@@ -86,6 +87,7 @@ const ROUTES = [
 		],
 	},
 	{ path: "/my-mattaz", key: "ROOT", exact: true, component: () => <Dashboard /> },
+	{ path: "/payment-confirm", key: "ROOT", exact: true,  component: () => <ConfirmPay /> },
 ];
 export default ROUTES;
 

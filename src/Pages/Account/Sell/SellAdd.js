@@ -656,7 +656,7 @@ function SellAdd({ close, existingProperty = {} }) {
                     setData({ ...data, isDraft: true });
                   }}
                 >
-                  {drafting ? <Spinner color={"primary"} /> : existingProperty.name ? "Update draft" : "Save to Draft"}
+                  {drafting ? <Spinner color={"primary"} /> : existingProperty.name ? "Update draft`" : "Save to Draft"}
                 </button>
                 
                 <button

@@ -11,6 +11,10 @@ body {
 
 a { text-decoration: none; }
 
+button:disabled {
+  cursor: not-allowed
+}
+
 .text-right {
   text-align: right;
 }
@@ -456,7 +460,7 @@ ul.footer i {
   font-family: "Baloo Bhai 2";
   font-size: 14px;
   letter-spacing: -0.47px;
-  line-height: 23px;
+  line-height: 45px;
   outline: 0;
   margin-bottom: 2rem;
 }
@@ -988,6 +992,10 @@ p.fil:last-of-type {
   position: relative;
 }
 
+.listing-cards.for-request {
+  min-height: 12rem;
+}
+
 .listing-cards:hover {
   border: 3.78px solid rgba(0, 66, 255, 0.34);
   border-radius: 7.56px;
@@ -1023,6 +1031,10 @@ p.fil:last-of-type {
 .listing-info.for-sell {
   padding: 1rem 1rem 0.5rem;
   margin-bottom: calc(145px - 57px);
+}
+.listing-info.for-request {
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: calc(100px - 57px);
 }
 
 .listing-title {
@@ -2561,6 +2573,40 @@ h6.relief-preview-title {
 }
 .relief-preview .tab .rate {
   font-size: 0.873rem;
+}
+
+/* Pay securely */
+.pay-modal-wrap {
+  font-family: "Baloo Bhai 2";
+  color: #212121;
+}
+
+.pay-modal-wrap .name {
+  font-weight: 600;
+  color: #191919;
+  border-bottom: 1px dashed #979797;
+}
+
+.pay-modal-wrap .bill h5 {
+  color: #252427;
+  font-size: 1rem;
+}
+.pay-modal-wrap .bill p {
+  color: #252427;
+  font-weight: 500;
+}
+
+.pay-modal-wrap .total {
+  color: #121212;
+  font-size: 1rem;
+}
+.pay-modal-wrap .total h5 {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.pay-modal-wrap .total p {
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .term-condition {
