@@ -3,9 +3,26 @@ import { toast } from "react-toastify";
 import { Statuses } from "../../Utilities/Enums";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
+import Alert from "../../Utilities/Alert/index";
+import Modal from "../../Utilities/Modal";
+import SellAdd from "../../Pages/Account/Sell/SellAdd";
 
 const PropertyCard = ({ property = {}, seeMore }) => {
 	const [deleting,setDeleting] = useState(false)
+	const [alert, showAlert] = useState(false)
+	const [editModal, setEditModal] = useState(false)
+	
+	const openAlert = () => {
+		showAlert( prev => !prev)
+	}
+	
+	const open = () => {
+		setEditModal(!editModal)
+	}
+	
+	const close = () => {
+		setEditModal(false)
+	}
 
 	const deActivate = async(id) =>{
 		try{
@@ -27,6 +44,12 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 	} 
 	return (
 		<>
+			<Alert showAlert={alert} setShowAlert={showAlert} callback={() => deActivate(property.id)} isDelete={true} loading={deleting} />
+			
+			<Modal open={editModal} onClose={() => setEditModal(false)}>
+				<SellAdd close={close} existingProperty={property} />
+			</Modal>
+			
 			{property.isDraft === true ? null : (
 				<div className="col-lg-3">
 					<div className="listing-cards">
@@ -39,7 +62,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 								}
 								alt={property.name}
 							/>
-							<div className="listing-location">{property.area}</div>
+							<div className="listing-location">{property.area ? property.area : property.state }</div>
 						</div>
 						<div
 							className={`tag ${
@@ -57,11 +80,11 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 									? "Live"
 									: "Listing is pending"}
 							</div>
-							<div className="status">
+							<div className="status" onClick={open}>
 								Edit <i className="fas fa-pen ml-2" />
 							</div>
 						</div>
-						<div className="listing-info">
+						<div className="listing-info for-sell">
 							<div className="title-group">
 								<div className="listing-title mb-3">{property.name}</div>
 							</div>
@@ -90,21 +113,17 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 								</div>
 							</div>
 						</div>
-						<div className="line" />
-						<div className="listing-info pt-0">
-							<div className="listing-btn">
-								<button className="list-no-color-btn" onClick={() => {
-										seeMore(property.id);
-									}}>Details</button>
-								<button
-									className="list-no-color-btn"
-									onClick={() => {
-										deActivate(property.id);
-									}}
-								>
-									{deleting ? <Spinner color='primary'/> : "Delete" }
-								</button>
-							</div>
+						<div className="listing-btn">
+							<button className="list-no-color-btn" onClick={() => {
+									seeMore(property.id);
+								}}>Details</button>
+								
+							<button
+								className="list-no-color-btn"
+								onClick={openAlert}
+							>
+								Delete
+							</button>
 						</div>
 					</div>
 				</div>

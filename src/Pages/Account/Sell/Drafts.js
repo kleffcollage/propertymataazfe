@@ -29,7 +29,7 @@ function Drafts() {
 
 		if (data.status != 400) {
 			setLoading(true);
-			setIsProperty(data.data);
+			setIsProperty(data.data.value);
 			setLoading(false);
 			return;
 		}
@@ -63,7 +63,7 @@ function Drafts() {
 					setSeeMore(false);
 				}}
 			>
-				<SeeMore propertyId={propertyId} setSeeMore={setSeeMore} />
+				<SeeMore propertyId={propertyId} setSeeMore={setSeeMore} isDraft={true} />
 			</Modal>
 			<Modal open={listings} onclose={close}>
 				<SellAdd close={close} />
