@@ -9,7 +9,7 @@ import { Wrapper, Content } from "./styles";
 import Moment from "react-moment";
 
 
-const DateWrap = ({ dates, close }) => {
+const DateWrap = ({ dates ={}, setSelectedDate={}, close }) => {
     console.log(dates.date)
     const a = new Date(dates.date)
     console.log(a)
@@ -17,10 +17,10 @@ const DateWrap = ({ dates, close }) => {
     return  (
         <Wrapper>
             <Content>
-                <Box className="py-3 mx-2" display="flex" flexDirection="column" alignItems="center">
-                    <h6>SUN</h6>
+                <Box className="py-3 mx-2" display="flex" flexDirection="column" alignItems="center" onClick={() => setSelectedDate(dates)}>
+                    <h6><Moment format="ddd" date={ new Date(dates.date) } /> </h6>
                     <p className="mb-1">
-                        <Moment format="D MMM YYYY"> { new Date(dates.date) } </Moment>
+                        <Moment format="MMM DD" date={ new Date(dates.date) } /> 
                     </p>
                 </Box>
             </Content>

@@ -7,6 +7,9 @@ import { MainContext } from "../../../../Context/MainContext";
 import Fetch from "../../../../Utilities/Fetch";
 import Spinner from "../../../../Utilities/Spinner";
 import DateWrap from "./Date";
+import { Wrapper } from "./styles";
+import Moment from "react-moment";
+import moment from "moment";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -38,6 +41,7 @@ const ScheduleInspect = ({ close }) => {
     const [loading, setLoading ] = useState(false);
     const [inspectDate, setInspectDate] = useState([]);
     const [tab, setTab] = useState("person");
+    const [selectedDate, setSelectedDate ] = useState(null);
     
     const currentTab = (tab) => {
         setTab(tab)
@@ -112,7 +116,7 @@ const ScheduleInspect = ({ close }) => {
                             }}
                         >
                             <Form>
-                                <h5 className="field-title">Select a date</h5>
+                                <h5 className="field-title pl-2">Select a date</h5>
                                 <div className="mb-5">
                                     <Carousel
                                         arrows={true}
@@ -128,32 +132,41 @@ const ScheduleInspect = ({ close }) => {
                                             ? (
                                                 <Spinner size={40} color={"primary"} />
                                             ) : (
-                                                <>
+                                                <Wrapper>
                                                     { inspectDate.map((date, i) => {
                                                         return (
-                                                            <DateWrap key={i} dates={date} /> 
+                                                            <DateWrap key={i} dates={date} setSelectedDate={setSelectedDate} /> 
                                                         )
                                                     })}
-                                                </>
+                                                </Wrapper>
                                             )
                                         }
                                         
                                     </Carousel>
                                 </div>
                                 
-                                <div className="input-box">
-                                    <label htmlFor="time" className="input-label">Select a time</label>
-                                    <div className="select-box">
-                                        <Field name="time" as="select" className="formfield">
-                                            <option>9:00 am</option>
-                                            <option>10:00 am </option>
-                                            <option>11:00 am </option>
-                                            <option>12:00 am </option>
-                                        </Field>
-                                        <div className="arrows"></div>
+                                {selectedDate &&
+                                    <div className="input-box">
+                                        <label htmlFor="time" className="input-label">Select a time</label>
+                                        <div className="select-box">
+                                            <Field name="time" as="select" className="formfield">
+                                                {selectedDate.times.map((time, i) => {
+                                                    const formattedTime = moment(time.time).format('LT')
+                                                    console.log({time})
+                                                    return (
+                                                        // <Moment format="h:m" date="2021-08-13T02:42:04.584" /> 
+                                                        <option key={i} value={time.id}>
+                                                            {formattedTime}
+                                                            {/* <Moment format="h:m" date="2021-08-13T02:42:04.584" />  */}
+                                                        </option>
+                                                    )
+                                                })}
+                                            </Field>
+                                            <div className="arrows"></div>
+                                        </div>
+                                        <ErrorMessage name="time" />
                                     </div>
-                                    <ErrorMessage name="time" />
-                                </div>
+                                }
                             </Form>
                         
                         </Formik>
@@ -165,6 +178,8 @@ const ScheduleInspect = ({ close }) => {
             
         </>
     )
+    
+    
 }
 
 
