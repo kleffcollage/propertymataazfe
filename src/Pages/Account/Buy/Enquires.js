@@ -7,6 +7,7 @@ import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
 import Pay from "./Pay";
 import ScheduleInspect from "./Schedule/ScheduleInspect";
+import Reciept from "./Receipt";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
@@ -17,6 +18,7 @@ function Enquires({ isRent }) {
   const [seeMore, setSeeMore] = useState(false);
   const [payModal, setPayModal ] = useState(false);
   const [scheduleModal, setScheduleModal ] = useState(false);
+  const [openReceipt, setOpenReceipt ] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
 
   const getPropertyDetails = async () => {
@@ -43,23 +45,31 @@ function Enquires({ isRent }) {
   
   return (
     <>
+      {/* Application modal */}
     	<Modal
 				open={seeMore}
 				onClose={() => {
 				setSeeMore(false);
 				}}
-			>
-        
+			>        
         <ApplicationForm property={propertyDetails} isRentForm={isRent} propertyId={propertyId} close={() => setSeeMore(false)} /> 
-        
 			</Modal>
       
+      
+      {/* Payment modal */}
       <Modal open={payModal} onClose={() => setPayModal(false)}>
         <Pay close={() => setPayModal(false)} property={propertyDetails} />
       </Modal>
       
+      
+      {/* Schedule inspection component  */}
       <Modal open={scheduleModal} onClose={() => setScheduleModal(false)}>
         <ScheduleInspect close={() => setScheduleModal(false)} property={propertyDetails} />
+      </Modal>
+      
+      {/* View receipt modal */}
+      <Modal open={openReceipt} onClose={() => setOpenReceipt(false)}>
+        <Reciept close={() => setOpenReceipt(false)} property={propertyDetails} />
       </Modal>
       
     <div className="row mt-5">
@@ -124,7 +134,7 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 3 - Confirmation</h2>
-            <button className="single-step">
+            <button className="single-step" onClick={() => setOpenReceipt(true)}>
               <i className="far fa-scroll" />
               View Reciept
             </button>

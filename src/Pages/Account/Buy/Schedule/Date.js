@@ -20,7 +20,7 @@ const DateWrap = ({ dates, close }) => {
                 <Box className="py-3 mx-2" display="flex" flexDirection="column" alignItems="center">
                     <h6>SUN</h6>
                     <p className="mb-1">
-                        <Moment format="D MMM YYYY"> { a } </Moment>
+                        <Moment format="D MMM YYYY"> { new Date(dates.date) } </Moment>
                     </p>
                 </Box>
             </Content>

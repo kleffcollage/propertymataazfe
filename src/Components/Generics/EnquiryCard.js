@@ -20,6 +20,7 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
         seeMore(property.id);
         await incrementView(property.id);
     };
+    
     console.log({property})
 
     return (
@@ -32,7 +33,7 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                         <img
                             src={
                                 property.property.mediaFiles.length !== 0
-                                    ? property.mediaFiles[0].url
+                                    ? property.property.mediaFiles[0].url
                                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
                         />

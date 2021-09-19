@@ -66,27 +66,19 @@ function Reciept({ property, close,  }) {
 			<div className="content-section mt-4">
 				<div className="pay-modal-wrap">
 					<div className="name py-3 mb-4">
-						<h5>Tenancy Payment Receipt</h5>
+						<h5>Payment Receipt</h5>
 					</div>
-					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
-						<h5 className="mb-0">Cost of Unit</h5>
-						<p className="amount mb-0">₦145,000,000</p>
-					</Box>
-					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
-						<h5 className="mb-0">Fees</h5>
-						<p className="amount mb-0">₦325,000</p>
-					</Box>
-					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
-						<h5 className="mb-0">Taxes</h5>
-						<p className="amount mb-0">₦32,500</p>
-					</Box>
-					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="total my-2">
-						<h5 className="mb-0">Total</h5>
-						<p className="amount mb-0">₦145,467,903</p>
-					</Box>
+					<div className="d-flex receipt-wrap">
+						<div className="icon">image </div>
+						<div className="item">
+							{`Purchase of ${property.name}, ${property.city}`}
+						</div>
+					</div>
 				</div>
 				
-				<button className="secondary-btn mt-5" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Pay Securely" }</button>
+				<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="total my-2">
+					<button className="secondary-btn mt-5" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Pay Securely" }</button>
+				</Box>
 			</div>
     	</div>
 
