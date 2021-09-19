@@ -6,6 +6,7 @@ import { MapView } from "../../../Components/Generics/MapView";
 import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
 import Pay from "./Pay";
+import ScheduleInspect from "./Schedule/ScheduleInspect";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
@@ -15,6 +16,7 @@ function Enquires({ isRent }) {
   const [loading, setLoading] = useState(false);
   const [seeMore, setSeeMore] = useState(false);
   const [payModal, setPayModal ] = useState(false);
+  const [scheduleModal, setScheduleModal ] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
 
   const getPropertyDetails = async () => {
@@ -56,6 +58,10 @@ function Enquires({ isRent }) {
         <Pay close={() => setPayModal(false)} property={propertyDetails} />
       </Modal>
       
+      <Modal open={scheduleModal} onClose={() => setScheduleModal(false)}>
+        <ScheduleInspect close={() => setScheduleModal(false)} property={propertyDetails} />
+      </Modal>
+      
     <div className="row mt-5">
       <div className="col-lg-4">
         <div className="steps passed">
@@ -71,7 +77,7 @@ function Enquires({ isRent }) {
               <i className="far fa-video" />
               Watch Interactive 3D Videos
             </button>
-            <button className="single-step">
+            <button className="single-step" onClick={() => setScheduleModal(true)}>
               <i className="far fa-calendar" />
               Schedule Live Inspection
             </button>
