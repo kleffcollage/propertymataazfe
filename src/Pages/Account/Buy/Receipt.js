@@ -5,6 +5,9 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import { FaRegCreditCard, FaRegCalendarAlt, FaStoreAlt } from "react-icons/fa"
+import { MdStoreMallDirectory } from "react-icons/md"
+import { RiShoppingCartLine } from "react-icons/ri"
 
 
 function Reciept({ property, close,  }) {
@@ -12,7 +15,7 @@ function Reciept({ property, close,  }) {
 	const [loading, setLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
-	// console.log(property)
+	console.log({property})
 	
 	const price = 0.75 * property.price
 	
@@ -68,16 +71,39 @@ function Reciept({ property, close,  }) {
 					<div className="name py-3 mb-4">
 						<h5>Payment Receipt</h5>
 					</div>
-					<div className="d-flex receipt-wrap">
-						<div className="icon">image </div>
-						<div className="item">
-							{`Purchase of ${property.name}, ${property.city}`}
+					<div className="d-flex receipt-wrap my-2">
+						<div className="icon"> <RiShoppingCartLine /> </div>
+						<div className="item ml-3 px-2">
+							<p className="">{`Purchase of ${property.name}, ${property.state}, ${property.lga}`}</p>
+							<p className="mt-2">{property.price}</p>
+						</div>
+					</div>
+					<div className="d-flex receipt-wrap my-2">
+						<div className="icon"> <MdStoreMallDirectory /> </div>
+						<div className="item ml-3 px-2">
+							<p className="section-heading mb-0">Paid To</p>
+							<p className="">PropertyMataaz Limited</p>
+						</div>
+					</div>
+					<div className="d-flex receipt-wrap my-2">
+						<div className="icon"> <FaRegCalendarAlt /> </div>
+						<div className="item ml-3 px-2">
+							<p className="section-heading mb-0">Date</p>
+							<p className="">10 Apr 2021  9:42 GMT+1</p>
+						</div>
+					</div>
+					<div className="d-flex receipt-wrap my-2">
+						<div className="icon"> <FaRegCreditCard /> </div>
+						<div className="item ml-3 px-2">
+							<p className="section-heading mb-0">Payment Method</p>
+							<p className="">Mastercard - 1175</p>
 						</div>
 					</div>
 				</div>
 				
-				<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="total my-2">
-					<button className="secondary-btn mt-5" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Pay Securely" }</button>
+				<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="mt-4">
+					<button className="btn-outlined mr-2" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Download" }</button>
+					<button className="btn-outlined ml-2" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Print" }</button>
 				</Box>
 			</div>
     	</div>

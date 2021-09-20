@@ -10,6 +10,7 @@ import DateWrap from "./Date";
 import { Wrapper } from "./styles";
 import Moment from "react-moment";
 import moment from "moment";
+import { Box } from "@material-ui/core";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -118,6 +119,7 @@ const ScheduleInspect = ({ close }) => {
                             <Form>
                                 <h5 className="field-title pl-2">Select a date</h5>
                                 <div className="mb-5">
+                                    
                                     <Carousel
                                         arrows={true}
                                         draggable={true}
@@ -125,9 +127,16 @@ const ScheduleInspect = ({ close }) => {
                                         infinite={true}
                                         autoPlaySpeed={1000}
                                         keyBoardControl={true}
-                                        itemClass="w-auto"
                                         responsive={responsive}
+                                        itemClass=""
                                     >
+                                        {/* <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
+                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box> */}
                                         { loading 
                                             ? (
                                                 <Spinner size={40} color={"primary"} />
@@ -137,7 +146,7 @@ const ScheduleInspect = ({ close }) => {
                                                         return (
                                                             <DateWrap key={i} dates={date} setSelectedDate={setSelectedDate} /> 
                                                         )
-                                                    })}
+                                                    }) }
                                                 </Wrapper>
                                             )
                                         }

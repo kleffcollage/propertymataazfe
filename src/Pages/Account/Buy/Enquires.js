@@ -8,6 +8,7 @@ import ApplicationForm from "./Application";
 import Pay from "./Pay";
 import ScheduleInspect from "./Schedule/ScheduleInspect";
 import Reciept from "./Receipt";
+import Documentation from "./Documents";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
@@ -19,6 +20,7 @@ function Enquires({ isRent }) {
   const [payModal, setPayModal ] = useState(false);
   const [scheduleModal, setScheduleModal ] = useState(false);
   const [openReceipt, setOpenReceipt ] = useState(false);
+  const [openDocumentation, setOpenDocumentation ] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
 
   const getPropertyDetails = async () => {
@@ -70,6 +72,11 @@ function Enquires({ isRent }) {
       {/* View receipt modal */}
       <Modal open={openReceipt} onClose={() => setOpenReceipt(false)}>
         <Reciept close={() => setOpenReceipt(false)} property={propertyDetails} />
+      </Modal>
+      
+      {/* View Documentation modal */}
+      <Modal open={openDocumentation} onClose={() => setOpenDocumentation(false)}>
+        <Documentation close={() => setOpenDocumentation(false)} property={propertyDetails} />
       </Modal>
       
     <div className="row mt-5">
@@ -138,7 +145,7 @@ function Enquires({ isRent }) {
               <i className="far fa-scroll" />
               View Reciept
             </button>
-            <button className="single-step">
+            <button className="single-step" onClick={() => setOpenDocumentation(true)}>
               <i className="far fa-file-alt" />
               View Documentation
             </button>

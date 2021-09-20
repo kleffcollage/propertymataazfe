@@ -2609,6 +2609,51 @@ h6.relief-preview-title {
   font-size: 1rem;
 }
 
+/* Receipt & Documentation */
+.receipt-wrap .icon {
+  width: 30px;
+  opacity: 0.5;
+  color: #252427;
+  font-size: 18px;
+}
+
+.section-heading {
+  opacity: 0.5;
+  color: #252427;
+}
+
+.btn-outlined {
+  color: #ffffff;
+  font-family: "Baloo Bhai 2";
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.53px;
+  line-height: 26px;
+  text-align: center;
+  width: 100%;
+  height: 3rem;
+  border: 1px solid #DCE1E7;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: #252427;
+  outline: 0;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description h6 {
+  font-size: 1.1rem;
+}
+
+.document-wrap {
+  border: 1px solid #DCE1E7;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: #252427;
+  opacity: 0.8;
+}
 
 .term-condition {
   font-family: "Baloo Bhai 2";
