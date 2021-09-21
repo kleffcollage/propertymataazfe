@@ -54,8 +54,7 @@ function App() {
 		let user = localStorage.getItem("user");
 		setUser(JSON.parse(user));
 		console.log(JSON.parse(user));
-		
-		getApplicationTypes();
+		// getApplicationTypes();
 	}, []);
 
 	return (

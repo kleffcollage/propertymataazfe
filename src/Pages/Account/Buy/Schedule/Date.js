@@ -15,14 +15,16 @@ const DateWrap = ({ dates ={}, setSelectedDate={}, close }) => {
     console.log(a)
     
     return  (
-        <>
-            <Content className="py-3 mx-2" onClick={() => setSelectedDate(dates)}>
-                <h6><Moment format="ddd" date={ new Date(dates.date) } /> </h6>
-                <p className="mb-1">
-                    <Moment format="MMM DD" date={ new Date(dates.date) } /> 
-                </p>
+        // <Wrapper>
+            <Content>
+                <Box className="py-3 mx-2" display="flex" flexDirection="column" alignItems="center" onClick={() => setSelectedDate(dates)}>
+                    <h6><Moment format="ddd" date={ new Date(dates.date) } /> </h6>
+                    <p className="mb-1">
+                        <Moment format="MMM DD" date={ new Date(dates.date) } /> 
+                    </p>
+                </Box>
             </Content>
-        </>
+        // </Wrapper>
     )
 }
 
