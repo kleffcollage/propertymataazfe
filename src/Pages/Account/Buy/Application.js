@@ -8,7 +8,7 @@ import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 
 
-function ApplicationForm({ property, isRentForm, close }) {
+function ApplicationForm({ property, isRentForm, close, propertyId }) {
 
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false)
@@ -71,6 +71,7 @@ function ApplicationForm({ property, isRentForm, close }) {
 		
 		values.register.passport = mediafiles.passport
 		values.register.workId = mediafiles.workId
+		values.propertyId = propertyId
 		
 		console.log({values});
 		
@@ -97,6 +98,7 @@ function ApplicationForm({ property, isRentForm, close }) {
 			}
 			if (data.status != "400") {
 				setLoading(false);
+				toast.success("Application submitted successfully.")
 				console.log(data);
 			} else {
 				setLoading(false)

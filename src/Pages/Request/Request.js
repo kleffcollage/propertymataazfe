@@ -153,9 +153,10 @@ function Request() {
 		if (data.status != 400) {
 			setLoading(false);
 			setRequest({});
-			//history.push("")
-			const notify = () => toast(data.message);
-			notify();
+			toast.success(data.message)
+			history.push("/my-mattaz")
+			// const notify = () => toast(data.message);
+			// notify();
 		}
 		handleValidationErrors(data.errors);
 		setLoading(false);
@@ -165,156 +166,172 @@ function Request() {
 		setErrors({ ...errors, ...ValidationErrors });
 	};
 	return (
-		<div className="row">
+		<>
 			<form onSubmit={submitRequets}>
-				<div className="col-lg-3">
-					<div className="input-box">
-						<div className="input-label">Type</div>
-						<div className="select-box">
-							<select
-								name="propertyTypeId"
-								onChange={handleOnChange}
-								className="formfield"
-							>
-								<option value="" selected disabled>
-									Choose a property type
-								</option>
-								{propertyTypes.map((type, i) => {
-									return <option value={type.id}>{type.name}</option>;
-								})}
-							</select>
-							<div className="arrows" />
-						</div>
-					</div>
-					<div className="input-box">
-						<div className="input-label">State</div>
-						<div className="select-box">
-							<select
-								name="state"
-								className="formfield"
-								onChange={async (e) => {
-									
-									setRequest({
-										...request,
-										state: e.target.value,
-									});
-								}}
-							>
-								<option value="" selected disabled>
-									What state in Nigeria do you want the property
-								</option>
-								{NaijaStates.states().map((state, i) => {
-									return <option value={state}>{state}</option>;
-								})}
-							</select>
-							<div className="arrows" />
-						</div>
-					</div>
-					<div className="input-box">
-						<div className="input-label">Locality (Optional)</div>
-						{request.state ? (
+				<div className="row">
+					<div className="col-lg-4">
+						<div className="input-box">
+							<div className="input-label">Type</div>
 							<div className="select-box">
-							<select
-								name="lga"
-								onChange={handleOnChange}
-								className="formfield"
-							>
-								<option value="" selected disabled>
-									Choose a locality
-								</option>
-								{NaijaStates.lgas(request.state).lgas.map((lga, i) => {
-									return <option value={lga}>{lga}</option>;
-								})}
-							</select>
-							<div className="arrows" />
+								<select
+									name="propertyTypeId"
+									onChange={handleOnChange}
+									className="formfield"
+								>
+									<option value="" selected disabled>
+										Choose a property type
+									</option>
+									{propertyTypes.map((type, i) => {
+										return <option value={type.id}>{type.name}</option>;
+									})}
+								</select>
+								<div className="arrows" />
+							</div>
 						</div>
-						) : null}
-					</div>
-
-					{/* <div className="input-box">
-						<div className="input-label">Area (Optional)</div>
-						<div className="select-box">
-							<select
-								name="area"
-								className="formfield"
-								onChange={handleOnChange}
-							>
-								<option value="" selected disabled>
-									Choose an area
-								</option>
-								{cities.map((city, i) => {
-									return <option value={city}>{city}</option>;
-								})}
-							</select>
-							<div className="arrows" />
+						<div className="input-box">
+							<div className="input-label">State</div>
+							<div className="select-box">
+								<select
+									name="state"
+									className="formfield"
+									onChange={async (e) => {
+										
+										setRequest({
+											...request,
+											state: e.target.value,
+										});
+									}}
+								>
+									<option value="" selected disabled>
+										What state in Nigeria do you want the property
+									</option>
+									{NaijaStates.states().map((state, i) => {
+										return <option value={state}>{state}</option>;
+									})}
+								</select>
+								<div className="arrows" />
+							</div>
 						</div>
-					</div> */}
-					<div className="input-box">
-						<div className="input-label">Budget</div>
-						<input
-							type="text"
-							className="formfield"
-							placeholder="Give your listing a name that makes it easy to find"
-							name="budget"
-							onChange={handleOnChange}
-						/>
-					</div>
-				</div>
-				<div className="col-lg-3">
-					<div className="input-box">
-						<div className="input-label req">Comments</div>
-							<textarea
+						<div className="input-box">
+							<div className="input-label">Locality (Optional)</div>
+							{request.state ? (
+								<div className="select-box">
+								<select
+									name="lga"
+									onChange={handleOnChange}
+									className="formfield"
+								>
+									<option value="" selected disabled>
+										Choose a locality
+									</option>
+									{NaijaStates.lgas(request.state).lgas.map((lga, i) => {
+										return <option value={lga}>{lga}</option>;
+									})}
+								</select>
+								<div className="arrows" />
+							</div>
+							) : null}
+						</div>
+						<div className="input-box">
+							<div className="input-label">Area (Optional)</div>
+							<input
 								type="text"
 								className="formfield"
-								placeholder="Your Comment Here"
+								placeholder="Which area do you want your property in"
+								name="area"
+								onChange={handleOnChange}
+							/>
+						</div>
+
+						{/* <div className="input-box">
+							<div className="input-label">Area (Optional)</div>
+							<div className="select-box">
+								<select
+									name="area"
+									className="formfield"
+									onChange={handleOnChange}
+								>
+									<option value="" selected disabled>
+										Choose an area
+									</option>
+									{cities.map((city, i) => {
+										return <option value={city}>{city}</option>;
+									})}
+								</select>
+								<div className="arrows" />
+							</div>
+						</div> */}
+						<div className="input-box">
+							<div className="input-label">Comments</div>
+							<textarea
+								type="text"
+								className="formfield textarea"
+								placeholder="Type in any other useful information"
 								name="comment"
 								onChange={handleOnChange}
 							/>
-					</div>
-					<div className="counter-pad">
-						<div className="counter-label">Bedrooms</div>
-						<div className="counter-box">
-							<button className="countbtn" onClick={bedDecrement}>
-								-
-							</button>
-							<input
-								className="countbox"
-								value={bedroomCounter}
-								name="numberOfBedrooms"
-							/>
-							<button className="countbtn" onClick={bedIncrement}>
-								+
-							</button>
 						</div>
+						
+						
 					</div>
-					<div className="counter-pad">
-						<div className="counter-label">Bathrooms</div>
-						<div className="counter-box">
-							<button className="countbtn" onClick={bathDecrement}>
-								-
-							</button>
+					
+					<div className="col-lg-4">
+						<div className="input-box">
+							<div className="input-label">Budget</div>
 							<input
-								className="countbox"
-								value={bathroomCounter}
-								name="numberOfBathrooms"
+								type="text"
+								className="formfield"
+								placeholder="What is your budget for the project"
+								name="budget"
 								onChange={handleOnChange}
 							/>
-							<button className="countbtn" onClick={bathIncrement}>
-								+
-							</button>
 						</div>
-					</div>
+						
+						<div className="counter-pad">
+							<div className="counter-label">Bedrooms</div>
+							<div className="counter-box">
+								<button className="countbtn" onClick={bedDecrement}>
+									-
+								</button>
+								<input
+									className="countbox"
+									value={bedroomCounter}
+									name="numberOfBedrooms"
+								/>
+								<button className="countbtn" onClick={bedIncrement}>
+									+
+								</button>
+							</div>
+						</div>
+						<div className="counter-pad">
+							<div className="counter-label">Bathrooms</div>
+							<div className="counter-box">
+								<button className="countbtn" onClick={bathDecrement}>
+									-
+								</button>
+								<input
+									className="countbox"
+									value={bathroomCounter}
+									name="numberOfBathrooms"
+									onChange={handleOnChange}
+								/>
+								<button className="countbtn" onClick={bathIncrement}>
+									+
+								</button>
+							</div>
+						</div>
 
-					<button 
-						className="color-btn submit w-100 mt-3"
-						type="submit"
-						onClick={submitRequets}
-						>
-							{loading ? <Spinner /> : "Submit Request"}
-					</button>
+						<button 
+							className="color-btn submit w-100 mt-3"
+							type="submit"
+							onClick={submitRequets}
+							>
+								{loading ? <Spinner /> : "Submit Request"}
+						</button>
+				</div>
 				</div>
 			</form>
-		</div>
+		</>
 	);
 }
 

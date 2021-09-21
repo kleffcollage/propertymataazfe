@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
+import Alert from '../../Utilities/Alert/index';
 
-export default function EnquiryCard({ property = {}, seeMore, isProperty, requests = {} }) {
+export default function RequestCard({ property = {}, seeMore,  requests = {} }) {
+    const [ cancelModal, setCancelModal ] = useState(false)
+    
+    const open = () => {
+        setCancelModal(prev => !prev)
+    }
+    const openCancel = () => {
+        setCancelModal(prev => !prev)
+    }
+    
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);
@@ -20,50 +30,42 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
         seeMore(property.id);
         await incrementView(property.id);
     };
-    
     console.log({property})
 
     return (
-        
         <>
-        { (property.isDraft == true && !isProperty)  ? null : (
+        <Alert 
+            showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
+        />
+        
+        { (property.isDraft == true)  ? null : (
             <div className="col-lg-4">
-                <div className="listing-cards">
-                    <div className="listing-cover-img">
-                        <img
-                            src={
-                                property.property.mediaFiles.length !== 0
-                                    ? property.property.mediaFiles[0].url
-                                    : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
-                            }
-                        />
-                        <div className="listing-location">{property.property.area}</div>
-                    </div>
-                    <div className="listing-info">
+                <div className="listing-cards for-request pt-4">
+                    <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.property.name}</div>
+                            <div className="listing-title mb-3">{property.comment}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">
                                 <i className="far fa-bed" />
                                 <div className="feature-title">
-                                    {`${property.property.numberOfBedrooms} Bedrooms`}
+                                    {`${property.numberOfBedRooms} Bedrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-toilet" />
                                 <div className="feature-title">
-                                    {`${property.property.numberOfBathrooms} Bathrooms`}
+                                    {`${property.numberOfBathrooms} Bathrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title">{`₦${property.property.price }`}</div>
+                                <div className="feature-title">{`₦${property.budget }`}</div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />
                                 <div className="feature-title">
-                                    { property.property.propertyType.name.toLowerCase()}
+                                    { property.propertyType.name.toLowerCase()}
                                 </div>
                             </div>
                         </div>
@@ -71,19 +73,22 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                     {/* <div className="line" /> */}
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className="list-no-color-btn" onClick={ async () => {
-                                   await onSeeMoreClicked();
-                                }}> 
-                                See More 
+                            <button className="list-no-color-btn" 
+                                onClick={openCancel}
+                            > 
+                                Cancel
                             </button>
                                 
                             <button
                                 className="list-color-btn"
                                 onClick={() => {
-                                    seeMore(property.property.id);
+                                    seeMore(property.id);
                                 }}
+                                disabled={property.matches.length == 0}
                             >
-                                Details
+                                { property.matches.length == 0 
+                                    ? 'No matches yet' 
+                                    : `View ${property.matches.length} Matches` }
                             </button>
                         </div>
                     </div>

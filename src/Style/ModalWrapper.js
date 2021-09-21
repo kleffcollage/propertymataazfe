@@ -11,6 +11,16 @@ export const ModalWrapper = styled.div`
 	width: 40%;
 	overflow-y: auto;
 	height: 100%;
+	animation: animateModal .23s;
+    
+    @keyframes animateModal {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 	@media (max-width: 768px) {
 		width: 100%;
 	}
