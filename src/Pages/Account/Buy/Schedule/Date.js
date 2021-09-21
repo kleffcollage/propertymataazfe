@@ -15,7 +15,7 @@ const DateWrap = ({ dates ={}, setSelectedDate={}, close }) => {
     console.log(a)
     
     return  (
-        <Wrapper>
+        // <Wrapper>
             <Content>
                 <Box className="py-3 mx-2" display="flex" flexDirection="column" alignItems="center" onClick={() => setSelectedDate(dates)}>
                     <h6><Moment format="ddd" date={ new Date(dates.date) } /> </h6>
@@ -24,7 +24,7 @@ const DateWrap = ({ dates ={}, setSelectedDate={}, close }) => {
                     </p>
                 </Box>
             </Content>
-        </Wrapper>
+        // </Wrapper>
     )
 }
 
