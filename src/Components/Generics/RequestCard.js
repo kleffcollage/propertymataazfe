@@ -31,7 +31,7 @@ export default function RequestCard({ property = {}, seeMore,  requests = {} }) 
         seeMore(property.id);
         await incrementView(property.id);
     };
-    console.log({property})
+    // console.log({property})
 
     return (
         <>

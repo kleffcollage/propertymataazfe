@@ -95,8 +95,7 @@ export default function ValidatePayment() {
             </div>
             <div className="d-flex receipt-wrap my-2">
               <div className="icon">
-                {" "}
-                <FaRegCreditCard />{" "}
+                <FaRegCreditCard />
               </div>
               <div className="item ml-3 px-2">
                 <p className="section-heading mb-0">Payment Method</p>

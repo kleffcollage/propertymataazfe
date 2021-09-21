@@ -1,7 +1,8 @@
 import React from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
-import Naira from "react-naira"
+import Naira from "react-naira";
+import { HiBadgeCheck } from 'react-icons/hi';
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -38,8 +39,11 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                         <div className="listing-location">{property.area}</div>
                     </div>
                     <div className="listing-info">
-                        <div className="title-group">
-                            <div className="listing-title mb-3">{property.name}</div>
+                        <div className="title-group mb-3">
+                            <div className="listing-title ">{property.name}</div>
+                            { !property.sellMyself &&
+                                <HiBadgeCheck className="badge-verified" />
+                            }
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">

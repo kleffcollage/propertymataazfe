@@ -7,6 +7,7 @@ import Alert from "../../Utilities/Alert/index";
 import Modal from "../../Utilities/Modal";
 import SellAdd from "../../Pages/Account/Sell/SellAdd";
 import Naira from "react-naira"
+import { HiBadgeCheck } from "react-icons/hi";
 
 const PropertyCard = ({ property = {}, seeMore }) => {
 	const [deleting,setDeleting] = useState(false)
@@ -86,8 +87,11 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							</div>
 						</div>
 						<div className="listing-info for-sell">
-							<div className="title-group">
-								<div className="listing-title mb-3">{property.name}</div>
+							<div className="title-group mb-3">
+								<div className="listing-title ">{property.name}</div>
+								{ !property.sellMyself &&
+                                	<HiBadgeCheck className="badge-verified" />
+                            	}
 							</div>
 							<div className="feature-group">
 								<div className="feature-sing">

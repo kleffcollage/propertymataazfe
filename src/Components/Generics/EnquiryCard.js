@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
@@ -23,7 +24,7 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
 	};
 
     const onSeeMoreClicked = async () => {
-        console.log(property);
+        // console.log(property);
         seeMore(property.id);
         await incrementView(property.id);
     };
@@ -99,13 +100,27 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                                 }}> 
                                 See More 
                             </button>
-                                
-                            <button
-                                className="list-color-btn"
-                                onClick={() => { openDetails(property.property.id) }}
-                            >
-                                Details
-                            </button>
+                            
+                            { !property.property.sellMyself 
+                                ? (
+                                    <Link
+                                        to={ property.property.isForSale 
+                                            ? `/buy/enquires/${property.property.id}` :  `/rent/enquires/${property.property.id}`}
+                                        className="list-color-btn"
+                                    >
+                                        Enquire
+                                    </Link>
+                                )
+                                : (
+                                    <button
+                                        className="list-color-btn"
+                                        onClick={() => { openDetails(property.property.id) }}
+                                    >
+                                        Details
+                                    </button> 
+                                )
+                            }
+                            
                             
                             {/* <button
                                 className="list-color-btn"

@@ -6,7 +6,8 @@ import Spinner from "../../Utilities/Spinner";
 import Alert from "../../Utilities/Alert/index";
 import Modal from "../../Utilities/Modal";
 import SellAdd from "../../Pages/Account/Sell/SellAdd";
-import Naira from "react-naira"
+import Naira from "react-naira";
+import { HiBadgeCheck } from "react-icons/hi";
 
 const PropertyDraft = ({ property = {}, seeMore }) => {
 	const [alert, showAlert] = useState(false)
@@ -85,8 +86,11 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 							</div>
 						</div>
 						<div className="listing-info for-sell">
-							<div className="title-group">
-								<div className="listing-title mb-3">{property.name}</div>
+							<div className="title-group mb-3">
+								<div className="listing-title ">{property.name}</div>
+								{ !property.property.sellMyself &&
+									<HiBadgeCheck className="badge-verified" />
+								}
 							</div>
 							<div className="feature-group">
 								<div className="feature-sing">
