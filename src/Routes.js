@@ -16,6 +16,7 @@ import Verify from "./Pages/Verify";
 import Clean from "./Pages/Clean";
 import Fix from "./Pages/Fix";
 import NotFound from "./Components/Generics/NotFound";
+import ValidatePayment from "./Pages/Payment/ValidatePayment";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -87,7 +88,7 @@ const ROUTES = [
 		],
 	},
 	{ path: "/my-mattaz", key: "ROOT", exact: true, component: () => <Dashboard /> },
-	{ path: "/payment-confirm", key: "ROOT", exact: true,  component: () => <ConfirmPay /> },
+	{ path: "/payment/validate", key: "ROOT", exact: true,  component: () => <ValidatePayment /> },
 ];
 export default ROUTES;
 
