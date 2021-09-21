@@ -9,7 +9,7 @@ import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox-pro";
 import { MainContext } from "../../../Context/MainContext";
-
+import Naira from "react-naira"
 
 
 export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => {
@@ -125,7 +125,7 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => 
               </div>
               <div className="feature-sing">
                 <i className="far fa-tags" />
-                <div className="feature-title">{`₦${propertyDetails.price}`}</div>
+                <div className="feature-title"><Naira>{propertyDetails.price}</Naira></div>
               </div>
               <div className="feature-sing">
                 <i className="far fa-award" />

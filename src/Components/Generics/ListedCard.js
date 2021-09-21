@@ -24,7 +24,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 
     return (
         <>
-        {(property.isDraft == true && !isProperty)  ? null : (
+        {(property.isDraft == true )  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
                     <div className="listing-cover-img">

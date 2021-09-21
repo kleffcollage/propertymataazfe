@@ -104,6 +104,8 @@ function Buy() {
     setPropertyId(id);
     setSeeMore(true);
   };
+  
+  
   return (
     <>
       <Modal

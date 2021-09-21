@@ -14,10 +14,10 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 	const [loading, setLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
-	const applicationTypes = useContext(MainContext)
+	// const applicationTypes = useContext(MainContext)
 	// console.log({user});
 	// console.log({applicationTypes});
-//   const [applicationTypes, setApplicationTypes] = useState([]);
+  	const [applicationTypes, setApplicationTypes] = useState([]);
 	const [mediafiles, setMediaFiles ] = useState({
 		passport: null,
 		workId: null,
@@ -57,7 +57,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 		try {
 		  	let { data } = await Fetch("Application/types");
 			// console.log("Application types: ", data);
-		  	// setApplicationTypes(data);
+		  	setApplicationTypes(data);
 		} catch (error) {
 		  console.log(error);
 		}
@@ -72,20 +72,17 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 		values.register.passport = mediafiles.passport
 		values.register.workId = mediafiles.workId
 		values.propertyId = propertyId
+		values.applicationTypeId = applicationTypes.find( type => type.name == "RENT").id
 		
 		console.log({values});
 		
-		const { data } = applicationTypes
-		// console.log(data.applicationTypes)
-		values.applicationTypeId = data.applicationTypes.find( type => type.name == "RENT").id
-		console.log(applicationTypes)
-		
 		try {
-			// const { workId, passport} = values.register
-			// if(workId == null || passport == null ) {
-			// 	toast.info("Please, upload a copy of work Id and a passport.")
-			// 	return
-			// }
+			const { workId, passport} = values.register
+			if(workId == null || passport == null ) {
+				toast.info("Please, upload a copy of work Id and a passport.")
+				setLoading(false)
+				return
+			}
 			
 			let data = await Fetch("Application/new", "post", values);
 			console.log("Enquire Rent:", data);
@@ -98,7 +95,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 			}
 			if (data.status != "400") {
 				setLoading(false);
-				toast.success("Application submitted successfully.")
+				toast.success("Rent application submitted successfully.")
 				console.log(data);
 			} else {
 				setLoading(false)
@@ -188,11 +185,10 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 
   return (
     <>
-      <ToastContainer />
       
       <div className="top-section">
         <div className="back">
-          <i className="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left mr-2"></i>
           <span className="backs" onClick={
               page == "2" ? () => { setPage(page - 1 ); } : close
             }
@@ -322,12 +318,12 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 							{ ({ getRootProps, getInputProps }) => (
 								<section>
 									<div
-									{...getRootProps()}
-									className={
-										mediafiles.passport 
-										? "do-upload uploaded"
-										: "do-upload"
-									}
+										{...getRootProps()}
+										className={
+											mediafiles.passport 
+											? "do-upload uploaded"
+											: "do-upload"
+										}
 									>
 									<input {...getInputProps()} />
 									{ mediafiles.passport ? (

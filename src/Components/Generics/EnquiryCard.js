@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
+import Modal from '../../Utilities/Modal';
+import PropertyApplied from '../../Pages/Rent/Tenant/PropertyApplied';
+import { HiBadgeCheck } from 'react-icons/hi'
 
 export default function EnquiryCard({ property = {}, seeMore, isProperty, requests = {} }) {
+    const [detailsModal, setDetailsModal] = useState(false);
+    const [propertyId, setPropertyId] = useState('');
+    
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);
@@ -22,11 +28,22 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
         await incrementView(property.id);
     };
     
+    const openDetails = (id) => {
+        setPropertyId(id)
+        setDetailsModal(true)
+    }
+    
     console.log({property})
 
     return (
         
         <>
+        
+        <Modal open={detailsModal} onClose={() => setDetailsModal(false)}>
+            <PropertyApplied propertyId={propertyId} property={property} />
+        </Modal>
+        
+        
         { (property.isDraft == true && !isProperty)  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
@@ -41,8 +58,11 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                         <div className="listing-location">{property.property.area}</div>
                     </div>
                     <div className="listing-info">
-                        <div className="title-group">
-                            <div className="listing-title mb-3">{property.property.name}</div>
+                        <div className="title-group mb-3">
+                            <div className="listing-title">{property.property.name}</div>
+                            { !property.property.sellMyself &&
+                                <HiBadgeCheck className="badge-verified" />
+                            }
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">
@@ -57,6 +77,8 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                                     {`${property.property.numberOfBathrooms} Bathrooms`}
                                 </div>
                             </div>
+                        </div>
+                        <div className="feature-group">
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
                                 <div className="feature-title"><Naira>{property.property.price}</Naira></div>
@@ -80,12 +102,19 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                                 
                             <button
                                 className="list-color-btn"
+                                onClick={() => { openDetails(property.property.id) }}
+                            >
+                                Details
+                            </button>
+                            
+                            {/* <button
+                                className="list-color-btn"
                                 onClick={() => {
                                     seeMore(property.property.id);
                                 }}
                             >
                                 Details
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>

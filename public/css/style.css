@@ -1073,6 +1073,7 @@ p.fil:last-of-type {
   display: flex;
   /* margin-right: 1.5rem; */
   margin-bottom: 0.5rem;
+  width: 50%;
 }
 
 .feature-sing:last-child {
@@ -2627,6 +2628,15 @@ h6.relief-preview-title {
 .custom__arrow-right::before,
 .custom__arrow-left::before {
   color: #333 !important;
+}
+
+.modal-content.applied {
+  box-shadow: none !important;
+}
+
+.badge-verified {
+  font-size: 1.5rem;
+  color: #0042ff
 }
 
 

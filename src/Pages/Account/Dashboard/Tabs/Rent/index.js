@@ -13,7 +13,7 @@ const Rent = () => {
     const [isProperty, setIsProperty] = useState([]);
     const [requestRents, setRequestRents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [showInfo, setShowInfo] = useState(false)
+    const [showInfo, setShowInfo] = useState(false);
     
     const showDetails = (id) => {
         setShowInfo(true)
