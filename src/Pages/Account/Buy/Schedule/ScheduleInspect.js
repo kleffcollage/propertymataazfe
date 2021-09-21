@@ -13,6 +13,7 @@ import moment from "moment";
 import { Box } from "@material-ui/core";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { CustomRightArrow, CustomLeftArrow } from "./carouselButtons/Arrows";
 
 const responsive = {
     superLargeDesktop: {
@@ -30,9 +31,17 @@ const responsive = {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 1
+      items: 2
     }
-  };
+};
+
+const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3
+};
 
 
 
@@ -119,7 +128,6 @@ const ScheduleInspect = ({ close }) => {
                             <Form>
                                 <h5 className="field-title pl-2">Select a date</h5>
                                 <div className="mb-5">
-                                    
                                     <Carousel
                                         arrows={true}
                                         draggable={true}
@@ -128,28 +136,18 @@ const ScheduleInspect = ({ close }) => {
                                         autoPlaySpeed={1000}
                                         keyBoardControl={true}
                                         responsive={responsive}
-                                        itemClass=""
+                                        itemClass="w-auto"
+                                        customRightArrow={ <CustomRightArrow /> }
+                                        customLeftArrow={ <CustomLeftArrow /> }
                                     >
-                                        {/* <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box>
-                                        <Box className="p-3 bg-dark" display="flex" flexDirection="column" alignItems="center"></Box> */}
-                                        { loading 
-                                            ? (
-                                                <Spinner size={40} color={"primary"} />
-                                            ) : (
-                                                <Wrapper>
-                                                    { inspectDate.map((date, i) => {
-                                                        return (
-                                                            <DateWrap key={i} dates={date} setSelectedDate={setSelectedDate} /> 
-                                                        )
-                                                    }) }
-                                                </Wrapper>
+                                        
+                                        { loading && <Spinner size={40} color={"primary"} /> }
+                                        
+                                        { inspectDate.map((date, i) => {
+                                            return (
+                                                <DateWrap key={i} dates={date} setSelectedDate={setSelectedDate} /> 
                                             )
-                                        }
+                                        }) }
                                         
                                     </Carousel>
                                 </div>
