@@ -6,6 +6,7 @@ import Spinner from "../../Utilities/Spinner";
 import Alert from "../../Utilities/Alert/index";
 import Modal from "../../Utilities/Modal";
 import SellAdd from "../../Pages/Account/Sell/SellAdd";
+import Naira from "react-naira"
 
 const PropertyDraft = ({ property = {}, seeMore }) => {
 	const [alert, showAlert] = useState(false)
@@ -102,7 +103,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 								</div>
 								<div className="feature-sing">
 									<i className="far fa-tags" />
-									<div className="feature-title">{`₦${property.price}`}</div>
+									<div className="feature-title"><Naira>{property.price}</Naira></div>
 								</div>
 								<div className="feature-sing">
 									<i className="far fa-award" />

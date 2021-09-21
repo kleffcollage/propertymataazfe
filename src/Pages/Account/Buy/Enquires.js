@@ -6,6 +6,7 @@ import { MapView } from "../../../Components/Generics/MapView";
 import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
 import Pay from "./Pay";
+import Naira from "react-naira"
 import ScheduleInspect from "./Schedule/ScheduleInspect";
 import Reciept from "./Receipt";
 import Documentation from "./Documents";
@@ -189,7 +190,7 @@ function Enquires({ isRent }) {
                 </div>
                 <div className="feature-sing">
                   <i className="far fa-bed" />
-                  <div className="feature-title">{`₦${propertyDetails.price}`}</div>
+                  <div className="feature-title"><Naira>{propertyDetails.price}</Naira></div>
                 </div>
                 <div className="feature-sing">
                   <i className="far fa-bed" />

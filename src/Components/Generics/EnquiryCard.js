@@ -1,6 +1,7 @@
 import React from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
+import Naira from "react-naira";
 
 export default function EnquiryCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -58,7 +59,7 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title">{`₦${property.property.price }`}</div>
+                                <div className="feature-title"><Naira>{property.property.price}</Naira></div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />

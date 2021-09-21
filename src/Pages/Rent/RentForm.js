@@ -47,7 +47,6 @@ function RentForm({ close }) {
 		description: "",
 		sellMySelf: false,
 		price: 0,
-		tenantTypeId: 0,
 		rentCollectionTypeId: 0,
 		tenantAnnualIncome: "",
 		numberOfBedrooms: 0,
@@ -61,6 +60,7 @@ function RentForm({ close }) {
 		latitude: 0,
 		bank: "",
 		accountno: "",
+		tenantTypeId: 0,
 		applicationTypeId: 0,
 		propertyTypeId: 0,
 	});
@@ -239,10 +239,9 @@ function RentForm({ close }) {
 	};
 
 	const submitRentRequest = async (e) => {
-		
 		e.preventDefault();
 		setLoading(true);
-		// console.log({rentDetails});
+		console.log({rentDetails});
 		
 		
 		try {
@@ -258,7 +257,7 @@ function RentForm({ close }) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				toast.success("Property Successfully added.");
+				toast.success("Property listed successfully.");
 				history.push("/my-mattaz");
 				// history.push("/sell");
 				// await currentStep();
@@ -355,7 +354,7 @@ function RentForm({ close }) {
     <div>      
       <div className="top-section">
         <div className="back">
-			<i className="fas fa-chevron-left mr-1" />
+			<i className="fas fa-chevron-left mr-2" />
 			<span
 				className="backs"
 				onClick= {
