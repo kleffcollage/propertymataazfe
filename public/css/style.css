@@ -1000,6 +1000,10 @@ p.fil:last-of-type {
   border: 3.78px solid rgba(0, 66, 255, 0.34);
   border-radius: 7.56px;
 }
+.listing-cards.applications:hover {
+  border: none;
+  border-radius: o;
+}
 
 .listing-cards.request {
   height: -webkit-fit-content;
@@ -2740,11 +2744,33 @@ h6.relief-preview-title {
 .applicants .applicants-avi img {
   width: 115px;
 }
+.applicants .tenant-avi img {
+  width: 200px;
+  height: auto;
+}
 
-.applicants-detail {
+.applicants-detail,
+.tenant-info-box {
   flex: 1 1 100%;
   padding-bottom: 10px;
   border-bottom: 1px solid #dce1e7;
+}
+.applicants-detail:last-child,
+.tenant-info-box:last-child {
+  border-bottom: 1px solid #dce1e7;
+}
+
+.tenant-info-box h6 {
+  font-weight: 600;
+  color: #252427;
+}
+
+.tenant-info-box p {
+  color: #252427;
+}
+.btn-grayed {
+  opacity: 0.8;
+  color: #252427;
 }
 
 .applicants-detail h6 {
@@ -2762,4 +2788,9 @@ h6.relief-preview-title {
   opacity: 0.8;
   color: #252427;
   margin: 2.9rem 0 !important;
+}
+
+.applicants .disclaimer-text {
+  opacity: 0.5;
+  color: #252427;
 }

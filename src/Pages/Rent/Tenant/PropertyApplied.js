@@ -45,7 +45,7 @@ const PropertyApplied = ({ property = {}, close }) => {
             <div className="modal-content applied">
                 <div className="mt-4">
                     
-                    <div className="listing-cards">
+                    <div className="listing-cards applications">
                         <div className="listing-cover-img">
                             <img
                                 src={
