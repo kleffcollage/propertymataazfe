@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Alert from '../../Utilities/Alert/index';
+import Naira from "react-naira"
 
 export default function RequestCard({ property = {}, seeMore,  requests = {} }) {
     const [ cancelModal, setCancelModal ] = useState(false)
@@ -30,7 +31,7 @@ export default function RequestCard({ property = {}, seeMore,  requests = {} }) 
         seeMore(property.id);
         await incrementView(property.id);
     };
-    console.log({property})
+    // console.log({property})
 
     return (
         <>
@@ -60,7 +61,7 @@ export default function RequestCard({ property = {}, seeMore,  requests = {} }) 
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title">{`₦${property.budget }`}</div>
+                                <div className="feature-title"><Naira>{property.budget}</Naira></div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />

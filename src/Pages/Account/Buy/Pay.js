@@ -5,6 +5,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import Naira from 'react-naira'
 
 
 function Pay({ property, close,  }) {
@@ -13,8 +14,10 @@ function Pay({ property, close,  }) {
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
 	// console.log(property)
+
+	const tax = (7.5 / 100) * property.price;
 	
-	const price = 0.75 * property.price
+	const price = tax + property.price
 	
 	const payData = {
 		propertyId: property.id,
@@ -35,6 +38,7 @@ function Pay({ property, close,  }) {
 				return;
 			}
 			if (data.status != 400) {
+				window.open(data.message);
 				setLoading(false);
 				toast.success("Payment initiated successfully.")
 				// history.go(data.message)
@@ -70,19 +74,19 @@ function Pay({ property, close,  }) {
 					</div>
 					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
 						<h5 className="mb-0">Cost of Unit</h5>
-						<p className="amount mb-0">₦145,000,000</p>
+						<p className="amount mb-0"><Naira>{property.price}</Naira></p>
 					</Box>
 					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
 						<h5 className="mb-0">Fees</h5>
-						<p className="amount mb-0">₦325,000</p>
+						<p className="amount mb-0"><Naira>{0}</Naira></p>
 					</Box>
 					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="bill my-2">
 						<h5 className="mb-0">Taxes</h5>
-						<p className="amount mb-0">₦32,500</p>
+						<p className="amount mb-0"><Naira>{tax}</Naira></p>
 					</Box>
 					<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="total my-2">
 						<h5 className="mb-0">Total</h5>
-						<p className="amount mb-0">₦145,467,903</p>
+						<p className="amount mb-0"><Naira>{price}</Naira></p>
 					</Box>
 				</div>
 				

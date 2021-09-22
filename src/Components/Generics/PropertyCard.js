@@ -6,6 +6,8 @@ import Spinner from "../../Utilities/Spinner";
 import Alert from "../../Utilities/Alert/index";
 import Modal from "../../Utilities/Modal";
 import SellAdd from "../../Pages/Account/Sell/SellAdd";
+import Naira from "react-naira"
+import { HiBadgeCheck } from "react-icons/hi";
 
 const PropertyCard = ({ property = {}, seeMore }) => {
 	const [deleting,setDeleting] = useState(false)
@@ -51,7 +53,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 			</Modal>
 			
 			{property.isDraft === true ? null : (
-				<div className="col-lg-3">
+				<div className="col-lg-4">
 					<div className="listing-cards">
 						<div className="listing-cover-img">
 							<img
@@ -85,8 +87,11 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							</div>
 						</div>
 						<div className="listing-info for-sell">
-							<div className="title-group">
-								<div className="listing-title mb-3">{property.name}</div>
+							<div className="title-group mb-3">
+								<div className="listing-title ">{property.name}</div>
+								{ !property.sellMyself &&
+                                	<HiBadgeCheck className="badge-verified" />
+                            	}
 							</div>
 							<div className="feature-group">
 								<div className="feature-sing">
@@ -103,7 +108,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 								</div>
 								<div className="feature-sing">
 									<i className="far fa-tags" />
-									<div className="feature-title">{`₦${property.price}`}</div>
+									<div className="feature-title"><Naira>{property.price}</Naira></div>
 								</div>
 								<div className="feature-sing">
 									<i className="far fa-award" />

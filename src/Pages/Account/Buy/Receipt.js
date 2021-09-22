@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
+import Naira from "react-naira";
 import { Box } from "@material-ui/core";
 import { FaRegCreditCard, FaRegCalendarAlt, FaStoreAlt } from "react-icons/fa"
 import { MdStoreMallDirectory } from "react-icons/md"
@@ -75,7 +76,7 @@ function Reciept({ property, close,  }) {
 						<div className="icon"> <RiShoppingCartLine /> </div>
 						<div className="item ml-3 px-2">
 							<p className="">{`Purchase of ${property.name}, ${property.state}, ${property.lga}`}</p>
-							<p className="mt-2">{property.price}</p>
+							<p className="mt-2"><Naira>{property.price}</Naira></p>
 						</div>
 					</div>
 					<div className="d-flex receipt-wrap my-2">

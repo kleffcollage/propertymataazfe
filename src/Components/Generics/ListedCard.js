@@ -1,6 +1,9 @@
-import React from 'react'
+import React,{ useState} from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
+import Naira from "react-naira";
+import { HiBadgeCheck } from 'react-icons/hi';
+import Modal from '../../Utilities/Modal'
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -15,6 +18,8 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 		}
 	};
 
+    const [seeeMore, setSeeeMore] = useState(false);
+
     const onSeeMoreClicked = async () => {
         console.log(property);
         seeMore(property.id);
@@ -23,7 +28,15 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 
     return (
         <>
-        {(property.isDraft == true && !isProperty)  ? null : (
+        <Modal
+				open={seeeMore}
+				onClose={() => {
+					setSeeeMore(false);
+				}}
+			>
+				<SeeMore propertyId={property.id} setSeeMore={setSeeeMore} seller={true}/>
+			</Modal>
+        {(property.isDraft == true )  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
                     <div className="listing-cover-img">
@@ -33,12 +46,16 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                     ? property.mediaFiles[0].url
                                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
+                            alt=''
                         />
                         <div className="listing-location">{property.area}</div>
                     </div>
                     <div className="listing-info">
-                        <div className="title-group">
-                            <div className="listing-title mb-3">{property.name}</div>
+                        <div className="title-group mb-3">
+                            <div className="listing-title ">{property.name}</div>
+                            { !property.sellMyself &&
+                                <HiBadgeCheck className="badge-verified" />
+                            }
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">
@@ -55,7 +72,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title">{`₦${property.price}`}</div>
+                                <div className="feature-title"><Naira>{property.price}</Naira></div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />

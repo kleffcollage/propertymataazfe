@@ -305,7 +305,7 @@ function ReliefForm({ close }) {
       
       <div className="top-section">
         <div className="back">
-          <i className="fas fa-chevron-left" />
+          <i className="fas fa-chevron-left mr-2" />
           <span
             className="backs"
             onClick={
@@ -316,9 +316,10 @@ function ReliefForm({ close }) {
           </span>
         </div>
         <div className="logo">
-          <img  src="/asset/logo.png" alt="Logo" />
+          <img src="/asset/logo.png" alt="Logo" />
         </div>
       </div>
+      
         { step == 1 ? (
           <form className="content-section mt-4">
             {/* {errors ? (
