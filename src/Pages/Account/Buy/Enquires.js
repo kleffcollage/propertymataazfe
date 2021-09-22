@@ -137,7 +137,7 @@ function Enquires({ isRent }) {
             </div>
           </div>
         </div>
-        <div className={enquiryStatus.hasPaid ? "steps passed" : "steps"}>
+        <div className={enquiryStatus && enquiryStatus.hasPaid ? "steps passed" : "steps"}>
           <div className="steps-show">
             <div className="oval">
               <i className="far fa-hourglass-start" />
@@ -146,11 +146,11 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 2 - Payment</h2>
-            <button className="single-step disabled" onClick={()=>setSeeMore(true)} disabled={enquiryStatus.hasApplied ? true : false}>
+            <button className="single-step disabled" onClick={()=>setSeeMore(true)} disabled={enquiryStatus && enquiryStatus.hasApplied ? true : false}>
               <i className="far fa-paper-plane" />
-              {enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
+              {enquiryStatus && enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
             </button>
-            <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
+            <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus && enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
               <i className="far fa-lock" />
               Pay securely
             </button>
@@ -165,11 +165,11 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 3 - Confirmation</h2>
-            <button className="single-step" onClick={() => setOpenReceipt(true)} disabled={!enquiryStatus.hasPaid ? true : false }>
+            <button className="single-step" onClick={() => setOpenReceipt(true)} disabled={enquiryStatus && !enquiryStatus.hasPaid ? true : false }>
               <i className="far fa-scroll" />
-              View Reciept
+              View Receipt
             </button>
-            <button className="single-step" onClick={() => setOpenDocumentation(true)} disabled={!enquiryStatus.hasPaid ? true : false }>
+            <button className="single-step" onClick={() => setOpenDocumentation(true)} disabled={enquiryStatus && !enquiryStatus.hasPaid ? true : false }>
               <i className="far fa-file-alt" />
               View Documentation
             </button>
