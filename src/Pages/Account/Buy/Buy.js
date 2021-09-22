@@ -11,7 +11,7 @@ import SeeMore from "./SeeMore";
 function Buy() {
   const [tab, setTab] = useState("listed");
   const [counter, setCounter] = useState(1);
-  const [bathroomCounter, setBathroomCounter] = useState(1)
+  const [bathroomCounter, setBathroomCounter] = useState(1);
   const [isProperty, setIsProperty] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
@@ -36,7 +36,7 @@ function Buy() {
     console.log(counter);
   };
   const bathIncrement = () => {
-    setBathroomCounter(bathroomCounter + 1)
+    setBathroomCounter(bathroomCounter + 1);
     console.log(bathroomCounter);
   };
   const bathDecrement = () => {
@@ -78,16 +78,16 @@ function Buy() {
       setLoading(true);
       console.log(data.data.value);
       setIsProperty(data.data.value);
-      
+
       setNextUrl(data.data.next && data.data.next.href.split("/list")[1]);
       console.log(data.data.next && data.data.next.href.split("/list")[1]);
-      
+
       setPrevUrl(data.data.next && data.data.next.href.split("/list")[1]);
       setFirstUrl(data.data.next && data.data.next.href.split("/list")[1]);
-      
+
       setLastUrl(data.data.next && data.data.next.href.split("/list")[1]);
       setLoading(false);
-      return; 
+      return;
     }
   };
 
@@ -95,7 +95,7 @@ function Buy() {
     setLoading(true);
     async function fetchListings() {
       await showProperties();
-	  setLoading(false);
+      setLoading(false);
     }
     fetchListings();
   }, []);
@@ -104,8 +104,7 @@ function Buy() {
     setPropertyId(id);
     setSeeMore(true);
   };
-  
-  
+
   return (
     <>
       <Modal
@@ -114,10 +113,14 @@ function Buy() {
           setSeeMore(false);
         }}
       >
-        <SeeMore propertyId={propertyId} setSeeMore={setSeeMore} seller={false} tenant={false} />
+        <SeeMore
+          propertyId={propertyId}
+          setSeeMore={setSeeMore}
+          seller={false}
+          tenant={false}
+        />
       </Modal>
-      
-      
+
       <div>
         <div className="page-title">
           "Find a property to buy with the safety of 103% money back guarantee"
@@ -137,7 +140,7 @@ function Buy() {
           </div>
           <div className={tab == "listed" ? "tab-bar" : "tab-bar req"} />
         </div>
-        
+
         {tab == "listed" ? (
           <div className="row">
             <div className="col-lg-3">
@@ -182,25 +185,25 @@ function Buy() {
               <div className="filter-imgs">
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/bungalow-1.png" alt />
+                    <img src="asset/bungalow-1.png" alt='' />
                   </div>
                   <div className="txtfil">Bungalow</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/apartment.png" alt />
+                    <img src="asset/apartment.png" alt='' />
                   </div>
                   <div className="txtfil">Flat</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/duplex-1.png" alt />
+                    <img src="asset/duplex-1.png" alt='' />
                   </div>
                   <div className="txtfil">Duplex</div>
                 </div>
                 <div className="singlefil">
                   <div className="iconfil">
-                    <img src="asset/terrace-1.png" alt />
+                    <img src="asset/terrace-1.png" alt='' />
                   </div>
                   <div className="txtfil">Terrace</div>
                 </div>
@@ -226,9 +229,13 @@ function Buy() {
               <div className="counter-pad">
                 <div className="counter-label">Bathrooms</div>
                 <div className="counter-box">
-                  <button className="countbtn" onClick={bathDecrement}>-</button>
+                  <button className="countbtn" onClick={bathDecrement}>
+                    -
+                  </button>
                   <input className="countbox" value={bathroomCounter} />
-                  <button className="countbtn" onClick={bathIncrement}>+</button>
+                  <button className="countbtn" onClick={bathIncrement}>
+                    +
+                  </button>
                 </div>
               </div>
               <div className="joint-btn">
@@ -244,29 +251,20 @@ function Buy() {
                   </div>
                 ) : (
                   <>
-                    {isProperty.map((property, i) => {
-						console.log(isProperty);
-                      return (
-                        <ListedCard property={property} seeMore={openSeeMore} />
-                      );
-                    })}
+                    {isProperty
+                      .filter((p) => p.isForSale)
+                      .map((property, i) => {
+                        console.log(isProperty);
+                        return (
+                          <ListedCard
+                            property={property}
+                            seeMore={openSeeMore}
+                          />
+                        );
+                      })}
                   </>
                 )}
               </div>
-              {/* <div className="d-flex">
-								<button className="secondary-btn" onClick={showFirst}>
-									First
-								</button>
-								<button className="secondary-btn" onClick={showPrev}>
-									Previous
-								</button>
-								<button className="secondary-btn" onClick={showNext}>
-									Next
-								</button>
-								<button className="secondary-btn" onClick={showLast} disabled>
-									Last
-								</button>
-							</div> */}
             </div>
           </div>
         ) : (

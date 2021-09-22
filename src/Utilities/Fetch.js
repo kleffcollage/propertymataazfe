@@ -29,7 +29,7 @@ export default function Fetch(
 	Response.then((data) => {
 		if (data.status == 401 || data.statusText == "Unauthorized") {
 			localStorage.clear();
-			window.location.href = "/";
+			window.location.href = "/login";
 		}
 	});
 	Response = Response.then((res) => res.json());

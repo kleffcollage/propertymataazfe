@@ -9,18 +9,22 @@ import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox-pro";
 import { MainContext } from "../../../Context/MainContext";
-import Naira from "react-naira"
+import Naira from "react-naira";
 
-
-export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => {
+export const SeeMore = ({
+  setSeeMore,
+  propertyId,
+  seller,
+  tenant,
+  isDraft,
+}) => {
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
-
-  const user = useContext(MainContext)
+  const user = useContext(MainContext);
   // console.log(user.data.user.id);
   console.log(propertyDetails);
 
@@ -111,6 +115,29 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => 
           </div>
           <div className="content-section">
             <div className="property-title">{propertyDetails.name}</div>
+          {seller ? (
+            <div className="activities">
+              <div className="d-flex justify-content-between">
+                <div className="views">
+                  <i className="fal fa-eye"></i>
+                  <div className="count">{propertyDetails.views}</div>
+                  <div className="viewtext">Views</div>
+                </div>
+                <div className="views">
+                  <i className="fal fa-eye"></i>
+                  <div className="count">{propertyDetails.enquiries}</div>
+                  <div className="viewtext">Enquires</div>
+                </div>
+              </div>
+              <div className="views full">
+                <div className="groups d-flex ml-5">
+                  <i className="far fa-scroll mr-5"></i>
+                  <div className="count">Payment</div>
+                </div>
+                <div className="viewtext">Pending Sale</div>
+              </div>
+            </div>
+          ) : null}
             <div className="feature-group">
               <div className="feature-sing">
                 <i className="far fa-bed" />
@@ -125,7 +152,9 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => 
               </div>
               <div className="feature-sing">
                 <i className="far fa-tags" />
-                <div className="feature-title"><Naira>{propertyDetails.price}</Naira></div>
+                <div className="feature-title">
+                  <Naira>{propertyDetails.price}</Naira>
+                </div>
               </div>
               <div className="feature-sing">
                 <i className="far fa-award" />
@@ -134,46 +163,37 @@ export const SeeMore = ({ setSeeMore, propertyId, seller, tenant, isDraft }) => 
                 </div>
               </div>
             </div>
-            {propertyDetails.status != Statuses.VERIFIED ? (
-              seller ? 
-              <div className="activities">
-                <div className="d-flex justify-content-between">
-                    <div className="views">
-                        <i className="fal fa-eye"></i>
-                        <div className="count">{propertyDetails.views}</div>
-                        <div className="viewtext">Views</div>
+            {propertyDetails ? (
+              seller ? (
+                <></>
+              ) : (
+                <div
+                  className={`contact-section ${
+                    showContact ? "show-info" : ""
+                  }`}
+                  onClick={() => {
+                    setShowContact(!showContact);
+                  }}
+                >
+                  <button className="color-btn w-100 mt-4">
+                    Contact Seller
+                  </button>
+                  <div className="contact-info">
+                    <div className="contact-name">Segun Apampa</div>
+                    <div className="contact-number">+234 806 430 1234</div>
+                    <div className="contact-number">
+                      segepampam@gmail.com.com
                     </div>
-                    <div className="views">
-                        <i className="fal fa-eye"></i>
-                        <div className="count">{propertyDetails.enquiries}</div>
-                        <div className="viewtext">Enquires</div>
-                    </div>
+                  </div>
                 </div>
-                <div className="views full">
-                    <div className="groups d-flex ml-5">
-                        <i className="far fa-scroll mr-5"></i>
-                        <div className="count">Payment</div>
-                    </div>
-                    <div className="viewtext">Pending Sale</div>
-                </div>
-            </div>
-              :
-              <div
-                className={`contact-section ${showContact ? "show-info" : ""}`}
-                onClick={() => {
-                  setShowContact(!showContact);
-                }}
-              >
-                <button className="color-btn w-100 mt-4">Contact Seller</button>
-                <div className="contact-info">
-                  <div className="contact-name">Segun Apampa</div>
-                  <div className="contact-number">+234 806 430 1234</div>
-                  <div className="contact-number">segepampam@gmail.com.com</div>
-                </div>
-              </div>
+              )
             ) : !isDraft ? (
               <Link
-                to={ tenant ? `/rent/enquires/${propertyDetails.id}` : `/buy/enquires/${propertyDetails.id}`}
+                to={
+                  tenant
+                    ? `/rent/enquires/${propertyDetails.id}`
+                    : `/buy/enquires/${propertyDetails.id}`
+                }
                 className="list-color-btn w-100 mt-4 mb-3f"
                 onClick={async () => {
                   await incrementEnquire(propertyId);

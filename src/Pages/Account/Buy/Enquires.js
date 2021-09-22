@@ -23,6 +23,7 @@ function Enquires({ isRent }) {
   const [openReceipt, setOpenReceipt ] = useState(false);
   const [openDocumentation, setOpenDocumentation ] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
+  const [enquiryStatus, setEnquiryStatus] = useState({});
 
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -40,10 +41,32 @@ function Enquires({ isRent }) {
       // setId(data.data);
     }
   };
+
+  const getEnquiryStatus = async() => {
+    try {
+      const data = await Fetch(`Application/get/user/property/${propertyId}`);
+      console.log({data});
+      if(!data.status)
+      {
+        console.error(data);
+        return;
+      }
+      setEnquiryStatus(data.data);
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
   useEffect(() => {
     getPropertyDetails();
-    
+    const fetchData = async () => {
+      await getPropertyDetails();
+      await getEnquiryStatus();
+    }
+    fetchData();
   }, []);
+
+ 
   
   
   return (
@@ -114,7 +137,7 @@ function Enquires({ isRent }) {
             </div>
           </div>
         </div>
-        <div className="steps">
+        <div className={enquiryStatus.hasPaid ? "steps passed" : "steps"}>
           <div className="steps-show">
             <div className="oval">
               <i className="far fa-hourglass-start" />
@@ -123,11 +146,11 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 2 - Payment</h2>
-            <button className="single-step" onClick={()=>setSeeMore(true)}>
+            <button className="single-step disabled" onClick={()=>setSeeMore(true)} disabled={enquiryStatus.hasApplied ? true : false}>
               <i className="far fa-paper-plane" />
-              Submit Application
+              {enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
             </button>
-            <button className="single-step" onClick={() => setPayModal(true)}>
+            <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
               <i className="far fa-lock" />
               Pay securely
             </button>
@@ -142,11 +165,11 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 3 - Confirmation</h2>
-            <button className="single-step" onClick={() => setOpenReceipt(true)}>
+            <button className="single-step" onClick={() => setOpenReceipt(true)} disabled={!enquiryStatus.hasPaid ? true : false }>
               <i className="far fa-scroll" />
               View Reciept
             </button>
-            <button className="single-step" onClick={() => setOpenDocumentation(true)}>
+            <button className="single-step" onClick={() => setOpenDocumentation(true)} disabled={!enquiryStatus.hasPaid ? true : false }>
               <i className="far fa-file-alt" />
               View Documentation
             </button>

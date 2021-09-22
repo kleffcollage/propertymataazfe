@@ -1,8 +1,9 @@
-import React from 'react'
+import React,{ useState} from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
+import Modal from '../../Utilities/Modal'
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -17,6 +18,8 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 		}
 	};
 
+    const [seeeMore, setSeeeMore] = useState(false);
+
     const onSeeMoreClicked = async () => {
         console.log(property);
         seeMore(property.id);
@@ -25,6 +28,14 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 
     return (
         <>
+        <Modal
+				open={seeMore}
+				onClose={() => {
+					setSeeeMore(false);
+				}}
+			>
+				<SeeMore propertyId={property.id} setSeeMore={setSeeeMore} seller={true}/>
+			</Modal>
         {(property.isDraft == true )  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
@@ -35,6 +46,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                     ? property.mediaFiles[0].url
                                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
+                            alt=''
                         />
                         <div className="listing-location">{property.area}</div>
                     </div>

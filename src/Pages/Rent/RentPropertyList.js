@@ -236,7 +236,7 @@ function RentPropertyList() {
                   </div>
                 ) : (
                   <>
-                    {isProperty.map((property, i) => {
+                    {isProperty.filter(p => p.isForRent).map((property, i) => {
 						console.log(isProperty);
                       return (
                         <ListedCard property={property} seeMore={openSeeMore} />
