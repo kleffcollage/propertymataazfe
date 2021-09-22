@@ -4,6 +4,7 @@ import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
 import Modal from '../../Utilities/Modal'
+import PropertyApplied from '../../Pages/Rent/Tenant/PropertyApplied';
 
 export default function RentCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -18,22 +19,22 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
 		}
 	};
 
-    const [seeeMore, setSeeeMore] = useState(false);
+    const [seeApplicants, setSeeApplicants] = useState(false);
 
-    const onSeeMoreClicked = async () => {
-        console.log(property);
-        seeMore(property.id);
-        await incrementView(property.id);
-    };
+    // const onSeeMoreClicked = async () => {
+    //     console.log(property);
+    //     seeMore(property.id);
+    //     // await incrementView(property.id);
+    // };
 
     return (
         <>
-            <Modal open={seeeMore} 
+            <Modal open={seeApplicants} 
                 onClose={() => {
-					setSeeeMore(false);
+					setSeeApplicants(false);
 				}}
 			>
-				<SeeMore propertyId={property.id} setSeeMore={setSeeeMore} seller={true}/>
+                <PropertyApplied property={property} close={() => { setSeeApplicants(false) }} />
 			</Modal>
             
             
@@ -86,9 +87,10 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
                         {/* <div className="line" /> */}
                         <div className="listing-info pt-0">
                             <div className="listing-btn">
-                                <button className="list-no-color-btn" onClick={ async () => {
-                                    await onSeeMoreClicked();
-                                    }}> 
+                                <button 
+                                    className="list-no-color-btn" 
+                                    onClick={() => setSeeApplicants(true)}
+                                > 
                                     See More 
                                 </button>
                                     

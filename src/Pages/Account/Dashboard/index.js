@@ -5,7 +5,7 @@ import Rent from "./Tabs/Rent";
 import Listing from "./Tabs/Listings";
 
 const Dashboard = () => {
-    const [tab, setTab] = useState("rent");
+    const [tab, setTab] = useState("listings");
     
     const currentTab = (tabname) => {
         setTab(tabname);

@@ -8,11 +8,9 @@ import Modal from "../../../Utilities/Modal";
 import Naira from "react-naira";
 import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
-import TenantDetails from "../../../Pages/Rent/Tenant/TenantDetails"
 
-const PropertyApplied = ({ property = {}, close }) => {
+const TenantDetails = ({ property = {}, close }) => {
     const [show, setShow] = useState(false)
-    const [showTenant, setShowTenant] = useState(false)
     
     const showDetails = () => {
         setShow(prev => !prev )
@@ -24,14 +22,6 @@ const PropertyApplied = ({ property = {}, close }) => {
 	
 	return (
 		<>
-            <Modal open={showTenant } 
-                onClose={() => {
-					setShowTenant(false);
-				}}
-			>
-                <TenantDetails property={property} close={() => { setShowTenant(false) }} />
-			</Modal>
-        
 			<div className="top-section">
                 <div className="back">
                     <i className="fas fa-chevron-left"></i>
@@ -94,7 +84,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                                 {/* <div className="listing-title mb-3">{property.property.name}</div> */}
                             </div>
                             <div className="property-sub-title mt-2">Tenant Applications</div>
-                            <div className="d-flex applicants my-3" onClick={() => setShowTenant(true)}>
+                            <div className="d-flex applicants my-3">
                                 <div className="applicants-avi flex-shrink-0">
                                     <img src="/asset/@3xGideon.png" alt="gideon" />
                                 </div>
@@ -221,4 +211,4 @@ const PropertyApplied = ({ property = {}, close }) => {
 	);
 };
 
-export default PropertyApplied;
+export default TenantDetails;

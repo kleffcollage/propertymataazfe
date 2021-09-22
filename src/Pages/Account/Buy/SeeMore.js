@@ -114,30 +114,30 @@ export const SeeMore = ({
             </div>
           </div>
           <div className="content-section">
-            <div className="property-title">{propertyDetails.name}</div>
-            {seller ? (
-              <div className="activities">
-                <div className="d-flex justify-content-between">
-                  <div className="views">
-                    <i className="fal fa-eye"></i>
-                    <div className="count">{propertyDetails.views}</div>
-                    <div className="viewtext">Views</div>
+              <div className="property-title">{propertyDetails.name}</div>
+              {seller ? (
+                <div className="activities">
+                  <div className="d-flex justify-content-between">
+                    <div className="views">
+                      <i className="fal fa-eye"></i>
+                      <div className="count">{propertyDetails.views}</div>
+                      <div className="viewtext">Views</div>
+                    </div>
+                    <div className="views">
+                      <i className="fal fa-eye"></i>
+                      <div className="count">{propertyDetails.enquiries}</div>
+                      <div className="viewtext">Enquires</div>
+                    </div>
                   </div>
-                  <div className="views">
-                    <i className="fal fa-eye"></i>
-                    <div className="count">{propertyDetails.enquiries}</div>
-                    <div className="viewtext">Enquires</div>
+                  <div className="views full">
+                    <div className="groups d-flex ml-5">
+                      <i className="far fa-scroll mr-5"></i>
+                      <div className="count">Payment</div>
+                    </div>
+                    <div className="viewtext">Pending Sale</div>
                   </div>
                 </div>
-                <div className="views full">
-                  <div className="groups d-flex ml-5">
-                    <i className="far fa-scroll mr-5"></i>
-                    <div className="count">Payment</div>
-                  </div>
-                  <div className="viewtext">Pending Sale</div>
-                </div>
-              </div>
-            ) : null}
+              ) : null}
             <div className="feature-group">
               <div className="feature-sing">
                 <i className="far fa-bed" />
