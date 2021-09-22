@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Wrapper } from "./Listings.style";
 import Fetch from "../../../../../Utilities/Fetch";
 import ListedCard from "../../../../../Components/Generics/ListedCard";
+import RentCard from "../../../../../Components/Generics/RentCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
@@ -97,7 +98,7 @@ const Listings = () => {
                                     : <>
                                         { isForRent.map((rents, index) => {
                                             return (
-                                                <ListedCard property={rents} seeMore={showDetails} key={index} />                    
+                                                <RentCard property={rents} seeMore={showDetails} key={index} />                    
                                             )
                                         })}
                                     </>
