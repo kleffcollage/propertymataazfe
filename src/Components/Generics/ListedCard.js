@@ -29,7 +29,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
     return (
         <>
         <Modal
-				open={seeMore}
+				open={seeeMore}
 				onClose={() => {
 					setSeeeMore(false);
 				}}
