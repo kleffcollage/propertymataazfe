@@ -18,21 +18,22 @@ const TenantDetails = ({ application, close }) => {
   };
 
   const decline = async () => {
-    setDeclining(true);
-    try {
-      const data = await Fetch(`Application/decline/${application.id}`);
-      if (!data.status) {
-        console.log(data.message);
-        toast.error(data.message);
+        setDeclining(true);
+        try {
+        const data = await Fetch(`Application/decline/${application.id}`);
+        if (!data.status) {
+            console.log(data.message);
+            toast.error(data.message);
+            return;
+        }
+        toast.success(data.message);
         return;
-      }
-      toast.success(data.message);
-      return;
-    } catch (error) {
-      setDeclining(false);
-      console.error(error);
-      toast.error("Ann error occurred");
-    }
+        
+        } catch (error) {
+            setDeclining(false);
+            console.error(error);
+            toast.error("Ann error occurred");
+        }
   };
 
   const approve = async () => {
@@ -97,18 +98,19 @@ const TenantDetails = ({ application, close }) => {
             className="mt-4"
           >
             <button
-              className="btn-outlined btn-grayed mr-2"
-              type="submit"
-              onClick={async () => await decline()}
+                className="btn-outlined btn-grayed mr-2"
+                type="submit"
+                onClick={async () => await decline()}
             >
-              Decline
+              {declining ? <Spinner color="primary" /> : "Decline"}
             </button>
+            
             <button
-              className="btn-outlined btn-grayed ml-2"
-              type="submit"
-              onClick={async () => await approve()}
-            >
-              Accept as Tenant
+                className="btn-outlined btn-grayed ml-2"
+                type="submit"
+                onClick={async () => await approve()}
+            >                
+                { approving ? <Spinner color="primary" /> : " Accept as Tenant"}  
             </button>
           </Box>
 
