@@ -99,7 +99,23 @@ const Rent = () => {
                                     <div className="row">
                                         { requestRents.map((rents, index) => {
                                             return (
-                                                <RequestCard property={rents} seeMore={showDetails} key={index} />                   
+                                                <RequestCard property={rents} seeMore={showDetails} isRequest={true} key={index} />                   
+                                            )
+                                        })}
+                                    </div>
+                                </>
+                            }
+                        </div>
+                        <div className="my-3">
+                            <h5 className="mb-3">Rent Relief</h5>
+                            
+                            { requestRents.length === 0 
+                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                : <>
+                                    <div className="row">
+                                        { requestRents.map((rents, index) => {
+                                            return (
+                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
                                             )
                                         })}
                                     </div>

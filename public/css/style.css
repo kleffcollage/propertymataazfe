@@ -995,6 +995,10 @@ p.fil:last-of-type {
 .listing-cards.for-request {
   min-height: 12rem;
 }
+.listing-cards.for-relief {
+  font-family: "Baloo Bhai 2";
+  min-height: 9rem;
+}
 
 .listing-cards:hover {
   border: 3.78px solid rgba(0, 66, 255, 0.34);
@@ -1002,7 +1006,7 @@ p.fil:last-of-type {
 }
 .listing-cards.applications:hover {
   border: none;
-  border-radius: o;
+  border-radius: 0;
 }
 
 .listing-cards.request {
@@ -2793,4 +2797,25 @@ h6.relief-preview-title {
 .applicants .disclaimer-text {
   opacity: 0.5;
   color: #252427;
+}
+
+/* Rent relief card */
+.relief-amount h6 {
+  opacity: 0.4;
+  color: #191919;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: .2rem;
+}
+.relief-amount p {
+  color: #191919;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.loan-status {
+  padding: 5px 20px;
+  border-radius: 4px;
+  color: #000000;
+  background-color: #F7F5F5;
 }
