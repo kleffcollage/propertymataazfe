@@ -20,37 +20,40 @@ const TenantDetails = ({ application, close }) => {
   const decline = async () => {
         setDeclining(true);
         try {
-        const data = await Fetch(`Application/decline/${application.id}`);
-        if (!data.status) {
-            console.log(data.message);
-            toast.error(data.message);
+            const data = await Fetch(`Application/decline/${application.id}`);
+            
+            if (!data.status) {
+                console.log(data.message);
+                toast.error(data.message);
+                return;
+            }
+            toast.success("Tenant declined successfully.");
+            setDeclining(false);
             return;
-        }
-        toast.success(data.message);
-        return;
         
         } catch (error) {
             setDeclining(false);
             console.error(error);
-            toast.error("Ann error occurred");
+            toast.error("An error occurred");
         }
   };
 
   const approve = async () => {
     setApproving(true);
     try {
-      const data = await Fetch(`Application/approve/${application.id}`);
-      if (!data.status) {
-        console.log(data.message);
-        toast.error(data.message);
+        const data = await Fetch(`Application/approve/${application.id}`);
+        if (!data.status) {
+            console.log(data.message);
+            toast.error(data.message);
+            return;
+        }
+        toast.success("Tenant approved successfully.");
+        setApproving(false);
         return;
-      }
-      toast.success(data.message);
-      return;
     } catch (error) {
-      setApproving(false);
-      console.error(error);
-      toast.error("Ann error occurred");
+        setApproving(false);
+        console.error(error);
+        toast.error("Ann error occurred");
     }
   };
 
