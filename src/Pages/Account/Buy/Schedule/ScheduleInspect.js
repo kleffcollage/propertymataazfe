@@ -13,6 +13,7 @@ import moment from "moment";
 import { Box } from "@material-ui/core";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { CustomRightArrow, CustomLeftArrow } from "./carouselButtons/Arrows";
 
 const responsive = {
   superLargeDesktop: {

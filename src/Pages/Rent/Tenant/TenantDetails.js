@@ -6,209 +6,211 @@ import Spinner from "../../../Utilities/Spinner";
 import Alert from "../../../Utilities/Alert/index";
 import Modal from "../../../Utilities/Modal";
 import Naira from "react-naira";
-import { MapView } from "../../../Components/Generics/MapView";
-import { SRLWrapper } from "simple-react-lightbox";
+import { Box } from "@material-ui/core";
 
-const TenantDetails = ({ property = {}, close }) => {
-    const [show, setShow] = useState(false)
-    
-    const showDetails = () => {
-        setShow(prev => !prev )
+const TenantDetails = ({ application, close }) => {
+  const [show, setShow] = useState(false);
+  const [approving, setApproving] = useState(false);
+  const [declining, setDeclining] = useState(false);
+
+  const showDetails = () => {
+    setShow((prev) => !prev);
+  };
+
+  const decline = async () => {
+    setDeclining(true);
+    try {
+      const data = await Fetch(`Application/decline/${application.id}`);
+      if (!data.status) {
+        console.log(data.message);
+        toast.error(data.message);
+        return;
+      }
+      toast.success(data.message);
+      return;
+    } catch (error) {
+      setDeclining(false);
+      console.error(error);
+      toast.error("Ann error occurred");
     }
-    
-    console.log({property})
-    
-	
-	
-	return (
-		<>
-			<div className="top-section">
-                <div className="back">
-                    <i className="fas fa-chevron-left"></i>
-                    <span className="backs" onClick={close}>
-                        Back          
-                    </span>
-                </div>
+  };
+
+  const approve = async () => {
+    setApproving(true);
+    try {
+      const data = await Fetch(`Application/approve/${application.id}`);
+      if (!data.status) {
+        console.log(data.message);
+        toast.error(data.message);
+        return;
+      }
+      toast.success(data.message);
+      return;
+    } catch (error) {
+      setApproving(false);
+      console.error(error);
+      toast.error("Ann error occurred");
+    }
+  };
+
+  console.log({ application });
+
+  return (
+    <>
+      <div className="top-section">
+        <div className="back">
+          <i className="fas fa-chevron-left"></i>
+          <span className="backs" onClick={close}>
+            Back
+          </span>
+        </div>
+      </div>
+
+      <div className="modal-content applied">
+        <div className="applicants mt-4 mb-5 px-2 px-sm-3">
+          <div className="d-flex flex-column align-items-center my-3">
+            <div className="tenant-avi ">
+              <img src="/asset/@3xGideon.png" alt="gideon" />
             </div>
-      
-	  
-            <div className="modal-content applied">
-                <div className="mt-4">
-                    
-                    <div className="listing-cards">
-                        <div className="listing-cover-img">
-                            <img
-                                src={
-                                    property.mediaFiles.length !== 0
-                                        ? property.mediaFiles[0].url
-                                        : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
-                                }
-                            />
-                            <div className="listing-location">{property.area}</div>
-                        </div>
-                        <div
-							className={`tag ${
-								property.isDraft == true ? "draft" : "pending"
-							}`}
-						>
-							<div className="status">
-								{property.isDraft == true
-									? "Only visible to you"
-									: property.verified == true
-									? "Listing is verified"
-									: "Listing is pending"
-                                }
-							</div>
-							<div className="status" onClick>
-								Edit <i className="fas fa-pen ml-2" />
-							</div>
-						</div>
-                        <div className="listing-info applicants">
-                            <div className="title-group flex-column">
-                                <div className="property-title">{property.name}</div>
-                                <div className="activities w-100">
-                                    <div className="property-sub-title">Listing Performance</div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="views mr-1">
-                                            <i className="fal fa-eye"></i>
-                                            <div className="count">{property.views}</div>
-                                            <div className="viewtext">Views</div>
-                                        </div>
-                                        <div className="views ml-1">
-                                            <i className="fal fa-comments"></i>
-                                            <div className="count">{property.enquiries}</div>
-                                            <div className="viewtext">Applications</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <div className="listing-title mb-3">{property.property.name}</div> */}
-                            </div>
-                            <div className="property-sub-title mt-2">Tenant Applications</div>
-                            <div className="d-flex applicants my-3">
-                                <div className="applicants-avi flex-shrink-0">
-                                    <img src="/asset/@3xGideon.png" alt="gideon" />
-                                </div>
-                                <div className="applicants-detail mx-3">
-                                    <h6>Olasunbo Agbeloba</h6>
-                                    <p className="mb-1">Single</p>
-                                    <p className="mb-1">Software Developer</p>
-                                    <p className="mb-1">Earns ₦16,000,000 per year</p>
-                                </div>
-                            </div>
-                            <div className="d-flex applicants my-3">
-                                <div className="applicants-avi flex-shrink-0">
-                                    <img src="/asset/@3xGideon.png" alt="gideon" />
-                                </div>
-                                <div className="applicants-detail mx-3">
-                                    <h6>Gideon Emokpae</h6>
-                                    <p className="mb-1">Married</p>
-                                    <p className="mb-1">Investment Banker</p>
-                                    <p className="mb-1">Earns ₦14,500,000 per year</p>
-                                </div>
-                            </div>
-                            
-                            {show && (
-                                <>  
-                                    <div className="overview-section">
-                                        <h2 className="property-info">Property Details</h2>
-                                        <div className="feature-group mt-4">
-                                            <div className="feature-sing">
-                                                <i className="far fa-bed" />
-                                                <div className="feature-title">{`${property.numberOfBedrooms} Bedrooms`}</div>
-                                            </div>
-                                            <div className="feature-sing">
-                                                <i className="far fa-toilet" />
-                                                <div className="feature-title">
-                                                {" "}
-                                                {`${property.numberOfBathrooms} Bathrooms`}
-                                                </div>
-                                            </div>
-                                            <div className="feature-sing">
-                                                <i className="far fa-tags" />
-                                                <div className="feature-title">
-                                                <Naira>{property.price}</Naira>
-                                                </div>
-                                            </div>
-                                            <div className="feature-sing">
-                                                <i className="far fa-award" />
-                                                <div className="feature-title">
-                                                {property.propertyType}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="overview-section">
-                                        <h2 className="property-info">Description</h2>
-                                        <p>{property.description}</p>
-                                    </div>
-                                    <SRLWrapper>
-                                        <div className="picture-overview">
-                                            <h2 className="property-info">Pictures</h2>
-                                            <div className="image-gallery">
-                                            {property.mediaFiles
-                                                .filter((m) => m.isImage)
-                                                .map((singleImage, i) => {
-                                                return (
-                                                    <div className="single-img">
-                                                    <img src={singleImage.url} alt="" />
-                                                    </div>
-                                                );
-                                                })}
-                                            </div>
-                                        </div>
-                                        <div className="video-overview">
-                                            <h2 className="property-info">Video Tour</h2>
-                                            <div className="video-gallery">
-                                            {property.mediaFiles
-                                                .filter((m) => m.isVideo)
-                                                .map((video, index) => {
-                                                return (
-                                                    <div className="single-img">
-                                                    <video
-                                                        src={video.url}
-                                                        className="single-img"
-                                                        srl_video_controls={true}
-                                                        controls
-                                                    >
-                                                        <source src={video.url} />
-                                                    </video>
-                                                    </div>
-                                                );
-                                                })}
-                                            </div>
-                                        </div>
-                                    </SRLWrapper>
-                                    <div className="map-overview mb-3">
-                                        <h2 className="property-info">Map/Street view</h2>
-                                        <div className="map-box">
-                                            <MapView
-                                            isMarkerShown
-                                            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
-                                            loadingElement={<div style={{ height: `100%` }} />}
-                                            containerElement={<div style={{ height: `400px` }} />}
-                                            mapElement={<div style={{ height: `100%` }} />}
-                                            />
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                            
-                            <button className="btn-outlined show-property-details" onClick={showDetails}>
-                                {show ? " Close details" : "Show property details"}
-                            </button>
-                        
-                        
-                        </div>
-                    </div>
-                    
-                    {/* <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="mt-4">
-                        <button className="btn-outlined mr-2" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Download" }</button>
-                        <button className="btn-outlined ml-2" type="submit" onClick={handlePayment}>{ loading ? <Spinner /> : "Print" }</button>
-                    </Box> */}
-                </div>
+            <div className="property-title">{application.user.fullName}</div>
+          </div>
+
+          <div className="d-flex flex-column">
+            <div className="d-flex justify-content-between">
+              <div className="views full px-2">
+                <div className="viewtext">Suitability Rating</div>
+                <div className="count">{5}</div>
+              </div>
             </div>
-		</>
-	);
+            <p className="mx-3 disclaimer-text">
+              We recommend you only consider applicants with a suitability
+              rating of 3 stars or higher
+            </p>
+          </div>
+
+          <Box
+            display="flex"
+            width="100%"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            className="mt-4"
+          >
+            <button
+              className="btn-outlined btn-grayed mr-2"
+              type="submit"
+              onClick={async () => await decline()}
+            >
+              {" "}
+              Decline{" "}
+            </button>
+            <button
+              className="btn-outlined btn-grayed ml-2"
+              type="submit"
+              onClick={async () => await approve()}
+            >
+              {" "}
+              Accept as Tenant{" "}
+            </button>
+          </Box>
+
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Mobile Number</h6>
+              <p className="mb-1">{application.user.phoneNumber}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Email</h6>
+              <p className="mb-1">{application.user.email}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Current Residential Address</h6>
+              <p className="mb-1">{application.user.address}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Date of Birth</h6>
+              <p className="mb-1">{application.user.dateOfBirth}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Nationality</h6>
+              <p className="mb-1">{application.user.nationality}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Marital Status</h6>
+              <p className="mb-1">{application.user.maritalStatus}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Occupation</h6>
+              <p className="mb-1">{application.user.occupation}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Work Address</h6>
+              <p className="mb-1">{application.user.workAddress}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Annual Income</h6>
+              <p className="mb-1">
+                <Naira>{application.user.annualIncome}</Naira>
+              </p>
+            </div>
+          </div>
+          <h5 className="field-title">Next of Kin</h5>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>First Name</h6>
+              <p className="mb-1">{application.nextOfKin.firstName}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Surname</h6>
+              <p className="mb-1">{application.nextOfKin.lastName}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Mobile Number</h6>
+              <p className="mb-1">{application.nextOfKin.fullName}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Address</h6>
+              <p className="mb-1">{application.nextOfKin.address}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Relationship</h6>
+              <p className="mb-1">{application.nextOfKin.relationship}</p>
+            </div>
+          </div>
+          <div className="d-flex applicants my-3">
+            <div className="tenant-info-box">
+              <h6>Work ID</h6>
+              <img src="/asset/@3xGideon.png" alt="gideon" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default TenantDetails;

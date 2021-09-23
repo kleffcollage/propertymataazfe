@@ -14,6 +14,7 @@ const PropertyApplied = ({ property = {}, close }) => {
   const [show, setShow] = useState(false);
   const [showTenant, setShowTenant] = useState(false);
   const [applications, setApplications] = useState([]);
+  const [selectedApplication, setSelectedApplication] = useState({});
 
   const showDetails = () => {
     setShow((prev) => !prev);
@@ -37,6 +38,11 @@ const PropertyApplied = ({ property = {}, close }) => {
     }
   };
 
+  const showApplicantDetails = (application) => {
+    setSelectedApplication(application);
+    setShowTenant(true);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getApplications();
@@ -53,7 +59,7 @@ const PropertyApplied = ({ property = {}, close }) => {
         }}
       >
         <TenantDetails
-          property={property}
+          application={selectedApplication}
           close={() => {
             setShowTenant(false);
           }}
@@ -129,7 +135,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                   return (
                     <div
                       className="d-flex applicants my-3"
-                      onClick={() => setShowTenant(true)}
+                      onClick={() => showApplicantDetails(application)}
                     >
                       <div className="applicants-avi flex-shrink-0">
                         <img src="/asset/@3xGideon.png" alt="gideon" />
