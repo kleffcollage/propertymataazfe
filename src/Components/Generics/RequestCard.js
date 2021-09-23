@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
+import Modal from '../../Utilities/Modal';
 import Alert from '../../Utilities/Alert/index';
 import Naira from "react-naira"
+import RentReliefDetails from '../../Pages/Rent/RentReliefDetails';
 
 export default function RequestCard({ property = {}, seeMore, isRequest = false, isRelief = false }) {
     const [ cancelModal, setCancelModal ] = useState(false)
+    const [ openDetails, setOpenDetails ] = useState(false)
+    
+    const openRentDetails = () => {
+        setOpenDetails(prev => !prev)
+    }
     
     const open = () => {
         setCancelModal(prev => !prev)
@@ -38,6 +45,10 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         <Alert 
             showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
         />
+        
+        <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
+            <RentReliefDetails close={() => setOpenDetails(false)} />
+        </Modal>
         
         { (isRequest)  ? (
             <div className="col-lg-4">
@@ -97,7 +108,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
             </div>
         ): isRelief ? (
             <div className="col-lg-4">
-                <div className="listing-cards for-relief pt-4">
+                <div className="listing-cards for-relief pt-4" onClick={openRentDetails}>
                     <div className="listing-info">
                         <div className="title-group align-items-center mb-4">
                             <div className="relief-amount">
