@@ -4,7 +4,7 @@ import Fetch from '../../Utilities/Fetch';
 import Alert from '../../Utilities/Alert/index';
 import Naira from "react-naira"
 
-export default function RequestCard({ property = {}, seeMore,  requests = {} }) {
+export default function RequestCard({ property = {}, seeMore, isRequest = false, isRelief = false }) {
     const [ cancelModal, setCancelModal ] = useState(false)
     
     const open = () => {
@@ -39,7 +39,7 @@ export default function RequestCard({ property = {}, seeMore,  requests = {} }) 
             showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
         />
         
-        { (property.isDraft == true)  ? null : (
+        { (isRequest)  ? (
             <div className="col-lg-4">
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
@@ -95,7 +95,56 @@ export default function RequestCard({ property = {}, seeMore,  requests = {} }) 
                     </div>
                 </div>
             </div>
-        )}
+        ): isRelief ? (
+            <div className="col-lg-4">
+                <div className="listing-cards for-relief pt-4">
+                    <div className="listing-info">
+                        <div className="title-group align-items-center mb-4">
+                            <div className="relief-amount">
+                                <h6>Relief Amount</h6>
+                                <p className="mb-0"><Naira>4500000</Naira></p>
+                            </div>
+                            <div className="loan-status">Pending</div>                            
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <div className="relief-amount">
+                                <h6>Interest</h6>
+                                <p className="mb-0">15%</p>
+                            </div>
+                            <div className="relief-amount">
+                                <h6>Monthly Instalments</h6>
+                                <p className="mb-0"><Naira>797062</Naira></p>
+                            </div>
+                            <div className="relief-amount">
+                                <h6>Total Repayment</h6>
+                                <p className="mb-0"><Naira>4782372</Naira></p>
+                            </div>                            
+                        </div>
+                    </div>
+                    {/* <div className="listing-info pt-0">
+                        <div className="listing-btn">
+                            <button className="list-no-color-btn" 
+                                onClick={openCancel}
+                            > 
+                                Cancel
+                            </button>
+                                
+                            <button
+                                className="list-color-btn"
+                                onClick={() => {
+                                    seeMore(property.id);
+                                }}
+                                disabled={property.matches.length == 0}
+                            >
+                                { property.matches.length == 0 
+                                    ? 'No matches yet' 
+                                    : `View ${property.matches.length} Matches` }
+                            </button>
+                        </div>
+                    </div> */}
+                </div>
+            </div>
+        ) : null}
         
         {/* {isProperty ? null : (
             <div className="col-lg-4">
