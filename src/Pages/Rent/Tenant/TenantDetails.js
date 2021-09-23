@@ -101,16 +101,14 @@ const TenantDetails = ({ application, close }) => {
               type="submit"
               onClick={async () => await decline()}
             >
-              {" "}
-              Decline{" "}
+              Decline
             </button>
             <button
               className="btn-outlined btn-grayed ml-2"
               type="submit"
               onClick={async () => await approve()}
             >
-              {" "}
-              Accept as Tenant{" "}
+              Accept as Tenant
             </button>
           </Box>
 
