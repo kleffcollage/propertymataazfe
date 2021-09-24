@@ -2819,3 +2819,90 @@ h6.relief-preview-title {
   color: #000000;
   background-color: #F7F5F5;
 }
+
+.total-repayment {
+  color: #252427;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.info-tab {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  background-color: #0042ff;
+  border-radius: 4px;
+}
+
+.relief-payment {
+  font-family: "Baloo Bhai 2";
+}
+
+.relief-payment .payment-history {
+  border-radius: 4px;
+}
+
+.relief-payment .payment-history .icon img {
+  width: 30px;
+}
+
+.progress-tabs.filled:first-child {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid #121212;
+}
+.progress-tabs.filled:last-child {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.filled {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled:first-child {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled:last-child {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid #121212;
+}
+
+.record {
+  flex: 1 1 100%;
+}
+
+.record-title p {
+  color: #252427;
+  font-size: 16px;
+  font-weight: 500;
+}
+.last-paid,
+.gray-sub-title {
+  color: #252427;
+  opacity: 0.5;
+  font-size: 14px;
+  font-weight: 500;
+}
