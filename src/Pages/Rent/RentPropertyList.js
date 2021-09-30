@@ -63,7 +63,7 @@ function RentPropertyList() {
   };
 
   const showProperties = async (
-    url = `Property/list?offset=${offset}&limit=${limit}`
+    url = `Property/list/rent?offset=${offset}&limit=${limit}`
   ) => {
     setLoading(true);
     var data = await Fetch(url);

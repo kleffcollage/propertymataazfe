@@ -1,9 +1,8 @@
-import React,{ useState} from 'react'
+import React from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
-import Modal from '../../Utilities/Modal'
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     const incrementView = async (id) => {
@@ -18,24 +17,16 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
 		}
 	};
 
-    const [seeeMore, setSeeeMore] = useState(false);
-
     const onSeeMoreClicked = async () => {
         console.log(property);
         seeMore(property.id);
         await incrementView(property.id);
     };
+    
+    // TODO: Fix text overflow from 'semi detached duplex' property type
 
     return (
         <>
-        <Modal
-				open={seeeMore}
-				onClose={() => {
-					setSeeeMore(false);
-				}}
-			>
-				<SeeMore propertyId={property.id} setSeeMore={setSeeeMore} seller={true}/>
-			</Modal>
         {(property.isDraft == true )  ? null : (
             <div className="col-lg-4">
                 <div className="listing-cards">
@@ -46,7 +37,6 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                     ? property.mediaFiles[0].url
                                     : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                             }
-                            alt=''
                         />
                         <div className="listing-location">{property.area}</div>
                     </div>

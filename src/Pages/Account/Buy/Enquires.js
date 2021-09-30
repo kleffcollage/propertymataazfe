@@ -84,7 +84,7 @@ function Enquires({ isRent }) {
       
       {/* Payment modal */}
       <Modal open={payModal} onClose={() => setPayModal(false)}>
-        <Pay close={() => setPayModal(false)} property={propertyDetails} />
+        <Pay close={() => setPayModal(false)} isRent={isRent} property={propertyDetails} />
       </Modal>
       
       
@@ -94,13 +94,13 @@ function Enquires({ isRent }) {
       </Modal>
       
       {/* View receipt modal */}
-      <Modal open={openReceipt} onClose={() => setOpenReceipt(false)}>
+      <Modal width="60% " open={openReceipt} onClose={() => setOpenReceipt(false)}>
         <Reciept close={() => setOpenReceipt(false)} property={propertyDetails} />
       </Modal>
       
       {/* View Documentation modal */}
       <Modal open={openDocumentation} onClose={() => setOpenDocumentation(false)}>
-        <Documentation close={() => setOpenDocumentation(false)} property={propertyDetails} />
+        <Documentation close={() => setOpenDocumentation(false)} isRent={isRent} property={propertyDetails} />
       </Modal>
       
     <div className="row mt-5">
@@ -140,7 +140,12 @@ function Enquires({ isRent }) {
         <div className={enquiryStatus && enquiryStatus.hasPaid ? "steps passed" : "steps"}>
           <div className="steps-show">
             <div className="oval">
-              <i className="far fa-hourglass-start" />
+              { enquiryStatus && enquiryStatus.hasPaid ? (
+                  <i className="fas fa-check" />
+                ) : (
+                  <i className="far fa-hourglass-start" />                
+                )
+              }
             </div>
             <div className="lengthy" />
           </div>
@@ -150,7 +155,7 @@ function Enquires({ isRent }) {
               <i className="far fa-paper-plane" />
               {enquiryStatus && enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
             </button>
-            <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus && enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
+            <button className="single-step" onClick={() => setPayModal(true)} >
               <i className="far fa-lock" />
               Pay securely
             </button>

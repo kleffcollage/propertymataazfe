@@ -63,7 +63,7 @@ function Buy() {
   };
 
   const showProperties = async (
-    url = `Property/list?offset=${offset}&limit=${limit}`
+    url = `Property/list/sales?offset=${offset}&limit=${limit}`
   ) => {
     setLoading(true);
     var data = await Fetch(url);

@@ -7,8 +7,9 @@ import Spinner from "../../../Utilities/Spinner";
 import Naira from "react-naira";
 import { Box } from "@material-ui/core";
 import { FaRegCreditCard, FaRegCalendarAlt, FaStoreAlt } from "react-icons/fa"
-import { MdStoreMallDirectory } from "react-icons/md"
-import { RiShoppingCartLine } from "react-icons/ri"
+import { MdStoreMallDirectory } from "react-icons/md";
+import { RiShoppingCartLine } from "react-icons/ri";
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 
 function Reciept({ property, close,  }) {
@@ -100,6 +101,9 @@ function Reciept({ property, close,  }) {
 							<p className="">Mastercard - 1175</p>
 						</div>
 					</div>
+					<Document file="/asset/sample.pdf" className="pdf-viewer">
+						<Page pageNumber={1} />
+					</Document>
 				</div>
 				
 				<Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="mt-4">

@@ -12,7 +12,7 @@ const Dashboard = () => {
     };
     return (
         <Wrapper className="mt-5">
-            <div className="tabs mt-4">
+            <div className="tabs mt-4 mb-2">
                 <div className={`texts ${tab == "sessions" ? "current" : ""}`} 
                     onClick={() => currentTab("sessions")} >
                     Sessions

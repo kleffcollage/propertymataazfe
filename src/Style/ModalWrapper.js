@@ -8,7 +8,7 @@ export const ModalWrapper = styled.div`
 	transform: translate(-50%, -50%);
 	background: white;
 	padding: 20px;
-	width: 40%;
+	width: ${({ width }) => width ? width : `40%`};
 	overflow-y: auto;
 	height: 100%;
 	animation: animateModal .23s;

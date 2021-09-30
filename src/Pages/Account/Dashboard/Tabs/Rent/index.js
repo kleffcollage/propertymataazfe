@@ -14,6 +14,11 @@ const Rent = () => {
     const [requestRents, setRequestRents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
+    const [subTab, setSubTab] = useState("enquiries");
+    
+    const currentTab = (tabname) => {
+        setSubTab(tabname);
+    };
     
     const showDetails = (id) => {
         setShowInfo(true)
@@ -73,54 +78,111 @@ const Rent = () => {
                 </Box> 
                 : (
                     <>
-                        <div className="my-3">
-                            <h5 className="mb-3">Enquiries</h5>
-                            { isProperty.length === 0 
-                                ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
-                                : <>
-                                    <div className="row">
-                                        { isProperty.map((property, index) => {
-                                            return (
-                                                <EnquiryCard property={property} seeMore={showDetails} key={index}  />                   
-                                            )
-                                        })}
-                                    </div>
-                                </>
-                            }
+                    
+                        <div className="tabs mt-4">
+                            <div className={`texts ${subTab === "enquiries" ? "current" : ""}`} 
+                                onClick={() => currentTab("enquiries")} >
+                                Enquiries
+                            </div>
                             
+                            <div className={`texts ${subTab === "requests" ? "current" : ""}`} 
+                                onClick={() => currentTab("requests")} >
+                                Requests
+                            </div>
+                            <div className={`texts ${subTab === "rent-relief" ? "current" : ""}`}
+                                onClick={() => currentTab("rent-relief")} > 
+                                Rent Relief
+                            </div>
+                            <div className={`texts ${subTab === "tenancy" ? "current" : ""}`}
+                                onClick={() => currentTab("tenancy")} > 
+                                My Tenancy
+                            </div>
+                            
+                            <div className={subTab == "enquiries" ? "subtab-bar" : subTab == "requests" ? "subtab-bar request" : subTab == "rent-relief" ? "subtab-bar relief" : "subtab-bar tenancy"}  />
                         </div>
-                        
-                        <div className="my-3">
-                            <h5 className="mb-3">Requests</h5>
-                            
-                            { requestRents.length === 0 
-                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                : <>
-                                    <div className="row">
-                                        { requestRents.map((rents, index) => {
-                                            return (
-                                                <RequestCard property={rents} seeMore={showDetails} isRequest={true} key={index} />                   
-                                            )
-                                        })}
-                                    </div>
-                                </>
-                            }
-                        </div>
-                        <div className="my-3">
-                            <h5 className="mb-3">Rent Relief</h5>
-                            
-                            { requestRents.length === 0 
-                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                : <>
-                                    <div className="row">
-                                        { requestRents.map((rents, index) => {
-                                            return (
-                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
-                                            )
-                                        })}
-                                    </div>
-                                </>
-                            }
+            
+                        <div className="container">
+                            <div className="row">
+                                {   
+                                    subTab == "enquiries" ? (
+                                        <div className="my-3">
+                                            <h5 className="mb-3">Enquiries</h5>
+                                            { isProperty.length === 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                                : <>
+                                                    <div className="row">
+                                                        { isProperty.map((property, index) => {
+                                                            return (
+                                                                <EnquiryCard property={property} seeMore={showDetails} key={index}  />                   
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </>
+                                            }
+                                        </div>
+                                    ) :
+                                    subTab == "requests" ? (
+                                        
+                                        <div className="my-3">
+                                            <h5 className="mb-3">Requests</h5>
+                                            
+                                            { requestRents.length === 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                : <>
+                                                    <div className="row">
+                                                        { requestRents.map((rents, index) => {
+                                                            return (
+                                                                <RequestCard property={rents} seeMore={showDetails} isRequest={true} key={index} />                   
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </>
+                                            }
+                                        </div>
+                                        
+                                    ) : 
+                                    subTab == "rent-relief" ? (
+                                        
+                                        <div className="my-3">
+                                            <h5 className="mb-3">Rent Relief</h5>
+                                            
+                                            { requestRents.length === 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                : <>
+                                                    <div className="row">
+                                                        { requestRents.map((rents, index) => {
+                                                            return (
+                                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </>
+                                            }
+                                        </div>
+                                        
+                                    ) : 
+                                    subTab == "tenancy" ? (
+                                        
+                                        <div className="my-3">
+                                            <h5 className="mb-3">My Tenancy</h5>
+                                            
+                                            { requestRents.length === 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                : <>
+                                                    <div className="row">
+                                                        { requestRents.map((rents, index) => {
+                                                            return (
+                                                                <RequestCard property={rents} seeMore={showDetails} isForTenants={true} key={index} />                   
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </>
+                                            }
+                                        </div>
+                                        
+                                    ) : null
+                                }
+                            </div>
                         </div>
                     </>
                 )
