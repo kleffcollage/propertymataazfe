@@ -90,7 +90,7 @@ const Listings = () => {
                                 For Rent
                             </div>
                             
-                            <div className={tab == "for-sale" ? "tab-bar" : "tab-bar req"} />
+                            <div className={tab == "for-sale" ? "tabbar" : "tabbar req"} />
                         </div>
                         
                         <div>
@@ -137,8 +137,6 @@ const Listings = () => {
                                 }
                             </div>
                         </div>
-                        
-                    
                         
                     </>
                 )

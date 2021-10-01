@@ -14,7 +14,7 @@ const Sessions = () => {
     const [requestRents, setRequestRents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
-    const [subTab, setSubTab] = useState("cleanclean");
+    const [subTab, setSubTab] = useState("fix");
     
     const currentTab = (tabname) => {
         setSubTab(tabname);
