@@ -155,7 +155,7 @@ function Enquires({ isRent }) {
               <i className="far fa-paper-plane" />
               {enquiryStatus && enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
             </button>
-            <button className="single-step" onClick={() => setPayModal(true)} >
+            <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus && enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
               <i className="far fa-lock" />
               Pay securely
             </button>
