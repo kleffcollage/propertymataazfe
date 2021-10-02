@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Wrapper } from "./Clean.styles";
 import Modal from "../../Utilities/Modal";
+import Fetch from "../../Utilities/Fetch";
 import Application from "../../Components/Generics/Form/Application";
 import { Box } from "@material-ui/core";
 
 const Clean = () => {
     const [openModal, setOpenModal ] = useState(false);
+    
     
     return (
         <>

@@ -460,7 +460,7 @@ ul.footer i {
   font-family: "Baloo Bhai 2";
   font-size: 14px;
   letter-spacing: -0.47px;
-  line-height: 45px;
+  /* line-height: 45px; */
   outline: 0;
   margin-bottom: 2rem;
 }
@@ -2755,13 +2755,62 @@ h6.relief-preview-title {
   text-decoration: underline;
 }
 
-.tenant-agreement-wrap {
+.tenant-agreement-wrap,
+.tenancy-payment {
   font-family: "Baloo Bhai 2";
 }
 
 .tenant-consent {
   width: 83%;
   font-size: 14px;
+}
+
+.complaints-tab-wrap button:disabled {
+  color: #252427;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.complaint-tabs {
+  font-family: "Baloo Bhai 2";
+  border-bottom: 1px solid #D6D6D6;
+}
+
+.complaint-tab {
+  border: none;
+  text-align: left;
+  background: transparent;
+  
+}
+
+.complaint-tab h5.sub-heading {
+  font-size: 0.856rem;
+}
+.complaint-tab h5 {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.complaint-tab p {
+  font-size: 0.987rem;
+}
+
+.upcoming-pay-wrap .upcoming-pay {
+  border-radius: 5px;
+  background-color: rgba(154,167,179,0.06);
+}
+
+.upcoming-pay-wrap button {
+  height: 0 !important;
+}
+
+.upcoming-pay-wrap button:disabled, 
+.tenancy-payment button:disabled {
+  opacity: 0.4;
+}
+
+.pay-history-wrap .pay-history {
+  border-bottom: 1px solid #D6D6D6;
 }
 
 /* Generic => Application  */

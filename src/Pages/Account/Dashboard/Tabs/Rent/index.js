@@ -89,10 +89,12 @@ const Rent = () => {
                                 onClick={() => currentTab("requests")} >
                                 Requests
                             </div>
+                            
                             <div className={`texts ${subTab === "rent-relief" ? "current" : ""}`}
                                 onClick={() => currentTab("rent-relief")} > 
                                 Rent Relief
                             </div>
+                            
                             <div className={`texts ${subTab === "tenancy" ? "current" : ""}`}
                                 onClick={() => currentTab("tenancy")} > 
                                 My Tenancy
@@ -166,13 +168,13 @@ const Rent = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">My Tenancy</h5>
                                             
-                                            { requestRents.length === 0 
+                                            { isProperty.length === 0
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { isProperty.map((property, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isForTenants={true} key={index} />                   
+                                                                <RequestCard property={property} seeMore={showDetails} isForTenants={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>

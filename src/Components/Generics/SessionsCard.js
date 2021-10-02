@@ -8,7 +8,7 @@ import RentReliefDetails from '../../Pages/Rent/RentReliefDetails';
 import RequestResults from '../../Pages/Rent/RequestResults';
 import TenancyDetails from '../../Pages/Rent/Landlord/TenancyDetails';
 
-export default function RequestCard({ property = {}, seeMore, isRequest = false, isRelief = false, isForTenants = false, }) {
+export default function SessionsCard({ property = {}, }) {
     const [ cancelModal, setCancelModal ] = useState(false)
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ tenancyDetails, setTenancyDetails ] = useState(false)
@@ -31,23 +31,6 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         setCancelModal(prev => !prev)
     }
     
-    const incrementView = async (id) => {
-		var sendData = await Fetch(`Property/addview/${id}`, "get");
-		//console.log("This is an Id " + id);
-		if(!sendData.status){
-			console.log(sendData.message)
-			return;
-		}
-		if(sendData.status != 400 ){
-			console.log("Issokay");
-		}
-	};
-
-    const onSeeMoreClicked = async () => {
-        console.log(property);
-        seeMore(property.id);
-        await incrementView(property.id);
-    };
     // console.log({property})
 
     return (
@@ -68,7 +51,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         
         {/* Tenants rental details */}
         <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-            <TenancyDetails  propertyId={property.id} close={() => setTenancyDetails(false)} />
+            <TenancyDetails isTenant={true} propertyId={property.id} close={() => setTenancyDetails(false)} />
         </Modal>
         
         { isRequest  ? (
