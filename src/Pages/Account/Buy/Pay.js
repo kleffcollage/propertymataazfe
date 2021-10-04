@@ -8,7 +8,7 @@ import { Box } from "@material-ui/core";
 import Naira from 'react-naira'
 
 
-function Pay({ property, close,  }) {
+function Pay({ property, close, isRent }) {
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
@@ -64,6 +64,15 @@ function Pay({ property, close,  }) {
 				</span>
 			</div>
 		</div>
+		
+		{isRent && (
+			
+			<div className="d-flex rent-disclaimer px-2 my-3">
+				<p className="mb-0 font-weight-bold">
+					Kindly note that your tenancy period commences on the date and time your payment is successful.
+				</p>
+			</div>
+		)}
       
 	  
     	<div className="modal-content">

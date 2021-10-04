@@ -68,6 +68,7 @@ function Drafts() {
 			<Modal open={listings} onclose={close}>
 				<SellAdd close={close} />
 			</Modal>
+			
 			{loading ? (
 				<div className="loading">
 					<Spinner size={40} color={"primary"} />

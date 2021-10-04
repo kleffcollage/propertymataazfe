@@ -11,7 +11,7 @@ function Modal(props) {
 			aria-describedby="A modal description"
 			disableBackdropClick={false}
 		>
-			<ModalWrapper>{props.children}</ModalWrapper>
+			<ModalWrapper width={props.width} >{props.children}</ModalWrapper>
 		</MaterialModal>
 	);
 }

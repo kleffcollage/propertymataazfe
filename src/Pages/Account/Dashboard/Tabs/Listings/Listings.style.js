@@ -12,4 +12,25 @@ export const Wrapper = styled.div`
         font-family: "Baloo Bhai 2";
         font-size: 0.89rem;
     }
+    
+    .tabbar {
+        width: 49.6%;
+        position: absolute;
+        height: 85%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+        border-radius: 2.4px;
+        background-color: #ffffff;
+        -webkit-box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+        z-index: 1;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        
+        
+    }
+    
+    .tabbar.req {
+        -webkit-transform: translateX(50%);
+        transform: translateX(50%);
+    }
 `

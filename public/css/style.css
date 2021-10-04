@@ -460,7 +460,7 @@ ul.footer i {
   font-family: "Baloo Bhai 2";
   font-size: 14px;
   letter-spacing: -0.47px;
-  line-height: 45px;
+  /* line-height: 45px; */
   outline: 0;
   margin-bottom: 2rem;
 }
@@ -721,6 +721,33 @@ a.tc,
   box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
   z-index: 1;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.subtab-bar {
+  width: 20.33%;
+  position: absolute;
+  height: 85%;
+  -webkit-transform: translateX(-184%);
+  transform: translateX(-184%);
+  border-radius: 2.4px;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.subtab-bar.request {
+  -webkit-transform: translateX(-66%);
+  transform: translateX(-66%);
+}
+.subtab-bar.relief {
+  -webkit-transform: translateX(56%);
+  transform: translateX(56%);
+}
+.subtab-bar.tenancy {
+  -webkit-transform: translateX(180%);
+  transform: translateX(180%);
 }
 
 .tab-bar.req {
@@ -995,10 +1022,18 @@ p.fil:last-of-type {
 .listing-cards.for-request {
   min-height: 12rem;
 }
+.listing-cards.for-relief {
+  font-family: "Baloo Bhai 2";
+  min-height: 9rem;
+}
 
 .listing-cards:hover {
   border: 3.78px solid rgba(0, 66, 255, 0.34);
   border-radius: 7.56px;
+}
+.listing-cards.applications:hover {
+  border: none;
+  border-radius: 0;
 }
 
 .listing-cards.request {
@@ -1055,6 +1090,7 @@ p.fil:last-of-type {
   letter-spacing: 0;
   line-height: 18.9px;
   margin-left: 0.5rem;
+  text-transform: capitalize;
 }
 
 .feature-group {
@@ -1242,7 +1278,17 @@ span.backs {
   font-weight: 600;
   letter-spacing: 0;
   line-height: 18px;
-  margin: 2rem 0;
+  margin: 1.8rem 0;
+}
+
+.property-sub-title {
+  color: #252427;
+  font-family: "Baloo Bhai 2";
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 10px;
+  margin: 1rem 0;
 }
 
 .overview-section {
@@ -1990,7 +2036,7 @@ span.cost {
 .count {
   color: #252427;
   font-family: "Baloo Bhai 2";
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   letter-spacing: 0;
   line-height: 20px;
@@ -1999,7 +2045,7 @@ span.cost {
 .viewtext {
   color: #252427;
   font-family: "Baloo Bhai 2";
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 20px;
@@ -2109,6 +2155,13 @@ a.small-cards {
   font-weight: 600;
   letter-spacing: -0.53px;
   line-height: 26px;
+}
+
+.rent-disclaimer {
+  color: #212121;
+  font-family: "Baloo Bhai 2";
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .rent-sub {
@@ -2702,6 +2755,64 @@ h6.relief-preview-title {
   text-decoration: underline;
 }
 
+.tenant-agreement-wrap,
+.tenancy-payment {
+  font-family: "Baloo Bhai 2";
+}
+
+.tenant-consent {
+  width: 83%;
+  font-size: 14px;
+}
+
+.complaints-tab-wrap button:disabled {
+  color: #252427;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.complaint-tabs {
+  font-family: "Baloo Bhai 2";
+  border-bottom: 1px solid #D6D6D6;
+}
+
+.complaint-tab {
+  border: none;
+  text-align: left;
+  background: transparent;
+  
+}
+
+.complaint-tab h5.sub-heading {
+  font-size: 0.856rem;
+}
+.complaint-tab h5 {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.complaint-tab p {
+  font-size: 0.987rem;
+}
+
+.upcoming-pay-wrap .upcoming-pay {
+  border-radius: 5px;
+  background-color: rgba(154,167,179,0.06);
+}
+
+.upcoming-pay-wrap button {
+  height: 0 !important;
+}
+
+.upcoming-pay-wrap button:disabled, 
+.tenancy-payment button:disabled {
+  opacity: 0.4;
+}
+
+.pay-history-wrap .pay-history {
+  border-bottom: 1px solid #D6D6D6;
+}
+
 /* Generic => Application  */
 .typeof-building {
   font-family: "Baloo Bhai 2";
@@ -2716,4 +2827,223 @@ h6.relief-preview-title {
 }
 .typeof-building .tab.active {
   border: 1px solid #0042ff;
+}
+
+/* Application Details */
+.applicants, .my-request {
+  font-family: "Baloo Bhai 2";
+}
+
+/* .applicants .applicants-avi {
+  width: 35%;
+} */
+
+.applicants .applicants-avi img {
+  width: 115px;
+}
+.applicants .tenant-avi img {
+  width: 200px;
+  height: auto;
+}
+
+.applicants-detail,
+.tenant-info-box {
+  flex: 1 1 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dce1e7;
+}
+.applicants-detail:last-child,
+.tenant-info-box:last-child {
+  border-bottom: 1px solid #dce1e7;
+}
+
+.tenant-info-box h6 {
+  font-weight: 600;
+  color: #252427;
+}
+
+.tenant-info-box p {
+  color: #252427;
+}
+.btn-grayed {
+  opacity: 0.8;
+  color: #252427;
+}
+
+.applicants-detail h6 {
+  font-size: 1.2rem;
+  color: #252427;
+}
+.applicants-detail p {
+  color: #252427;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.show-property-details {
+  opacity: 0.8;
+  color: #252427;
+  margin: 2.9rem 0 !important;
+}
+
+.applicants .disclaimer-text {
+  opacity: 0.5;
+  color: #252427;
+}
+
+.listing-info.for-requested-properties {
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: calc(145px - 20px);
+}
+
+.my-request .title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0042ff;
+}
+.my-request .sub-title {
+  color: #212121;
+  font-weight: 600;
+  font-size: 20px
+}
+
+.button__pre-text {
+  font-family: "Baloo Bhai 2";
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pdf-viewer {
+  width: auto;
+}
+
+.dislike-btn {
+  color: #ffffff;
+  font-family: "Baloo Bhai 2";
+  font-size: 15px;
+  font-weight: 500;
+  padding: 20px 10px;
+  text-align: center;
+  border: 1px solid #FF101F;
+  background-color: #FF101F;
+}
+
+.like-btn {
+  color: #ffffff;
+  font-family: "Baloo Bhai 2";
+  font-size: 15px;
+  font-weight: 500;
+  padding: 20px 10px;
+  text-align: center;
+  border: 1px solid #2FDF84;
+  background-color: #2FDF84;
+}
+
+/* Rent relief card */
+.relief-amount h6 {
+  opacity: 0.4;
+  color: #191919;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: .2rem;
+}
+.relief-amount p {
+  color: #191919;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.loan-status {
+  padding: 5px 20px;
+  border-radius: 4px;
+  color: #000000;
+  background-color: #F7F5F5;
+}
+
+.total-repayment {
+  color: #252427;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.info-tab {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  background-color: #0042ff;
+  border-radius: 4px;
+}
+
+.relief-payment {
+  font-family: "Baloo Bhai 2";
+}
+
+.relief-payment .payment-history {
+  border-radius: 4px;
+}
+
+.relief-payment .payment-history .icon img {
+  width: 30px;
+}
+
+.progress-tabs.filled:first-child {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid #121212;
+}
+.progress-tabs.filled:last-child {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.filled {
+  width: 14%;
+  background: #0042ff;
+  padding: 9px;
+  border-radius: 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 0;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled:first-child {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid #121212;
+}
+.progress-tabs.unfilled:last-child {
+  width: 14%;
+  background: #fff;
+  padding: 9px;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid #121212;
+}
+
+.record {
+  flex: 1 1 100%;
+}
+
+.record-title p {
+  color: #252427;
+  font-size: 16px;
+  font-weight: 500;
+}
+.last-paid,
+.gray-sub-title {
+  color: #252427;
+  opacity: 0.5;
+  font-size: 14px;
+  font-weight: 500;
 }

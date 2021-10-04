@@ -3,6 +3,7 @@ import { Wrapper } from "./Dashboard.styles";
 // Tabs
 import Rent from "./Tabs/Rent";
 import Listing from "./Tabs/Listings";
+import Sessions from "./Tabs/Sessions";
 
 const Dashboard = () => {
     const [tab, setTab] = useState("rent");
@@ -12,7 +13,7 @@ const Dashboard = () => {
     };
     return (
         <Wrapper className="mt-5">
-            <div className="tabs mt-4">
+            <div className="tabs mt-4 mb-2">
                 <div className={`texts ${tab == "sessions" ? "current" : ""}`} 
                     onClick={() => currentTab("sessions")} >
                     Sessions
@@ -31,9 +32,9 @@ const Dashboard = () => {
             </div>
             
             <div>
-                <div className="row">
+                <div className="container dashboard-wrap">
                     {   
-                        tab == "sessions" ? "Hello Sessions" :
+                        tab == "sessions" ? <Sessions /> :
                         tab == "listings" ? <Listing /> : 
                         tab == "rent" ? <Rent /> : null
                     }

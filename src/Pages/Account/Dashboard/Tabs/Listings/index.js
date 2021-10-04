@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Wrapper } from "./Listings.style";
 import Fetch from "../../../../../Utilities/Fetch";
 import ListedCard from "../../../../../Components/Generics/ListedCard";
+import RentCard from "../../../../../Components/Generics/RentCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
@@ -11,6 +12,11 @@ const Listings = () => {
     const [isForRent, setIsForRent] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false)
+    const [tab, setTab] = useState("for-sale");
+    
+    const currentTab = (tabname) => {
+        setTab(tabname);
+    };
     
     const showDetails = (id) => {
         setShowInfo(true)
@@ -70,40 +76,68 @@ const Listings = () => {
                 </Box> 
                 : (
                     <>
-                        <div className="my-3">
-                            <h5 className="mb-3">For Sale</h5>
-                            
-                            <div className="row">
-                                { isForSale.length == 0 
-                                    ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
-                                    : <>
-                                        { isForSale.map((property, index) => {
-                                            return (
-                                                <ListedCard property={property} seeMore={showDetails} key={index} />                    
-                                            )
-                                        })}
-                                    </>
-                                }
+                        <div className="tabs mt-3">
+                            <div
+                                className={`texts ${tab == "for-sale" ? "current" : ""}`}
+                                onClick={() => currentTab("for-sale")}
+                            >
+                                For Sale
+                            </div>
+                            <div
+                                className={`texts ${tab == "for-rent" ? "current" : ""}`}
+                                onClick={() => currentTab("for-rent")}
+                            >
+                                For Rent
                             </div>
                             
+                            <div className={tab == "for-sale" ? "tabbar" : "tabbar req"} />
                         </div>
                         
-                        <div className="my-3">
-                            <h5 className="mb-3">For Rent</h5>
-                            
-                            <div className="row">
-                                { isForRent.length == 0 
-                                    ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                    : <>
-                                        { isForRent.map((rents, index) => {
-                                            return (
-                                                <ListedCard property={rents} seeMore={showDetails} key={index} />                    
-                                            )
-                                        })}
-                                    </>
+                        <div>
+                            <div className="container">
+                                {   
+                                    tab === "for-sale" ? (
+                                        
+                                        <div className="my-3">
+                                            <h5 className="mb-3">For Sale</h5>
+                                            
+                                            <div className="row">
+                                                { isForSale.length == 0 
+                                                    ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                                    : <>
+                                                        { isForSale.map((property, index) => {
+                                                            return (
+                                                                <ListedCard property={property} seeMore={showDetails} key={index} />                    
+                                                            )
+                                                        })}
+                                                    </>
+                                                }
+                                            </div>
+                                            
+                                        </div>
+                                    ) : (
+                                        <div className="my-3">
+                                            <h5 className="mb-3">For Rent</h5>
+                                            
+                                            <div className="row">
+                                                { isForRent.length == 0 
+                                                    ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                    : <>
+                                                        { isForRent.map((rents, index) => {
+                                                            return (
+                                                                <RentCard property={rents} seeMore={showDetails} key={index} />                    
+                                                            )
+                                                        })}
+                                                    </>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                    )
                                 }
                             </div>
                         </div>
+                        
                     </>
                 )
             }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Wrapper } from "./Rent.styles";
+import { Wrapper } from "./Sessions.styles";
 import Fetch from "../../../../../Utilities/Fetch";
 import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import RequestCard from "../../../../../Components/Generics/RequestCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
-const Rent = () => {
+const Sessions = () => {
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(25);
     const [errormessage, setErrormessage] = useState("");
@@ -14,7 +14,7 @@ const Rent = () => {
     const [requestRents, setRequestRents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
-    const [subTab, setSubTab] = useState("enquiries");
+    const [subTab, setSubTab] = useState("fix");
     
     const currentTab = (tabname) => {
         setSubTab(tabname);
@@ -80,35 +80,29 @@ const Rent = () => {
                     <>
                     
                         <div className="tabs mt-4">
-                            <div className={`texts ${subTab === "enquiries" ? "current" : ""}`} 
-                                onClick={() => currentTab("enquiries")} >
-                                Enquiries
+                            <div className={`texts ${subTab === "clean" ? "current" : ""}`} 
+                                onClick={() => currentTab("clean")} >
+                                Clean
                             </div>
                             
-                            <div className={`texts ${subTab === "requests" ? "current" : ""}`} 
-                                onClick={() => currentTab("requests")} >
-                                Requests
+                            <div className={`texts ${subTab === "fix" ? "current" : ""}`} 
+                                onClick={() => currentTab("fix")} >
+                                Fix
                             </div>
-                            
                             <div className={`texts ${subTab === "rent-relief" ? "current" : ""}`}
                                 onClick={() => currentTab("rent-relief")} > 
-                                Rent Relief
+                                Verify
                             </div>
                             
-                            <div className={`texts ${subTab === "tenancy" ? "current" : ""}`}
-                                onClick={() => currentTab("tenancy")} > 
-                                My Tenancy
-                            </div>
-                            
-                            <div className={subTab == "enquiries" ? "subtab-bar" : subTab == "requests" ? "subtab-bar request" : subTab == "rent-relief" ? "subtab-bar relief" : "subtab-bar tenancy"}  />
+                            <div className={subTab === "clean" ? "tab-bar" : subTab === "fix" ? "tab-bar req" : "tab-bar roc"}  />
                         </div>
             
-                        <div className="container">
-                            <div className="row">
+                        <div>
+                            <div className="container">
                                 {   
-                                    subTab == "enquiries" ? (
+                                    subTab === "clean" ? (
                                         <div className="my-3">
-                                            <h5 className="mb-3">Enquiries</h5>
+                                            <h5 className="mb-3">Clean</h5>
                                             { isProperty.length === 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
                                                 : <>
@@ -123,10 +117,10 @@ const Rent = () => {
                                             }
                                         </div>
                                     ) :
-                                    subTab == "requests" ? (
+                                    subTab === "fix" ? (
                                         
                                         <div className="my-3">
-                                            <h5 className="mb-3">Requests</h5>
+                                            <h5 className="mb-3">Fix</h5>
                                             
                                             { requestRents.length === 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
@@ -143,10 +137,10 @@ const Rent = () => {
                                         </div>
                                         
                                     ) : 
-                                    subTab == "rent-relief" ? (
+                                    subTab === "verify" ? (
                                         
                                         <div className="my-3">
-                                            <h5 className="mb-3">Rent Relief</h5>
+                                            <h5 className="mb-3">Verify</h5>
                                             
                                             { requestRents.length === 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
@@ -155,26 +149,6 @@ const Rent = () => {
                                                         { requestRents.map((rents, index) => {
                                                             return (
                                                                 <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </>
-                                            }
-                                        </div>
-                                        
-                                    ) : 
-                                    subTab == "tenancy" ? (
-                                        
-                                        <div className="my-3">
-                                            <h5 className="mb-3">My Tenancy</h5>
-                                            
-                                            { isProperty.length === 0
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                                : <>
-                                                    <div className="row">
-                                                        { isProperty.map((property, index) => {
-                                                            return (
-                                                                <RequestCard property={property} seeMore={showDetails} isForTenants={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -194,4 +168,4 @@ const Rent = () => {
     )
 }
 
-export default Rent;
+export default Sessions;
