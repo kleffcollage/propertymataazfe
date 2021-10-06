@@ -82,7 +82,7 @@ const Verify = () => {
                                 requests && requests.length > 0
                                 ? requests.map((request, index) => {
                                     return (
-                                        <SessionsCard key={index} data={request} />
+                                        <SessionsCard key={index} data={request} isLandSearch={true} />
                                     )
                                 })
                             

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
 	return (
@@ -6,23 +7,13 @@ function Footer() {
 			<div className="container">
 				<div className="row">
 					<div className="col">
-						<label className="foot-title">Liquede</label>
+						<label className="foot-title">PropertyMataaz</label>
 						<ul className="footer">
 							<li>
-								<a href="#" />
-								About Us
+								<a href="#">About Us</a>								
 							</li>
 							<li>
-								<a href="#" />
-								Contact Us
-							</li>
-							<li>
-								<a href="#" />
-								Career
-							</li>
-							<li>
-								<a href="#" />
-								CSR
+								<a href="#">Contact Us</a>								
 							</li>
 						</ul>
 					</div>
@@ -40,23 +31,27 @@ function Footer() {
 						</ul>
 					</div>
 					<div className="col">
-						<label className="foot-title">Products</label>
+						<label className="foot-title">Features</label>
 						<ul className="footer">
 							<li>
-								<a href="#" />
-								Savings
+								<Link to="/">
+									Buy Property
+								</Link>
 							</li>
 							<li>
-								<a href="#" />
-								Loans
+								<Link to="/">
+									Sell Property
+								</Link>
 							</li>
 							<li>
-								<a href="#" />
-								Investments
+								<Link to="/">
+									Rent
+								</Link>
 							</li>
 							<li>
-								<a href="#" />
-								Payments
+								<Link to="/">
+									Cleaning &amp; Repairs
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -64,12 +59,14 @@ function Footer() {
 						<label className="foot-title">Enquiry</label>
 						<ul className="footer">
 							<li>
-								<a href="#" />
-								Chat
+								<Link to="/">
+									Chat with us
+								</Link>
 							</li>
 							<li>
-								<a href="#" />
-								FAQs
+								<Link to="/">
+									FAQs
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -78,34 +75,32 @@ function Footer() {
 						<ul className="footer">
 							<li>
 								<i className="fab fa-facebook" />
-								<a href="#" />
-								propertymataaz
+								<a href="https://www.facebook.com/propertymataaz">
+									propertymataaz
+								</a>
 							</li>
-							<li>
+							{/* <li>
 								<i className="fab fa-twitter" />
 								<a href="#" />
 								propertymataaz
-							</li>
+							</li> */}
 							<li>
 								<i className="fab fa-linkedin" />
-								<a href="#" />
-								propertymataaz
+								<a href="https://www.linkedin.com/company/the-property-box-limited">
+									propertymataaz
+								</a>
 							</li>
 							<li>
 								<i className="fab fa-instagram" />
-								<a href="#" />
-								propertymataaz
+								<a href="https://www.instagram.com/propertymataaz/">
+									propertymataaz
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 				<div className="site-description">
-					PropertyMataaz is a product of PropertyMataaz Limited, a subsidiary of
-					Oxygen Holdings. Banking services on Liquede are provided by Bank
-					Limited, which is registered with the Central Bank of Nigeria.
-					Payments on Liquede are made via Interswitch; a PCI DSS certified
-					payment platform with bank-level security to ensure your transactions
-					and financial information are kept safe at all times.
+					PropertyMataaz is a product of PropertyMataaz Limited, a subsidiary of Oxygen Holdings.  Payments on PropertyMataaz are made via Interswitch; a PCI DSS certified payment platform with bank-level security to ensure your transactions and financial information are kept safe at all times.
 				</div>
 				<div className="copyright">
 					© 2020 PropertyMataaz Limited. All rights reserved.
