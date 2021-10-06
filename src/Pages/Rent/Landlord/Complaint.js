@@ -9,7 +9,7 @@ import Spinner from "../../../Utilities/Spinner";
 import Naira from "react-naira"
 import TenantComplaintView from "./ComplaintsView";
 
-const TenantComplaint = ({ isTenant = false, close }) => {
+const TenantComplaint = ({ property, isTenant = false, close }) => {
     const [loading, setLoading ] = useState(false);
 	const [item, setOpenItem] = useState(false);
     const [ selected, setSelected ] = useState(null);
@@ -48,7 +48,8 @@ const TenantComplaint = ({ isTenant = false, close }) => {
     const [complaintDetails, setComplaintDetails] = useState({
         category: 0,
         subcategory: 0,
-        comment: ""
+        comment: "",
+        propertyId: 0,
     });
     
     const handleOnChange = (e) => {
@@ -70,6 +71,9 @@ const TenantComplaint = ({ isTenant = false, close }) => {
 	const handleSubmit = async () => {
 		setLoading(true);
         
+        setComplaintDetails({...complaintDetails, propertyId: property.id})
+        console.log({complaintDetails})
+        
         try {
             let data = await Fetch('Complaints/Create', 'post', complaintDetails);
             console.log({data})
@@ -90,6 +94,8 @@ const TenantComplaint = ({ isTenant = false, close }) => {
             console.log({error})
         }
 	}
+    
+    console.log({property})
     
     
 	

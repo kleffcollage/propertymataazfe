@@ -25,7 +25,7 @@ export const SeeMore = ({
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const user = useContext(MainContext);
-  // console.log(user.data.user.id);
+  console.log({user});
   console.log(propertyDetails);
 
   const getPropertyDetails = async () => {
@@ -185,19 +185,24 @@ export const SeeMore = ({
                   </div>
                 </div>
               ) : (
-                <Link
-                  to={
-                    tenant
-                      ? `/rent/enquires/${propertyDetails.id}`
-                      : `/buy/enquires/${propertyDetails.id}`
+                <>
+                  { propertyDetails.createdByUser.id == user.data.user.id ? 
+                      "Cannot enquire on owned property" 
+                    : <Link
+                      to={
+                        tenant
+                          ? `/rent/enquires/${propertyDetails.id}`
+                          : `/buy/enquires/${propertyDetails.id}`
+                      }
+                      className="list-color-btn w-100 mt-4 mb-3f "
+                      onClick={async () => {
+                        await incrementEnquire(propertyId);
+                      }}
+                    >
+                      Enquire
+                    </Link>
                   }
-                  className="list-color-btn w-100 mt-4 mb-3f"
-                  onClick={async () => {
-                    await incrementEnquire(propertyId);
-                  }}
-                >
-                  Enquire
-                </Link>
+                </>
               )
             ) : null}
 

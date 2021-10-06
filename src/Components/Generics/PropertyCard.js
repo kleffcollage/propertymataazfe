@@ -75,14 +75,14 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 									: "pending"
 							}`}
 						>
-							<div className="status">
+							<div className={property.status === Statuses.VERIFIED ? "text-white status" : "status"} >
 								{property.isDraft === true
 									? "Only visible to you"
 									: property.status === Statuses.VERIFIED
 									? "Live"
 									: "Listing is pending"}
 							</div>
-							<div className="status" onClick={open}>
+							<div className={property.status === Statuses.VERIFIED ? "text-white status" : "status"} onClick={open}>
 								Edit <i className="fas fa-pen ml-2" />
 							</div>
 						</div>
@@ -119,15 +119,15 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							</div>
 						</div>
 						<div className="listing-btn">
-							<button className="list-no-color-btn" onClick={() => {
+							<button className={property.status === Statuses.VERIFIED ? "color-btn" : "list-no-color-btn"} onClick={() => {
 									seeMore(property.id);
-								}}>Details</button>
+								}}> View Details</button>
 								
 							<button
 								className="list-no-color-btn"
 								onClick={openAlert}
 							>
-								Delete
+								Delist
 							</button>
 						</div>
 					</div>
