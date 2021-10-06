@@ -385,7 +385,9 @@ ul.footer i {
   background-color: #f6f6f6;
 }
 .login-image {
-  height: 28rem;
+  width: 100%;
+  padding: 10px 0;
+  /* height: 28rem; */
 }
 .display-image img,
 .login-image img {

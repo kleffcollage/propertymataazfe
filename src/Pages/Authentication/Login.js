@@ -73,7 +73,7 @@ function Login() {
 					<div className="row">
 						<div className="col-lg-6">
 							<div className="login-image">
-								<img src="/asset/log.jpg" alt="Login Image" />
+								<img src="/asset/buyorsell.png" alt="Login Image" />
 							</div>
 						</div>
 						<div className="col" />
