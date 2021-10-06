@@ -473,7 +473,7 @@ function SellAdd({ close, existingProperty = {} }) {
               
               <div className="input-box">
                 <label htmlFor="lga" className="input-label">Locality (Optional)</label>
-                {data.state ? (
+                { data.state  ? (
                   <>
                   <div className="select-box">
                       <Field name="lga" as="select" className="formfield">
@@ -486,7 +486,7 @@ function SellAdd({ close, existingProperty = {} }) {
                   </div>
                   <ErrorMessage name="lga" />
                   </>
-                ): null }
+                ) : null }
               </div>
               
               <div className="input-box">

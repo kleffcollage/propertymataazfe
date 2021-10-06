@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
-import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Modal from '../../Utilities/Modal';
 import Alert from '../../Utilities/Alert/index';
 import Naira from "react-naira"
-import RentReliefDetails from '../../Pages/Rent/RentReliefDetails';
-import RequestResults from '../../Pages/Rent/RequestResults';
-import TenancyDetails from '../../Pages/Rent/Landlord/TenancyDetails';
+import DetailsCard from '../../Pages/Account/Dashboard/Tabs/Sessions/DetailsCard';
 
-export default function SessionsCard({ data = {}, }) {
+export default function SessionsCard({ data = {}, isClean = false }) {
     const [ cancelModal, setCancelModal ] = useState(false)
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ propertyId, setPropertyId ] = useState('')
     
     
-    const openRentDetails = () => {
-        setOpenDetails(prev => !prev)
+    const popModal = () => {
+        if(isClean) {
+            setOpenDetails(!openDetails)
+            return
+        }
+        return
     }
     // console.log({property})
 
@@ -25,17 +26,16 @@ export default function SessionsCard({ data = {}, }) {
                 showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
             />
             
-            {/* Tenants rental details */}
-            
-            {/* <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-                <TenancyDetails isTenant={true} propertyId={property.id} close={() => setTenancyDetails(false)} />
-            </Modal> */}
+            {/* Clean modal details */}
+            <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
+                <DetailsCard details={data.property}  close={() => setOpenDetails(false)} />
+            </Modal>
         
             <div className="col-lg-4">
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{data.name}</div>
+                            <div className="listing-title mb-3">{data.property.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">
@@ -49,7 +49,7 @@ export default function SessionsCard({ data = {}, }) {
                     {/* <div className="line" /> */}
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className="list-no-color-btn w-100"> 
+                            <button className="list-no-color-btn w-100" onClick={() => popModal()}> 
                                 View Details
                             </button>
                         </div>

@@ -954,7 +954,7 @@ p.fil:last-of-type {
 .no-color-btn,
 .color-btn {
   width: 48%;
-  height: 2.2rem;
+  /* height: 2.2rem; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2811,6 +2811,19 @@ h6.relief-preview-title {
 
 .pay-history-wrap .pay-history {
   border-bottom: 1px solid #D6D6D6;
+}
+
+.details-card i {
+  color: #0042FF;
+}
+
+.details-card .tabs-group h5 {
+  color: #252427;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+.details-card .tabs-group p {
+  font-size: calc(1rem - 2px);
 }
 
 /* Generic => Application  */

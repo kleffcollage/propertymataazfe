@@ -46,9 +46,7 @@ function Rent() {
 				</div>
 				
 				<Modal open={rentRelief} 
-					close={ () => {
-						setRentRelief(false);
-					} }
+					close={() => { setRentRelief(false) }}
 				>
 					<ReliefForm close={() => setRentRelief(false)} />
 				</Modal>

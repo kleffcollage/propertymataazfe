@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import { Box } from "@material-ui/core";
+import { typeOfApplications } from "../../Utilities/Enums"
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -23,6 +24,7 @@ function ReliefForm({ close }) {
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
   const [step, setStep] = useState(1);
+  const [ applicationTypes, setApplicationTypes] = useState([]);
 
   console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -36,6 +38,7 @@ function ReliefForm({ close }) {
     Area: [],
     Price: [],
   });
+  
   const [reliefData, setReliefData] = useState({
     firstName: "",
     lastName: "",
@@ -64,13 +67,14 @@ function ReliefForm({ close }) {
     
     
     isDraft: false,
-    isActive: true,
-    isForRent: true,
+    isActive: false,
+    isForRent: false,
     isForSale: false,
     workId: [],
     passport: [],
     longitude: 0,
     latitude: 0,
+    applicationTypeId: 0,
   });
 
   const [states, setStates] = useState([]);
@@ -84,6 +88,15 @@ function ReliefForm({ close }) {
     console.log(reliefData);
   };
 
+  const getApplicationTypes = async () => {
+    try {
+      let { data } = await Fetch("Application/types");
+      console.log("Application types: ", data); 
+      setApplicationTypes(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const currentStep = async () => {
     if (step < 3 ) {
@@ -172,42 +185,56 @@ function ReliefForm({ close }) {
     }
   };
 
-  const getLongAndLat = async (address) => {
-    const { results } = await Geocode.fromAddress(address);
-    setReliefData({
-      ...reliefData,
-      latitude: results[0].geometry.location.lat,
-      longitude: results[0].geometry.location.lng,
-    });
-    console.log(results);
-  };
+  // const getLongAndLat = async (address) => {
+  //   const { results } = await Geocode.fromAddress(address);
+  //   setReliefData({
+  //     ...reliefData,
+  //     latitude: results[0].geometry.location.lat,
+  //     longitude: results[0].geometry.location.lng,
+  //   });
+  //   console.log(results);
+  // };
 
   const submitRentRequest = async (e) => {
-    console.log(reliefData);
-    
     e.preventDefault();
-    setLoading(true);
-    await getLongAndLat(reliefData.address);
     console.log(reliefData);
+    setLoading(true);
+    // await getLongAndLat(reliefData.address);
+    reliefData.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.RELIEF).id
     
-    var data = await Fetch("Property/create", "post", reliefData);
-    console.log('Rent property: ', data);
-    if (!data.status) {
+    const { workId, passport } = reliefData;
+    if (workId.length == 0 || passport.length == 0) {
+      toast.info("Please, upload a copy of work Id and a passport.");
       setLoading(false);
-      setErrormessage(data.message);
       return;
     }
-    if (data.status != 400) {
+    
+    console.log({ reliefData });
+    
+    try {
+      var data = await Fetch("Application/new ", "post", reliefData);
+      console.log('Rent property: ', data);
+      if (!data.status) {
+        setLoading(false);
+        setErrormessage(data.message);
+        return;
+      }
+      if (data.status != 400) {
+        setLoading(false);
+        // setListingDetails({});
+        close(true);
+        history.push("/rent");
+        toast.success(data.message);
+        // history.push("/sell");
+        await currentStep();
+      }
+      handleValidationErrors(data.errors);
       setLoading(false);
-    //   setListingDetails({});
-	close(true);
-      history.push("/rent");
-      toast.success(data.message);
-      // history.push("/sell");
-      await currentStep();
+      
+    } catch (error) {
+      console.log({ error })
     }
-    handleValidationErrors(data.errors);
-    setLoading(false);
+    
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
@@ -232,26 +259,6 @@ function ReliefForm({ close }) {
       console.log(file);
       reader.readAsDataURL(file);
     });
-  };
-
-  const submitRentToDraft = async (e) => {
-    console.log(reliefData);
-    e.preventDefault();
-    setDrafting(true);
-    var data = await Fetch("Property/create", "post", reliefData);
-    console.log(data);
-    if (!data.status) {
-      setDrafting(false);
-      setErrormessage(data.message);
-      return;
-    }
-    if (data.status != 400) {
-      setDrafting(false);
-      setReliefData({});
-      history.push("/rents");
-    }
-    handleValidationErrors(data.errors);
-    setLoading(false);
   };
 
   const getLgas = async (state) => {
@@ -286,11 +293,12 @@ function ReliefForm({ close }) {
       console.log(error);
     }
   };
-  console.log(NaijaStates.lgas("oyo"));
+  // console.log(NaijaStates.lgas("oyo"));
 
   useEffect(() => {
     const fetchData = async () => {
       // await getStates();
+      await getApplicationTypes();
     };
     fetchData();
   }, []);
@@ -315,6 +323,7 @@ function ReliefForm({ close }) {
             Back
           </span>
         </div>
+        
         <div className="logo">
           <img src="/asset/logo.png" alt="Logo" />
         </div>
@@ -331,27 +340,27 @@ function ReliefForm({ close }) {
 		    ) : null} */}
 
             <div className="input-box">
-                <div className="input-label">First name</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="firstName"
-                    value={reliefData.firstName}
-                    onChange={handleOnChange}
-                />
+              <div className="input-label">First name</div>
+              <input
+                  type="text"
+                  className="formfield"
+                  placeholder="Give your listing a name that makes it easy to find"
+                  name="firstName"
+                  value={reliefData.firstName}
+                  onChange={handleOnChange}
+              />
             </div>
             
             <div className="input-box">
-                <div className="input-label">Middle name</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="middleName"
-                    value={reliefData.middleName}
-                    onChange={handleOnChange}
-                />
+              <div className="input-label">Middle name</div>
+              <input
+                  type="text"
+                  className="formfield"
+                  placeholder="Give your listing a name that makes it easy to find"
+                  name="middleName"
+                  value={reliefData.middleName}
+                  onChange={handleOnChange}
+              />
             </div>
             
             <div className="input-box">
@@ -392,59 +401,55 @@ function ReliefForm({ close }) {
             <div className="input-box">
                 <div className="input-label">Address of Property</div>
                 <input
-                type="text"
-                className="formfield"
-                placeholder="Give your listing a name that makes it easy to find"
-                name="propertyAddress"
-                value={reliefData.propertyAddress}
-                onChange={handleOnChange}
+                  type="text"
+                  className="formfield"
+                  placeholder="Give your listing a name that makes it easy to find"
+                  name="propertyAddress"
+                  value={reliefData.propertyAddress}
+                  onChange={handleOnChange}
                 />
             </div>
             
             <div className="input-box">
                 <div className="input-label">Date of Birth</div>
                 <input
-                type="text"
-                className="formfield"
-                placeholder="Give your listing a name that makes it easy to find"
-                name="dateOfBirth"
-                value={reliefData.dateOfBirth}
-                onChange={handleOnChange}
+                  type="date"
+                  className="formfield"
+                  placeholder="Give your listing a name that makes it easy to find"
+                  name="dateOfBirth"
+                  value={reliefData.dateOfBirth}
+                  onChange={handleOnChange}
                 />
             </div>
             
             <div className="input-box">
                 <div className="input-label">Nationality</div>
-                <div className="select-box">
-                <select
-                    name="nationality"
-                    value={reliefData.nationality}
-                    className="formfield"
-                    onChange={ (e) => { }}
-                >
-                    <option value="" selected disabled>
-                        Choose an option
-                    </option>
-                </select>
-                <div className="arrows" />
-                </div>
+                <input
+                  type="text"
+                  className="formfield"
+                  placeholder="Your nationality, e.g Nigerian"
+                  name="nationality"
+                  value={reliefData.nationality}
+                  onChange={handleOnChange}
+                />
             </div>
             
             <div className="input-box">
-                <div className="input-label">Marital Status</div>
-                <div className="select-box">
+              <div className="input-label">Marital Status</div>
+              <div className="select-box">
                 <select
-                    name="martialStatus"
-                    value={reliefData.martialStatus}
-                    className="formfield"
-                    onChange={ (e) => { }}
+                  name="martialStatus"
+                  value={reliefData.martialStatus}
+                  className="formfield"
+                  onChange={handleOnChange}
                 >
-                    <option value="" selected disabled>
-                        Choose an option
-                    </option>
+                  <option value="" selected disabled> Choose an option </option>
+                  <option value="male"> Male </option>
+                  <option value="female"> Female </option>
+                  <option value="rather-not-say"> Preferred not to say </option>
                 </select>
                 <div className="arrows" />
-                </div>
+              </div>
             </div>
             
          
@@ -495,19 +500,14 @@ function ReliefForm({ close }) {
             
             <div className="input-box">
                 <div className="input-label">what is you Annual Income?</div>
-                <div className="select-box">
-                    <select
-                        name="annualIncome"
-                        value={reliefData.annualIncome}
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled>
-                            Choose an income bracket for your tenant
-                        </option>
-                    </select>
-                    <div className="arrows" />
-                </div>
+                <input
+                  type="text"
+                  className="formfield"
+                  placeholder="Your income bracket for your tenant"
+                  name="annualIncome"
+                  value={reliefData.annualIncome}
+                  onChange={handleOnChange}
+                />
             </div>
 
             <Dropzone
@@ -677,7 +677,7 @@ function ReliefForm({ close }) {
             <div className="input-box">
                 <div className="input-label">Choose a pay back date</div>
                 <input
-                    type="text"
+                    type="date"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
                     name="paybackDate"
@@ -694,9 +694,11 @@ function ReliefForm({ close }) {
                         onChange={handleOnChange}
                         className="formfield"
                     >
-                        <option value="" selected disabled>
-                            Choose a property type
-                        </option>
+                        <option value="" selected disabled> Choose a property type </option>
+                        <option value="weekly"> Weekly </option>
+                        <option value="month"> Month </option>
+                        <option value="annual"> Yearly </option>
+                        <option value="biannual"> 2 years </option>
                     </select>
                     <div className="arrows" />
                 </div>

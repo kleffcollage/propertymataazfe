@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Wrapper } from "./Verify.styles";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import { Box } from "@material-ui/core";
 import Modal from "../../Utilities/Modal";
 import Fetch from "../../Utilities/Fetch";
-import ListedCard from "../../Components/Generics/ListedCard";
 import Application from "../../Components/Generics/Form/Application";
 import Spinner from "../../Utilities/Spinner";
 import SessionsCard from "../../Components/Generics/SessionsCard";
 
-const initialState = [{
-    fileName: 'Original Land Certification',
-    fileNumber: '123456789ABCDE',
-}]
+// const initialState = [{
+//     fileName: 'Original Land Certification',
+//     fileNumber: '123456789ABCDE',
+// }]
 
 const Verify = () => {
     const [openModal, setOpenModal ] = useState(false);
     const [ loading, setLoading ] = useState(false)
-    const [requests, setRequests] = useState(initialState);
+    const [requests, setRequests] = useState([]);
     const [offset, setOffset ] = useState(0);
     const [limit, setLimit ] = useState(25);
     
@@ -31,7 +32,8 @@ const Verify = () => {
             setLoading(false)
         } catch (error) {
             setLoading(false)
-            // console.log( error)
+            // toast.warn("Unable to fetch land search requests.")
+            console.log({ error })
         }
     }
     
@@ -70,17 +72,25 @@ const Verify = () => {
                     </div>
                     
                     <div className="row py-3">
-                        { requests.length !== 0
-                            ? requests.map((request, index) => {
-                                return (
-                                    <SessionsCard key={index} data={request} />
-                                )
-                            })
-                        
-                            : <Box display="flex" flexDirection="column" width="100%" alignItems="center" className="mt-3">
-                                <div className="iconsection mb-3" />
-                                <span>You currently have no Verification requests.</span>
-                            </Box>
+                        { loading 
+                            ?
+                                <Box width="100%" flexDirection="row" justifyContent="center" alignItems="center">
+                                    <Spinner color="primary" size="35" />
+                                </Box>
+                            
+                            : (
+                                requests && requests.length > 0
+                                ? requests.map((request, index) => {
+                                    return (
+                                        <SessionsCard key={index} data={request} />
+                                    )
+                                })
+                            
+                                : <Box display="flex" flexDirection="column" width="100%" alignItems="center" className="mt-3">
+                                    <div className="iconsection mb-3" />
+                                    <span>You currently have no Verification requests.</span>
+                                </Box>
+                            )
                         }
                     </div>  
                 </div>

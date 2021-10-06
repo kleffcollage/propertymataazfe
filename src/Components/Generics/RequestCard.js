@@ -68,7 +68,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         
         {/* Tenants rental details */}
         <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-            <TenancyDetails  propertyId={property.id} close={() => setTenancyDetails(false)} />
+            <TenancyDetails  isTenant={true} propertyId={property.id} close={() => setTenancyDetails(false)} />
         </Modal>
         
         { isRequest  ? (

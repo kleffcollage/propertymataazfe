@@ -128,7 +128,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                 {/* <div className="listing-title mb-3">{property.property.name}</div> */}
               </div>
               <div className="property-sub-title mt-2 mb-3">
-                Tenant Applications
+                { (applications.length > 0) ? 'Tenant Applications' : 'No applications yet.' }
               </div>
               {applications &&
                 applications.map((application, index) => {

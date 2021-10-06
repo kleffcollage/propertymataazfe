@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik"
+import SelectField from "./SelectField";
 import Fetch from "../../../Utilities/Fetch";
 import Modal from "../../../Utilities/Modal";
 import { toast } from "react-toastify";
@@ -10,24 +11,87 @@ import TenantComplaintView from "./ComplaintsView";
 
 const TenantComplaint = ({ isTenant = false, close }) => {
     const [loading, setLoading ] = useState(false);
-    const [ property, setProperty ] = useState([]);
-	const [item, setOpenItem] = useState(false)
-    
-    // console.log({ property })
-	
+	const [item, setOpenItem] = useState(false);
+    const [ selected, setSelected ] = useState(null);
+    const [errormessage, setErrormessage] = useState("");
+    const inputData = {
+        categories: [
+            {
+                id: 100,
+                name: "Structural Damage",
+                subcategories: [
+                    {catId: 100, id: 4, name: "Structural Damages"},
+                    {catId: 100, id: 5, name: "Roof Leakage"},
+                    {catId: 100, id: 6, name: "Drainage Spillage"},
+                ]
+            },
+            {
+                id: 200,
+                name: "Co Tenant",
+                subcategories: [
+                    {catId: 200, id: 1, name: "Doemestic Violence"},
+                    {catId: 200, id: 2, name: "Noise Pollution"},
+                    {catId: 200, id: 3, name: "Suspected Criminal"},
+                ]
+            },
+            {
+                id: 300,
+                name: "Legal Issues",
+            }
+        ],
+    }
+    	
 	const openModal = () => {
 		setOpenItem(!item)
 	}
+    
+    const [complaintDetails, setComplaintDetails] = useState({
+        category: 0,
+        subcategory: 0,
+        comment: ""
+    });
+    
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+        setComplaintDetails({
+            ...complaintDetails,
+            [name]: value
+        })
+    }
+    
+    const setSelectedCategory = id => {
+        let selectedObj = inputData.categories.filter(item => item.id == id);
+        setSelected(selectedObj[0])
+    }
 	
-	const complaintDetails = {
-		category: "",
-		subcategory: "",
-		comment: ""
-	}
+    
+    console.log({complaintDetails});
 	
-	const handleSubmit = () => {
-		
+	const handleSubmit = async () => {
+		setLoading(true);
+        
+        try {
+            let data = await Fetch('Complaints/Create', 'post', complaintDetails);
+            console.log({data})
+            
+            if(!data.status) {
+                setLoading(false)
+                setErrormessage(data.message)
+                return
+            }
+            
+            if(data.status !== 400) {
+                setLoading(false)
+                toast.success("Complaint submitted successfully.")
+                return
+            }
+            
+        } catch(error) {
+            console.log({error})
+        }
 	}
+    
+    
 	
 	return (
 		<>
@@ -58,67 +122,69 @@ const TenantComplaint = ({ isTenant = false, close }) => {
 				
 			: 
 				<>
-					<Formik
-                        initialValues={complaintDetails}
-                        onSubmit={async (values, { setSubmitting }) => {
-                        await handleSubmit(values);
-                        // console.log({values})
-                        // alert(JSON.stringify(values, null, 2));
-                        }}
-                    >
-                        <Form>
-							<div className="input-box">
-                                <label
-                                    htmlFor="category"
-                                    className="input-label">
-                                    Choose a category
-                                </label>
-                                <div className="select-box">
-                                    <Field
-                                        name="category"
-                                        as="select"
-                                        className="formfield"
-                                    >
-                                        <option>Choose an option</option>
-                                        <option>Structural Damage</option>
-                                        <option>Legal Issues</option>
-                                        <option>Co-tenants</option>
-                                    </Field>
-                                    <div className="arrows"></div>
-                                </div>
-                                <ErrorMessage name="category" />
-                            </div>		
-							<div className="input-box">
-                                <label
-                                    htmlFor="subcategory"
-                                    className="input-label">
+					<div className="input-box">
+                        <div
+                            className="input-label">
+                            Choose a category
+                        </div>
+                        <div className="select-box">
+                            <select 
+                                name="category" 
+                                className="formfield" 
+                                value={complaintDetails.category} 
+                                onChange={(e) => {
+                                    setSelectedCategory(e.target.value)
+                                }}
+                            >                                           
+                                <option>Choose a category </option>
+                                { inputData.categories.map((category, index) => {
+                                    return (
+                                        <option key={index} value={category.id}> {category.name} </option>                                                
+                                    )
+                                })}
+                            </select>
+                            <div className="arrows"></div>
+                        </div>
+                    </div>	
+                    
+                    { selected && (
+                        <>
+                            <div className="input-box">
+                                <div className="input-label">
                                     Choose a sub category
-                                </label>
-                                <div className="select-box">
-                                    <Field
-                                        name="subcategory"
-                                        as="select"
-                                        className="formfield"
-                                    >
+                                </div>
+                                <div className="select-box">                                    
+                                    <select name="subcategory" className="formfield" 
+                                        value={complaintDetails.subcategory} 
+                                        onChange={handleOnChange}
+                                    >                                
                                         <option>Choose a sub category</option>
-                                        <option>Single</option>
-                                        <option>Married</option>
-                                    </Field>
+                                        {(selected.subcategories) && (
+                                            selected.subcategories.map(( subcat, index ) => {
+                                                return (
+                                                    <option key={index} value={subcat.id}> {subcat.name} </option>
+                                                )
+                                            })  
+                                        )}
+                                    </select>
                                     <div className="arrows"></div>
                                 </div>
-                                <ErrorMessage name="subcategory" />
                             </div>
-							<div className="input-box">
-								<label htmlFor="comment" className="input-label">Comment</label>
-								<Field name="comment" as="textarea" placeholder="Provide details as regards this complaint that will help us understand the issue better." className="formfield textarea" />
-								<ErrorMessage name="comment" />
-							</div>	
-							
-							<button className="secondary-btn" type="submit">
-                                Submit
-                            </button>
-						</Form>
-					</Formik>
+                            <div className="input-box">
+                                <div className="input-label">Comment</div>
+                                <textarea 
+                                    name="comment" 
+                                    value={complaintDetails.comment}
+                                    onChange={handleOnChange} 
+                                    placeholder="Provide details as regards this complaint that will help us understand the issue better." 
+                                    className="formfield textarea"></textarea>
+                            </div>
+                        </>
+                    )}
+                    
+					<button className="secondary-btn" type="submit" onClick={() => handleSubmit()}>
+                        { loading ? <Spinner /> : 'Submit'}
+                    </button>
 				</>
 			}
 		</>

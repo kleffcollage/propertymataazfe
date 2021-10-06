@@ -3,6 +3,7 @@ import { Wrapper } from "./Sessions.styles";
 import Fetch from "../../../../../Utilities/Fetch";
 import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import RequestCard from "../../../../../Components/Generics/RequestCard";
+import SessionsCard from "../../../../../Components/Generics/SessionsCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
 
@@ -43,28 +44,8 @@ const Sessions = () => {
             return
         }
     }
-    const fetchRequestRents = async (url = `PropertyRequest/list/user?offset=${offset}&limit=${limit}`) => {
-        setLoading(true)
-        const data = await Fetch(url)
-        
-        // console.log('Requested Rents: ', data)
-        
-        if(!data.status) {
-            setLoading(false)
-            setErrormessage(data.message)
-            return
-        }
-        if(data.status != 400) {
-            setLoading(true)
-            setRequestRents(data.data.value)
-            // console.log('Requested rents: ', data.data.value)
-            setLoading(false)
-            return
-        }
-    }
     
     useEffect(() => {
-        fetchRequestRents();
         fetchAppliedRents();
     }, [])
     
@@ -89,8 +70,8 @@ const Sessions = () => {
                                 onClick={() => currentTab("fix")} >
                                 Fix
                             </div>
-                            <div className={`texts ${subTab === "rent-relief" ? "current" : ""}`}
-                                onClick={() => currentTab("rent-relief")} > 
+                            <div className={`texts ${subTab === "verify" ? "current" : ""}`}
+                                onClick={() => currentTab("verify")} > 
                                 Verify
                             </div>
                             
@@ -103,13 +84,13 @@ const Sessions = () => {
                                     subTab === "clean" ? (
                                         <div className="my-3">
                                             <h5 className="mb-3">Clean</h5>
-                                            { isProperty.length === 0 
+                                            { isProperty.length == 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { isProperty.map((property, index) => {
                                                             return (
-                                                                <EnquiryCard property={property} seeMore={showDetails} key={index}  />                   
+                                                                <SessionsCard data={property} isClean={true} key={index}  />                   
                                                             )
                                                         })}
                                                     </div>
@@ -122,13 +103,13 @@ const Sessions = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Fix</h5>
                                             
-                                            { requestRents.length === 0 
+                                            { isProperty.length == 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { isProperty.map((property, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isRequest={true} key={index} />                   
+                                                                <SessionsCard data={property} key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -142,13 +123,13 @@ const Sessions = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Verify</h5>
                                             
-                                            { requestRents.length === 0 
+                                            { isProperty.length == 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { isProperty.map((property, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
+                                                                <SessionsCard data={property}  key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -158,7 +139,7 @@ const Sessions = () => {
                                         
                                     ) : null
                                 }
-                            </div>
+                            </div> 
                         </div>
                     </>
                 )
