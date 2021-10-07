@@ -509,7 +509,7 @@ function RentForm({ close }) {
             </div>
             
             <div className="input-box">
-                <div className="input-label">Rent</div>
+                <div className="input-label">Rent (Per year)</div>
                 <input
                     type="text"
                     className="formfield"

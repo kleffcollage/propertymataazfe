@@ -75,20 +75,20 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                     {/* <div className="line" /> */}
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className="list-no-color-btn" onClick={ async () => {
+                            <button className="list-no-color-btn w-100" onClick={ async () => {
                                    await onSeeMoreClicked();
                                 }}> 
                                 See More 
                             </button>
                                 
-                            <button
+                            {/* <button
                                 className="list-color-btn"
                                 onClick={() => {
                                     seeMore(property.id);
                                 }}
                             >
                                 Details
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>
