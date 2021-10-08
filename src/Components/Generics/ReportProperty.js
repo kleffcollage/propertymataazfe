@@ -117,12 +117,12 @@ export const  ReportProperty = ({property, close}) => {
                     )}
                    
                     <div class="input-box">
-						<div class="input-label">Description</div>
+						<div class="input-label">Complaint</div>
 						<textarea
 							type="text"
 							class="formfield textarea"
 							cols="10"
-							placeholder="Description"
+							placeholder="Complaint"
 							name="description"
                             onChange={handleOnChange}>
 							{/* Description */}

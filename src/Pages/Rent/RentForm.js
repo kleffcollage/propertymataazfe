@@ -241,6 +241,12 @@ function RentForm({ close }) {
 	const submitRentRequest = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+		
+		if(rentDetails.mediafiles.length == 0) {
+			toast.info("Upload atleast a photo or video for your property.")
+			setLoading(false);
+			return
+		}
 		console.log({rentDetails});
 		
 		
@@ -264,8 +270,8 @@ function RentForm({ close }) {
 				return
 			}
 			
-			toast.success(data.message);
-			history.push("/my-mattaz");
+			toast.error(data.message);
+			// history.push("/my-mattaz");
 			handleValidationErrors(data.errors);
 			setLoading(false);
 			

@@ -70,30 +70,52 @@ function UserNav() {
 						</div>
 					</Link>
 					<ul className="right-menu">
-						<li className={`${getNavLinkClass("/verify")}`}>
+						{/* <li className={`${getNavLinkClass("/verify")}`}>
 							<Link to="/verify">Verify</Link>
 						</li>
 						<li className={`${getNavLinkClass("/getloan")}`}>
 							<Link to="/getloan">Get Rent Loan</Link>
-						</li>
+						</li> */}
 						<li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-							<Link to="/my-mattaz"> My Mataaz </Link><i className="fas fa-chevron-down icon-small" />
+							<Link to="/my-mattaz" className="mr-1"> My Mataaz </Link><i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
-									<li>My Rents</li>
-									<li>Show Rents</li>
-									<li onClick={logoutUser}>Logout</li>
+									<li><Link to="/listings">Listings</Link></li>
+									<li><Link to="/my-rent">Rent</Link></li>
+									<li><Link to="/sessions">Sessions</Link></li>	
 								</ul>
 							</div>
 						</li>
+						
 						{ data.user  ?
+							<>
+								<li className={` hover-dropdown ${getNavLinkClass("/welcome")}`}>
+									<div className="user-info">
+										<a href="#" className="mr-2">{ data.user.firstName }</a>
+										<div className="avatar ml-0">
+											<img src="/asset/user/user-icon.png" alt={ data.user ? data.user.firstName : "default-user"} />
+										</div>
+										<i className="fas fa-chevron-down icon-small" />										
+									</div>
+									<div className="dropdown-content">
+										<ul>
+											<li>Profile</li>
+											<li>Settings</li>
+											<li onClick={logoutUser}>Logout</li>
+										</ul>
+									</div>
+								</li>
+							</>
+						: null }
+						
+						{/* { data.user  ?
 							<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
 							{ data.user.firstName }
 							<div className="avatar">
-								<img src alt />
+								<img src="/asset/user/user-icon.png" alt={ data.user ? data.user.firstName : "default-user"} />
 							</div>
 						</li>
-						: null}
+						: null} */}
 						
 					</ul>
 				</nav>

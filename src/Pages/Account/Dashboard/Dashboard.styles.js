@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
     height: calc(100vh - 150px);
+    padding-top: 2rem;
     
         .tabs {
             height: 48px;

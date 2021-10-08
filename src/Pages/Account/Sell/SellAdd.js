@@ -198,6 +198,11 @@ function SellAdd({ close, existingProperty = {} }) {
   };
   
   const updateListingDetails = async (values) => {
+    if(values.mediafiles.length == 0) {
+      toast.info("Upload atleast an image")
+      return
+    }
+    
     values.id = existingProperty.id
     
     try {
@@ -229,6 +234,11 @@ function SellAdd({ close, existingProperty = {} }) {
   }
   
   const createListingDetails = async values => {
+    if(values.mediafiles.length == 0) {
+      toast.info("Upload atleast a photo for your property.")
+      setLoading(false);
+      return
+    }
     try {
       var response = await Fetch("Property/create", "post", values);
       console.log(response);
@@ -527,7 +537,10 @@ function SellAdd({ close, existingProperty = {} }) {
                 <label htmlFor="buy" className="checktext">
                   Help me sell
                 </label>
-                <i className="fas fa-info-circle ml-2" />
+                <i className="fas fa-info-circle ml-2" 
+                  data-toggle="tooltip" 
+                  data-placement="top" 
+                  title="When we help you sell, your property is listed as verified." />
               </div>
               
               <button className="secondary-btn" onClick={currentStep}>

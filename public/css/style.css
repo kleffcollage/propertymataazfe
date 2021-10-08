@@ -449,6 +449,7 @@ ul.footer i {
   border-radius: 4px;
   background-color: #ffffff;
   height: 3rem;
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -516,6 +517,14 @@ ul.footer i {
   font-size: 18px;
   font-weight: bold;
   line-height: 20px;
+}
+
+.toggle-password {
+  color: #252427;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;    
 }
 
 .secondary-btn {
