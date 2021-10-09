@@ -14,6 +14,8 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
 	const [item, setOpenItem] = useState(false);
     const [ selected, setSelected ] = useState(null);
     const [errormessage, setErrormessage] = useState("");
+    const [categories, setCategories ] = useState([])
+    
     const inputData = {
         categories: [
             {
@@ -49,7 +51,7 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
         category: 0,
         subcategory: 0,
         comment: "",
-        propertyId: 0,
+        propertyId: property ? property.id : 0,
     });
     
     const handleOnChange = (e) => {
@@ -61,17 +63,26 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
     }
     
     const setSelectedCategory = id => {
-        let selectedObj = inputData.categories.filter(item => item.id == id);
-        setSelected(selectedObj[0])
+        let selectedObj = categories.filter(item => item.id == id);
+        setSelected(selectedObj)
     }
 	
-    
-    console.log({complaintDetails});
+    const getCategories = async () => {
+        try {
+            let data = await Fetch('Complaints/categories/list')
+            console.log({data})
+            setCategories(data.data)
+            
+        } catch (error) {
+            console.log({error})
+        }
+    }
 	
 	const handleSubmit = async () => {
 		setLoading(true);
         
-        setComplaintDetails({...complaintDetails, propertyId: property.id})
+        // complaintDetails.propertyId = property.id
+        
         console.log({complaintDetails})
         
         try {
@@ -96,6 +107,9 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
 	}
     
     console.log({property})
+    useEffect(() => {
+        getCategories()
+    }, [])
     
     
 	
@@ -143,7 +157,7 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
                                 }}
                             >                                           
                                 <option>Choose a category </option>
-                                { inputData.categories.map((category, index) => {
+                                { categories.map((category, index) => {
                                     return (
                                         <option key={index} value={category.id}> {category.name} </option>                                                
                                     )
@@ -165,8 +179,8 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
                                         onChange={handleOnChange}
                                     >                                
                                         <option>Choose a sub category</option>
-                                        {(selected.subcategories) && (
-                                            selected.subcategories.map(( subcat, index ) => {
+                                        {(selected.subCategories) && (
+                                            selected.subCategories.map(( subcat, index ) => {
                                                 return (
                                                     <option key={index} value={subcat.id}> {subcat.name} </option>
                                                 )

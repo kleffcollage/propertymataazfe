@@ -263,8 +263,8 @@ function RentForm({ close }) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				toast.success("Property listed successfully.");
-				history.push("/my-mattaz");
+				toast.success("Property successfully listed for rent.");
+				history.push("/listings");
 				// history.push("/sell");
 				// await currentStep();
 				return

@@ -11,7 +11,7 @@ import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import { Box } from "@material-ui/core";
 import { typeOfApplications } from "../../Utilities/Enums"
-
+import Naira from "react-naira"
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
 Geocode.setLocationType("ROOFTOP");
@@ -25,6 +25,13 @@ function ReliefForm({ close }) {
   const [errormessage, setErrormessage] = useState("");
   const [step, setStep] = useState(1);
   const [ applicationTypes, setApplicationTypes] = useState([]);
+  const [loanCalculation, setLoanCalculation ] = useState({
+    interestPerMonth: 0,
+    totalRepayment: 0,
+  })
+  
+  const { data: { user: user }} = useContext(MainContext);
+  // console.log({user})
 
   console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -40,19 +47,19 @@ function ReliefForm({ close }) {
   });
   
   const [reliefData, setReliefData] = useState({
-    firstName: "",
-    lastName: "",
-    middleName: "",
-    phoneNumber: "",
-    email: "",
-    dateOfBirth: "",
+    firstName: user ? user.firstName : "",
+    lastName: user ? user.lastName : "",
+    middleName:  "",
+    phoneNumber: user ? user.phoneNumber : "",
+    email: user ? user.email : "",
+    dateOfBirth: user ? user.dateOfBirth : "",
     propertyAddress: "",
-    nationality: "",
+    nationality: user ? user.nationality : "",
     martialStatus: "",
-    occupation: "",
+    occupation: user ? user.occupation : "",
     employer: "",
     workAddress: "",
-    annualIncome: "",
+    annualIncome: user ? user.annualIncome : "",
     
     nk_firstName: "",
     nk_lastName: "",
@@ -61,7 +68,7 @@ function ReliefForm({ close }) {
     nk_address: "",
     nk_relationship: "",
     
-    reliefAmount: "",
+    reliefAmount: 0,
     paybackDate: "",
     paybackMethod: "",
     
@@ -87,6 +94,21 @@ function ReliefForm({ close }) {
     setReliefData({ ...reliefData, [name]: value });
     console.log(reliefData);
   };
+  
+  const calculateLoanInterest = (amount) => {
+    // let amount = reliefData.reliefAmount
+    let interest = 0.15
+    let time = 12
+    // 
+    let interestPerMonth = parseInt(amount) * interest
+    let totalRepayment = (interestPerMonth * time ) + parseInt(amount)
+    
+    const calculations = {
+      interestPerMonth,
+      totalRepayment
+    }
+    setLoanCalculation(calculations)
+  }
 
   const getApplicationTypes = async () => {
     try {
@@ -200,7 +222,6 @@ function ReliefForm({ close }) {
     console.log(reliefData);
     setLoading(true);
     // await getLongAndLat(reliefData.address);
-    reliefData.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.RELIEF).id
     
     const { workId, passport } = reliefData;
     if (workId.length == 0 || passport.length == 0) {
@@ -208,6 +229,14 @@ function ReliefForm({ close }) {
       setLoading(false);
       return;
     }
+    reliefData.firstName = user.firstName
+    reliefData.lastName = user.lastName
+    reliefData.email = user.email
+    reliefData.phoneNumber = user.phoneNumber
+    reliefData.nationality = user.nationality
+    reliefData.occupation = user.occupation
+    
+    reliefData.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.RELIEF).id
     
     console.log({ reliefData });
     
@@ -267,7 +296,7 @@ function ReliefForm({ close }) {
         `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
       );
       data = await data.json();
-      console.log(data);
+      // console.log(data);
       setLgas(data);
       handleValidationErrors(data.errors);
       setLoading(false);
@@ -282,7 +311,7 @@ function ReliefForm({ close }) {
         `http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
       );
       data = await data.json();
-      console.log(data);
+      // console.log(data);
       if (data.status != 404) {
         setCities(data);
         handleValidationErrors(data.errors);
@@ -299,9 +328,10 @@ function ReliefForm({ close }) {
     const fetchData = async () => {
       // await getStates();
       await getApplicationTypes();
+      calculateLoanInterest(reliefData.reliefAmount)
     };
     fetchData();
-  }, []);
+  }, [reliefData.reliefAmount]);
 
   const handleValidationErrors = (errors) => {
     var ValidationErrors = errors;
@@ -460,7 +490,7 @@ function ReliefForm({ close }) {
         
         ) : step == 2 ? (
             
-        <form className="content-section mt-4">
+        <div className="content-section mt-4">
             
             <div className="input-box">
                 <div className="input-label">Occupation</div>
@@ -658,7 +688,7 @@ function ReliefForm({ close }) {
             <button className="secondary-btn" onClick={currentStep}>
                 Next
             </button>
-        </form>
+        </div>
         
       ) : step == 3 ? (
           
@@ -709,7 +739,7 @@ function ReliefForm({ close }) {
                 <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
                     <div className="tab">
                         <h5>Loan Amount</h5>
-                        <p className="amount">₦4,500,000</p>
+                        <p className="amount"><Naira>{ reliefData.reliefAmount }</Naira></p>
                     </div>
                     <div className="tab text-right">
                         <h5>Interest</h5>
@@ -719,11 +749,11 @@ function ReliefForm({ close }) {
                 <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
                     <div className="tab">
                         <h5>Total Repayment</h5>
-                        <p className="amount">₦4,782,372</p>
+                        <p className="amount"><Naira>{ loanCalculation ? loanCalculation.totalRepayment : 0 }</Naira></p>
                     </div>
                     <div className="tab text-right">
                         <h5>Instalments</h5>
-                        <p className="rate">₦797,062/Monthly</p>
+                        <p className="rate"><Naira>{ loanCalculation ? loanCalculation.interestPerMonth : 0 }</Naira>/Monthly</p>
                     </div>
                 </Box>
             </Box>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router";
 import { MainContext } from "../../Context/MainContext";
@@ -7,11 +7,17 @@ function UserNav() {
 	const location = useLocation();
 	const history = useHistory();
 	const { data } = useContext(MainContext);
+	const navBody = useRef();
 	
 	const getNavLinkClass = (path) => location.pathname.startsWith(path) ? "active" : "";
 
 	const [nav, setNav] = useState(false);
-	const showNav = () => {
+	
+	const showNav = (e) => {
+		if(navBody.current == e.target) {
+			setNav(!nav);
+			return
+		}
 		setNav(!nav);
 	};
 
@@ -35,7 +41,7 @@ function UserNav() {
 					</div>
 				</div>
 			</div>
-			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`}>
+			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`} onClick={showNav} ref={navBody}>
 				<nav className={`container ${!nav ? "" : "display"}`}>
 					<ul className="left-menu">
 						<li className={`hover-dropdown ${getNavLinkClass("/sell")}`}>
@@ -77,7 +83,7 @@ function UserNav() {
 							<Link to="/getloan">Get Rent Loan</Link>
 						</li> */}
 						<li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-							<Link to="/my-mattaz" className="mr-1"> My Mataaz </Link><i className="fas fa-chevron-down icon-small" />
+							<a href="#" className="mr-1"> My Mataaz </a><i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
 									<li><Link to="/listings">Listings</Link></li>

@@ -2418,7 +2418,7 @@ a.small-cards {
   }
   nav.container {
     position: fixed;
-    width: 50%;
+    width: 60%;
     top: 0;
     z-index: 10;
     background-color: white;
@@ -2426,13 +2426,22 @@ a.small-cards {
     margin: 0 !important;
     display: block;
     padding: 1rem 0 1rem 1.5rem;
-    color: white;
-    left: -50%;
+    color: #0042ff;
+    left: -65%;
     transition: left 0.3s ease;
-    padding: 1rem 1.5rem;
+    padding: 1rem 0;
   }
   nav.container.display {
     left: 0;
+  }
+  nav.container ul li {
+    /* text-align: left; */
+    /* background-color: #0042ff; */
+    margin: 0.7rem 0;
+    text-align: justify;
+    color: #0042ff;
+    border-bottom: 1px solid rgba(243,243,245, 0.9);
+    /* background-color: #000; */
   }
   .white-bg {
     height: 4.5rem;
@@ -2479,19 +2488,22 @@ a.small-cards {
   nav.container ul {
     display: block;
   }
-  nav.container ul li {
-    /* text-align: left; */
+  /* nav.container ul li {
+    text-align: left; 
     background-color: #0042ff;
     margin: 0.7rem 0;
     text-align: center;
     color: white;
-    /* background-color: #000; */
-  }
+    /* background-color: #000;
+  } */
   .icon-small {
     color: white;
   }
+  nav.container ul li,
   nav.container ul li a {
-    color: white;
+    color: #0042ff;
+    text-transform: uppercase;
+    padding-left: 0.9rem;
   }
   nav.container .logo {
     width: 80%;
@@ -2504,7 +2516,10 @@ a.small-cards {
   }
   ul.left-menu li.active a,
   ul.right-menu li.active a {
+    background-color: #0042ff;
     color: white;
+    margin-left: 15px;
+    padding: 0 0.75rem;
   }
   .hamburger {
     width: 2.5rem;
