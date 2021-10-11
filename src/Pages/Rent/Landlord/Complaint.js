@@ -8,48 +8,27 @@ import { Statuses } from "../../../Utilities/Enums";
 import Spinner from "../../../Utilities/Spinner";
 import Naira from "react-naira"
 import TenantComplaintView from "./ComplaintsView";
+import { Box } from "@material-ui/core";
 
 const TenantComplaint = ({ property, isTenant = false, close }) => {
     const [loading, setLoading ] = useState(false);
 	const [item, setOpenItem] = useState(false);
+    const [offset, setOffset] = useState(0);
+    const [limit, setLimit] = useState(50)
     const [ selected, setSelected ] = useState(null);
     const [errormessage, setErrormessage] = useState("");
-    const [categories, setCategories ] = useState([])
-    
-    const inputData = {
-        categories: [
-            {
-                id: 100,
-                name: "Structural Damage",
-                subcategories: [
-                    {catId: 100, id: 4, name: "Structural Damages"},
-                    {catId: 100, id: 5, name: "Roof Leakage"},
-                    {catId: 100, id: 6, name: "Drainage Spillage"},
-                ]
-            },
-            {
-                id: 200,
-                name: "Co Tenant",
-                subcategories: [
-                    {catId: 200, id: 1, name: "Doemestic Violence"},
-                    {catId: 200, id: 2, name: "Noise Pollution"},
-                    {catId: 200, id: 3, name: "Suspected Criminal"},
-                ]
-            },
-            {
-                id: 300,
-                name: "Legal Issues",
-            }
-        ],
-    }
+    const [categories, setCategories ] = useState([]);
+    const [complaintsList, setComplaintsList ] = useState([]);
+    const [selectedComplaint, setSelectedComplaint ] = useState(null);
     	
-	const openModal = () => {
+	const openModal = (complaint) => {
+        setSelectedComplaint(complaint)
 		setOpenItem(!item)
 	}
     
     const [complaintDetails, setComplaintDetails] = useState({
-        category: 0,
-        subcategory: 0,
+        // category: 0,
+        complaintsSubCategoryId: 0,
         comment: "",
         propertyId: property ? property.id : 0,
     });
@@ -64,14 +43,28 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
     
     const setSelectedCategory = id => {
         let selectedObj = categories.filter(item => item.id == id);
-        setSelected(selectedObj)
+        console.log({selectedObj})
+        setSelected(selectedObj[0])
     }
 	
     const getCategories = async () => {
         try {
             let data = await Fetch('Complaints/categories/list')
-            console.log({data})
+            // console.log({data})
             setCategories(data.data)
+            
+        } catch (error) {
+            console.log({error})
+        }
+    }
+    const getLandlordComplaints = async () => {
+        
+        try {
+            setLoading(true)
+            let data = await Fetch(`Complaints/property/${property.id}/list?offset=${offset}&limit=${limit}`)
+            // console.log({data})
+            setComplaintsList(data.data.value)
+            setLoading(false)
             
         } catch (error) {
             console.log({error})
@@ -106,9 +99,11 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
         }
 	}
     
-    console.log({property})
+    // console.log({property})
     useEffect(() => {
         getCategories()
+        getLandlordComplaints()
+        
     }, [])
     
     
@@ -116,7 +111,7 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
 	return (
 		<>
 			<Modal open={item} onClose={() => setOpenItem(false)}>
-				<TenantComplaintView close={() => setOpenItem(false)} />
+				<TenantComplaintView complaint={selectedComplaint} close={() => setOpenItem(false)} />
 			</Modal>
 			
             <div className="top-section">
@@ -131,12 +126,23 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
             { !isTenant ?
 				<>
 					<div className="modal-content applied">
-						<div className="col-12 my-1 complaint-tabs py-2">
-							<button	 className="complaint-tab w-100" onClick={() => openModal()}>
-								<h5 className="mb-0 text-black font-weight-bold">Structural Damage</h5>
-								<p className="mb-0">10/04/21</p>
-							</button>
-						</div>
+                        { loading 
+                            ? (
+                                <Box flexDirection="row" justifyContent="center" width="100">
+                                    <Spinner size="35" color="primary" />
+                                </Box>
+                            ) 
+                            : complaintsList && complaintsList.map((complaint, index) => {
+                                return (
+                                    <div className="col-12 my-1 complaint-tabs py-2" key={index}>
+                                        <button	 className="complaint-tab w-100" onClick={() => openModal(complaint)}>
+                                            <h5 className="mb-0 text-black font-weight-bold">{ complaint.complaintsCategory }</h5>
+                                            <p className="mb-0">10/04/21</p>
+                                        </button>
+                                    </div>
+                                )
+                            })
+                        }
 					</div>
 				</>
 				
@@ -174,13 +180,13 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
                                     Choose a sub category
                                 </div>
                                 <div className="select-box">                                    
-                                    <select name="subcategory" className="formfield" 
-                                        value={complaintDetails.subcategory} 
+                                    <select name="complaintsSubCategoryId" className="formfield" 
+                                        value={complaintDetails.complaintsSubCategoryId} 
                                         onChange={handleOnChange}
                                     >                                
                                         <option>Choose a sub category</option>
-                                        {(selected.subCategories) && (
-                                            selected.subCategories.map(( subcat, index ) => {
+                                        {(selected.complaintsSubCategories) && (
+                                            selected.complaintsSubCategories.map(( subcat, index ) => {
                                                 return (
                                                     <option key={index} value={subcat.id}> {subcat.name} </option>
                                                 )

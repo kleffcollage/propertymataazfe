@@ -101,7 +101,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
             
             {/* Modal for relief */}
             <Modal open={relief} onclose={() => setOpenRelief(false)}>
-                <ReliefForm close={() => setOpenRelief(false)} />
+                <ReliefForm property={property} close={() => setOpenRelief(false)} />
             </Modal>
             
             {/* Modal for Terminate Tenancy */}

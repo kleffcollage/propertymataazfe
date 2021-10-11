@@ -3,6 +3,7 @@ import Fetch from '../../Utilities/Fetch';
 import Modal from '../../Utilities/Modal';
 import Alert from '../../Utilities/Alert/index';
 import Naira from "react-naira"
+import moment from 'moment';
 import DetailsCard from '../../Pages/Account/Dashboard/Tabs/Sessions/DetailsCard';
 
 export default function SessionsCard({ data = {}, isClean = false, isLandSearch = false, }) {
@@ -10,6 +11,8 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ propertyId, setPropertyId ] = useState('')
     
+    const formattedDate = moment(data.dateNeeded).format("Do MMMM YYYY")
+    // console.log({formattedDate})
     
     const popModal = () => {
         if(isClean) {
@@ -18,7 +21,7 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
         }
         return
     }
-    // console.log({property})
+    // console.log({ data })
 
     return (
         <>
@@ -28,7 +31,7 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
             
             {/* Clean modal details */}
             <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
-                <DetailsCard details={data.property}  close={() => setOpenDetails(false)} />
+                <DetailsCard details={data}  close={() => setOpenDetails(false)} />
             </Modal>
             
             { isLandSearch ? 
@@ -56,13 +59,13 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
                         <div className="listing-cards for-request pt-4">
                             <div className="listing-info for-request">
                                 <div className="title-group">
-                                    <div className="listing-title mb-3">{data.property.name}</div>
+                                    <div className="listing-title mb-3">{data.buildingType}</div>
                                 </div>
                                 <div className="feature-group">
                                     <div className="feature-sing w-100">
                                         <i className="far fa-calendar" />
                                         <div className="feature-title w-100">
-                                            Next rent is due in 365 Days
+                                            { formattedDate }
                                         </div>
                                     </div>
                                 </div>

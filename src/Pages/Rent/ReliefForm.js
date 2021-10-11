@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, } from "react";
 import { useHistory } from "react-router";
+import { useForm } from "react-hook-form";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
 import Dropzone from "react-dropzone";
@@ -17,7 +18,7 @@ Geocode.setRegion("es");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
-function ReliefForm({ close }) {
+function ReliefForm({ property = null, close }) {
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
@@ -28,13 +29,22 @@ function ReliefForm({ close }) {
   const [loanCalculation, setLoanCalculation ] = useState({
     interestPerMonth: 0,
     totalRepayment: 0,
-  })
-  
+  })  
   const { data: { user: user }} = useContext(MainContext);
   // console.log({user})
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  
+ 
+  // set reliefAmount
+  let reliefAmount = watch("reliefAmount");
+  
+  const onSubmit = data => {
+    data.register.passport = reliefData.passport
+    console.log(data)
+  };
 
-  console.log(NaijaStates.states());
-  const [errors, setErrors] = useState({
+  // console.log(NaijaStates.states());
+  const [inputErrors, setInputErrors] = useState({
     Name: [],
     PropertyTypeId: [],
     Address: [],
@@ -47,56 +57,62 @@ function ReliefForm({ close }) {
   });
   
   const [reliefData, setReliefData] = useState({
-    firstName: user ? user.firstName : "",
-    lastName: user ? user.lastName : "",
-    middleName:  "",
-    phoneNumber: user ? user.phoneNumber : "",
-    email: user ? user.email : "",
-    dateOfBirth: user ? user.dateOfBirth : "",
-    propertyAddress: "",
-    nationality: user ? user.nationality : "",
-    martialStatus: "",
-    occupation: user ? user.occupation : "",
-    employer: "",
-    workAddress: "",
-    annualIncome: user ? user.annualIncome : "",
+    register: {
+      firstName: "",
+      lastName: user ? user.lastName : "",
+      middleName:  "",
+      phoneNumber: (user && user != null) ? user.phoneNumber : "",
+      email: user ? user.email : "",
+      dateOfBirth: user ? user.dateOfBirth : "",
+      propertyAddress: "",
+      nationality: user ? user.nationality : "",
+      martialStatus: "",
+      occupation: user ? user.occupation : "",
+      employer: "",
+      workAddress: "",
+      annualIncome: user ? user.annualIncome : "",
+    },
     
-    nk_firstName: "",
-    nk_lastName: "",
-    nk_email: "",
-    nk_phoneNumber: "",
-    nk_address: "",
-    nk_relationship: "",
+    nextOfKin: {
+      nk_firstName: "",
+      nk_lastName: "",
+      nk_email: "",
+      nk_phoneNumber: "",
+      nk_address: "",
+      nk_relationship: "",
+    },
     
+    workId: null,
+    passportPhotograph: null,
     reliefAmount: 0,
     paybackDate: "",
-    paybackMethod: "",
+    repaymentFrequency: "",
+    propertyId: 0,
+    applicationTypeId: 0,
     
     
     isDraft: false,
     isActive: false,
     isForRent: false,
     isForSale: false,
-    workId: [],
-    passport: [],
     longitude: 0,
     latitude: 0,
-    applicationTypeId: 0,
   });
 
   const [states, setStates] = useState([]);
-  const [lgas, setLgas] = useState([]);
-  const [cities, setCities] = useState([]);
 
   const handleOnChange = (e) => {
     // showAlert("success", "Something toasted", "Everything works ");
     const { name, value } = e.target;
-    setReliefData({ ...reliefData, [name]: value });
+    setReliefData({ 
+      ...reliefData, 
+      [reliefData.register.name]: value });
     console.log(reliefData);
   };
   
-  const calculateLoanInterest = (amount) => {
-    // let amount = reliefData.reliefAmount
+  const calculateLoanInterest = () => {
+    // console.log({amount})
+    let amount = property && property.price
     let interest = 0.15
     let time = 12
     // 
@@ -107,13 +123,14 @@ function ReliefForm({ close }) {
       interestPerMonth,
       totalRepayment
     }
+    // console.log({ calculations });
     setLoanCalculation(calculations)
   }
 
   const getApplicationTypes = async () => {
     try {
       let { data } = await Fetch("Application/types");
-      console.log("Application types: ", data); 
+      // console.log("Application types: ", data); 
       setApplicationTypes(data);
     } catch (error) {
       console.log(error);
@@ -127,7 +144,7 @@ function ReliefForm({ close }) {
     }
     if (step == 3) {
       close(true);
-      history.push("/rent");
+      // history.push("/rent");
       return;
     }
   };
@@ -153,8 +170,7 @@ function ReliefForm({ close }) {
       console.log(file);
       reader.readAsDataURL(file);
     });
-  };
-  
+  };  
 
   const composeMedia = (bytes, file, isPassport) => {
     var files = [];
@@ -179,14 +195,14 @@ function ReliefForm({ close }) {
     if(isPassport) {
       setReliefData({
         ...reliefData,
-        passport: [...reliefData.passport, newMedia],
+        passportPhotograph: newMedia,
       });
       return
     }
     
     setReliefData({
       ...reliefData,
-      workId: [...reliefData.workId, newMedia],
+      workId: newMedia,
     });
   };
 
@@ -216,46 +232,41 @@ function ReliefForm({ close }) {
   //   });
   //   console.log(results);
   // };
+  
+  console.log({ property })
 
-  const submitRentRequest = async (e) => {
-    e.preventDefault();
-    console.log(reliefData);
+  const submitReliefRequest = async (reliefDetails) => {
     setLoading(true);
     // await getLongAndLat(reliefData.address);
     
-    const { workId, passport } = reliefData;
-    if (workId.length == 0 || passport.length == 0) {
+    const { workId, passportPhotograph } = reliefData;
+    if (!workId || !passportPhotograph) {
       toast.info("Please, upload a copy of work Id and a passport.");
       setLoading(false);
       return;
     }
-    reliefData.firstName = user.firstName
-    reliefData.lastName = user.lastName
-    reliefData.email = user.email
-    reliefData.phoneNumber = user.phoneNumber
-    reliefData.nationality = user.nationality
-    reliefData.occupation = user.occupation
+    // reliefData.firstName = user.firstName
+    reliefDetails.register.passportPhotograph = reliefData.passportPhotograph
+    reliefDetails.register.workId = reliefData.workId
+    reliefDetails.propertyId = property && property.id
+    reliefDetails.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.RELIEF).id
     
-    reliefData.applicationTypeId = applicationTypes.find(type => type.name == typeOfApplications.RELIEF).id
-    
-    console.log({ reliefData });
+    // console.log({ reliefDetails });
     
     try {
-      var data = await Fetch("Application/new ", "post", reliefData);
+      var data = await Fetch("Application/new ", "post", reliefDetails);
       console.log('Rent property: ', data);
       if (!data.status) {
         setLoading(false);
         setErrormessage(data.message);
         return;
       }
-      if (data.status != 400) {
+      if(data.status != 400) {
         setLoading(false);
-        // setListingDetails({});
         close(true);
-        history.push("/rent");
-        toast.success(data.message);
-        // history.push("/sell");
-        await currentStep();
+        // history.push("/rent");
+        toast.success("Rent relief application submitted successfully.");
+        // await currentStep();
       }
       handleValidationErrors(data.errors);
       setLoading(false);
@@ -289,63 +300,28 @@ function ReliefForm({ close }) {
       reader.readAsDataURL(file);
     });
   };
-
-  const getLgas = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-      );
-      data = await data.json();
-      // console.log(data);
-      setLgas(data);
-      handleValidationErrors(data.errors);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getCities = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-      );
-      data = await data.json();
-      // console.log(data);
-      if (data.status != 404) {
-        setCities(data);
-        handleValidationErrors(data.errors);
-        setLoading(false);
-      }
-      setCities([...cities, state]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  // console.log(NaijaStates.lgas("oyo"));
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       // await getStates();
       await getApplicationTypes();
-      calculateLoanInterest(reliefData.reliefAmount)
+      calculateLoanInterest()
     };
+    
     fetchData();
-  }, [reliefData.reliefAmount]);
+  }, []);
 
   const handleValidationErrors = (errors) => {
     var ValidationErrors = errors;
-    setErrors({ ...errors, ...ValidationErrors });
+    setInputErrors({ ...inputErrors, ...ValidationErrors });
   };
 
   return (
     <div>
-      
       <div className="top-section">
         <div className="back">
           <i className="fas fa-chevron-left mr-2" />
-          <span
-            className="backs"
+          <span className="backs"
             onClick={
               step > 1 ? () => { setStep(step - 1 ); } : close
             }
@@ -359,15 +335,16 @@ function ReliefForm({ close }) {
         </div>
       </div>
       
+      <form onSubmit={ handleSubmit(submitReliefRequest) } className="content-section mt-4">
         { step == 1 ? (
-          <form className="content-section mt-4">
+          <>
             {/* {errors ? (
-		    	<div className="text-center mb-2">
-		    		<span className="text-danger text-center">
-		    			Please Check.... One or More Field is Incorrect
-		    		</span>
-		    	</div>
-		    ) : null} */}
+              <div className="text-center mb-2">
+                <span className="text-danger text-center">
+                  Please Check.... One or More Field is Incorrect
+                </span>
+              </div>
+            ) : null} */}
 
             <div className="input-box">
               <div className="input-label">First name</div>
@@ -375,9 +352,9 @@ function ReliefForm({ close }) {
                   type="text"
                   className="formfield"
                   placeholder="Give your listing a name that makes it easy to find"
-                  name="firstName"
-                  value={reliefData.firstName}
-                  onChange={handleOnChange}
+                  name="register.firstName"
+                  {...register("register.firstName")}
+                  defaultValue={user.firstName}
               />
             </div>
             
@@ -387,9 +364,8 @@ function ReliefForm({ close }) {
                   type="text"
                   className="formfield"
                   placeholder="Give your listing a name that makes it easy to find"
-                  name="middleName"
-                  value={reliefData.middleName}
-                  onChange={handleOnChange}
+                  name="register.middleName"
+                  {...register("register.middleName")}
               />
             </div>
             
@@ -399,8 +375,9 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Give your listing a name that makes it easy to find"
-                    name="name"
-                    onChange={handleOnChange}
+                    name="register.lastName"
+                    {...register("register.lastName")}
+                    defaultValue={user.lastName}
                 />
             </div>
             
@@ -410,9 +387,9 @@ function ReliefForm({ close }) {
                     type="text"
                     className="formfield"
                     placeholder="Phone number"
-                    name="phoneNumber"
-                    value={reliefData.phoneNumber}
-                    onChange={handleOnChange}
+                    name="register.phoneNumber"
+                    {...register("register.phoneNumber")}
+                    defaultValue={user.phoneNumber}
                 />
             </div>
             
@@ -422,9 +399,9 @@ function ReliefForm({ close }) {
                     type="email"
                     className="formfield"
                     placeholder="Email Address"
-                    name="email"
-                    value={reliefData.email}
-                    onChange={handleOnChange}
+                    name="register.email"
+                    {...register("register.email")}
+                    defaultValue={user.email}
                 />
             </div>
             
@@ -434,9 +411,9 @@ function ReliefForm({ close }) {
                   type="text"
                   className="formfield"
                   placeholder="Give your listing a name that makes it easy to find"
-                  name="propertyAddress"
-                  value={reliefData.propertyAddress}
-                  onChange={handleOnChange}
+                  name="register.propertyAddress"
+                  {...register("register.propertyAddress")}
+                  defaultValue={property.address}
                 />
             </div>
             
@@ -446,329 +423,308 @@ function ReliefForm({ close }) {
                   type="date"
                   className="formfield"
                   placeholder="Give your listing a name that makes it easy to find"
-                  name="dateOfBirth"
-                  value={reliefData.dateOfBirth}
-                  onChange={handleOnChange}
+                  name="register.dateOfBirth"
+                  {...register("register.dateOfBirth")}
+                  defaultValue={user.dateOfBirth}
                 />
             </div>
             
             <div className="input-box">
-                <div className="input-label">Nationality</div>
-                <input
-                  type="text"
-                  className="formfield"
-                  placeholder="Your nationality, e.g Nigerian"
-                  name="nationality"
-                  value={reliefData.nationality}
-                  onChange={handleOnChange}
-                />
+              <div className="input-label">Nationality</div>
+              <input
+                type="text"
+                className="formfield"
+                placeholder="Your nationality, e.g Nigerian"
+                name="register.nationality"
+                {...register("register.nationality")}
+                defaultValue={user.nationality}
+              />
             </div>
             
             <div className="input-box">
               <div className="input-label">Marital Status</div>
               <div className="select-box">
                 <select
-                  name="martialStatus"
-                  value={reliefData.martialStatus}
                   className="formfield"
-                  onChange={handleOnChange}
+                  name="register.martialStatus"
+                  {...register("register.maritalStatus")}
                 >
                   <option value="" selected disabled> Choose an option </option>
-                  <option value="male"> Male </option>
-                  <option value="female"> Female </option>
-                  <option value="rather-not-say"> Preferred not to say </option>
+                  <option value="single"> Single  </option>
+                  <option value="married"> Married </option>
+                  <option value="divorced"> Divorced </option>
                 </select>
                 <div className="arrows" />
               </div>
             </div>
             
          
-          <button className="secondary-btn" onClick={currentStep}>
-            Next
-          </button>
-        </form>
-        
+            <button className="secondary-btn" onClick={currentStep}>
+              Next
+            </button>
+          </>
+          
         ) : step == 2 ? (
-            
-        <div className="content-section mt-4">
-            
-            <div className="input-box">
-                <div className="input-label">Occupation</div>
-                <input
-                type="text"
-                className="formfield"
-                placeholder="House No, Street, Estate"
-                name="occupation"
-                value={reliefData.occupation}
-                onChange={handleOnChange}
-                />
-            </div>
-            
-            <div className="input-box">
+              
+          <div className="mt-4">
+              <div className="input-box">
+                  <div className="input-label">Occupation</div>
+                  <input
+                    type="text"
+                    className="formfield"
+                    placeholder=""
+                    name="register.occupation"
+                    {...register("register.occupation")}
+                    defaultValue={user.occupation}
+                  />
+              </div>
+              
+              <div className="input-box">
                 <div className="input-label">Employer</div>
-                <input
-                type="text"
-                className="formfield"
-                placeholder=""
-                name="employer"
-                value={reliefData.employer}
-                onChange={handleOnChange}
-                />
-            </div>
-            
-            <div className="input-box">
-                <div className="input-label">Work Address</div>
-                <input
-                type="text"
-                className="formfield"
-                placeholder="House No, Street, Estate"
-                name="workAddress"
-                value={reliefData.workAddress}
-                onChange={handleOnChange}
-                />
-            </div>
-            
-            <div className="input-box">
-                <div className="input-label">what is you Annual Income?</div>
                 <input
                   type="text"
                   className="formfield"
-                  placeholder="Your income bracket for your tenant"
-                  name="annualIncome"
-                  value={reliefData.annualIncome}
-                  onChange={handleOnChange}
+                  placeholder=""
+                  name="register.employer"
+                  {...register("register.employer")}
                 />
-            </div>
+              </div>
+              
+              <div className="input-box">
+                  <div className="input-label">Work Address</div>
+                  <input
+                  type="text"
+                  className="formfield"
+                  placeholder="House No, Street, Estate"
+                  name="register.workAddress"
+                  {...register("register.workAddress")}
+                  />
+              </div>
+              
+              <div className="input-box">
+                  <div className="input-label">what is you Annual Income?</div>
+                  <input
+                    type="text"
+                    className="formfield"
+                    placeholder="Your income bracket for your tenant"
+                    name="register.annualIncome"
+                    {...register("register.annualIncome")}
+                  />
+              </div>
 
-            <Dropzone
-                accept="image/jpeg, image/png"
-                maxFiles={6}
-                onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
-            >
-                { ({ getRootProps, getInputProps }) => (
-                    <section>
-                        <div
-                        {...getRootProps()}
-                        className={
-                            reliefData.passport.filter((m) => m.isImage).length >
-                            0
-                            ? "do-upload uploaded"
-                            : "do-upload"
-                        }
-                        >
-                        <input {...getInputProps()} />
-                        {reliefData.passport.filter((m) => m.isImage).length >
-                        0 ? (
-                            <>
-                            <i className="far fa-check" />
-                            {`${
-                                reliefData.passport.filter((m) => m.isImage)
-                                .length
-                            }  Pictures Uploaded`}
-                            </>
-                        ) : (
-                            <>
-                            <i className="far fa-image" />
-                            Upload Passport Photograph
-                            </>
-                        )}
-                        </div>
-                    </section>
-                )}
-            </Dropzone>
-            
-            <Dropzone
-                accept="image/jpeg, image/png"
-                maxFiles={6}
-                onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles, false)}
-            >
-                { ({ getRootProps, getInputProps }) => (
-                    <section>
-                        <div
-                            {...getRootProps()}
+              <Dropzone
+                  accept="image/jpeg, image/png"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+              >
+                  { ({ getRootProps, getInputProps }) => (
+                      <section>
+                        <div {...getRootProps()}
                             className={
-                                reliefData.workId.filter((m) => m.isImage).length >
-                                0
+                                reliefData.passportPhotograph
                                 ? "do-upload uploaded"
                                 : "do-upload"
                             }
-                        >
-                        <input {...getInputProps()} />
-                        {reliefData.workId.filter((m) => m.isImage).length >
-                        0 ? (
-                            <>
-                            <i className="far fa-check" />
-                            {`${
-                                reliefData.workId.filter((m) => m.isImage)
-                                .length
-                            }  Pictures Uploaded`}
-                            </>
-                        ) : (
-                            <>
-                            <i className="far fa-image" />
-                            Upload Copy of Work ID
-                            </>
-                        )}
+                          >
+                          <input {...getInputProps()} />
+                          {reliefData.passportPhotograph ? (
+                              <>
+                                <i className="far fa-check" />
+                                {`${ reliefData.passportPhotograph && 'Passport Uploaded'}`}
+                              </>
+                            ) : (
+                                <>
+                                <i className="far fa-image" />
+                                Upload Passport Photograph
+                                </>
+                            )}
                         </div>
-                    </section>
-                )}
-            </Dropzone>
-            
-            <h6 className="field-title mb-4 mt-4">Next of Kin</h6>
-            
-            <div className="input-box">
-                <div className="input-label">First name</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_firstName"
-                    value={reliefData.nk_firstName}
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Surname</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_lastName"
-                    value={reliefData.nk_lastName}
-                    onChange={handleOnChange}
-                />
-            </div>
-            
-            <div className="input-box">
-                <div className="input-label">Mobile Number</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_phoneNumber"
-                    value={reliefData.nk_phoneNumber}
-                    onChange={handleOnChange}
-                />
-            </div>
-            
-            <div className="input-box">
-                <div className="input-label">Email</div>
-                <input
-                    type="email"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_email"
-                    value={reliefData.nk_email}
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Address</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_address"
-                    value={reliefData.nk_address}
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Relationship</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Enter your placeholder text or enter space bar"
-                    name="nk_relationship"
-                    value={reliefData.nk_relationship}
-                    onChange={handleOnChange}
-                />
-            </div>
-                        
-            <button className="secondary-btn" onClick={currentStep}>
-                Next
-            </button>
-        </div>
+                      </section>
+                  )}
+              </Dropzone>
+              
+              <Dropzone
+                  accept="image/jpeg, image/png"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles, false)}
+              >
+                  { ({ getRootProps, getInputProps }) => (
+                      <section>
+                          <div
+                              {...getRootProps()}
+                              className={
+                                  reliefData.workId
+                                  ? "do-upload uploaded"
+                                  : "do-upload"
+                              }
+                          >
+                          <input {...getInputProps()} />
+                            { reliefData.workId ? (
+                                <>
+                                  <i className="far fa-check" />
+                                  {`${ reliefData.workId && 'Work ID Uploaded' }  `}
+                                </>
+                              ) : (
+                                <>
+                                  <i className="far fa-image" />
+                                  Upload Copy of Work ID
+                                </>
+                              )}
+                          </div>
+                      </section>
+                  )}
+              </Dropzone>
+              
+              <h6 className="field-title mb-4 mt-4">Next of Kin</h6>
+              
+              <div className="input-box">
+                  <div className="input-label">First name</div>
+                  <input
+                      type="text"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.nk_firstName"
+                      {...register("nextOfKin.firstName")}
+                  />
+              </div>
+              <div className="input-box">
+                  <div className="input-label">Surname</div>
+                  <input
+                      type="text"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.nk_lastName"
+                      {...register("nextOfKin.lastName")}
+                  />
+              </div>
+              
+              <div className="input-box">
+                  <div className="input-label">Mobile Number</div>
+                  <input
+                      type="text"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.phoneNumber"
+                      {...register("nextOfKin.phoneNumber")}
+                  />
+              </div>
+              
+              <div className="input-box">
+                  <div className="input-label">Email</div>
+                  <input
+                      type="email"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.email"
+                      {...register("nextOfKin.email")}
+                  />
+              </div>
+              <div className="input-box">
+                  <div className="input-label">Address</div>
+                  <input
+                      type="text"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.address"
+                      {...register("nextOfKin.address")}
+                  />
+              </div>
+              <div className="input-box">
+                  <div className="input-label">Relationship</div>
+                  <input
+                      type="text"
+                      className="formfield"
+                      placeholder="Enter your placeholder text or enter space bar"
+                      name="nextOfKin.relationship"
+                      {...register("nextOfKin.relationship")}
+                  />
+              </div>
+                          
+              <button className="secondary-btn" onClick={currentStep}>
+                  Next
+              </button>
+          </div>
         
-      ) : step == 3 ? (
-          
-        <form className="content-section mt-4">
-            <div className="input-box">
-                <div className="input-label">Relief Amount</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="reliefAmount"
-                    value={reliefData.reliefAmount}
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">Choose a pay back date</div>
-                <input
-                    type="date"
-                    className="formfield"
-                    placeholder="Give your listing a name that makes it easy to find"
-                    name="paybackDate"
-                    value={reliefData.paybackDate}
-                    onChange={handleOnChange}
-                />
-            </div>
-            <div className="input-box">
-                <div className="input-label">How do you want to pay back?</div>
-                <div className="select-box">
-                    <select
-                        name="paybackMethod"
-                        value={reliefData.paybackMethod}
-                        onChange={handleOnChange}
-                        className="formfield"
-                    >
-                        <option value="" selected disabled> Choose a property type </option>
-                        <option value="weekly"> Weekly </option>
-                        <option value="month"> Month </option>
-                        <option value="annual"> Yearly </option>
-                        <option value="biannual"> 2 years </option>
-                    </select>
-                    <div className="arrows" />
-                </div>
-            </div>
+        ) : step == 3 ? (
             
-            <Box display="flex" flexDirection="column" className="relief-preview p-3 mt-3 mb-4">
-                <h6 className="relief-preview-title">Preview</h6>
-                <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
-                    <div className="tab">
-                        <h5>Loan Amount</h5>
-                        <p className="amount"><Naira>{ reliefData.reliefAmount }</Naira></p>
-                    </div>
-                    <div className="tab text-right">
-                        <h5>Interest</h5>
-                        <p className="rate">15% monthly</p>
-                    </div>
-                </Box>
-                <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
-                    <div className="tab">
-                        <h5>Total Repayment</h5>
-                        <p className="amount"><Naira>{ loanCalculation ? loanCalculation.totalRepayment : 0 }</Naira></p>
-                    </div>
-                    <div className="tab text-right">
-                        <h5>Instalments</h5>
-                        <p className="rate"><Naira>{ loanCalculation ? loanCalculation.interestPerMonth : 0 }</Naira>/Monthly</p>
-                    </div>
-                </Box>
-            </Box>
-            
-            <div className="joint-btn mg">
-                <button
-                    className="secondary-btn draft"
-                    type="submit"
-                    onClick={submitRentRequest}
-                >
-                    {loading ? <Spinner /> : "Apply for Rent Relief"}
-                </button>
+          <div className="mt-4">
+              
+              <div className="input-box">
+                <div className="input-label"> Relief Amount</div>
+                <input 
+                  type="number"
+                  className="formfield"
+                  placeholder="Relief amount"
+                  name="reliefAmount"
+                  {...register("reliefAmount")}
+                  defaultValue={property.price}
+                />
+              </div>
+              
+              <div className="input-box">
+                  <div className="input-label">Choose a pay back date</div>
+                  <input
+                      type="date"
+                      className="formfield"
+                      placeholder="Give your listing a name that makes it easy to find"
+                      name="paybackDate"
+                      {...register("paybackDate")}
+                  />
+              </div>
+              <div className="input-box">
+                  <div className="input-label">How do you want to pay back?</div>
+                  <div className="select-box">
+                      <select
+                          className="formfield"
+                          name="repaymentFrequency"
+                          {...register("repaymentFrequency")}
+                      >
+                          <option value="" selected disabled> Choose a property type </option>
+                          <option value="weekly"> Weekly </option>
+                          <option value="month"> Month </option>
+                          <option value="annual"> Yearly </option>
+                          <option value="biannual"> 2 years </option>
+                      </select>
+                      <div className="arrows" />
+                  </div>
+              </div>
+              
+              <Box display="flex" flexDirection="column" className="relief-preview p-3 mt-3 mb-4">
+                  <h6 className="relief-preview-title">Preview</h6>
+                  <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
+                      <div className="tab">
+                          <h5>Loan Amount</h5>
+                          <p className="amount"><Naira>{ property && property.price }</Naira></p>
+                      </div>
+                      <div className="tab text-right">
+                          <h5>Interest</h5>
+                          <p className="rate">15% monthly</p>
+                      </div>
+                  </Box>
+                  <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
+                      <div className="tab">
+                          <h5>Total Repayment</h5>
+                          <p className="amount"><Naira>{ loanCalculation ? loanCalculation.totalRepayment : 0 }</Naira></p>
+                      </div>
+                      <div className="tab text-right">
+                          <h5>Instalments</h5>
+                          <p className="rate"><Naira>{ loanCalculation ? loanCalculation.interestPerMonth : 0 }</Naira>/Monthly</p>
+                      </div>
+                  </Box>
+              </Box>
+              
+              <div className="joint-btn mg">
+                  <button
+                      className="secondary-btn draft"
+                      type="submit"
+                      // onClick={submitRentRequest}
+                  >
+                      {loading ? <Spinner /> : "Apply for Rent Relief"}
+                  </button>
+              </div>
             </div>
-        </form>
-      ) : null}
+        ) : null}
+      </form>
     </div>
   );
 }

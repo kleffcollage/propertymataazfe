@@ -1,8 +1,13 @@
 import React from "react";
 import Naira from "react-naira"
-
+import moment from 'moment'
 
 const DetailsCard = ({ details, close }) => {
+    console.log({ details })
+    
+    const formattedDate = moment(details.dateCreated).format("Do MMMM YYYY")
+    const proposedDate = moment(details.cleaningQuote.proposedDate).format("L")
+    
     return (
         <>
             <div className="top-section">
@@ -19,22 +24,22 @@ const DetailsCard = ({ details, close }) => {
                     <div className="listing-cards">
                         <div className="listing-info">
                             <div className="title-group flex-column">
-                                <div className="property-title mb-1">{details.name}</div>
+                                <div className="property-title mb-1">{details.buildingType}</div>
                                 <p className="mb-0">
                                     <i className="far fa-calendar mr-2"></i>
-                                    <span>30th October 2021</span>
+                                    <span> { formattedDate } </span>
                                 </p>
                             </div>
                             <div className="tabs-group my-3">
                                 <h5 className="mb-1">Quote</h5>
                                 <p className="mb-0">
-                                    <Naira>{details.price}</Naira>
+                                    <Naira>{details.cleaningQuote.quote}</Naira>
                                 </p>
                             </div>
                             <div className="tabs-group my-3">
                                 <h5 className="mb-1">Proposed Date</h5>
                                 <p className="mb-0">
-                                    28/10/2021
+                                    { proposedDate }
                                 </p>
                             </div>
                         </div>
