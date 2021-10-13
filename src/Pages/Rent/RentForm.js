@@ -241,6 +241,12 @@ function RentForm({ close }) {
 	const submitRentRequest = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+		
+		if(rentDetails.mediafiles.length == 0) {
+			toast.info("Upload atleast a photo or video for your property.")
+			setLoading(false);
+			return
+		}
 		console.log({rentDetails});
 		
 		
@@ -257,15 +263,15 @@ function RentForm({ close }) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				toast.success("Property listed successfully.");
-				history.push("/my-mattaz");
+				toast.success("Property successfully listed for rent.");
+				history.push("/listings");
 				// history.push("/sell");
 				// await currentStep();
 				return
 			}
 			
-			toast.success(data.message);
-			history.push("/my-mattaz");
+			toast.error(data.message);
+			// history.push("/my-mattaz");
 			handleValidationErrors(data.errors);
 			setLoading(false);
 			
@@ -509,7 +515,7 @@ function RentForm({ close }) {
             </div>
             
             <div className="input-box">
-                <div className="input-label">Rent</div>
+                <div className="input-label">Rent (Per year)</div>
                 <input
                     type="text"
                     className="formfield"

@@ -91,7 +91,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
 		<>
             {/* Modal for Complaint */}
             <Modal open={complaint} onclose={() => setOpenComplaint(false)}>
-                <TenantComplaint isTenant={isTenant} close={() => setOpenComplaint(false)} />
+                <TenantComplaint property={property} isTenant={isTenant} close={() => setOpenComplaint(false)} />
             </Modal>
             
             {/* Modal for documentation/agreement */}
@@ -101,7 +101,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
             
             {/* Modal for relief */}
             <Modal open={relief} onclose={() => setOpenRelief(false)}>
-                <ReliefForm close={() => setOpenRelief(false)} />
+                <ReliefForm property={property} close={() => setOpenRelief(false)} />
             </Modal>
             
             {/* Modal for Terminate Tenancy */}

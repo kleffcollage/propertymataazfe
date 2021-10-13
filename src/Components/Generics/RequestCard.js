@@ -68,7 +68,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         
         {/* Tenants rental details */}
         <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-            <TenancyDetails  propertyId={property.id} close={() => setTenancyDetails(false)} />
+            <TenancyDetails  isTenant={true} propertyId={property.id} close={() => setTenancyDetails(false)} />
         </Modal>
         
         { isRequest  ? (
@@ -161,7 +161,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.name}</div>
+                            <div className="listing-title mb-3">{property.title}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">

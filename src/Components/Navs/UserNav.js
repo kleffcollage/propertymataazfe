@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router";
 import { MainContext } from "../../Context/MainContext";
@@ -7,11 +7,17 @@ function UserNav() {
 	const location = useLocation();
 	const history = useHistory();
 	const { data } = useContext(MainContext);
+	const navBody = useRef();
 	
 	const getNavLinkClass = (path) => location.pathname.startsWith(path) ? "active" : "";
 
 	const [nav, setNav] = useState(false);
-	const showNav = () => {
+	
+	const showNav = (e) => {
+		if(navBody.current == e.target) {
+			setNav(!nav);
+			return
+		}
 		setNav(!nav);
 	};
 
@@ -35,7 +41,7 @@ function UserNav() {
 					</div>
 				</div>
 			</div>
-			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`}>
+			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`} onClick={showNav} ref={navBody}>
 				<nav className={`container ${!nav ? "" : "display"}`}>
 					<ul className="left-menu">
 						<li className={`hover-dropdown ${getNavLinkClass("/sell")}`}>
@@ -70,30 +76,52 @@ function UserNav() {
 						</div>
 					</Link>
 					<ul className="right-menu">
-						<li className={`${getNavLinkClass("/verify")}`}>
+						{/* <li className={`${getNavLinkClass("/verify")}`}>
 							<Link to="/verify">Verify</Link>
 						</li>
 						<li className={`${getNavLinkClass("/getloan")}`}>
 							<Link to="/getloan">Get Rent Loan</Link>
-						</li>
+						</li> */}
 						<li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-							<Link to="/my-mattaz"> My Mattaz </Link><i className="fas fa-chevron-down icon-small" />
+							<a href="#" className="mr-1"> My Mataaz </a><i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
-									<li>My Rents</li>
-									<li>Show Rents</li>
-									<li onClick={logoutUser}>Logout</li>
+									<li><Link to="/listings">Listings</Link></li>
+									<li><Link to="/my-rent">Rent</Link></li>
+									<li><Link to="/sessions">Sessions</Link></li>	
 								</ul>
 							</div>
 						</li>
+						
 						{ data.user  ?
+							<>
+								<li className={` hover-dropdown ${getNavLinkClass("/welcome")}`}>
+									<div className="user-info">
+										<a href="#" className="mr-2">{ data.user.firstName }</a>
+										<div className="avatar ml-0">
+											<img src="/asset/user/user-icon.png" alt={ data.user ? data.user.firstName : "default-user"} />
+										</div>
+										<i className="fas fa-chevron-down icon-small" />										
+									</div>
+									<div className="dropdown-content">
+										<ul>
+											<li>Profile</li>
+											<li>Settings</li>
+											<li onClick={logoutUser}>Logout</li>
+										</ul>
+									</div>
+								</li>
+							</>
+						: null }
+						
+						{/* { data.user  ?
 							<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
 							{ data.user.firstName }
 							<div className="avatar">
-								<img src alt />
+								<img src="/asset/user/user-icon.png" alt={ data.user ? data.user.firstName : "default-user"} />
 							</div>
 						</li>
-						: null}
+						: null} */}
 						
 					</ul>
 				</nav>

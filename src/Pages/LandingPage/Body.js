@@ -14,7 +14,7 @@ function Body() {
 									</div>
 									<div className="side-info">
 										<h3>
-											<span>Sell </span>your property fast
+											<span>Sell </span>your property
 										</h3>
 										<p className="sub-text">
 											List your property on PropertyMataaz and get the attention
@@ -35,10 +35,9 @@ function Body() {
 											<span>Buy </span>property with 103% money-back guarantee
 										</h3>
 										<p className="sub-text">
-											Buy property with the assurance of a refund if there is a
-											legal issue with the property
+											Browse our inventory of verified properties or make a request based on your preferences. Whatever your choice, we’ll do you a 103% refund if legal issues arise
 										</p>
-										<button className="primary-btn">Search Properties</button>
+										<button className="primary-btn">Browse Properties</button>
 									</div>
 								</div>
 							</div>
@@ -49,13 +48,12 @@ function Body() {
 									</div>
 									<div className="side-info">
 										<h3>
-											All your <span>rent</span> problems solved property fast
+											All your <span>rent</span> problems solved
 										</h3>
 										<p className="sub-text">
-											Access vetted tenants, guaranteed rental income,
-											affordable rent, 0 agency fees, quick rent loans.
+											Access vetted tenants, guaranteed rental income, affordable rent, 0 agency fees and quick rent loans.
 										</p>
-										<button className="primary-btn">Search Properties</button>
+										<button className="primary-btn">Get Started</button>
 									</div>
 								</div>
 							</div>
@@ -69,13 +67,12 @@ function Body() {
 									</div>
 									<div className="side-info">
 										<h3>
-											<span>Clean </span>your property
+											Enjoy top-notch <span>cleaning </span> and janitorial services
 										</h3>
 										<p className="sub-text">
-											Lorem ipsum dolor sit amet quid quad plantitur solo solo
-											sedit nemo judex in causa sua mens rea fiat justitia ruat.
+											Professional cleaning services
 										</p>
-										<button className="primary-btn">Search Properties</button>
+										<button className="primary-btn">Schedule a Session</button>
 									</div>
 								</div>
 							</div>

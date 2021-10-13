@@ -96,11 +96,9 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
                                     
                                 <button
                                     className="list-color-btn"
-                                    onClick={() => {
-                                        seeMore(property.id);
-                                    }}
+                                    onClick={() => setSeeApplicants(true)}
                                 >
-                                    Details
+                                    Details 
                                 </button>
                             </div>
                         </div>

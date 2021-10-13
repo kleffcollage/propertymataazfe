@@ -25,7 +25,7 @@ export const SeeMore = ({
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const user = useContext(MainContext);
-  // console.log(user.data.user.id);
+  console.log({user});
   console.log(propertyDetails);
 
   const getPropertyDetails = async () => {
@@ -185,19 +185,26 @@ export const SeeMore = ({
                   </div>
                 </div>
               ) : (
-                <Link
-                  to={
-                    tenant
-                      ? `/rent/enquires/${propertyDetails.id}`
-                      : `/buy/enquires/${propertyDetails.id}`
-                  }
-                  className="list-color-btn w-100 mt-4 mb-3f"
-                  onClick={async () => {
-                    await incrementEnquire(propertyId);
-                  }}
-                >
-                  Enquire
-                </Link>
+                  <>
+                    {  (propertyDetails.createdByUser) && 
+                        propertyDetails.createdByUser.id == user.data.user.id 
+                        ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>You cannot enquire on owned property</button>
+                        : <Link
+                          to={
+                            tenant
+                              ? `/rent/enquires/${propertyDetails.id}`
+                              : `/buy/enquires/${propertyDetails.id}`
+                          }
+                          className="list-color-btn w-100 mt-4 mb-3f "
+                          onClick={ async () => {
+                            await incrementEnquire(propertyId);
+                          }}
+                        >
+                          Enquire
+                        </Link>
+                      
+                    }
+                  </>
               )
             ) : null}
 
@@ -206,41 +213,48 @@ export const SeeMore = ({
               <p>{propertyDetails.description}</p>
             </div>
             <SRLWrapper>
-              <div className="picture-overview">
-                <h2 className="property-info">Pictures</h2>
-                <div className="image-gallery">
-                  {files
-                    .filter((m) => m.isImage)
-                    .map((singleImage, i) => {
-                      return (
-                        <div className="single-img">
-                          <img src={singleImage.url} alt="" />
-                        </div>
-                      );
-                    })}
+              { files.filter((m) => m.isImage).length > 0  && 
+              
+                <div className="picture-overview">
+                  <h2 className="property-info">Pictures</h2>
+                  <div className="image-gallery">
+                    {files
+                      .filter((m) => m.isImage)
+                      .map((singleImage, i) => {
+                        return (
+                          <div className="single-img">
+                            <img src={singleImage.url} alt="" />
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-              <div className="video-overview">
-                <h2 className="property-info">Video Tour</h2>
-                <div className="video-gallery">
-                  {files
-                    .filter((m) => m.isVideo)
-                    .map((video, index) => {
-                      return (
-                        <div className="single-img">
-                          <video
-                            src={video.url}
-                            className="single-img"
-                            srl_video_controls={true}
-                            controls
-                          >
-                            <source src={video.url} />
-                          </video>
-                        </div>
-                      );
-                    })}
+              }
+              
+              { files.filter((m) => m.isVideo).length > 0 &&
+              
+                <div className="video-overview">
+                  <h2 className="property-info">Video Tour</h2>
+                  <div className="video-gallery">
+                    {files
+                      .filter((m) => m.isVideo)
+                      .map((video, index) => {
+                        return (
+                          <div className="single-img">
+                            <video
+                              src={video.url}
+                              className="single-img"
+                              srl_video_controls={true}
+                              controls
+                            >
+                              <source src={video.url} />
+                            </video>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
+              }
             </SRLWrapper>
             <div className="map-overview">
               <h2 className="property-info">Map/Street view</h2>

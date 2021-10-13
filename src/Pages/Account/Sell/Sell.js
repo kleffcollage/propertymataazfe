@@ -99,9 +99,9 @@ function Sell() {
 					</div>
 				) : (
 					<>
-						<div className="d-flex w-100 justify-content-between h-fit align-items-center">
+						<div className="d-flex w-100 justify-content-between h-fit mb-3 align-items-center">
 							<h3 className="section-title">My Listings</h3>
-							<button className="secondary-btn sec" onClick={openModalBox}>
+							<button className="secondary-btn sec mb-0" onClick={openModalBox}>
 								+ Add Property
 							</button>
 						</div>

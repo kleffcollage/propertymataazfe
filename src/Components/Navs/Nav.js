@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 function Nav() {
@@ -7,9 +7,18 @@ function Nav() {
 		location.pathname.startsWith(path) ? "active" : "";
 
 	const [nav, setNav] = useState(false);
-	const showNav = () => {
+	const navBody = useRef();
+	
+	const showNav = (e) => {
+		if( navBody.current === e.target ) {
+			setNav(!nav);
+			return
+		}
+		
 		setNav(!nav);
 	};
+	
+	
 	return (
 		<div>
 			<div className="white-bg w-100">
@@ -26,7 +35,7 @@ function Nav() {
 					</div>
 				</div>
 			</div>
-			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`}>
+			<div className={`overlay-wrapper ${!nav ? "" : "disappear"}`} onClick={showNav} ref={navBody}>
 				<nav className={`container ${!nav ? "" : "display"}`}>
 					<ul className="left-menu">
 						<li>

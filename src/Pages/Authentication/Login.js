@@ -13,12 +13,17 @@ function Login() {
 	const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({ Password: [], Email: [] });
+	const [ isVisible, setIsVisible ] = useState(false);
 
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
 		setLoginDetails({ ...loginDetails, [name]: value });
 		console.log(loginDetails);
 	};
+	
+	const togglePasswordVisibility = () => {
+		setIsVisible(!isVisible);
+	}
 	
 	const getApplicationTypes = async () => {
 		try {
@@ -73,7 +78,7 @@ function Login() {
 					<div className="row">
 						<div className="col-lg-6">
 							<div className="login-image">
-								<img src="/asset/log.jpg" alt="Login Image" />
+								<img src="/asset/buyorsell.png" alt="Login Image" />
 							</div>
 						</div>
 						<div className="col" />
@@ -118,12 +123,13 @@ function Login() {
 									<div className="input-box">
 										<div className="input-label">Password</div>
 										<input
-											type="password"
+											type={ isVisible ? "true" : "password"}
 											className="formfield pass"
 											placeholder="*  *  *  *"
 											name="password"
 											onChange={handleOnChange}
 										/>
+										<i className={`fa ${ isVisible ? "fa-eye" : "fa-eye-slash" } toggle-password`} onClick={() => togglePasswordVisibility()}></i>
 									</div>
 									<button className="secondary-btn" type="submit">
 										{loading ? <Spinner /> : "Login"}

@@ -115,19 +115,17 @@ ul.right-menu li.active a {
 }
 
 .hero .content input.homesearch::-webkit-input-placeholder {
-  opacity: 0.5;
+  color: #252427;
+  opacity: 1;
 }
 
 .hero .content input.homesearch:-ms-input-placeholder {
-  opacity: 0.5;
+  color: #252427;
+  opacity: 1;
 }
-
-.hero .content input.homesearch::-ms-input-placeholder {
-  opacity: 0.5;
-}
-
 .hero .content input.homesearch::placeholder {
-  opacity: 0.5;
+  color: #252427;
+  opacity: 1;
 }
 
 .hero .content .home-search-icon {
@@ -222,10 +220,11 @@ ul.right-menu li.active a {
 .side-info p.sub-text {
   color: #252427;
   font-family: "Baloo Bhai 2";
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0;
   line-height: 17.92px;
   margin: 0;
+  padding: 10px 0;
 }
 
 .side-info .primary-btn {
@@ -386,7 +385,9 @@ ul.footer i {
   background-color: #f6f6f6;
 }
 .login-image {
-  height: 28rem;
+  width: 100%;
+  padding: 10px 0;
+  /* height: 28rem; */
 }
 .display-image img,
 .login-image img {
@@ -448,6 +449,7 @@ ul.footer i {
   border-radius: 4px;
   background-color: #ffffff;
   height: 3rem;
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -515,6 +517,14 @@ ul.footer i {
   font-size: 18px;
   font-weight: bold;
   line-height: 20px;
+}
+
+.toggle-password {
+  color: #252427;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;    
 }
 
 .secondary-btn {
@@ -954,7 +964,7 @@ p.fil:last-of-type {
 .no-color-btn,
 .color-btn {
   width: 48%;
-  height: 2.2rem;
+  /* height: 2.2rem; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1322,6 +1332,24 @@ h2.property-info {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  cursor: pointer;
+}
+
+.image-gallery::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.image-gallery::-webkit-scrollbar {
+	height: 4px;
+	background-color: #F5F5F5;
+}
+
+.image-gallery::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #81efb5;
 }
 
 .single-img {
@@ -1332,6 +1360,7 @@ h2.property-info {
   margin-right: 2%;
   position: relative;
   flex: 0 0 9.3rem;
+  cursor: pointer;
 }
 
 .single-img:last-child {
@@ -2408,7 +2437,7 @@ a.small-cards {
   }
   nav.container {
     position: fixed;
-    width: 50%;
+    width: 60%;
     top: 0;
     z-index: 10;
     background-color: white;
@@ -2416,13 +2445,22 @@ a.small-cards {
     margin: 0 !important;
     display: block;
     padding: 1rem 0 1rem 1.5rem;
-    color: white;
-    left: -50%;
+    color: #0042ff;
+    left: -65%;
     transition: left 0.3s ease;
-    padding: 1rem 1.5rem;
+    padding: 1rem 0;
   }
   nav.container.display {
     left: 0;
+  }
+  nav.container ul li {
+    /* text-align: left; */
+    /* background-color: #0042ff; */
+    margin: 0.7rem 0;
+    text-align: justify;
+    color: #0042ff;
+    border-bottom: 1px solid rgba(243,243,245, 0.9);
+    /* background-color: #000; */
   }
   .white-bg {
     height: 4.5rem;
@@ -2469,19 +2507,22 @@ a.small-cards {
   nav.container ul {
     display: block;
   }
-  nav.container ul li {
-    /* text-align: left; */
+  /* nav.container ul li {
+    text-align: left; 
     background-color: #0042ff;
     margin: 0.7rem 0;
     text-align: center;
     color: white;
-    /* background-color: #000; */
-  }
+    /* background-color: #000;
+  } */
   .icon-small {
     color: white;
   }
+  nav.container ul li,
   nav.container ul li a {
-    color: white;
+    color: #0042ff;
+    text-transform: uppercase;
+    padding-left: 0.9rem;
   }
   nav.container .logo {
     width: 80%;
@@ -2494,7 +2535,10 @@ a.small-cards {
   }
   ul.left-menu li.active a,
   ul.right-menu li.active a {
+    background-color: #0042ff;
     color: white;
+    margin-left: 15px;
+    padding: 0 0.75rem;
   }
   .hamburger {
     width: 2.5rem;
@@ -2811,6 +2855,19 @@ h6.relief-preview-title {
 
 .pay-history-wrap .pay-history {
   border-bottom: 1px solid #D6D6D6;
+}
+
+.details-card i {
+  color: #0042FF;
+}
+
+.details-card .tabs-group h5 {
+  color: #252427;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+.details-card .tabs-group p {
+  font-size: calc(1rem - 2px);
 }
 
 /* Generic => Application  */

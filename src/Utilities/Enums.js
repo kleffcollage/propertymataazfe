@@ -18,5 +18,5 @@ export const typeOfApplications = {
     CLEAN: "CLEAN",
     FIX: "FIX",
     VERIFY: "VERIFY",
-    LOAN: "LOAN",
+    RELIEF: "RELIEF",
 }

@@ -1,11 +1,27 @@
 import React, { useState } from "react";
+import Fetch from "../../../Utilities/Fetch";
 import Naira from "react-naira"
 
-const TenantComplaintView = ({ close }) => {
+const TenantComplaintView = ({ complaint, close }) => {
     const [loading, setLoading ] = useState(false);
     const [ property, setProperty ] = useState([]);
     
-    // console.log({ property })
+    const handleComplaintApproval = async (complaintsId) => {
+        try {
+            setLoading(true);
+            let data = await Fetch(`Complaints/authorize/${complaintsId}`, "post")
+            
+            if(!data.status) {
+                
+                return
+            }
+            
+        } catch(error) {
+            console.log({error})
+        }
+    }
+    
+    console.log({ complaint })
 	
 	
 	return (
@@ -25,19 +41,19 @@ const TenantComplaintView = ({ close }) => {
                     <div className="col-12 my-2 py-2 px-0 complaint-tabs">
                         <button className="complaint-tab w-100">
                             <h5 className="mb-1 sub-heading">Category</h5>
-                            <p className="mb-0 font-weight-bold">Structural Damage</p>
+                            <p className="mb-0 font-weight-bold"> {complaint.complaintsCategory} </p>
                         </button>
                     </div>
                     <div className="col-12 my-2 py-2 px-0 complaint-tabs">
                         <button className="complaint-tab w-100">
                             <h5 className="mb-1 sub-heading">Sub Category</h5>
-                            <p className="mb-0 font-weight-bold">Roof Leakeage</p>
+                            <p className="mb-0 font-weight-bold">{ complaint.complaintsSubCategory }</p>
                         </button>
                     </div>
                     <div className="col-12 my-2 px-0 py-2 complaint-tabs">
                         <button className="complaint-tab w-100">
                             <h5 className="mb-1 sub-heading">Comments</h5>
-                            <p className="mb-0 font-weight-bold">Roof Leakeage</p>
+                            <p className="mb-0 font-weight-bold">{ complaint.comment }</p>
                         </button>
                     </div>
                 </div>
