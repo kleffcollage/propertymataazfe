@@ -21,7 +21,7 @@ function Rent() {
 
 			<div className="new-intro">What do you want to do?</div>
 			<div className="row">
-				<div className="col-lg-4 my-2">
+				<div className="col-lg-6 my-2">
 					<div className="small-cards" onClick={() => setRentOption(true)}>
 						<div className="iconsection" />
 						<div className="text-sections">
@@ -33,7 +33,7 @@ function Rent() {
 					</div>
 				</div>
 				
-				<div className="col-lg-4 my-2">
+				<div className="col-lg-6 my-2">
 					<Link to="/rent/rentProperty" className="small-cards">
 						<div className="iconsection" />
 						<div className="text-sections">
@@ -45,13 +45,13 @@ function Rent() {
 					</Link>
 				</div>
 				
-				<Modal open={rentRelief} 
+				{/* <Modal open={rentRelief} 
 					close={() => { setRentRelief(false) }}
 				>
 					<ReliefForm close={() => setRentRelief(false)} />
-				</Modal>
+				</Modal> */}
 				
-				<div className="col-lg-4 my-2">
+				{/* <div className="col-lg-4 my-2">
 					<div className="small-cards" onClick={() => setRentRelief(true)}>
 						<div className="iconsection flex-shrink-1" />
 						<div className="text-sections">
@@ -61,7 +61,7 @@ function Rent() {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

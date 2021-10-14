@@ -21,7 +21,7 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
         }
         return
     }
-    // console.log({ data })
+    console.log({ data })
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
                             {/* <div className="line" /> */}
                             <div className="listing-info pt-0">
                                 <div className="listing-btn">
-                                    <button className="list-no-color-btn w-100" onClick={() => popModal()}> 
+                                    <button className="list-no-color-btn w-100" disabled onClick={() => popModal()}> 
                                         View Details
                                     </button>
                                 </div>

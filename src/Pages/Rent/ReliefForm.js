@@ -491,14 +491,14 @@ function ReliefForm({ property = null, close }) {
               </div>
               
               <div className="input-box">
-                  <div className="input-label">Work Address</div>
-                  <input
+                <div className="input-label">Work Address</div>
+                <input
                   type="text"
                   className="formfield"
                   placeholder="House No, Street, Estate"
                   name="register.workAddress"
                   {...register("register.workAddress")}
-                  />
+                />
               </div>
               
               <div className="input-box">
@@ -664,26 +664,26 @@ function ReliefForm({ property = null, close }) {
               <div className="input-box">
                   <div className="input-label">Choose a pay back date</div>
                   <input
-                      type="date"
-                      className="formfield"
-                      placeholder="Give your listing a name that makes it easy to find"
-                      name="paybackDate"
-                      {...register("paybackDate")}
+                    type="date"
+                    className="formfield"
+                    placeholder="Select your repayment date"
+                    name="paybackDate"
+                    {...register("paybackDate")}
                   />
               </div>
               <div className="input-box">
                   <div className="input-label">How do you want to pay back?</div>
                   <div className="select-box">
                       <select
-                          className="formfield"
-                          name="repaymentFrequency"
-                          {...register("repaymentFrequency")}
+                        className="formfield"
+                        name="repaymentFrequency"
+                        {...register("repaymentFrequency")}
                       >
-                          <option value="" selected disabled> Choose a property type </option>
-                          <option value="weekly"> Weekly </option>
-                          <option value="month"> Month </option>
-                          <option value="annual"> Yearly </option>
-                          <option value="biannual"> 2 years </option>
+                        <option value="" selected disabled> Choose a property type </option>
+                        <option value="weekly"> Weekly </option>
+                        <option value="month"> Month </option>
+                        <option value="annual"> Yearly </option>
+                        <option value="biannual"> 2 years </option>
                       </select>
                       <div className="arrows" />
                   </div>

@@ -653,6 +653,11 @@ a.tc,
   background-color: transparent;
 }
 
+.register-cta {
+  font-family: "Baloo Bhai 2";
+  font-size: 0.89rem;
+}
+
 .fit-it {
   height: 100%;
   display: -webkit-box;

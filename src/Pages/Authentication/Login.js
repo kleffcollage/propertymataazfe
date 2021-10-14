@@ -135,6 +135,10 @@ function Login() {
 										{loading ? <Spinner /> : "Login"}
 									</button>
 								</form>
+								<div className="register-cta d-flex justify-content-center mb-2">
+									<p className="mb-0 mr-2">Don't have an account yet?</p>
+									<Link to="/signup"> SIGN UP </Link>
+								</div>
 								<Link to="/login/reset" className="forgot-pass">
 									Forget Password
 								</Link>

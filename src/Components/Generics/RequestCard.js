@@ -52,24 +52,24 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
 
     return (
         <>
-        <Alert 
-            showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
-        />
+            <Alert 
+                showAlert={cancelModal} setShowAlert={setCancelModal} isCancel={true}     
+            />
         
-        {/* Rent relief Modal */}
-        <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
-            <RentReliefDetails close={() => setOpenDetails(false)} />
-        </Modal>
+            {/* Rent relief Modal */}
+            <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
+                <RentReliefDetails close={() => setOpenDetails(false)} />
+            </Modal>
         
-        {/* Property request Modal */}
-        <Modal open={requestResults} onClose={() => setRequestResults(false)}>
-            <RequestResults propertyId={propertyId} matches={property.matches} theRequest={property.comment} close={() => setRequestResults(false)} />
-        </Modal>
-        
-        {/* Tenants rental details */}
-        <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-            <TenancyDetails  isTenant={true} propertyId={property.id} close={() => setTenancyDetails(false)} />
-        </Modal>
+            {/* Property request Modal */}
+            <Modal open={requestResults} onClose={() => setRequestResults(false)}>
+                <RequestResults propertyId={propertyId} matches={property.matches} theRequest={property.comment} close={() => setRequestResults(false)} />
+            </Modal>
+            
+            {/* Tenants rental details */}
+            <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
+                <TenancyDetails  isTenant={false} propertyId={property.id} close={() => setTenancyDetails(false)} />
+            </Modal>
         
         { isRequest  ? (
             <div className="col-lg-4">
