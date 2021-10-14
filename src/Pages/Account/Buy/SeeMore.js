@@ -7,7 +7,7 @@ import Modal from "../../../Utilities/Modal";
 import { ReportProperty } from "../../../Components/Generics/ReportProperty";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
-import { SRLWrapper } from "simple-react-lightbox-pro";
+import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
 
