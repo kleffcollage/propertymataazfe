@@ -48,7 +48,9 @@ const Clean = () => {
                 <div className="row">
                     <div className="col-lg-4 my-2">
                         <div className="small-cards" onClick={ () => setOpenModal(true)}>
-                            <div className="iconsection" />
+                            <div className="iconsection">
+                                <img src="/asset/clean.png" alt="find-property" />
+                            </div>
                             <div className="text-sections">
                                 <div className="rent-title">Book Cleaning Session</div>
                                 <div className="rent-sub">

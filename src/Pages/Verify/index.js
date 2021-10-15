@@ -55,7 +55,9 @@ const Verify = () => {
                 <div className="row">
                     <div className="col-lg-4 my-2">
                         <div className="small-cards" onClick={ () => setOpenModal(true)}>
-                            <div className="iconsection" />
+                            <div className="iconsection">
+                                <img src="/asset/Rent/findProperty.png" alt="find-property" />
+                            </div>
                             <div className="text-sections">
                                 <div className="rent-title">Land Search</div>
                                 <div className="rent-sub">
