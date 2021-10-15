@@ -23,7 +23,9 @@ function Rent() {
 			<div className="row">
 				<div className="col-lg-6 my-2">
 					<div className="small-cards" onClick={() => setRentOption(true)}>
-						<div className="iconsection" />
+						<div className="iconsection">
+							<img src="/asset/Rent/listProperty.png" alt="list-property" />
+						</div>
 						<div className="text-sections">
 							<div className="rent-title">Rent out your property</div>
 							<div className="rent-sub">
@@ -35,7 +37,9 @@ function Rent() {
 				
 				<div className="col-lg-6 my-2">
 					<Link to="/rent/rentProperty" className="small-cards">
-						<div className="iconsection" />
+						<div className="iconsection">
+							<img src="/asset/Rent/findProperty.png" alt="find-property" />
+						</div>
 						<div className="text-sections">
 							<div className="rent-title">Rent a property</div>
 							<div className="rent-sub">

@@ -37,8 +37,8 @@ export default function ValidatePayment() {
       setProperty(data.data.property);
       setPaymentStatus(true);
       setTransaction(data.data.transaction);
-	  setPaymentLog(data.data.transaction.paymentLog)
-	  setCard(data.data.transaction.paymentLog.card)
+	    setPaymentLog(data.data.transaction.paymentLog)
+	    setCard(data.data.transaction.paymentLog.card)
       return;
     } catch (err) {}
   };

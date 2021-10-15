@@ -2207,7 +2207,7 @@ a.small-cards {
 }
 
 .iconsection {
-  background-color: #0042ff;
+  /* background-color: #0042ff; */
   width: 48px;
   height: 45px;
   margin-right: 1rem;
@@ -2228,7 +2228,7 @@ a.small-cards {
   margin-bottom: 1.5rem;
 }
 .iconsection {
-  background-color: #0042ff;
+  /* background-color: #0042ff; */
   width: 48px;
   height: 45px;
   margin-right: 1rem;
