@@ -12,6 +12,7 @@ const Rent = () => {
     const [errormessage, setErrormessage] = useState("");
     const [isProperty, setIsProperty] = useState([]);
     const [requestRents, setRequestRents] = useState([]);
+    const [rentReliefs, setRentReliefs] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [subTab, setSubTab] = useState("enquiries");
@@ -62,10 +63,30 @@ const Rent = () => {
             return
         }
     }
+    const fetchReliefsLists = async () => {
+        setLoading(true)
+        const data = await Fetch(`Relief/user?offset=${offset}&limit=${limit}`)
+        
+        // console.log('Requested Rents: ', data)
+        
+        if(!data.status) {
+            setLoading(false)
+            setErrormessage(data.message)
+            return
+        }
+        if(data.status != 400) {
+            setLoading(true)
+            setRentReliefs(data)
+            // console.log('Requested rents: ', data.data.value)
+            setLoading(false)
+            return
+        }
+    }
     
     useEffect(() => {
         fetchRequestRents();
         fetchAppliedRents();
+        fetchReliefsLists();
     }, [])
     
     

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
+import { useHistory } from "react-router";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
@@ -12,6 +13,7 @@ import Alert from "../../../Utilities/Alert";
 
 
 function Application({ clean, fix, close }) {
+    const history = useHistory();
     const [rooms, setRooms] = useState(0);
     const [bathroom, setBathroom] = useState(0);
     const [floor, setFloors] = useState(0);
@@ -155,7 +157,7 @@ function Application({ clean, fix, close }) {
         if(clean) {
             endpoint = "Clean/request";
         } else if (fix) {
-            endpoint = "Fix/request";
+            endpoint = "Clean/request";
         } else {
             endpoint = "LandSearch/create";          
         }
@@ -175,6 +177,7 @@ function Application({ clean, fix, close }) {
             if (data.status != "400") {
                 setLoading(false);
                 toast.success(data.message)
+                history.go(0)
                 console.log(data);
             } else {
                 toast.error(errorMessage)

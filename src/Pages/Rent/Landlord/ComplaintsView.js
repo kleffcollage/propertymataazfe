@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import Fetch from "../../../Utilities/Fetch";
 import Naira from "react-naira"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../../../Utilities/Spinner";
 
 const TenantComplaintView = ({ complaint, close }) => {
     const [loading, setLoading ] = useState(false);
+    const [errorMessage, setErrormessage] = useState("");
     const [ property, setProperty ] = useState([]);
+    // console.log({ complaint })
     
-    const handleComplaintApproval = async (complaintsId) => {
+    const handleComplaintApproval = async () => {
         try {
             setLoading(true);
-            let data = await Fetch(`Complaints/authorize/${complaintsId}`, "post")
-            
-            if(!data.status) {
-                
-                return
+            let data = await Fetch(`Complaints/authorize/${complaint.id}`)
+            console.log({data})
+            if (!data.status) {
+                setLoading(false);
+                setErrormessage(data.message);
+                return;
+              }
+              if(data.status != 400) {
+                setLoading(false);
+                // history.push("/rent");
+                toast.success("Inspection Approved successfully.");
             }
             
         } catch(error) {
@@ -59,7 +70,11 @@ const TenantComplaintView = ({ complaint, close }) => {
                 </div>
                 
                 <div className="mt-5 px-3">
-                    <button type="" className="secondary-btn">Authorize Inspection</button>
+                    <button type="" className="secondary-btn" onClick={() => handleComplaintApproval()}>
+                        { loading ? <Spinner />
+                            : "Authorize Inspection"
+                        }
+                    </button>
                     <p>A PropertyMataaz Representative will go and inspect the reported damage and we will revert to you with proof of damagae as well as repair costs.</p>
                 </div>
 			</div>
