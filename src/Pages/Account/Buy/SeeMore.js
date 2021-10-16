@@ -88,7 +88,7 @@ export const SeeMore = ({
                 setSeeMore(false);
               }}
             >
-              <i className="fas fa-chevron-left" />
+              <i className="fas fa-chevron-left mr-1" />
               <span className="backs">Back</span>
             </div>
             <div className="logo">

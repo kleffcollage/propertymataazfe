@@ -8,16 +8,27 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Naira from "react-naira";
 
-function RentReliefDetails({ close }) {
+function RentReliefDetails({ relief, close }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
+  console.log({relief})
 
 	const handleOnChange = (e) => {
 		// showAlert("success", "Something toasted", "Everything works ");
 		const { name, value } = e.target;
 		// console.log(rentDetails);
 	};
+	
+	const getOustandingBalance = () => {
+		let outStandingBalance = 0
+		let unPaidInstalment = relief.installments.filter(amount => amount.status == "PENDING")
+		unPaidInstalment = unPaidInstalment.map((value) => {
+			return value.amount
+		}))
+		
+		console.log({unPaidInstalment})
+	}
 	
 	const submitRentRequest = async (e) => {
 		e.preventDefault();
@@ -86,11 +97,11 @@ function RentReliefDetails({ close }) {
 			
 			<div className="mt-4 mb-5 d-flex flex-column align-items-center">
 				<h6 className="gray-sub-title">Amount to pay</h6>
-				<h4 className="total-repayment"><Naira>4500000</Naira></h4>
+				<h4 className="total-repayment"><Naira>{relief.totalRepayment}</Naira></h4>
 				<div className="d-flex align-items-center">
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Outstaning Balance</p>
-						<div className="info-tab px-2 py-1"><Naira>3985310</Naira></div>
+						<div className="info-tab px-2 py-1"><Naira>{getOustandingBalance()}</Naira></div>
 					</div>
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Next Payment Date</p>
@@ -112,8 +123,8 @@ function RentReliefDetails({ close }) {
 						<div className="progress-tabs unfilled"></div>
 					</div>
 					<div className="d-flex record-title justify-content-between">
-						<p className="mb-0"><Naira>797062</Naira></p>
-						<p className="mb-0"><Naira>4782372</Naira></p>
+						<p className="mb-0"><Naira>{relief.monthlyInstallment}</Naira></p>
+						<p className="mb-0"><Naira>{relief.totalRepayment}</Naira></p>
 					</div>
 				</div>
 			</div>

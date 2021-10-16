@@ -13,6 +13,7 @@ const Rent = () => {
     const [isProperty, setIsProperty] = useState([]);
     const [requestRents, setRequestRents] = useState([]);
     const [rentReliefs, setRentReliefs] = useState([]);
+    const [userTenancy, setUserTenancy] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [subTab, setSubTab] = useState("enquiries");
@@ -76,8 +77,27 @@ const Rent = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setRentReliefs(data)
+            setRentReliefs(data.data)
             // console.log('Requested rents: ', data.data.value)
+            setLoading(false)
+            return
+        }
+    }
+    const fetchUserTenancy = async () => {
+        setLoading(true)
+        const data = await Fetch(`Tenancy/user?offset=${offset}&limit=${limit}`)
+        
+        // console.log('Requested Rents: ', data)
+        
+        if(!data.status) {
+            setLoading(false)
+            setErrormessage(data.message)
+            return
+        }
+        if(data.status != 400) {
+            setLoading(true)
+            setUserTenancy(data.data)
+            // console.log('Tenancy rents: ', data.data.value)
             setLoading(false)
             return
         }
@@ -87,6 +107,7 @@ const Rent = () => {
         fetchRequestRents();
         fetchAppliedRents();
         fetchReliefsLists();
+        fetchUserTenancy();
     }, [])
     
     
@@ -169,13 +190,13 @@ const Rent = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Rent Relief</h5>
                                             
-                                            { requestRents.length === 0 
+                                            { rentReliefs.length == 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { rentReliefs.map((reliefs, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
+                                                                <RequestCard relief={reliefs} seeMore={showDetails} isRelief={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -189,13 +210,13 @@ const Rent = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">My Tenancy</h5>
                                             
-                                            { isProperty.length === 0
+                                            { userTenancy.length === 0
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { isProperty.map((property, index) => {
+                                                        { userTenancy.map((tenancy, index) => {
                                                             return (
-                                                                <RequestCard property={property} seeMore={showDetails} isForTenants={true} key={index} />                   
+                                                                <RequestCard property={tenancy} seeMore={showDetails} isForTenants={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>

@@ -43,7 +43,9 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 			toast.error("There was an error deleting this property. Please try again after sometime");
 			console.log(error);
 		}
-	} 
+	}
+	
+	console.log({property})
 	return (
 		<>
 			<Alert showAlert={alert} setShowAlert={showAlert} callback={() => deActivate(property.id)} isDelete={true} loading={deleting} />
@@ -119,7 +121,8 @@ const PropertyCard = ({ property = {}, seeMore }) => {
 							</div>
 						</div>
 						<div className="listing-btn">
-							<button className={property.status === Statuses.VERIFIED ? "color-btn" : "list-no-color-btn"} onClick={() => {
+							<button className={property.status === Statuses.VERIFIED ? "color-btn" : "list-no-color-btn"} 
+								onClick={() => {
 									seeMore(property.id);
 								}}> View Details</button>
 								

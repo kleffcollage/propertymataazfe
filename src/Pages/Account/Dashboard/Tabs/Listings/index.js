@@ -5,6 +5,9 @@ import ListedCard from "../../../../../Components/Generics/ListedCard";
 import RentCard from "../../../../../Components/Generics/RentCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import PropertyCard from "../../../../../Components/Generics/PropertyCard";
+import Modal from "../../../../../Utilities/Modal";
+import SeeMore from "../../../Buy/SeeMore";
 
 const Listings = () => {
     const [errormessage, setErrormessage] = useState("");
@@ -13,14 +16,19 @@ const Listings = () => {
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false)
     const [tab, setTab] = useState("for-sale");
+    const [propertyId, setPropertyId] = useState(0);
     
     const currentTab = (tabname) => {
         setTab(tabname);
     };
     
+    // const showDetails = (id) => {
+    //     setShowInfo(true)
+    // }
     const showDetails = (id) => {
-        setShowInfo(true)
-    }
+		setPropertyId(id);
+		setShowInfo(true);
+	};
     
     const fetchPropertiesForSale = async (url = "Property/user/created/sale") => {
         setLoading(true)
@@ -70,6 +78,11 @@ const Listings = () => {
     
     return (
         <Wrapper className="row">
+            <Modal open={showInfo} onClose={() => setShowInfo(false)}>
+                <SeeMore propertyId={propertyId} setSeeMore={setShowInfo} seller={true} />
+            </Modal>
+            
+            
             { loading ?
                 <Box display="flex" width="100%" height="100" justifyContent="center" alignItems="center"> 
                     <Spinner size={40} color={"primary"} /> 
@@ -107,7 +120,7 @@ const Listings = () => {
                                                     : <>
                                                         { isForSale.map((property, index) => {
                                                             return (
-                                                                <ListedCard property={property} seeMore={showDetails} key={index} />                    
+                                                                <PropertyCard property={property} seeMore={showDetails} key={index} />                    
                                                             )
                                                         })}
                                                     </>
