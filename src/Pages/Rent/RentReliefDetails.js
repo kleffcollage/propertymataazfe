@@ -25,9 +25,11 @@ function RentReliefDetails({ relief, close }) {
 		let unPaidInstalment = relief.installments.filter(amount => amount.status == "PENDING")
 		unPaidInstalment = unPaidInstalment.map((value) => {
 			return value.amount
-		}))
-		
-		console.log({unPaidInstalment})
+		})
+		outStandingBalance = unPaidInstalment.reduce((a, b) => { return a + b }, 0)
+		// console.log({total})
+		// console.log({unPaidInstalment})
+		return outStandingBalance
 	}
 	
 	const submitRentRequest = async (e) => {
