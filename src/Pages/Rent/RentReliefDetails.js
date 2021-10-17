@@ -15,6 +15,10 @@ function RentReliefDetails({ relief, close }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
+  const [paymentData, setPaymentData] = useState({
+	amount: relief ? relief.monthlyInstallment : 0,
+	rentReliefId: relief ? relief.id : 0, 
+  });
   console.log({relief})
 
 	const handleOnChange = (e) => {
@@ -41,15 +45,13 @@ function RentReliefDetails({ relief, close }) {
 		return nextPayDate
 	}
 	
-	const submitRentRequest = async (e) => {
-		e.preventDefault();
+	const handlePayment = async () => {
 		setLoading(true);
-		// console.log({rentDetails});
-		
+		console.log({paymentData});
 		
 		try {
-			var data = await Fetch("Property/create", "post");
-			console.log('Rent property: ', data);
+			var data = await Fetch("Payment/initiate", "post", paymentData);
+			console.log('Relief Data response: ', data);
 			if (!data.status) {
 				setLoading(false);
 				setErrormessage(data.message);
@@ -60,10 +62,8 @@ function RentReliefDetails({ relief, close }) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				toast.success("Property listed successfully.");
-				history.push("/my-mattaz");
-				// history.push("/sell");
-				// await currentStep();
+				toast.success("Relief payment initiated successfully.");
+				// history.push("/");
 				return
 			}
 			
@@ -140,8 +140,8 @@ function RentReliefDetails({ relief, close }) {
 				</div>
 			</div>
 			
-			<button type="button" className="btn-outlined btn-grayed border-black">
-				Make a payment
+			<button type="button" className="btn-outlined btn-grayed border-black" onClick={() => handlePayment()}>
+				{ loading ? <Spinner /> : 'Make a payment' }
 			</button>
 			
 			<div className="mt-4 mb-5">

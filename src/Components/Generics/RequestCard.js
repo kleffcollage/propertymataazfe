@@ -71,7 +71,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
             
             {/* Tenants rental details */}
             <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-                <TenancyDetails  isTenant={false} propertyId={property.id} close={() => setTenancyDetails(false)} />
+                <TenancyDetails isTenant={isForTenants} propertyId={property.id} close={() => setTenancyDetails(false)} />
             </Modal>
         
         { isRequest  ? (
@@ -185,7 +185,33 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                     </div>
                 </div>
             </div>
-        ) : null}
+        ) : (
+            <div className="col-lg-4">
+                <div className="listing-cards for-request pt-4">
+                    <div className="listing-info for-request">
+                        <div className="title-group">
+                            <div className="listing-title mb-3">{property.property.name}</div>
+                        </div>
+                        <div className="feature-group">
+                            <div className="feature-sing w-100">
+                                <i className="far fa-calendar" />
+                                <div className="feature-title w-100">
+                                    Next rent is due in 365 Days
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="line" /> */}
+                    <div className="listing-info pt-0">
+                        <div className="listing-btn">
+                            <button className="list-no-color-btn w-100" onClick={openTenancyDetails}> 
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
     </>
 
     )

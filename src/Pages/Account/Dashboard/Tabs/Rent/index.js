@@ -5,6 +5,7 @@ import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import RequestCard from "../../../../../Components/Generics/RequestCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import TenancyList from "../../../../Rent/Tenant/TenancyList";
 
 const Rent = () => {
     const [offset, setOffset] = useState(0);
@@ -83,31 +84,11 @@ const Rent = () => {
             return
         }
     }
-    const fetchUserTenancy = async () => {
-        setLoading(true)
-        const data = await Fetch(`Tenancy/user?offset=${offset}&limit=${limit}`)
-        
-        // console.log('Requested Rents: ', data)
-        
-        if(!data.status) {
-            setLoading(false)
-            setErrormessage(data.message)
-            return
-        }
-        if(data.status != 400) {
-            setLoading(true)
-            setUserTenancy(data.data)
-            // console.log('Tenancy rents: ', data.data.value)
-            setLoading(false)
-            return
-        }
-    }
     
     useEffect(() => {
         fetchRequestRents();
         fetchAppliedRents();
         fetchReliefsLists();
-        fetchUserTenancy();
     }, [])
     
     
@@ -206,24 +187,7 @@ const Rent = () => {
                                         
                                     ) : 
                                     subTab == "tenancy" ? (
-                                        
-                                        <div className="my-3">
-                                            <h5 className="mb-3">My Tenancy</h5>
-                                            
-                                            { userTenancy.length === 0
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                                : <>
-                                                    <div className="row">
-                                                        { userTenancy.map((tenancy, index) => {
-                                                            return (
-                                                                <RequestCard property={tenancy} seeMore={showDetails} isForTenants={true} key={index} />                   
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </>
-                                            }
-                                        </div>
-                                        
+                                        <TenancyList />
                                     ) : null
                                 }
                             </div>
