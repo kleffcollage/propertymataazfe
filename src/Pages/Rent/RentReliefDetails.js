@@ -140,7 +140,10 @@ function RentReliefDetails({ relief, close }) {
 				</div>
 			</div>
 			
-			<button type="button" className="btn-outlined btn-grayed border-black" onClick={() => handlePayment()}>
+			<button type="button" className="btn-outlined btn-grayed border-black" 
+				onClick={() => handlePayment()}
+				disabled={relief.installments.filter(amount => amount.status == "PENDING").length == 0}
+			>
 				{ loading ? <Spinner /> : 'Make a payment' }
 			</button>
 			
