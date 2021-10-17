@@ -7,6 +7,9 @@ import { MainContext } from "../../Context/MainContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Naira from "react-naira";
+import moment from "moment";
+import Moment from "react-moment"
+
 
 function RentReliefDetails({ relief, close }) {
   const history = useHistory();
@@ -30,6 +33,12 @@ function RentReliefDetails({ relief, close }) {
 		// console.log({total})
 		// console.log({unPaidInstalment})
 		return outStandingBalance
+	}
+	const getNextPaymentData = () => {
+		let nextPayDate = relief.installments.map( item => { return item.dateDue })[0]
+		nextPayDate = moment(nextPayDate).format("L")
+		// console.log({nextPayDate})
+		return nextPayDate
 	}
 	
 	const submitRentRequest = async (e) => {
@@ -103,11 +112,11 @@ function RentReliefDetails({ relief, close }) {
 				<div className="d-flex align-items-center">
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Outstaning Balance</p>
-						<div className="info-tab px-2 py-1"><Naira>{getOustandingBalance()}</Naira></div>
+						<div className="info-tab px-2 py-1"><Naira>{ getOustandingBalance() }</Naira></div>
 					</div>
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Next Payment Date</p>
-						<div className="info-tab px-2 py-1">23/03/21</div>
+						<div className="info-tab px-2 py-1">{ getNextPaymentData() }</div>
 					</div>
 				</div>
 			</div>
