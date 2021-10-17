@@ -7,11 +7,19 @@ import { MainContext } from "../../Context/MainContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Naira from "react-naira";
+import moment from "moment";
+import Moment from "react-moment"
 
-function RentReliefDetails({ close }) {
+
+function RentReliefDetails({ relief, close }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
+  const [paymentData, setPaymentData] = useState({
+	amount: relief ? relief.monthlyInstallment : 0,
+	rentReliefId: relief ? relief.id : 0, 
+  });
+  console.log({relief})
 
 	const handleOnChange = (e) => {
 		// showAlert("success", "Something toasted", "Everything works ");
@@ -19,15 +27,31 @@ function RentReliefDetails({ close }) {
 		// console.log(rentDetails);
 	};
 	
-	const submitRentRequest = async (e) => {
-		e.preventDefault();
+	const getOustandingBalance = () => {
+		let outStandingBalance = 0
+		let unPaidInstalment = relief.installments.filter(amount => amount.status == "PENDING")
+		unPaidInstalment = unPaidInstalment.map((value) => {
+			return value.amount
+		})
+		outStandingBalance = unPaidInstalment.reduce((a, b) => { return a + b }, 0)
+		// console.log({total})
+		// console.log({unPaidInstalment})
+		return outStandingBalance
+	}
+	const getNextPaymentData = () => {
+		let nextPayDate = relief.installments.map( item => { return item.dateDue })[0]
+		nextPayDate = moment(nextPayDate).format("L")
+		// console.log({nextPayDate})
+		return nextPayDate
+	}
+	
+	const handlePayment = async () => {
 		setLoading(true);
-		// console.log({rentDetails});
-		
+		console.log({paymentData});
 		
 		try {
-			var data = await Fetch("Property/create", "post");
-			console.log('Rent property: ', data);
+			var data = await Fetch("Payment/initiate", "post", paymentData);
+			console.log('Relief Data response: ', data);
 			if (!data.status) {
 				setLoading(false);
 				setErrormessage(data.message);
@@ -38,10 +62,8 @@ function RentReliefDetails({ close }) {
 				setLoading(false);
 				//   setListingDetails({});
 				close(true);
-				toast.success("Property listed successfully.");
-				history.push("/my-mattaz");
-				// history.push("/sell");
-				// await currentStep();
+				toast.success("Relief payment initiated successfully.");
+				// history.push("/");
 				return
 			}
 			
@@ -86,15 +108,15 @@ function RentReliefDetails({ close }) {
 			
 			<div className="mt-4 mb-5 d-flex flex-column align-items-center">
 				<h6 className="gray-sub-title">Amount to pay</h6>
-				<h4 className="total-repayment"><Naira>4500000</Naira></h4>
+				<h4 className="total-repayment"><Naira>{relief.totalRepayment}</Naira></h4>
 				<div className="d-flex align-items-center">
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Outstaning Balance</p>
-						<div className="info-tab px-2 py-1"><Naira>3985310</Naira></div>
+						<div className="info-tab px-2 py-1"><Naira>{ getOustandingBalance() }</Naira></div>
 					</div>
 					<div className="mx-2">
 						<p className="mb-2 gray-sub-title">Next Payment Date</p>
-						<div className="info-tab px-2 py-1">23/03/21</div>
+						<div className="info-tab px-2 py-1">{ getNextPaymentData() }</div>
 					</div>
 				</div>
 			</div>
@@ -112,14 +134,17 @@ function RentReliefDetails({ close }) {
 						<div className="progress-tabs unfilled"></div>
 					</div>
 					<div className="d-flex record-title justify-content-between">
-						<p className="mb-0"><Naira>797062</Naira></p>
-						<p className="mb-0"><Naira>4782372</Naira></p>
+						<p className="mb-0"><Naira>{relief.monthlyInstallment}</Naira></p>
+						<p className="mb-0"><Naira>{relief.totalRepayment}</Naira></p>
 					</div>
 				</div>
 			</div>
 			
-			<button type="button" className="btn-outlined btn-grayed border-black">
-				Make a payment
+			<button type="button" className="btn-outlined btn-grayed border-black" 
+				onClick={() => handlePayment()}
+				disabled={relief.installments.filter(amount => amount.status == "PENDING").length == 0}
+			>
+				{ loading ? <Spinner /> : 'Make a payment' }
 			</button>
 			
 			<div className="mt-4 mb-5">

@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Wrapper } from "./Listings.style";
-import Fetch from "../../../../../Utilities/Fetch";
-import ListedCard from "../../../../../Components/Generics/ListedCard";
-import RentCard from "../../../../../Components/Generics/RentCard";
-import Spinner from "../../../../../Utilities/Spinner";
+import { Wrapper } from "../../Account/Dashboard/Tabs/Listings/Listings.style";
+import Fetch from "../../../Utilities/Fetch";
+import ListedCard from "../../../Components/Generics/ListedCard";
+import RentCard from "../../../Components/Generics/RentCard";
+import Spinner from "../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
-import PropertyCard from "../../../../../Components/Generics/PropertyCard";
-import Modal from "../../../../../Utilities/Modal";
-import SeeMore from "../../../Buy/SeeMore";
+import PropertyCard from "../../../Components/Generics/PropertyCard";
+import Modal from "../../../Utilities/Modal";
+import SeeMore from "../../Account/Buy/SeeMore";
+import RequestCard from "../../../Components/Generics/RequestCard";
 
-const Listings = () => {
+const TenancyList = () => {
     const [errormessage, setErrormessage] = useState("");
-    const [isForSale, setIsForSale] = useState([]);
-    const [isForRent, setIsForRent] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const [limit, setLimit] = useState(25);
+    const [landlordTenancy, setLandlordTenancy] = useState([]);
+    const [userTenancy, setUserTenancy] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false)
-    const [tab, setTab] = useState("for-sale");
+    const [tab, setTab] = useState("tenant");
     const [propertyId, setPropertyId] = useState(0);
     
     const currentTab = (tabname) => {
@@ -30,11 +33,11 @@ const Listings = () => {
 		setShowInfo(true);
 	};
     
-    const fetchPropertiesForSale = async (url = "Property/user/created/sale") => {
+    const fetchLandlordTenancy = async () => {
         setLoading(true)
-        const data = await Fetch(url)
+        const data = await Fetch(`Tenancy/landlord?offset=${offset}&limit=${limit}`)
         
-        // console.log('For Sale P: ', data)
+        // console.log('Requested Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -43,17 +46,18 @@ const Listings = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setIsForSale(data.data.value)
-            // console.log('Properties sale: ', data.data)
+            setLandlordTenancy(data.data)
+            // console.log('Tenancy rents: ', data.data.value)
             setLoading(false)
             return
         }
     }
-    const fetchPropertiesForRents = async (url = "Property/user/created/rent") => {
+    
+    const fetchUserTenancy = async () => {
         setLoading(true)
-        const data = await Fetch(url)
+        const data = await Fetch(`Tenancy/user?offset=${offset}&limit=${limit}`)
         
-        // console.log('For Rent P: ', data)
+        // console.log('Requested Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -62,16 +66,16 @@ const Listings = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setIsForRent(data.data.value)
-            // console.log('Req rents: ', data.data)
+            setUserTenancy(data.data)
+            // console.log('Tenancy rents: ', data.data.value)
             setLoading(false)
             return
         }
     }
     
     useEffect(() => {
-        fetchPropertiesForRents();
-        fetchPropertiesForSale();
+        fetchLandlordTenancy();
+        fetchUserTenancy();
     }, [])
     
     
@@ -89,38 +93,38 @@ const Listings = () => {
                 </Box> 
                 : (
                     <>
-                        <div className="tabs mt-3">
+                        <div className="tabs mt-0">
                             <div
-                                className={`texts ${tab == "for-sale" ? "current" : ""}`}
-                                onClick={() => currentTab("for-sale")}
+                                className={`texts ${tab == "tenant" ? "current" : ""}`}
+                                onClick={() => currentTab("tenant")}
                             >
-                                For Sale
+                                For Tenant
                             </div>
                             <div
-                                className={`texts ${tab == "for-rent" ? "current" : ""}`}
-                                onClick={() => currentTab("for-rent")}
+                                className={`texts ${tab == "landlord" ? "current" : ""}`}
+                                onClick={() => currentTab("landlord")}
                             >
-                                For Rent
+                                For Landlord
                             </div>
                             
-                            <div className={tab == "for-sale" ? "tabbar" : "tabbar req"} />
+                            <div className={tab == "tenant" ? "tabbar" : "tabbar req"} />
                         </div>
                         
                         <div>
                             <div className="container">
                                 {   
-                                    tab === "for-sale" ? (
+                                    tab === "tenant" ? (
                                         
                                         <div className="my-3">
-                                            <h5 className="mb-3">For Sale</h5>
+                                            <h5 className="mb-3">For Tenant</h5>
                                             
                                             <div className="row">
-                                                { isForSale.length == 0 
-                                                    ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                                { userTenancy.length == 0 
+                                                    ? <h6 className="mb-3 italic">You currently do not have any active tenancy...</h6>
                                                     : <>
-                                                        { isForSale.map((property, index) => {
+                                                        { userTenancy.map((rent, index) => {
                                                             return (
-                                                                <PropertyCard property={property} seeMore={showDetails} key={index} />                    
+                                                                <RequestCard key={index} property={rent} isForTenants={true} seeMore={showDetails}  />                    
                                                             )
                                                         })}
                                                     </>
@@ -130,15 +134,15 @@ const Listings = () => {
                                         </div>
                                     ) : (
                                         <div className="my-3">
-                                            <h5 className="mb-3">For Rent</h5>
+                                            <h5 className="mb-3">For Landlord</h5>
                                             
                                             <div className="row">
-                                                { isForRent.length == 0 
-                                                    ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                { landlordTenancy.length == 0 
+                                                    ? <h6 className="mb-3 italic">You currently do not have any active tenancy...</h6>
                                                     : <>
-                                                        { isForRent.map((rents, index) => {
+                                                        { landlordTenancy.map((rents, index) => {
                                                             return (
-                                                                <RentCard property={rents} seeMore={showDetails} key={index} />                    
+                                                                <RequestCard property={rents} seeMore={showDetails} key={index} />                    
                                                             )
                                                         })}
                                                     </>
@@ -159,4 +163,4 @@ const Listings = () => {
     )
 }
 
-export default Listings;
+export default TenancyList;

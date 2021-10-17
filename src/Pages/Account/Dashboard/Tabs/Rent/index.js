@@ -5,6 +5,7 @@ import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import RequestCard from "../../../../../Components/Generics/RequestCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import TenancyList from "../../../../Rent/Tenant/TenancyList";
 
 const Rent = () => {
     const [offset, setOffset] = useState(0);
@@ -13,6 +14,7 @@ const Rent = () => {
     const [isProperty, setIsProperty] = useState([]);
     const [requestRents, setRequestRents] = useState([]);
     const [rentReliefs, setRentReliefs] = useState([]);
+    const [userTenancy, setUserTenancy] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [subTab, setSubTab] = useState("enquiries");
@@ -76,7 +78,7 @@ const Rent = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setRentReliefs(data)
+            setRentReliefs(data.data)
             // console.log('Requested rents: ', data.data.value)
             setLoading(false)
             return
@@ -169,13 +171,13 @@ const Rent = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Rent Relief</h5>
                                             
-                                            { requestRents.length === 0 
+                                            { rentReliefs.length == 0 
                                                 ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { rentReliefs.map((reliefs, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
+                                                                <RequestCard relief={reliefs} seeMore={showDetails} isRelief={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -185,24 +187,7 @@ const Rent = () => {
                                         
                                     ) : 
                                     subTab == "tenancy" ? (
-                                        
-                                        <div className="my-3">
-                                            <h5 className="mb-3">My Tenancy</h5>
-                                            
-                                            { isProperty.length === 0
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                                : <>
-                                                    <div className="row">
-                                                        { isProperty.map((property, index) => {
-                                                            return (
-                                                                <RequestCard property={property} seeMore={showDetails} isForTenants={true} key={index} />                   
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </>
-                                            }
-                                        </div>
-                                        
+                                        <TenancyList />
                                     ) : null
                                 }
                             </div>

@@ -8,16 +8,18 @@ import RentReliefDetails from '../../Pages/Rent/RentReliefDetails';
 import RequestResults from '../../Pages/Rent/RequestResults';
 import TenancyDetails from '../../Pages/Rent/Landlord/TenancyDetails';
 
-export default function RequestCard({ property = {}, seeMore, isRequest = false, isRelief = false, isForTenants = false, }) {
+export default function RequestCard({ property = {}, relief= {}, seeMore, isRequest = false, isRelief = false, isForTenants = false, }) {
     const [ cancelModal, setCancelModal ] = useState(false)
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ tenancyDetails, setTenancyDetails ] = useState(false)
     const [ requestResults, setRequestResults ] = useState(false)
     const [ propertyId, setPropertyId ] = useState('')
+    const [selectedRelief, setSelectedRelief] = useState(null)
     
     
     const openRentDetails = () => {
-        setOpenDetails(prev => !prev)
+        setOpenDetails(!openDetails)
+        setSelectedRelief(relief);
     }
     
     const openTenancyDetails = () => {
@@ -48,7 +50,8 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         seeMore(property.id);
         await incrementView(property.id);
     };
-    // console.log({property})
+    console.log({property})
+    console.log({relief})
 
     return (
         <>
@@ -58,7 +61,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
         
             {/* Rent relief Modal */}
             <Modal open={openDetails} onClose={() => setOpenDetails(false)}>
-                <RentReliefDetails close={() => setOpenDetails(false)} />
+                <RentReliefDetails relief={selectedRelief} close={() => setOpenDetails(false)} />
             </Modal>
         
             {/* Property request Modal */}
@@ -68,7 +71,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
             
             {/* Tenants rental details */}
             <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-                <TenancyDetails  isTenant={false} propertyId={property.id} close={() => setTenancyDetails(false)} />
+                <TenancyDetails isTenant={isForTenants} propertyId={property.id} close={() => setTenancyDetails(false)} />
             </Modal>
         
         { isRequest  ? (
@@ -135,22 +138,22 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
                         <div className="title-group align-items-center mb-4">
                             <div className="relief-amount">
                                 <h6>Relief Amount</h6>
-                                <p className="mb-0"><Naira>4500000</Naira></p>
+                                <p className="mb-0"><Naira>{relief.reliefAmount}</Naira></p>
                             </div>
-                            <div className="loan-status">Pending</div>                            
+                            <div className="loan-status">{relief.status}</div>                            
                         </div>
                         <div className="d-flex justify-content-between">
                             <div className="relief-amount">
                                 <h6>Interest</h6>
-                                <p className="mb-0">15%</p>
+                                <p className="mb-0">{relief.interest}%</p>
                             </div>
                             <div className="relief-amount">
                                 <h6>Monthly Instalments</h6>
-                                <p className="mb-0"><Naira>797062</Naira></p>
+                                <p className="mb-0"><Naira>{relief.monthlyInstallment}</Naira></p>
                             </div>
                             <div className="relief-amount">
                                 <h6>Total Repayment</h6>
-                                <p className="mb-0"><Naira>4782372</Naira></p>
+                                <p className="mb-0"><Naira>{relief.totalRepayment}</Naira></p>
                             </div>                            
                         </div>
                     </div>
@@ -161,7 +164,7 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.title}</div>
+                            <div className="listing-title mb-3">{property.property.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">
@@ -182,7 +185,33 @@ export default function RequestCard({ property = {}, seeMore, isRequest = false,
                     </div>
                 </div>
             </div>
-        ) : null}
+        ) : (
+            <div className="col-lg-4">
+                <div className="listing-cards for-request pt-4">
+                    <div className="listing-info for-request">
+                        <div className="title-group">
+                            <div className="listing-title mb-3">{property.property.name}</div>
+                        </div>
+                        <div className="feature-group">
+                            <div className="feature-sing w-100">
+                                <i className="far fa-calendar" />
+                                <div className="feature-title w-100">
+                                    Next rent is due in 365 Days
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="line" /> */}
+                    <div className="listing-info pt-0">
+                        <div className="listing-btn">
+                            <button className="list-no-color-btn w-100" onClick={openTenancyDetails}> 
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
     </>
 
     )
