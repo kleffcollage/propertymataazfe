@@ -140,7 +140,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                                 <h6>Relief Amount</h6>
                                 <p className="mb-0"><Naira>{relief.reliefAmount}</Naira></p>
                             </div>
-                            <div className="loan-status">{relief.status}</div>                            
+                            <div className={`loan-status ${relief.status == "COMPLETED" ? 'bg-success text-white' : ''}`}>{relief.status}</div>                            
                         </div>
                         <div className="d-flex justify-content-between">
                             <div className="relief-amount">
