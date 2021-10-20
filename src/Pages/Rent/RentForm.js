@@ -267,7 +267,6 @@ function RentForm({ close }) {
 		let record = rentDetails;
 		record.price = price;
 		record.tenantAnnualIncome = tenantAnnualIncome;
-		
 		try {
 			var data = await Fetch("Property/create", "post", record);
 			console.log('Rent property: ', data);
