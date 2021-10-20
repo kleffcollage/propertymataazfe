@@ -1,10 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
 import ListedCard from "../../Components/Generics/ListedCard";
+import Modal from "../../Utilities/Modal";
+import SeeMore from "../Account/Buy/SeeMore"
 
 function Body({ properties }) {
+	const [seemore,setSeeMore] = useState(false);
+	const [propertyId,setPropertyId] = useState(0);
   console.log({ properties });
+
+  const showPopUp =(id) => { 
+	setPropertyId(id);
+	setSeeMore(true);
+  }
   return (
     <>
+	<Modal
+        open={seemore}
+        onClose={() => {
+          setSeeMore(false);
+        }}
+      >
+        <SeeMore
+          propertyId={propertyId}
+          setSeeMore={setSeeMore}
+          seller={false}
+          tenant={false}
+        />
+      </Modal>
       <div>
         <div className="container-fluid">
           <div className="container">
@@ -100,7 +122,7 @@ function Body({ properties }) {
               {properties &&
                 properties.length > 0 &&
                 properties.map((property, index) => {
-                  return <ListedCard property={property} />;
+                  return <ListedCard property={property} seeMore={() =>showPopUp(property.id)}/>;
                 })}
             </div>
           </div>

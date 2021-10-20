@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
+import CurrencyInput from 'react-currency-input-field';
+
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -24,6 +26,8 @@ function RentForm({ close }) {
   const [step, setStep] = useState(1);
   const [bedroomCounter, setBedroomCounter] = useState(0);
   const [bathroomCounter, setBathroomCounter] = useState(0);
+  const [price,setPrice] = useState(0);
+  const [tenantAnnualIncome,setTenantAnnualIncome] = useState(0);
 
 //   console.log(NaijaStates.states());
 	const [errors, setErrors] = useState({
@@ -66,6 +70,7 @@ function RentForm({ close }) {
 	});
 
 	const [propertyTypes, setPropertyTypes] = useState([]);
+	const [propertyTitles,setPropertyTitles] = useState([]);
 	const [states, setStates] = useState([]);
 	const [lgas, setLgas] = useState([]);
 	const [cities, setCities] = useState([]);
@@ -238,6 +243,17 @@ function RentForm({ close }) {
 		}
 	};
 
+	const getPropertyTitles = async () => {
+		try {
+		  const data = await Fetch("property/titles", "get");
+		  if (!data.status) return;
+		  const titles = data.data;
+		  setPropertyTitles(data.data);
+		} catch (error) {
+		  console.log(error);
+		}
+	  };
+
 	const submitRentRequest = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -248,10 +264,12 @@ function RentForm({ close }) {
 			return
 		}
 		console.log({rentDetails});
-		
+		let record = rentDetails;
+		record.price = price;
+		record.tenantAnnualIncome = tenantAnnualIncome;
 		
 		try {
-			var data = await Fetch("Property/create", "post", rentDetails);
+			var data = await Fetch("Property/create", "post", record);
 			console.log('Rent property: ', data);
 			if (!data.status) {
 				setLoading(false);
@@ -345,6 +363,7 @@ function RentForm({ close }) {
 			await getPropertyTypes();
 			await getTenantTypes();
 			await getRentCollection();
+			await getPropertyTitles();
 			// await getStates();
 		};
 		
@@ -418,14 +437,22 @@ function RentForm({ close }) {
 
             <div className="input-box">
                 <div className="input-label">Property Title</div>
-                <input
-					type="text"
-					className="formfield"
-					placeholder="Give your listing a name that makes it easy to find"
-					name="title"
-					value={rentDetails.title}
-					onChange={handleOnChange}
-                />
+                <div className="select-box">
+					<select
+						name="propertyTitle"
+						value={rentDetails.propertyTitle}
+						onChange={handleOnChange}
+						className="formfield"
+					>
+						<option selected disabled>
+							Choose a property type
+						</option>
+						{ propertyTitles.map((type, i) => {
+							return <option key={i} value={type.name} > { type.name} </option>;
+						})}
+					</select>
+					<div className="arrows" />
+                </div>
             </div>
             <div className="input-box">
                 <div className="input-label">State</div>
@@ -516,13 +543,15 @@ function RentForm({ close }) {
             
             <div className="input-box">
                 <div className="input-label">Rent (Per year)</div>
-                <input
-                    type="text"
-                    className="formfield"
-                    placeholder="₦0.00"
-                    name="price"
-					value={rentDetails.price}
-                    onChange={handleOnChange}
+				<CurrencyInput
+                  id="input-example"
+                  className='formfield'
+                  name="price"
+                  placeholder="₦0.00"
+                  prefix="₦"
+                  decimalsLimit={2}
+				  value={price}
+                  onValueChange={(value, name) => setPrice(value)}
                 />
             </div>
 
@@ -689,14 +718,24 @@ function RentForm({ close }) {
 				</div>
 				<div className="input-box">
 					<div className="input-label">Annual Income Bracket</div>
-					<input
+					{/* <input
 						type="text"
 						className="formfield"
 						placeholder="Preferred tenant annual salary/income"
 						name="tenantAnnualIncome"
 						value={rentDetails.tenantAnnualIncome}
 						onChange={handleOnChange}
-					/>
+					/> */}
+					 <CurrencyInput
+                  id="input-example"
+                  className='formfield'
+                  name="price"
+                  placeholder="₦0.00"
+                  prefix="₦"
+                  decimalsLimit={2}
+				  value={tenantAnnualIncome}
+                  onValueChange={(value, name) => setTenantAnnualIncome(value)}
+                />
 				</div>
 				
 				<h6 className="field-title mb-4 mt-2">Rent Collection</h6>

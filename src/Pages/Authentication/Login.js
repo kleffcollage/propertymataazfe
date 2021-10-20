@@ -55,7 +55,7 @@ function Login() {
         localStorage.setItem("token", data.data.token);
         setUser(data.data);
         localStorage.setItem("user", JSON.stringify(data.data));
-        history.push("/buy");
+        history.push("/");
         return;
       }
       handleValidationErrors(data.errors);
