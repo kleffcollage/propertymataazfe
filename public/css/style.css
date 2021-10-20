@@ -157,6 +157,10 @@ ul.right-menu li.active a {
   height: auto;
 }
 
+.active-select {
+  border: 1px solid #0042ff !important;
+}
+
 .cards {
   min-height: 13rem;
   width: 100%;
