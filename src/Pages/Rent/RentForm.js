@@ -445,7 +445,7 @@ function RentForm({ close }) {
             <div className="input-label">Property Title</div>
             <div className="select-box">
               <select
-                name="propertyTitle"
+                name="title"
                 value={rentDetails.propertyTitle}
                 onChange={handleOnChange}
                 className="formfield"

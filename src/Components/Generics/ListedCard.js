@@ -3,6 +3,7 @@ import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
+import {Link} from "react-router-dom"
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     console.log({property});
@@ -82,14 +83,15 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                 See More 
                             </button>
                                 
-                            <button
+                            <Link
                                 className="list-color-btn"
-                                onClick={() => {
-                                    seeMore(property.id);
-                                }}
+                                to={
+                                    property.isForRent ? `/rent/enquires/${property.id}`
+                                    : `/buy/enquires/${property.id}`
+                                }
                             >
-                                Details
-                            </button>
+                                Enquire
+                            </Link>
                         </div>
                     </div>
                 </div>
