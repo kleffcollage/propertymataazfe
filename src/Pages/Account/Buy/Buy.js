@@ -83,23 +83,25 @@ function Buy() {
       bedrooms: 0,
       bathrooms: 0,
     })
+    setCounter(0)
+    setBathroomCounter(0)
     // show properties
     showProperties();
   }
   
   const handleFilteredProperties = () => {
-    filterOptions.isResidential = residential
-    filterOptions.isCommercial = commercial
-    filterOptions.isMixed = mixed
-    filterOptions.isFlat = flat
-    filterOptions.isBungalow = bungalow
-    filterOptions.isDuplex = duplex
-    filterOptions.isTerrace = terrace
+    filterOptions.isResidential = filterOptions.isResidential
+    filterOptions.isCommercial = filterOptions.isCommercial
+    filterOptions.isMixed = filterOptions.isMixed
+    filterOptions.isFlat = filterOptions.isFlat
+    filterOptions.isBungalow = filterOptions.isBungalow
+    filterOptions.isDuplex = filterOptions.isDuplex
+    filterOptions.isTerrace = filterOptions.isTerrace
     filterOptions.bedrooms = counter
     filterOptions.bathrooms = bathroomCounter
     
     let urlParams = `Property/list/sales?Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`
-    console.log({urlParams})
+    // console.log({urlParams})
     showProperties(urlParams)    
   }
 
