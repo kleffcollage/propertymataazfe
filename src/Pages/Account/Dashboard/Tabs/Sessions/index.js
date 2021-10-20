@@ -102,7 +102,7 @@ const Sessions = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Clean</h5>
                                             { cleanList.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any clean session booked...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { cleanList.map((clean, index) => {
@@ -121,7 +121,7 @@ const Sessions = () => {
                                             <h5 className="mb-3">Fix</h5>
                                             
                                             { verifyList.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any fix request listed...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { verifyList.map((property, index) => {
@@ -141,7 +141,7 @@ const Sessions = () => {
                                             <h5 className="mb-3">Verify</h5>
                                             
                                             { verifyList.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any land search or verification listed...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { verifyList.map((verify, index) => {

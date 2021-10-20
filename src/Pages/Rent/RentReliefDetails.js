@@ -15,11 +15,16 @@ function RentReliefDetails({ relief, close }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
+  
+  let data = relief.installments.filter(item => item.status == 'PENDING')
   const [paymentData, setPaymentData] = useState({
 	amount: relief ? relief.monthlyInstallment : 0,
-	rentReliefId: relief ? relief.id : 0, 
+	rentReliefId: relief ? relief.id : 0,
+	installmentId: (relief.installments && data.length > 0) ? data[0].id : 0
   });
+  
   console.log({relief})
+  	
 
 	const handleOnChange = (e) => {
 		// showAlert("success", "Something toasted", "Everything works ");
@@ -39,42 +44,48 @@ function RentReliefDetails({ relief, close }) {
 		return outStandingBalance
 	}
 	const getNextPaymentData = () => {
-		let nextPayDate = relief.installments.map( item => { return item.dateDue })[0]
-		nextPayDate = moment(nextPayDate).format("L")
-		// console.log({nextPayDate})
+		let nextPayDate = relief.installments.filter(amount => amount.status == "PENDING").map( item => { return item.dateDue })[0]
+		nextPayDate = nextPayDate ? moment(nextPayDate).format("L") : '-'
+		console.log({nextPayDate})
 		return nextPayDate
+	}
+	
+	const getProgressTabWidth = () => {
+		let unit = 100 / relief.installments.length
+		unit = unit + '%'
+		return unit
 	}
 	
 	const handlePayment = async () => {
 		setLoading(true);
 		console.log({paymentData});
 		
-		try {
-			var data = await Fetch("Payment/initiate", "post", paymentData);
-			console.log('Relief Data response: ', data);
-			if (!data.status) {
-				setLoading(false);
-				setErrormessage(data.message);
-				toast.error(data.message);
-				return;
-			}
-			if (data.status != 400) {
-				setLoading(false);
-				//   setListingDetails({});
-				close(true);
-				toast.success("Relief payment initiated successfully.");
-				// history.push("/");
-				return
-			}
+		// try {
+		// 	var data = await Fetch("Payment/initiate", "post", paymentData);
+		// 	console.log('Relief Data response: ', data);
+		// 	if (!data.status) {
+		// 		setLoading(false);
+		// 		setErrormessage(data);
+		// 		toast.error("Failed to initiate payment.");
+		// 		return;
+		// 	}
+		// 	if (data.status != 400) {
+		// 		window.open(data.message);
+		// 		setLoading(false);
+		// 		close(true);
+		// 		toast.success("Relief payment initiated successfully.");
+		// 		// history.push("/");
+		// 		return
+		// 	}
 			
-			toast.success(data.message);
-			history.push("/my-mattaz");
-			setLoading(false);
+		// 	toast.success(data.message);
+		// 	history.push("/my-mattaz");
+		// 	setLoading(false);
 			
-		} catch (error) {
-			setLoading(false)
-			console.error(error)
-		}
+		// } catch (error) {
+		// 	setLoading(false)
+		// 	console.error(error)
+		// }
 		
 	};
 
@@ -125,13 +136,18 @@ function RentReliefDetails({ relief, close }) {
 				<h6 className="text-center mb-3">Repayment Progress</h6>
 				<div className="d-flex flex-column">
 					<div className="d-flex mb-1">
+						{relief.installments.map((item, index) => {
+							return (
+							<div key={index} className={`progress-tabs ${item.status == "PENDING" ? 'unfilled' : 'filled'}`} 
+							style={{ width: getProgressTabWidth() }}></div>
+							)
+						})}
+						{/* <div className="progress-tabs filled"></div>
 						<div className="progress-tabs filled"></div>
 						<div className="progress-tabs filled"></div>
-						<div className="progress-tabs filled"></div>
 						<div className="progress-tabs unfilled"></div>
 						<div className="progress-tabs unfilled"></div>
-						<div className="progress-tabs unfilled"></div>
-						<div className="progress-tabs unfilled"></div>
+						<div className="progress-tabs unfilled"></div> */}
 					</div>
 					<div className="d-flex record-title justify-content-between">
 						<p className="mb-0"><Naira>{relief.monthlyInstallment}</Naira></p>
@@ -140,27 +156,34 @@ function RentReliefDetails({ relief, close }) {
 				</div>
 			</div>
 			
-			<button type="button" className="btn-outlined btn-grayed border-black" 
-				onClick={() => handlePayment()}
-				disabled={relief.installments.filter(amount => amount.status == "PENDING").length == 0}
-			>
-				{ loading ? <Spinner /> : 'Make a payment' }
-			</button>
+			{relief.installments.filter(amount => amount.status == "PENDING").length != 0 && (
+				<button type="button" className="btn-outlined btn-grayed border-black" 
+					onClick={() => handlePayment()}
+					disabled={relief.installments.filter(amount => amount.status == "PENDING").length == 0}
+				>
+					{ loading ? <Spinner color="primary" /> : 'Make a payment' }
+				</button>
+			)}
 			
 			<div className="mt-4 mb-5">
 				<h6>Payment History</h6>
-				<div className="d-flex align-items-center payment-history w-100 border py-1 px-2">
-					<div className="icon mr-2">
-						<img src="./asset/UpArrow.png" alt="up-arrow" />
-					</div>
-					<div className="mx-2 record">
-						<div className="d-flex record-title justify-content-between">
-							<p className="mb-0">1st Instalment</p>
-							<p className="mb-0">+ <Naira>797062</Naira></p>
+				{ relief.installments.filter(amount => amount.status == "COMPLETED").map((data, index) => {
+					return (
+						<div key={index} className="d-flex align-items-center payment-history w-100 border py-1 px-2 my-2">
+							<div className="icon mr-2">
+								<img src="./asset/UpArrow.png" alt="up-arrow" />
+							</div>
+							<div className="mx-2 record">
+								<div className="d-flex record-title justify-content-between">
+									<p className="mb-0">{`Instalment ${index + 1}`}</p>
+									<p className="mb-0">+ <Naira>{data.amount}</Naira></p>
+								</div>
+								<p className="mb-0 last-paid">Paid on the {  moment(data.dateDue).format("L") } </p>
+							</div>
+							{/* {console.log(data.amount)} */}
 						</div>
-						<p className="mb-0 last-paid">Paid on the  23/02/21 via LiquedeFlex</p>
-					</div>
-				</div>
+					)	
+				})}
 			</div>
 			
 			

@@ -152,7 +152,7 @@ const Rent = () => {
                                             <h5 className="mb-3">Requests</h5>
                                             
                                             { requestRents.length === 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any property requests...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { requestRents.map((rents, index) => {
@@ -172,7 +172,7 @@ const Rent = () => {
                                             <h5 className="mb-3">Rent Relief</h5>
                                             
                                             { rentReliefs.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any relief request...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { rentReliefs.map((reliefs, index) => {
