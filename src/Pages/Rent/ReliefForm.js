@@ -13,6 +13,8 @@ import NaijaStates from "naija-state-local-government";
 import { Box } from "@material-ui/core";
 import { typeOfApplications } from "../../Utilities/Enums"
 import Naira from "react-naira"
+import CurrencyInput from 'react-currency-input-field';
+
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
 Geocode.setLocationType("ROOFTOP");
