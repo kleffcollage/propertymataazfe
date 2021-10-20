@@ -187,7 +187,7 @@ export const SeeMore = ({
               ) : (
                   <>
                     {  (propertyDetails.createdByUser) && 
-                        propertyDetails.createdByUser.id == user.data.user.id 
+                        propertyDetails.createdByUser?.id == user.data.user?.id 
                         ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>You cannot enquire on owned property</button>
                         : <Link
                           to={

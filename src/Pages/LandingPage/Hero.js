@@ -1,6 +1,6 @@
 import React from "react";
 
-function Hero() {
+function Hero({setSearch, trigger}) {
 	return (
 		<div className="hero">
 			<div className="content">
@@ -10,8 +10,9 @@ function Hero() {
 						type="search"
 						className="homesearch"
 						placeholder="Enter an address, state, neighbourhood or area"
+						onChange={e => setSearch(e.target.value)}
 					/>
-					<div className="home-search-icon">
+					<div className="home-search-icon" onClick={() => trigger()}>
 						<img src="/asset/searchicon.svg" alt="search" />
 					</div>
 				</div>
