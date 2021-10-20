@@ -5,6 +5,7 @@ import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
+    console.log({property});
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);

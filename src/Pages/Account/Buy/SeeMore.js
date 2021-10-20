@@ -7,7 +7,7 @@ import Modal from "../../../Utilities/Modal";
 import { ReportProperty } from "../../../Components/Generics/ReportProperty";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
 import { MapView } from "../../../Components/Generics/MapView";
-import { SRLWrapper } from "simple-react-lightbox-pro";
+import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
 
@@ -187,7 +187,7 @@ export const SeeMore = ({
               ) : (
                   <>
                     {  (propertyDetails.createdByUser) && 
-                        propertyDetails.createdByUser.id == user.data.user.id 
+                        propertyDetails.createdByUser?.id == user.data.user?.id 
                         ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>You cannot enquire on owned property</button>
                         : <Link
                           to={

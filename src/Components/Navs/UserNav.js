@@ -2,6 +2,9 @@ import React, { useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router";
 import { MainContext } from "../../Context/MainContext";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 function UserNav() {
 	const location = useLocation();
@@ -10,6 +13,7 @@ function UserNav() {
 	const navBody = useRef();
 	
 	const getNavLinkClass = (path) => location.pathname.startsWith(path) ? "active" : "";
+	const getNavAnchorClass = (path) => location.pathname.startsWith(path) ? "active-link" : "";
 
 	const [nav, setNav] = useState(false);
 	
@@ -28,6 +32,9 @@ function UserNav() {
 	return (
 		<div>
 			<div className="white-bg w-100">
+				<style>
+					
+				</style>
 				<div className="container">
 					<div className="mobile-sec">
 						<Link to="/">
@@ -36,7 +43,7 @@ function UserNav() {
 							</div>
 						</Link>
 						<div className={`hamburger ${!nav ? "" : "opened"}`} onClick={showNav}>
-							<div className="burger"></div>
+							<div className="burger" ></div>
 						</div>
 					</div>
 				</div>
@@ -45,7 +52,8 @@ function UserNav() {
 				<nav className={`container ${!nav ? "" : "display"}`}>
 					<ul className="left-menu">
 						<li className={`hover-dropdown ${getNavLinkClass("/sell")}`}>
-							Sell <i className="fas fa-chevron-down icon-small" />
+							<Link to="" className={getNavAnchorClass("/sell")}>Sell</Link>
+							 <i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
 									<li onClick={() => history.push("/sell")}>My Listings</li>
@@ -56,16 +64,16 @@ function UserNav() {
 							</div>
 						</li>
 						<li className={`${getNavLinkClass("/buy")}`}>
-							<Link to="/buy">Buy</Link>
+							<Link to="/buy" className={getNavAnchorClass("/buy")}>Buy</Link>
 						</li>
 						<li className={`${getNavLinkClass("/rent")}`}>
-							<Link to="/rent">Rent</Link>
+							<Link to="/rent" className={getNavAnchorClass("/rent")}>Rent</Link>
 						</li>
 						<li className={`${getNavLinkClass("/clean")}`}>
-							<Link to="/clean">Clean</Link>
+							<Link to="/clean" className={getNavAnchorClass("/clean")}>Clean</Link>
 						</li>
 						<li className={`mr-0 ${getNavLinkClass("/fix")}`}>
-							<Link to="fix" className="mr-0">
+							<Link to="fix" className={`mr-0 ${getNavAnchorClass("/fix")}`}>
 								Fix
 							</Link>
 						</li>
@@ -83,7 +91,7 @@ function UserNav() {
 							<Link to="/getloan">Get Rent Loan</Link>
 						</li> */}
 						<li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-							<a href="#" className="mr-1"> My Mataaz </a><i className="fas fa-chevron-down icon-small" />
+							<a href="#" className={`mr-1 ${getNavAnchorClass("/my")}`}> My Mataaz </a><i className="fas fa-chevron-down icon-small" />
 							<div className="dropdown-content">
 								<ul>
 									<li><Link to="/listings">Listings</Link></li>

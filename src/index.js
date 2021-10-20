@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./Components/App/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import SimpleReactLightbox from "simple-react-lightbox-pro";
+import SimpleReactLightbox from "simple-react-lightbox";
 
 ReactDOM.render(
   <React.StrictMode>

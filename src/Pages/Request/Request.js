@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
 import NaijaStates from "naija-state-local-government";
+import CurrencyInput from 'react-currency-input-field';
+
 
 function Request() {
 	const history = useHistory();
@@ -26,6 +28,7 @@ function Request() {
 	const [cities, setCities] = useState([]);
 	const [bedroomCounter, setBedroomCounter] = useState(0);
 	const [bathroomCounter, setBathroomCounter] = useState(0);
+	const [budget,setBudget] = useState(0);
 
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
@@ -108,9 +111,11 @@ function Request() {
 	const submitRequets = async (e) => {
 		console.log(request);
 		e.preventDefault();
+		let record = request;
+		record.budget = budget;
 		
 		setLoading(true);
-		var data = await Fetch("PropertyRequest/new", "post", request);
+		var data = await Fetch("PropertyRequest/new", "post", record);
 		console.log(data);
 		//return;
 		if (!data.status) {
@@ -246,13 +251,16 @@ function Request() {
 					<div className="col-lg-4">
 						<div className="input-box">
 							<div className="input-label">Budget</div>
-							<input
-								type="text"
-								className="formfield"
-								placeholder="What is your budget for the project"
-								name="budget"
-								onChange={handleOnChange}
-							/>
+							<CurrencyInput
+                  id="input-example"
+                  className='formfield'
+                  name="price"
+                  placeholder="₦0.00"
+                  prefix="₦"
+                  decimalsLimit={2}
+				  value={budget}
+                  onValueChange={(value, name) => setBudget(value)}
+                />
 						</div>
 						
 						<div className="counter-pad">

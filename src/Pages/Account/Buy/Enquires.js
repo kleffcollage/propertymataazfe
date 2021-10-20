@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Fetch from "../../../Utilities/Fetch";
-import { SRLWrapper } from "simple-react-lightbox-pro";
+import { SRLWrapper } from "simple-react-lightbox";
 import { MapView } from "../../../Components/Generics/MapView";
 import  Modal  from "../../../Utilities/Modal";
 import ApplicationForm from "./Application";
