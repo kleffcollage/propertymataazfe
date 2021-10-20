@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
-import CurrencyInput from 'react-currency-input-field';
+import CurrencyInput from "react-currency-input-field";
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -27,7 +27,7 @@ function SellAdd({ close, existingProperty = {} }) {
   const [step, setStep] = useState("a");
   const [bedroomCounter, setBedroomCounter] = useState(0);
   const [bathroomCounter, setBathroomCounter] = useState(0);
-  const [price,setPrice] = useState(0);
+  const [price, setPrice] = useState(0);
   console.log({ existingProperty });
 
   // console.log(NaijaStates.states());
@@ -655,7 +655,7 @@ function SellAdd({ close, existingProperty = {} }) {
                 <ErrorMessage name="price" /> */}
                 <CurrencyInput
                   id="input-example"
-                  className='formfield'
+                  className="formfield"
                   name="price"
                   placeholder="₦0.00"
                   prefix="₦"
@@ -682,10 +682,17 @@ function SellAdd({ close, existingProperty = {} }) {
                       <input {...getInputProps()} />
                       {data.mediafiles.filter((m) => m.isImage).length > 0 ? (
                         <>
-                          <i className="far fa-check" />
-                          {`${
-                            data.mediafiles.filter((m) => m.isImage).length
-                          }  Pictures Uploaded`}
+                          <div className="d-flex justify-content-between w-100">
+                            <div>
+                              <i className="far fa-check" />
+                              {`${
+                                data.mediafiles.filter((m) => m.isImage).length
+                              }  Pictures Uploaded`}
+                            </div>
+                            <div>
+                              <i className="fa fa-pencil-alt" />
+                            </div>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -716,10 +723,17 @@ function SellAdd({ close, existingProperty = {} }) {
                       <input {...getInputProps()} />
                       {data.mediafiles.filter((m) => m.isVideo).length > 0 ? (
                         <>
-                          <i className="far fa-check" />
-                          {`${
-                            data.mediafiles.filter((m) => m.isVideo).length
-                          }  Videos Uploaded`}
+                          <div className="d-flex justify-content-between w-100">
+                            <div>
+                              <i className="far fa-check" />
+                              {`${
+                                data.mediafiles.filter((m) => m.isVideo).length
+                              }  Videos Uploaded`}
+                            </div>
+                            <div>
+                              <i className="fa fa-pencil-alt" />
+                            </div>
+                          </div>
                         </>
                       ) : (
                         <>

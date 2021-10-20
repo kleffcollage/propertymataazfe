@@ -10,6 +10,9 @@ import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
+import {ShareSocial} from 'react-share-social'
+import Alert from "../../../Utilities/Alert";
+import MiniModal from "../../../Utilities/Alert/MiniModal";
 
 export const SeeMore = ({
   setSeeMore,
@@ -23,10 +26,15 @@ export const SeeMore = ({
   const [showContact, setShowContact] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [showModal, setShowModal ] = useState(false)
 
   const user = useContext(MainContext);
   console.log({user});
   console.log(propertyDetails);
+  
+  const openShareModal = () => {
+    setShowModal(!showModal);
+  }
 
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -62,6 +70,8 @@ export const SeeMore = ({
     console.log(propertyId);
     getPropertyDetails();
   }, []);
+  
+  
 
   return (
     <>
@@ -72,6 +82,27 @@ export const SeeMore = ({
         <ReportProperty
           property={propertyDetails}
           close={() => setIsReportModalOpen(false)}
+        />
+      </Modal>
+      
+      <Modal open={showModal} onClose={() => setShowModal(false)}>
+        <div className="top-section">
+          <div className="back">
+            <i className="fas fa-chevron-left mr-2"></i>
+            <span
+              className="backs"
+              onClick={() => setShowModal(false)}
+            >
+              Back
+            </span>
+          </div>
+        </div>
+        <ShareSocial 
+          // style={style}
+          url ={`${tenant ? window.origin + `/rent/enquires/${propertyDetails.id}`
+                :  window.origin + `/buy/enquires/${propertyDetails.id}`}
+              `}
+          socialTypes={['facebook','twitter','reddit','linkedin']}
         />
       </Modal>
       {loading ? (
@@ -271,14 +302,14 @@ export const SeeMore = ({
             <div className="disclaimer">
               <h3>Disclaimer</h3>
               <p>
-                Information displayed about this property constitutes a mere
+                {`Information displayed about this property constitutes a mere
                 advertisement. PropertyMataaz makes no warranty as to the
                 accuracy of the advertisement or any linked or associated
                 information. Information about this property is provided and
-                maintained by Segun Apampa. PropertyMataaz shall not in any way
+                maintained by ${user.data.user?.fullName}. PropertyMataaz shall not in any way
                 be held liable for the actions of any agent and/or property
                 owner/landlord with respect to this property on or off this web
-                application, website or App.
+                application, website or App.`}
               </p>
             </div>
             <button
@@ -287,7 +318,8 @@ export const SeeMore = ({
             >
               Report This Listing
             </button>
-            <button className="preview-btn">Share This Listing</button>
+            <button className="preview-btn" onClick={() => openShareModal()}>Share This Listing</button>
+            
           </div>
         </div>
       )}

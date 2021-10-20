@@ -10,6 +10,9 @@ import Spinner from "../../../Utilities/Spinner";
 import { Link } from "@material-ui/core";
 import { BuildingType, typeOfApplications } from "../../../Utilities/Enums";
 import Alert from "../../../Utilities/Alert";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 
 function Application({ clean, fix, close }) {
@@ -21,6 +24,7 @@ function Application({ clean, fix, close }) {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [dateForClean, setDateForClean] = useState(new Date())
     
     // Prefetched Data list
     const [buildingType, setBuildingType] = useState([]);
@@ -155,6 +159,7 @@ function Application({ clean, fix, close }) {
         setLoading(true)
         
         if(clean) {
+            userDetails.dateNeeded = dateForClean
             endpoint = "Clean/request";
         } else if (fix) {
             endpoint = "Clean/request";
@@ -270,7 +275,9 @@ function Application({ clean, fix, close }) {
                                     </div>
                                     <div className="input-box">
                                         <div className="input-label">When do you want the cleaning done?</div>
-                                        <input name="dateNeeded" value={userDetails.dateNeeded} onChange={handleOnChange} type="date" placeholder="" className="formfield" />
+                                        <DatePicker selected={dateForClean} onChange={(date) => setDateForClean(date)} className="formfield"/>
+
+                                        {/* <input name="dateNeeded" value={userDetails.dateNeeded} onChange={handleOnChange} type="date" placeholder="" className="formfield" /> */}
                                     </div>
                                     
                                     <div className="counter-pad">
