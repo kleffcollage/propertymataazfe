@@ -6,12 +6,16 @@ import Dropzone from "react-dropzone";
 import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const user = useContext(MainContext);
+  const [dob,setDob] = useState(new Date());
   // const applicationTypes = useContext(MainContext)
   // console.log({user});
   // console.log({applicationTypes});
@@ -208,6 +212,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       <Formik
         initialValues={userDetails}
         onSubmit={async (values, { setSubmitting }) => {
+          values.register.dateOfBirth = dob;
           await formSubmit(values);
           // console.log({values})
           // alert(JSON.stringify(values, null, 2));
@@ -297,11 +302,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                   <label htmlFor="register.dateOfBirth" className="input-label">
                     Date of Birth
                   </label>
-                  <Field
-                    name="register.dateOfBirth"
-                    type="date"
-                    className="formfield"
-                  />
+                  <DatePicker selected={dob} onChange={(date) => setDob(date)} className="formfield"/>
                   <ErrorMessage name="register.dateOfBirth" />
                 </div>
                 <div className="input-box">
