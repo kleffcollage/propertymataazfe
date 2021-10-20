@@ -110,7 +110,7 @@ function Login() {
                     </div>
                   ) : null}
                   <div className="input-box">
-                    <div className="input-label">Username</div>
+                    <div className="input-label">Email</div>
                     <input
                       type="text"
                       className="formfield"
