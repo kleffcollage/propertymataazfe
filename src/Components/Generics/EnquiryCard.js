@@ -100,8 +100,16 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                                 }}> 
                                 See More 
                             </button>
+                            <Link
+                                to={ property.property.isForSale 
+                                    ? `/buy/enquires/${property.property.id}` 
+                                    : `/rent/enquires/${property.property.id}`}
+                                className="list-color-btn"
+                            >
+                                View Details
+                            </Link>
                             
-                            { !property.property.sellMyself 
+                            {/* { !property.property.sellMyself 
                                 ? (
                                     <Link
                                         to={ property.property.isForSale 
@@ -119,7 +127,7 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                                         Details
                                     </button> 
                                 )
-                            }
+                            } */}
                             
                             
                             {/* <button
@@ -189,3 +197,6 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
 
     )
 }
+
+
+

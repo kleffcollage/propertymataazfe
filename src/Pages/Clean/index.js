@@ -16,10 +16,6 @@ const Clean = () => {
     
     const fetchCleanRequest = async () => {
         setLoading(true)
-        const requestData = {
-            limit: limit,
-            requests: requests
-        }
         try {
             setLoading(true)
             let data  = await Fetch(`Clean/requests/user?offset=${offset}&limit=${limit}`)
@@ -52,7 +48,9 @@ const Clean = () => {
                 <div className="row">
                     <div className="col-lg-4 my-2">
                         <div className="small-cards" onClick={ () => setOpenModal(true)}>
-                            <div className="iconsection" />
+                            <div className="iconsection">
+                                <img src="/asset/clean.png" alt="find-property" />
+                            </div>
                             <div className="text-sections">
                                 <div className="rent-title">Book Cleaning Session</div>
                                 <div className="rent-sub">
@@ -69,26 +67,26 @@ const Clean = () => {
                             <h5>Cleaning Session</h5>
                         </div>
                         
-                        { 
-                            loading ? (
-                                <div className="d-flex justify-content-content">
-                                    <Spinner color="primary" />
-                                </div>
-                            )
-                            : requests.length !== 0
-                                ? requests.map((request, index) => {
-                                    return (
-                                        <div className="row mt-4">
-                                            <SessionsCard isClean={true} key={index} data={request} />
-                                        </div>
-                                    )
-                                })
-                            
-                                : <Box display="flex" flexDirection="column" width="100%" alignItems="center" className="mt-3">
-                                    <div className="iconsection mb-3" />
-                                    <span>You currently have no  Cleaning sessions Booked.</span>
-                                </Box>
-                        }
+                        <div className="row mt-4">
+                            { 
+                                loading ? (
+                                    <div className="d-flex justify-content-content">
+                                        <Spinner color="primary" />
+                                    </div>
+                                )
+                                : requests.length !== 0
+                                    ? requests.map((request, index) => {
+                                        return (
+                                            <SessionsCard isClean={true} key={index} data={request} />                                            
+                                        )
+                                    })
+                                
+                                    : <Box display="flex" flexDirection="column" width="100%" alignItems="center" className="mt-3">
+                                        <div className="iconsection mb-3" />
+                                        <span>You currently have no  Cleaning sessions Booked.</span>
+                                    </Box>
+                            }
+                        </div>
                     </div>
                 </div>  
             </Wrapper>

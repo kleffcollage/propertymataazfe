@@ -653,6 +653,11 @@ a.tc,
   background-color: transparent;
 }
 
+.register-cta {
+  font-family: "Baloo Bhai 2";
+  font-size: 0.89rem;
+}
+
 .fit-it {
   height: 100%;
   display: -webkit-box;
@@ -692,7 +697,7 @@ a.tc,
   justify-content: space-around;
   position: relative;
   padding: 5px;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   cursor: pointer;
 }
 
@@ -2202,7 +2207,7 @@ a.small-cards {
 }
 
 .iconsection {
-  background-color: #0042ff;
+  /* background-color: #0042ff; */
   width: 48px;
   height: 45px;
   margin-right: 1rem;
@@ -2223,7 +2228,7 @@ a.small-cards {
   margin-bottom: 1.5rem;
 }
 .iconsection {
-  background-color: #0042ff;
+  /* background-color: #0042ff; */
   width: 48px;
   height: 45px;
   margin-right: 1rem;

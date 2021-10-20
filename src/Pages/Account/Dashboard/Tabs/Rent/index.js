@@ -5,6 +5,7 @@ import EnquiryCard from "../../../../../Components/Generics/EnquiryCard";
 import RequestCard from "../../../../../Components/Generics/RequestCard";
 import Spinner from "../../../../../Utilities/Spinner";
 import { Box } from "@material-ui/core";
+import TenancyList from "../../../../Rent/Tenant/TenancyList";
 
 const Rent = () => {
     const [offset, setOffset] = useState(0);
@@ -12,6 +13,8 @@ const Rent = () => {
     const [errormessage, setErrormessage] = useState("");
     const [isProperty, setIsProperty] = useState([]);
     const [requestRents, setRequestRents] = useState([]);
+    const [rentReliefs, setRentReliefs] = useState([]);
+    const [userTenancy, setUserTenancy] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [subTab, setSubTab] = useState("enquiries");
@@ -62,10 +65,30 @@ const Rent = () => {
             return
         }
     }
+    const fetchReliefsLists = async () => {
+        setLoading(true)
+        const data = await Fetch(`Relief/user?offset=${offset}&limit=${limit}`)
+        
+        // console.log('Requested Rents: ', data)
+        
+        if(!data.status) {
+            setLoading(false)
+            setErrormessage(data.message)
+            return
+        }
+        if(data.status != 400) {
+            setLoading(true)
+            setRentReliefs(data.data)
+            // console.log('Requested rents: ', data.data.value)
+            setLoading(false)
+            return
+        }
+    }
     
     useEffect(() => {
         fetchRequestRents();
         fetchAppliedRents();
+        fetchReliefsLists();
     }, [])
     
     
@@ -129,7 +152,7 @@ const Rent = () => {
                                             <h5 className="mb-3">Requests</h5>
                                             
                                             { requestRents.length === 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                ? <h6 className="mb-3 italic">You currently do not have any property requests...</h6>
                                                 : <>
                                                     <div className="row">
                                                         { requestRents.map((rents, index) => {
@@ -148,13 +171,13 @@ const Rent = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Rent Relief</h5>
                                             
-                                            { requestRents.length === 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                            { rentReliefs.length == 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any relief request...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { requestRents.map((rents, index) => {
+                                                        { rentReliefs.map((reliefs, index) => {
                                                             return (
-                                                                <RequestCard property={rents} seeMore={showDetails} isRelief={true} key={index} />                   
+                                                                <RequestCard relief={reliefs} seeMore={showDetails} isRelief={true} key={index} />                   
                                                             )
                                                         })}
                                                     </div>
@@ -164,24 +187,7 @@ const Rent = () => {
                                         
                                     ) : 
                                     subTab == "tenancy" ? (
-                                        
-                                        <div className="my-3">
-                                            <h5 className="mb-3">My Tenancy</h5>
-                                            
-                                            { isProperty.length === 0
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
-                                                : <>
-                                                    <div className="row">
-                                                        { isProperty.map((property, index) => {
-                                                            return (
-                                                                <RequestCard property={property} seeMore={showDetails} isForTenants={true} key={index} />                   
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </>
-                                            }
-                                        </div>
-                                        
+                                        <TenancyList />
                                     ) : null
                                 }
                             </div>

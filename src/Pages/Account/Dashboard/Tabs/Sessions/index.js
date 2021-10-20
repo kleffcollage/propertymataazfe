@@ -11,8 +11,8 @@ const Sessions = () => {
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(25);
     const [errormessage, setErrormessage] = useState("");
-    const [isProperty, setIsProperty] = useState([]);
-    const [requestRents, setRequestRents] = useState([]);
+    const [verifyList, setVerifyList] = useState([]);
+    const [cleanList, setCleanList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [subTab, setSubTab] = useState("fix");
@@ -25,7 +25,23 @@ const Sessions = () => {
         setShowInfo(true)
     }
     
-    const fetchAppliedRents = async (url = `User/enquiries/user?offset=${offset}&limit=${limit}`) => {
+    const fetchCleanRequest = async () => {
+        setLoading(true)
+        try {
+            setLoading(true)
+            let data  = await Fetch(`Clean/requests/user?offset=${offset}&limit=${limit}`)
+            // data = data.data.json();
+            console.log('Clean req: ', data)
+            setCleanList(data.data.value)
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            setErrormessage(error.message)
+            // console.log( error)
+        }
+    }
+    
+    const fetchLandSearch = async (url = `LandSearch/user/list?offset=${offset}&limit=${limit}`) => {
         setLoading(true)
         const data = await Fetch(url)
         
@@ -38,7 +54,7 @@ const Sessions = () => {
         }
         if(data.status != 400) {
             setLoading(true)
-            setIsProperty(data.data.value)
+            setVerifyList(data.data.value)
             // console.log('Enquired Properties: ', data.data.value)
             setLoading(false)
             return
@@ -46,7 +62,8 @@ const Sessions = () => {
     }
     
     useEffect(() => {
-        fetchAppliedRents();
+        fetchLandSearch();
+        fetchCleanRequest();
     }, [])
     
     
@@ -84,13 +101,13 @@ const Sessions = () => {
                                     subTab === "clean" ? (
                                         <div className="my-3">
                                             <h5 className="mb-3">Clean</h5>
-                                            { isProperty.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                            { cleanList.length == 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any clean session booked...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { isProperty.map((property, index) => {
+                                                        { cleanList.map((clean, index) => {
                                                             return (
-                                                                <SessionsCard data={property} isClean={true} key={index}  />                   
+                                                                <SessionsCard data={clean} isClean={true} key={index}  />                   
                                                             )
                                                         })}
                                                     </div>
@@ -103,13 +120,13 @@ const Sessions = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Fix</h5>
                                             
-                                            { isProperty.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                            { verifyList.length == 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any fix request listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { isProperty.map((property, index) => {
+                                                        { verifyList.map((property, index) => {
                                                             return (
-                                                                <SessionsCard data={property} key={index} />                   
+                                                                <SessionsCard data={property} key={index}  />                   
                                                             )
                                                         })}
                                                     </div>
@@ -123,13 +140,13 @@ const Sessions = () => {
                                         <div className="my-3">
                                             <h5 className="mb-3">Verify</h5>
                                             
-                                            { isProperty.length == 0 
-                                                ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                            { verifyList.length == 0 
+                                                ? <h6 className="mb-3 italic">You currently do not have any land search or verification listed...</h6>
                                                 : <>
                                                     <div className="row">
-                                                        { isProperty.map((property, index) => {
+                                                        { verifyList.map((verify, index) => {
                                                             return (
-                                                                <SessionsCard data={property}  key={index} />                   
+                                                                <SessionsCard data={verify} isLandSearch key={index} />                   
                                                             )
                                                         })}
                                                     </div>

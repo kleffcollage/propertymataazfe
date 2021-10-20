@@ -96,38 +96,6 @@ function Request() {
 			console.log(error);
 		}
 	};
-	const getLgas = async (state) => {
-		try {
-			let data = await fetch(
-				`http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-			);
-			data = await data.json();
-			console.log(data);
-			setLgas(data);
-			handleValidationErrors(data.errors);
-			setLoading(false);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const getCities = async (state) => {
-		try {
-		  let data = await fetch(
-			`http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-		  );
-		  data = await data.json();
-		  console.log(data);
-		  if (data.status != 404) {
-			setCities(data);
-			handleValidationErrors(data.errors);
-			setLoading(false);
-		  }
-		  setCities([...cities, state]);
-		} catch (error) {
-		  console.log(error);
-		}
-	  };
 
 	useEffect(() => {
 		const fetchData = async () => {

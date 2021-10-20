@@ -18,6 +18,7 @@ export default function ValidatePayment() {
 
   const [validating, setValidating] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(false);
+  const [isRelief, setIsRelief] = useState(false);
   const [property, setProperty] = useState({});
   const [transaction, setTransaction] = useState({});
   const [paymentLog,setPaymentLog] = useState({});
@@ -34,11 +35,12 @@ export default function ValidatePayment() {
         return;
       }
       setValidating(false);
+      data.data.isRelief ? setIsRelief(true) : setIsRelief(false)
       setProperty(data.data.property);
       setPaymentStatus(true);
       setTransaction(data.data.transaction);
-	  setPaymentLog(data.data.transaction.paymentLog)
-	  setCard(data.data.transaction.paymentLog.card)
+	    setPaymentLog(data.data.transaction.paymentLog)
+	    setCard(data.data.transaction.paymentLog.card)
       return;
     } catch (err) {}
   };
@@ -52,10 +54,10 @@ export default function ValidatePayment() {
 
   return paymentStatus ? (
     <div className="content-section mt-5 w-50">
-      {validating ? (
-		  <div className="d-flex justify-content-center mt-5">
-			  <Spinner color="primary" size={50}/>
-		  </div>
+      { validating ? (
+        <div className="d-flex justify-content-center mt-5">
+          <Spinner color="primary" size={50}/>
+        </div>
       ) : (
         <>
           <div className="pay-modal-wrap">
@@ -67,10 +69,22 @@ export default function ValidatePayment() {
                 <RiShoppingCartLine />
               </div>
               <div className="item ml-3 px-2">
-                <p className="">{`Purchase of ${property.name}, ${property.state}, ${property.lga}`}</p>
-                <p className="mt-2">
-                  <Naira>{property.price}</Naira>
-                </p>
+                { isRelief ? (
+                    <>
+                      <p className="">{`Relief payment for ${property.name}, ${property.state}, ${property.lga}`}</p>
+                      <p className="mt-2">
+                        <Naira>{transaction.amount}</Naira>
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="">{`Purchase of ${property.name}, ${property.state}, ${property.lga}`}</p>
+                      <p className="mt-2">
+                        <Naira>{property.price}</Naira>
+                      </p>                    
+                    </>
+                  )
+                }
               </div>
             </div>
             <div className="d-flex receipt-wrap my-2">

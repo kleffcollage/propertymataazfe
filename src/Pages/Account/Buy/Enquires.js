@@ -46,8 +46,7 @@ function Enquires({ isRent }) {
     try {
       const data = await Fetch(`Application/get/user/property/${propertyId}`);
       console.log({data});
-      if(!data.status)
-      {
+      if(!data.status) {
         console.error(data);
         return;
       }
@@ -153,7 +152,7 @@ function Enquires({ isRent }) {
             <h2 className="property-info">Step 2 - Payment</h2>
             <button className="single-step disabled" onClick={()=>setSeeMore(true)} disabled={enquiryStatus && enquiryStatus.hasApplied ? true : false}>
               <i className="far fa-paper-plane" />
-              {enquiryStatus && enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? "Your application is being reviewed" : 'Submit Application'}
+              {enquiryStatus && enquiryStatus.hasApplied && !enquiryStatus.hasPaid ? <span>Application is being reviewed</span> : 'Submit Application'}
             </button>
             <button className="single-step" onClick={() => setPayModal(true)} disabled={enquiryStatus && enquiryStatus.hasApplied && enquiryStatus.applicationStatus == "APPROVED" && !enquiryStatus.hasPaid ? false : true}>
               <i className="far fa-lock" />
@@ -170,7 +169,7 @@ function Enquires({ isRent }) {
           </div>
           <div className="steps-content">
             <h2 className="property-info">Step 3 - Confirmation</h2>
-            <button className="single-step" onClick={() => setOpenReceipt(true)} disabled={enquiryStatus && !enquiryStatus.hasPaid ? true : false }>
+            <button className="single-step" onClick={() => setOpenReceipt(true)} disabled={ enquiryStatus && !enquiryStatus.hasPaid ? true : false }>
               <i className="far fa-scroll" />
               View Receipt
             </button>
@@ -231,43 +230,48 @@ function Enquires({ isRent }) {
                 <h2 className="property-info">Overview</h2>
                 <p>{propertyDetails.description}</p>
               </div>
-			  <SRLWrapper>
-              <div className="picture-overview">
-                <h2 className="property-info">Pictures</h2>
-                <div className="image-gallery">
-                  {files
-                    .filter((m) => m.isImage)
-                    .map((singleImage, i) => {
-                      return (
-                        <div className="single-img">
-                          <img src={singleImage.url} alt="" />
-                        </div>
-                      );
-                    })}
+			      <SRLWrapper>
+              { files.filter((m) => m.isImage).length > 0  && 
+                <div className="picture-overview">
+                  <h2 className="property-info">Pictures</h2>
+                  <div className="image-gallery">
+                    {files
+                      .filter((m) => m.isImage)
+                      .map((singleImage, i) => {
+                        return (
+                          <div className="single-img">
+                            <img src={singleImage.url} alt="" />
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-              <div className="video-overview">
-                <h2 className="property-info">Video Tour</h2>
-                <div className="video-gallery">
-                  {files
-                    .filter((m) => m.isVideo)
-                    .map((video, index) => {
-                      return (
-                        <div className="single-img">
-                          <video
-                            src={video.url}
-                            className="single-img"
-                            srl_video_controls={true}
-                            controls
-                          >
-                            <source src={video.url} />
-                          </video>
-                        </div>
-                      );
-                    })}
+              }
+              
+              { files.filter((m) => m.isVideo).length > 0 &&
+                <div className="video-overview">
+                  <h2 className="property-info">Video Tour</h2>
+                  <div className="video-gallery">
+                    {files
+                      .filter((m) => m.isVideo)
+                      .map((video, index) => {
+                        return (
+                          <div className="single-img">
+                            <video
+                              src={video.url}
+                              className="single-img"
+                              srl_video_controls={true}
+                              controls
+                            >
+                              <source src={video.url} />
+                            </video>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-			  </SRLWrapper>
+              }
+			      </SRLWrapper>
 			  <div className="map-overview">
                 <h2 className="property-info">Map/Street view</h2>
                 <div className="map-box">
