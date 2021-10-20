@@ -302,14 +302,14 @@ export const SeeMore = ({
             <div className="disclaimer">
               <h3>Disclaimer</h3>
               <p>
-                Information displayed about this property constitutes a mere
+                {`Information displayed about this property constitutes a mere
                 advertisement. PropertyMataaz makes no warranty as to the
                 accuracy of the advertisement or any linked or associated
                 information. Information about this property is provided and
-                maintained by Segun Apampa. PropertyMataaz shall not in any way
+                maintained by ${user.data.user?.fullName}. PropertyMataaz shall not in any way
                 be held liable for the actions of any agent and/or property
                 owner/landlord with respect to this property on or off this web
-                application, website or App.
+                application, website or App.`}
               </p>
             </div>
             <button
