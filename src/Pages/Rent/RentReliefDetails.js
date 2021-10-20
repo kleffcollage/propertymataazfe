@@ -60,32 +60,32 @@ function RentReliefDetails({ relief, close }) {
 		setLoading(true);
 		console.log({paymentData});
 		
-		// try {
-		// 	var data = await Fetch("Payment/initiate", "post", paymentData);
-		// 	console.log('Relief Data response: ', data);
-		// 	if (!data.status) {
-		// 		setLoading(false);
-		// 		setErrormessage(data);
-		// 		toast.error("Failed to initiate payment.");
-		// 		return;
-		// 	}
-		// 	if (data.status != 400) {
-		// 		window.open(data.message);
-		// 		setLoading(false);
-		// 		close(true);
-		// 		toast.success("Relief payment initiated successfully.");
-		// 		// history.push("/");
-		// 		return
-		// 	}
+		try {
+			var data = await Fetch("Payment/initiate", "post", paymentData);
+			console.log('Relief Data response: ', data);
+			if (!data.status) {
+				setLoading(false);
+				setErrormessage(data);
+				toast.error("Failed to initiate payment.");
+				return;
+			}
+			if (data.status != 400) {
+				window.open(data.message);
+				setLoading(false);
+				close(true);
+				toast.success("Relief payment initiated successfully.");
+				// history.push("/");
+				return
+			}
 			
-		// 	toast.success(data.message);
-		// 	history.push("/my-mattaz");
-		// 	setLoading(false);
+			toast.success(data.message);
+			history.push("/my-mattaz");
+			setLoading(false);
 			
-		// } catch (error) {
-		// 	setLoading(false)
-		// 	console.error(error)
-		// }
+		} catch (error) {
+			setLoading(false)
+			console.error(error)
+		}
 		
 	};
 

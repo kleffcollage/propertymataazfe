@@ -10,8 +10,15 @@ import SeeMore from "./SeeMore";
 
 function Buy() {
   const [tab, setTab] = useState("listed");
-  const [counter, setCounter] = useState(1);
-  const [bathroomCounter, setBathroomCounter] = useState(1);
+  const [counter, setCounter] = useState(0);
+  const [bathroomCounter, setBathroomCounter] = useState(0);
+  const [residential, setIsResidential] = useState(false)
+  const [commercial, setIsCommercial] = useState(false)
+  const [mixed, setIsMixed] = useState(false)
+  const [flat, setIsFlat] = useState(false)
+  const [bungalow, setIsBungalow] = useState(false)
+  const [duplex, setIsDuplex] = useState(false)
+  const [terrace, setIsTerrace] = useState(false)
   const [isProperty, setIsProperty] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
@@ -23,6 +30,80 @@ function Buy() {
   const [prevUrl, setPrevUrl] = useState("");
   const [lastUrl, setLastUrl] = useState("");
   const [firstUrl, setFirstUrl] = useState("");
+  const [filterOptions, setFilterOptions] = useState({
+    isResidential: false,
+    isCommercial: false,
+    isMixed: false,
+    isFlat: false,
+    isBungalow: false,
+    isDuplex: false,
+    isTerrace: false,
+    bedrooms: 0,
+    bathrooms: 0,
+  })
+  
+  const updatePropertyState = (type) => {
+    switch (type) {
+      case "residential":
+        setIsResidential(!residential)
+        break;
+      case "commercial":
+        setIsCommercial(!commercial)
+        break;
+      case "mixed":
+        setIsMixed(!mixed)
+        break;
+      case "flat":
+        setIsFlat(!flat)
+        break;
+      case "bungalow":
+        setIsBungalow(!bungalow)
+        break;
+      case "duplex":
+        setIsDuplex(!duplex)
+        break;
+      case "terrace":
+        setIsTerrace(!terrace)
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  const clearFilterOptions = () => {
+    setFilterOptions({
+      isResidential: false,
+      isCommercial: false,
+      isMixed: false,
+      isFlat: false,
+      isBungalow: false,
+      isDuplex: false,
+      isTerrace: false,
+      bedrooms: 0,
+      bathrooms: 0,
+    })
+    setCounter(0)
+    setBathroomCounter(0)
+    // show properties
+    showProperties();
+  }
+  
+  const handleFilteredProperties = () => {
+    filterOptions.isResidential = filterOptions.isResidential
+    filterOptions.isCommercial = filterOptions.isCommercial
+    filterOptions.isMixed = filterOptions.isMixed
+    filterOptions.isFlat = filterOptions.isFlat
+    filterOptions.isBungalow = filterOptions.isBungalow
+    filterOptions.isDuplex = filterOptions.isDuplex
+    filterOptions.isTerrace = filterOptions.isTerrace
+    filterOptions.bedrooms = counter
+    filterOptions.bathrooms = bathroomCounter
+    
+    let urlParams = `Property/list/sales?Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`
+    // console.log({urlParams})
+    showProperties(urlParams)    
+  }
 
   const currentTab = (tabname) => {
     setTab(tabname);
@@ -32,7 +113,7 @@ function Buy() {
     console.log(counter);
   };
   const decrement = () => {
-    setCounter((counter) => Math.max(counter - 1, 1));
+    setCounter((counter) => Math.max(counter - 1, 0));
     console.log(counter);
   };
   const bathIncrement = () => {
@@ -40,7 +121,7 @@ function Buy() {
     console.log(bathroomCounter);
   };
   const bathDecrement = () => {
-    setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 1));
+    setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 0));
     console.log(bathroomCounter);
   };
   const showNext = async () => {
@@ -178,31 +259,31 @@ function Buy() {
                 </div>
               </div>
               <div className="filter-box">
-                <p className="fil">Residential</p>
-                <p className="fil">Commercial</p>
-                <p className="fil">mixed</p>
+                <p className={`fil ${filterOptions.isResidential ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isResidential: !filterOptions.isResidential})}>Residential</p>
+                <p className={`fil ${filterOptions.isCommercial ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isCommercial: !filterOptions.isCommercial})}>Commercial</p>
+                <p className={`fil ${filterOptions.isMixed ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isMixed: !filterOptions.isMixed})}>mixed</p>
               </div>
               <div className="filter-imgs">
-                <div className="singlefil">
-                  <div className="iconfil">
+                <div className="singlefil"  onClick={() => setFilterOptions({...filterOptions, isBungalow: !filterOptions.isBungalow})}>
+                  <div className={`iconfil ${!filterOptions.isBungalow ? '' : 'active-select'}`}>
                     <img src="asset/bungalow-1.png" alt='' />
                   </div>
                   <div className="txtfil">Bungalow</div>
                 </div>
-                <div className="singlefil">
-                  <div className="iconfil">
+                <div className="singlefil" onClick={() => setFilterOptions({...filterOptions, isFlat: !filterOptions.isFlat})}>
+                  <div className={`iconfil ${!filterOptions.isFlat ? '' : 'active-select'}`}>
                     <img src="asset/apartment.png" alt='' />
                   </div>
                   <div className="txtfil">Flat</div>
                 </div>
-                <div className="singlefil">
-                  <div className="iconfil">
+                <div className="singlefil" onClick={() => setFilterOptions({...filterOptions, isDuplex: !filterOptions.isDuplex})}>
+                  <div className={`iconfil ${!filterOptions.isDuplex ? '' : 'active-select'}`}>
                     <img src="asset/duplex-1.png" alt='' />
                   </div>
                   <div className="txtfil">Duplex</div>
                 </div>
-                <div className="singlefil">
-                  <div className="iconfil">
+                <div className="singlefil" onClick={() => setFilterOptions({...filterOptions, isTerrace: !filterOptions.isTerrace})}>
+                  <div className={`iconfil ${!filterOptions.isTerrace ? '' : 'active-select'}`}>
                     <img src="asset/terrace-1.png" alt='' />
                   </div>
                   <div className="txtfil">Terrace</div>
@@ -239,8 +320,8 @@ function Buy() {
                 </div>
               </div>
               <div className="joint-btn">
-                <button className="no-color-btn">Clear Filters</button>
-                <button className="color-btn">Apply Filters</button>
+                <button className="no-color-btn" onClick={() => clearFilterOptions()}>Clear Filters</button>
+                <button className="color-btn" onClick={() => handleFilteredProperties()}>Apply Filters</button>
               </div>
             </div>
             <div className="col-lg-9">
