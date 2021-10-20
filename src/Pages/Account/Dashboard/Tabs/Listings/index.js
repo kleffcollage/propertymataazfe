@@ -116,7 +116,7 @@ const Listings = () => {
                                             
                                             <div className="row">
                                                 { isForSale.length == 0 
-                                                    ? <h6 className="mb-3 italic">You currently do not have any enquiries listed...</h6>
+                                                    ? <h6 className="mb-3 italic">You currently do not have any property listed for sale...</h6>
                                                     : <>
                                                         { isForSale.map((property, index) => {
                                                             return (
@@ -134,7 +134,7 @@ const Listings = () => {
                                             
                                             <div className="row">
                                                 { isForRent.length == 0 
-                                                    ? <h6 className="mb-3 italic">You currently do not have any requests listed...</h6>
+                                                    ? <h6 className="mb-3 italic">You currently do not have any property listed for rent...</h6>
                                                     : <>
                                                         { isForRent.map((rents, index) => {
                                                             return (
