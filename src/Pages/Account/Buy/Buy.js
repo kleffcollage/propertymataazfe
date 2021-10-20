@@ -23,6 +23,19 @@ function Buy() {
   const [prevUrl, setPrevUrl] = useState("");
   const [lastUrl, setLastUrl] = useState("");
   const [firstUrl, setFirstUrl] = useState("");
+  const [filterOptions, setFilterOptions] = useState({
+    isResidential: false,
+    isCommercial: false,
+    isMixed: false,
+    isFlat: false,
+    isBungalow: false,
+    isDuplex: false,
+    isTerrace: false,
+    bedrooms: 0,
+    bathrooms: 0,
+  })
+  
+  
 
   const currentTab = (tabname) => {
     setTab(tabname);

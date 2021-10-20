@@ -21,7 +21,7 @@ function Body() {
 											of thousands of propspective buyers with the best offers
 											in the market.
 										</p>
-										<button className="primary-btn">Search Properties</button>
+										<button className="primary-btn">List Your Property</button>
 									</div>
 								</div>
 							</div>
