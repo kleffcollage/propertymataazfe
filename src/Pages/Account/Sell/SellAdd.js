@@ -223,7 +223,7 @@ function SellAdd({ close, existingProperty = {} }) {
 
   const updateListingDetails = async (values) => {
     if (values.mediafiles.length == 0) {
-      toast.info("Upload atleast an image");
+      toast.info("Please upload at least one image of your property");
       return;
     }
 
@@ -258,7 +258,7 @@ function SellAdd({ close, existingProperty = {} }) {
 
   const createListingDetails = async (values) => {
     if (values.mediafiles.length == 0) {
-      toast.info("Upload atleast a photo for your property.");
+      toast.info("Please upload at least one image of your property");
       setLoading(false);
       return;
     }

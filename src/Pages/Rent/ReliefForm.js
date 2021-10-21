@@ -265,9 +265,9 @@ function ReliefForm({ property = null, close }) {
       }
       if(data.status != 400) {
         setLoading(false);
+        toast.success("Rent relief application submitted successfully.");
         close(true);
         // history.push("/rent");
-        toast.success("Rent relief application submitted successfully.");
         // await currentStep();
       }
       handleValidationErrors(data.errors);
