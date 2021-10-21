@@ -95,10 +95,10 @@ export default function EnquiryCard({ property = {}, seeMore, isProperty, reques
                     {/* <div className="line" /> */}
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className="list-no-color-btn" onClick={ async () => {
+                            <button className="list-no-color-btn" disabled onClick={ async () => {
                                    await onSeeMoreClicked();
                                 }}> 
-                                See More 
+                                <span className="text-uppercase">{property.property.isForSale ? 'To Buy' : 'To rent'}</span>
                             </button>
                             <Link
                                 to={ property.property.isForSale 
