@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import SeeMore from '../../Pages/Account/Buy/SeeMore';
 import Fetch from '../../Utilities/Fetch';
+import { MainContext } from '../../Context/MainContext';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
 import {Link} from "react-router-dom"
 
 export default function ListedCard({ property = {}, seeMore, isProperty, requests = {} }) {
     console.log({property});
+    const { data: { user: loggedUser }} = useContext(MainContext);
+    console.log({loggedUser})
+    
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);
@@ -82,16 +86,18 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                 }}> 
                                 See More 
                             </button>
-                                
-                            <Link
-                                className="list-color-btn"
-                                to={
-                                    property.isForRent ? `/rent/enquires/${property.id}`
-                                    : `/buy/enquires/${property.id}`
-                                }
-                            >
-                                Enquire
-                            </Link>
+                            {property.createdByUser.id == loggedUser.id 
+                            ? <button className="list-color-btn" style={{opacity: 0.4 }} disabled>Enquire</button>  
+                                : <Link
+                                    className="list-color-btn"
+                                    to={ property.isForRent ? `/rent/enquires/${property.id}`
+                                        : `/buy/enquires/${property.id}`
+                                    }
+                                    disabled={(property.createdByUser && property.createdByUser.id == loggedUser.id) ? true : false}
+                                >
+                                    Enquire
+                                </Link>                                
+                            }
                         </div>
                     </div>
                 </div>
