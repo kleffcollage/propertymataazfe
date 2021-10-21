@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Hero({ setSearch, trigger }) {
+function Hero({search, setSearch, trigger, properties, clear }) {
   const handleKeyPress = (e) => {
-	  console.log({e});
+    console.log({ e });
     if (e.charCode !== 13) return;
     trigger();
   };
@@ -12,18 +13,22 @@ function Hero({ setSearch, trigger }) {
         <h1>Find property to rent or buy</h1>
         <div className="input-box">
           <input
-            type="search"
+            type="text"
             className="homesearch"
             placeholder="Enter an address, state, neighbourhood or area"
+			value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyPress={(e) => handleKeyPress(e)}
           />
-          <div
-            className="home-search-icon"
-            onClick={() => trigger()}
-          >
-            <img src="/asset/searchicon.svg" alt="search" />
-          </div>
+          {properties.length <= 0 ? (
+            <div className="home-search-icon" onClick={() => trigger()}>
+              <img src="/asset/searchicon.svg" alt="search" />
+            </div>
+          ) : (
+            <div className="home-search-icon" onClick={() => clear()}>
+              <i className="far fa-times" />
+            </div>
+          )}
         </div>
       </div>
     </div>

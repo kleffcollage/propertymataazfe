@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import CurrencyInput from "react-currency-input-field";
+import banks from "../../Utilities/banks.json";
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -65,7 +66,7 @@ function RentForm({ close }) {
     accountno: "",
     tenantTypeId: 0,
     applicationTypeId: 0,
-    propertyTypeId: 0,
+    propertyTypeId: undefined,
   });
 
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -431,8 +432,7 @@ function RentForm({ close }) {
                 {propertyTypes.map((type, i) => {
                   return (
                     <option key={i} value={parseInt(type.id)}>
-                      {" "}
-                      {type.name}{" "}
+                      {type.name}
                     </option>
                   );
                 })}
@@ -451,13 +451,12 @@ function RentForm({ close }) {
                 className="formfield"
               >
                 <option selected disabled>
-                  Choose a property type
+                  Choose a property title
                 </option>
                 {propertyTitles.map((type, i) => {
                   return (
                     <option key={i} value={type.name}>
-                      {" "}
-                      {type.name}{" "}
+                      {type.name}
                     </option>
                   );
                 })}
@@ -807,9 +806,9 @@ function RentForm({ close }) {
                 <option selected disabled>
                   Choose your bank
                 </option>
-                <option value="gtb"> GTB </option>
-                <option value="access"> ACCESS </option>
-                <option value="polaris"> POLARIS </option>
+                {banks.map((bank, index) => {
+                  return <option value={bank.name}>{bank.name}</option>;
+                })}
               </select>
               <div className="arrows" />
             </div>
@@ -835,6 +834,9 @@ function RentForm({ close }) {
               {loading ? <Spinner /> : "Submit"}
             </button>
           </div>
+            <button type="submit" className="options my-2 mt-0" onClick={close}>
+              Cancel
+            </button>
         </form>
       ) : null}
     </div>

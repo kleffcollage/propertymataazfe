@@ -28,10 +28,15 @@ function Home() {
 	return;
   };
 
+  const clear = () => {
+    setSearch("");
+    setProperties([])
+  };
+
   return (
     <div>
       {data.user ? <UserNav /> : <Nav />}
-      <Hero setSearch={setSearch} trigger={triggerSearch} />
+      <Hero search={search} setSearch={setSearch} trigger={triggerSearch} properties={properties} clear={clear}/>
       <Body properties={properties}/>
       <Footer />
     </div>

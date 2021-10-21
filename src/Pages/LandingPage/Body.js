@@ -1,20 +1,21 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ListedCard from "../../Components/Generics/ListedCard";
 import Modal from "../../Utilities/Modal";
-import SeeMore from "../Account/Buy/SeeMore"
+import SeeMore from "../Account/Buy/SeeMore";
+import { Link } from "react-router-dom";
 
 function Body({ properties }) {
-	const [seemore,setSeeMore] = useState(false);
-	const [propertyId,setPropertyId] = useState(0);
+  const [seemore, setSeeMore] = useState(false);
+  const [propertyId, setPropertyId] = useState(0);
   console.log({ properties });
 
-  const showPopUp =(id) => { 
-	setPropertyId(id);
-	setSeeMore(true);
-  }
+  const showPopUp = (id) => {
+    setPropertyId(id);
+    setSeeMore(true);
+  };
   return (
     <>
-	<Modal
+      <Modal
         open={seemore}
         onClose={() => {
           setSeeMore(false);
@@ -49,9 +50,11 @@ function Body({ properties }) {
                         attention of thousands of propspective buyers with the
                         best offers in the market.
                       </p>
-                      <button className="primary-btn">
-                        List your Property
-                      </button>
+                      <Link to="/sell">
+                        <button className="primary-btn">
+                          List your Property
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -72,7 +75,11 @@ function Body({ properties }) {
                         request based on your preferences. Whatever your choice,
                         we’ll do you a 103% refund if legal issues arise
                       </p>
-                      <button className="primary-btn">Browse Properties</button>
+                      <Link to="/buy">
+                        <button className="primary-btn">
+                          Browse Properties
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -92,7 +99,9 @@ function Body({ properties }) {
                         Access vetted tenants, guaranteed rental income,
                         affordable rent, 0 agency fees and quick rent loans.
                       </p>
-                      <button className="primary-btn">Get Started</button>
+                      <Link to={"/rent"}>
+                        <button className="primary-btn">Get Started</button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -110,9 +119,11 @@ function Body({ properties }) {
                         services
                       </h3>
                       <p className="sub-text">Professional cleaning services</p>
-                      <button className="primary-btn">
-                        Schedule a Session
-                      </button>
+                      <Link to="/clean">
+                        <button className="primary-btn">
+                          Schedule a Session
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -122,7 +133,12 @@ function Body({ properties }) {
               {properties &&
                 properties.length > 0 &&
                 properties.map((property, index) => {
-                  return <ListedCard property={property} seeMore={() =>showPopUp(property.id)}/>;
+                  return (
+                    <ListedCard
+                      property={property}
+                      seeMore={() => showPopUp(property.id)}
+                    />
+                  );
                 })}
             </div>
           </div>

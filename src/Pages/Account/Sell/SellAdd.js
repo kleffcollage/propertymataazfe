@@ -411,7 +411,7 @@ function SellAdd({ close, existingProperty = {} }) {
       {/* <Alert /> */}
       <div className="top-section">
         <div className="back">
-          <i className="fas fa-chevron-left" />
+          <i className="fas fa-chevron-left mr-1" />
           <span
             className="backs"
             onClick={
@@ -805,6 +805,9 @@ function SellAdd({ close, existingProperty = {} }) {
                   )}
                 </button>
               </div>
+              <button type="button" className="options my-2" onClick={close}>
+                Cancel
+              </button>
             </div>
           ) : null}
         </Form>
