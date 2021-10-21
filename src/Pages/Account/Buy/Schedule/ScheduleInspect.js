@@ -42,7 +42,7 @@ const ScheduleInspect = ({ close }) => {
   const [inspectDate, setInspectDate] = useState([]);
   const [tab, setTab] = useState("person");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [ submitting, setSubmitting ] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const currentTab = (tab) => {
     setTab(tab);
@@ -107,14 +107,14 @@ const ScheduleInspect = ({ close }) => {
 
   return (
     <>
-      <div className="top-section">
+      {/* <div className="top-section">
         <div className="back">
           <i className="fas fa-chevron-left"></i>
           <span className="backs" onClick={close}>
             Back
           </span>
         </div>
-      </div>
+      </div> */}
 
       <div className="tabs mt-4">
         <div
@@ -134,69 +134,73 @@ const ScheduleInspect = ({ close }) => {
         <div className={tab == "person" ? "tab-bar" : "tab-bar req"} />
       </div>
 
-      <div className="row">
-        {tab == "person" ? (
-          <Formik
-            initialValues={scheduleData}
-            onSubmit={async (values, { setSubmitting }) => {
-              await requestInspection(values);
-              //   console.log({ values });
-              // alert(JSON.stringify(values, null, 2));
-            }}
-          >
-            <Form>
-              <h5 className="field-title pl-2">Select a date</h5>
-              <div className="mb-5">
-                <Carousel responsive={responsive}>
-                  {inspectDate.map((date, i) => {
-                    return (
-                      <DateWrap
-                        key={i}
-                        dates={date}
-                        setSelectedDate={setSelectedDate}
-                      />
-                    );
-                  })}
-                </Carousel>
-              </div>
-
-              {selectedDate && (
-                <div className="input-box">
-                  <label htmlFor="time" className="input-label">
-                    Select a time
-                  </label>
-                  <div className="select-box">
-                    <Field
-                      name="inspectionTimeId"
-                      as="select"
-                      className="formfield"
-                    >
-                      {selectedDate.times.map((time, i) => {
-                        const formattedTime = moment(time.time).format("LT");
-                        console.log({ time });
-                        return (
-                          // <Moment format="h:m" date="2021-08-13T02:42:04.584" />
-                          <option key={i} value={time.id}>
-                            {formattedTime}
-                            {/* <Moment format="h:m" date="2021-08-13T02:42:04.584" />  */}
-                          </option>
-                        );
-                      })}
-                    </Field>
-                    <div className="arrows"></div>
-                  </div>
-                  <ErrorMessage name="time" />
+      {inspectDate.length > 0 ? (
+        <div className="row w-100">
+          {tab == "person" ? (
+            <Formik
+              initialValues={scheduleData}
+              onSubmit={async (values, { setSubmitting }) => {
+                await requestInspection(values);
+                //   console.log({ values });
+                // alert(JSON.stringify(values, null, 2));
+              }}
+            >
+              <Form>
+                <h5 className="field-title pl-2">Select a date</h5>
+                <div className="mb-5">
+                  <Carousel responsive={responsive}>
+                    {inspectDate.map((date, i) => {
+                      return (
+                        <DateWrap
+                          key={i}
+                          dates={date}
+                          setSelectedDate={setSelectedDate}
+                        />
+                      );
+                    })}
+                  </Carousel>
                 </div>
-              )}
-              <button className="secondary-btn" type="submit">
-                {submitting ? <Spinner /> : "Request this time"}
-              </button>
-            </Form>
-          </Formik>
-        ) : tab == "video" ? (
-          "Video"
-        ) : null}
-      </div>
+
+                {selectedDate && (
+                  <div className="input-box">
+                    <label htmlFor="time" className="input-label">
+                      Select a time
+                    </label>
+                    <div className="select-box">
+                      <Field
+                        name="inspectionTimeId"
+                        as="select"
+                        className="formfield"
+                      >
+                        {selectedDate.times.map((time, i) => {
+                          const formattedTime = moment(time.time).format("LT");
+                          console.log({ time });
+                          return (
+                            // <Moment format="h:m" date="2021-08-13T02:42:04.584" />
+                            <option key={i} value={time.id}>
+                              {formattedTime}
+                              {/* <Moment format="h:m" date="2021-08-13T02:42:04.584" />  */}
+                            </option>
+                          );
+                        })}
+                      </Field>
+                      <div className="arrows"></div>
+                    </div>
+                    <ErrorMessage name="time" />
+                  </div>
+                )}
+                <button className="secondary-btn" type="submit">
+                  {submitting ? <Spinner /> : "Request this time"}
+                </button>
+              </Form>
+            </Formik>
+          ) : tab == "video" ? (
+            "Video"
+          ) : 
+          <p>Video</p>
+          }
+        </div>
+      ) : <p className="w-50 text-center">There are no inspection dates at the moment. Please check back later.</p>}
     </>
   );
 };
