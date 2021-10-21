@@ -232,6 +232,7 @@ function RentForm({ close }) {
       console.log(error);
     }
   };
+  
   const getRentCollection = async () => {
     try {
       const { status, data } = await Fetch("Property/collection/types");
@@ -446,12 +447,12 @@ function RentForm({ close }) {
             <div className="select-box">
               <select
                 name="title"
-                value={rentDetails.propertyTitle}
+                value={rentDetails.title}
                 onChange={handleOnChange}
                 className="formfield"
               >
                 <option selected disabled>
-                  Choose a property title
+                  Choose property title
                 </option>
                 {propertyTitles.map((type, i) => {
                   return (
