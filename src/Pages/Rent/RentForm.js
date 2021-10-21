@@ -50,6 +50,7 @@ function RentForm({ close }) {
     area: "",
     description: "",
     sellMySelf: false,
+    helpMeSell: false,
     price: 0,
     rentCollectionTypeId: 0,
     tenantAnnualIncome: "",
@@ -695,7 +696,7 @@ function RentForm({ close }) {
             <input
               type="checkbox"
               id="rent"
-              name="manageTenantMyself"
+              name="sellMySelf"
               onChange={(e) => {
                 console.log(e.target.checked);
                 setRentDetails({
@@ -703,13 +704,23 @@ function RentForm({ close }) {
                   sellMySelf: e.target.checked,
                 });
               }}
+              disabled={ !rentDetails.helpMeSell ? false : true }
             />
             <label htmlFor="sell" className="checktext">
               I want to manage the tenant myself
             </label>
           </div>
           <div className="checkbox">
-            <input type="checkbox" id="buy" name="firstName" />
+            <input type="checkbox" id="rent" 
+              name="helpMeSell"
+              onChange={(e) => {
+                setRentDetails({
+                  ...rentDetails,
+                  helpMeSell: e.target.checked,
+                });
+              }}
+              disabled={ !rentDetails.sellMySelf ? false : true }  
+            />
             <label htmlFor="buy" className="checktext">
               Help me manage my tenant
             </label>
