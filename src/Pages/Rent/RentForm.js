@@ -392,9 +392,6 @@ function RentForm({ close }) {
             Back
           </span>
         </div>
-        <div className="logo">
-          <img src="/asset/logo.png" alt="Logo" />
-        </div>
       </div>
       {step == 1 ? (
         <form className="content-section mt-4">
