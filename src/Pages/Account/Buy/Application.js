@@ -204,9 +204,6 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
             Back
           </span>
         </div>
-        <div className="logo">
-          <img src="../../asset/logo.png" alt="Logo" />
-        </div>
       </div>
 
       <Formik
@@ -333,6 +330,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       <option>Single</option>
                       <option>Married</option>
                       <option>Divorced</option>
+                      <option>Others</option>
                     </Field>
                     <div className="arrows"></div>
                   </div>

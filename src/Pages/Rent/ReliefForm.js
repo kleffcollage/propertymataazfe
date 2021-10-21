@@ -332,9 +332,6 @@ function ReliefForm({ property = null, close }) {
           </span>
         </div>
         
-        <div className="logo">
-          <img src="/asset/logo.png" alt="Logo" />
-        </div>
       </div>
       
       <form onSubmit={ handleSubmit(submitReliefRequest) } className="content-section mt-4">
@@ -454,7 +451,8 @@ function ReliefForm({ property = null, close }) {
                   <option value="" selected disabled> Choose an option </option>
                   <option value="single"> Single  </option>
                   <option value="married"> Married </option>
-                  <option value="divorced"> Divorced </option>
+                  <option value="divorced"> Divorced </option>    
+                  <option value="others"> Others </option>    
                 </select>
                 <div className="arrows" />
               </div>
