@@ -49,6 +49,7 @@ function SellAdd({ close, existingProperty = {} }) {
     sellMySelf: existingProperty.sellMySelf
       ? existingProperty.sellMySelf
       : false,
+    helpMeSell: false,
     mediafiles: [],
     longitude: existingProperty.longitude ? existingProperty.longitude : 0,
     latitude: existingProperty.latitude ? existingProperty.latitude : 0,
@@ -614,6 +615,7 @@ function SellAdd({ close, existingProperty = {} }) {
                       sellMySelf: e.target.checked,
                     });
                   }}
+                  disabled={ !data.helpMeSell ? false : true }
                 />
                 <label htmlFor="sellMySelf" className="checktext">
                   I want to sell myself
@@ -621,7 +623,18 @@ function SellAdd({ close, existingProperty = {} }) {
               </div>
 
               <div className="checkbox">
-                <input type="checkbox" id="buy" name="firstName" />
+                <input 
+                  type="checkbox" 
+                  id="buy" 
+                  name="helpMeSell"
+                  onChange={(e) => {
+                    setData({
+                      ...data,
+                      helpMeSell: e.target.checked,
+                    });
+                  }}
+                  disabled={ !data.sellMySelf ? false : true }
+                />
                 <label htmlFor="buy" className="checktext">
                   Help me sell
                 </label>
