@@ -57,7 +57,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 			</Modal>
 		
 			{ property.isDraft == false ? null : (
-				<div className="col-lg-3">
+				<div className="col-lg-4">
 					<div className="listing-cards">
 						<div className="listing-cover-img">
 							<img
@@ -88,7 +88,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 						<div className="listing-info for-sell">
 							<div className="title-group mb-3">
 								<div className="listing-title ">{property.name}</div>
-								{ !property.property.sellMyself &&
+								{ !property.sellMyself &&
 									<HiBadgeCheck className="badge-verified" />
 								}
 							</div>

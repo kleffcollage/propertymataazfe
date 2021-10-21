@@ -425,9 +425,6 @@ function SellAdd({ close, existingProperty = {} }) {
             Back
           </span>
         </div>
-        <div className="logo">
-          <img src="/asset/logo.png" alt="Logo" />
-        </div>
       </div>
 
       <Formik
