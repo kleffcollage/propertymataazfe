@@ -32,7 +32,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       middleName: "",
       lastName: user.data.user.lastName,
       email: user.data.user.email,
-      mobileNumber: user.data.user.phoneNumber,
+      mobileNumber: user.data.user.phoneNumber || '',
       address: "",
       nationality: "",
       dateOfBirth: "",
@@ -237,10 +237,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
           </span>
         </div>
       </div>
-
+      
+      
       <Formik
         initialValues={userDetails}
-        validationSchema={userDetailsValidationSchema}
+        // validationSchema={userDetailsValidationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           values.register.dateOfBirth = dob;
           await formSubmit(values);

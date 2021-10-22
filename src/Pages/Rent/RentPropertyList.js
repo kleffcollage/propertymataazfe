@@ -338,7 +338,7 @@ function RentPropertyList() {
                         })
                       : (
                         <div className="d-flex align-items-center justify-content-center">
-                          <h4 className="page-title mb-1"> Products are currently not available...</h4>
+                          <h4 className="error-tab mb-1">There are no available listings at this time, please check back later</h4>
                         </div>
                       )
                     }
