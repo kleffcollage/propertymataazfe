@@ -49,6 +49,7 @@ function SellAdd({ close, existingProperty = {} }) {
     sellMySelf: existingProperty.sellMySelf
       ? existingProperty.sellMySelf
       : false,
+    helpMeSell: false,
     mediafiles: [],
     longitude: existingProperty.longitude ? existingProperty.longitude : 0,
     latitude: existingProperty.latitude ? existingProperty.latitude : 0,
@@ -65,7 +66,7 @@ function SellAdd({ close, existingProperty = {} }) {
       ? existingProperty.description
       : "",
     sellMySelf: false,
-    price: existingProperty.price ? existingProperty.price : 0,
+    price: existingProperty.price ? existingProperty.price : price,
     numberOfBedrooms: existingProperty.numberOfBedrooms
       ? existingProperty.numberOfBedrooms
       : bedroomCounter,
@@ -198,19 +199,6 @@ function SellAdd({ close, existingProperty = {} }) {
     }
   };
 
-  const getStates = async () => {
-    try {
-      let data = await fetch(
-        "http://locationsng-api.herokuapp.com/api/v1/states"
-      );
-      data = await data.json();
-      console.log(data);
-      setStates(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getLongAndLat = async (address) => {
     const { results } = await Geocode.fromAddress(address);
     setData({
@@ -223,7 +211,7 @@ function SellAdd({ close, existingProperty = {} }) {
 
   const updateListingDetails = async (values) => {
     if (values.mediafiles.length == 0) {
-      toast.info("Upload atleast an image");
+      toast.info("Please upload at least one image of your property");
       return;
     }
 
@@ -258,7 +246,7 @@ function SellAdd({ close, existingProperty = {} }) {
 
   const createListingDetails = async (values) => {
     if (values.mediafiles.length == 0) {
-      toast.info("Upload atleast a photo for your property.");
+      toast.info("Please upload at least one image of your property");
       setLoading(false);
       return;
     }
@@ -424,9 +412,6 @@ function SellAdd({ close, existingProperty = {} }) {
           >
             Back
           </span>
-        </div>
-        <div className="logo">
-          <img src="/asset/logo.png" alt="Logo" />
         </div>
       </div>
 
@@ -617,6 +602,7 @@ function SellAdd({ close, existingProperty = {} }) {
                       sellMySelf: e.target.checked,
                     });
                   }}
+                  disabled={ !data.helpMeSell ? false : true }
                 />
                 <label htmlFor="sellMySelf" className="checktext">
                   I want to sell myself
@@ -624,7 +610,18 @@ function SellAdd({ close, existingProperty = {} }) {
               </div>
 
               <div className="checkbox">
-                <input type="checkbox" id="buy" name="firstName" />
+                <input 
+                  type="checkbox" 
+                  id="buy" 
+                  name="helpMeSell"
+                  onChange={(e) => {
+                    setData({
+                      ...data,
+                      helpMeSell: e.target.checked,
+                    });
+                  }}
+                  disabled={ !data.sellMySelf ? false : true }
+                />
                 <label htmlFor="buy" className="checktext">
                   Help me sell
                 </label>

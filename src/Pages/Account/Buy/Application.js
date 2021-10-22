@@ -7,6 +7,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import DatePicker from "react-datepicker";
+import * as Yup from "yup"
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -54,6 +55,35 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
     propertyId: 0,
     applicationTypeId: 0,
   };
+  
+  const userDetailsValidationSchema = Yup.object().shape({
+    register: Yup.object({
+      firstName: Yup.string().required('First name is required'),
+      middleName: Yup.string().required('Middle name is required'),
+      lastName: Yup.string().required('Last name is required'),
+      email: Yup.string().email('Invalid email address').required('Email is Required'),
+      mobileNumber: Yup.string().required('Mobile number is required'),
+      address: Yup.string().required('Address is required'),
+      nationality: Yup.string().required('Nationality is required'),
+      dateOfBirth: Yup.date().default(() => { return new Date() }).required('Mobile number is required'),
+      maritalStatus: Yup.string()
+        .oneOf(
+          ['Single', 'Married', 'Divorced', 'Others'],
+          'Invalid Marital Status'
+        ).required('Marital status is required'),
+      occupation: Yup.string().required('Occupation is required'),
+      employer: Yup.string().required('Employer is required'),
+      workAddress: Yup.string().required('Work Address is required'),
+      annualIncome: Yup.string().required('Annual Income is required'),
+    }),
+    nextOfKin: Yup.object({
+      nokFirstName: Yup.string().required('First name is required'),
+      nokLastName: Yup.string().required('Last name is required'),
+      nokEmail: Yup.string().email('Invalid email address').required('Email is Required'),
+      nokMobileNumber: Yup.string().required('Mobile number is required'),
+      nokRelationship: Yup.string().required('Relationship is required'),
+    })
+  })
 
   const getApplicationTypes = async () => {
     try {
@@ -80,11 +110,13 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
     console.log({ values });
 
     try {
-      const { workId, passport } = values.register;
-      if (workId == null || passport == null) {
-        toast.info("Please, upload a copy of work Id and a passport.");
-        setLoading(false);
-        return;
+      if(isRentForm) {
+        const { workId, passport } = values.register;
+        if (workId == null || passport == null) {
+          toast.info("Please, upload a copy of work Id and a passport.");
+          setLoading(false);
+          return;
+        }
       }
 
       let data = await Fetch("Application/new", "post", values);
@@ -204,13 +236,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
             Back
           </span>
         </div>
-        <div className="logo">
-          <img src="../../asset/logo.png" alt="Logo" />
-        </div>
       </div>
 
       <Formik
         initialValues={userDetails}
+        validationSchema={userDetailsValidationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           values.register.dateOfBirth = dob;
           await formSubmit(values);
@@ -219,7 +249,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
         }}
       >
         <Form>
-          {page == 1 ? (
+          { page == 1 ? (
             <div className="modal-content">
               <div className="content-section mt-4">
                 <div className="schedule-title mb-4">
@@ -237,7 +267,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.firstName" />
+                  <ErrorMessage component="span" name="register.firstName" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="middleName" className="input-label">
@@ -248,7 +278,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.middleName" />
+                  <ErrorMessage component="span" name="register.middleName" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.lastName" className="input-label">
@@ -259,7 +289,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.lastName" />
+                  <ErrorMessage component="span" name="register.lastName" />
                 </div>
                 <div className="input-box">
                   <label
@@ -273,7 +303,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.mobileNumber" />
+                  <ErrorMessage component="span" name="register.mobileNumber" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.email" className="input-label">
@@ -285,7 +315,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Your email address"
                     className="formfield"
                   />
-                  <ErrorMessage name="email" />
+                  <ErrorMessage component="span" name="email" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.address" className="input-label">
@@ -296,14 +326,14 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.address" />
+                  <ErrorMessage component="span" name="register.address" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.dateOfBirth" className="input-label">
                     Date of Birth
                   </label>
                   <DatePicker selected={dob} onChange={(date) => setDob(date)} className="formfield"/>
-                  <ErrorMessage name="register.dateOfBirth" />
+                  <ErrorMessage component="span" name="register.dateOfBirth" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.nationality" className="input-label">
@@ -314,7 +344,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     type="text"
                     className="formfield"
                   />
-                  <ErrorMessage name="register.nationality" />
+                  <ErrorMessage component="span" name="register.nationality" />
                 </div>
                 <div className="input-box">
                   <label
@@ -333,10 +363,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       <option>Single</option>
                       <option>Married</option>
                       <option>Divorced</option>
+                      <option>Others</option>
                     </Field>
                     <div className="arrows"></div>
                   </div>
-                  <ErrorMessage name="register.maritalStatus" />
+                  <ErrorMessage component="span" name="register.maritalStatus" />
                 </div>
 
                 <button
@@ -363,7 +394,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="register.occupation" />
+                    <ErrorMessage component="span" name="register.occupation" />
                   </div>
                   <div className="input-box">
                     <label htmlFor="register.employer" className="input-label">
@@ -374,7 +405,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="register.employer" />
+                    <ErrorMessage component="span" name="register.employer" />
                   </div>
                   <div className="input-box">
                     <label
@@ -388,7 +419,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="register.workAddress" />
+                    <ErrorMessage component="span" name="register.workAddress" />
                   </div>
 
                   {isRentForm ? (
@@ -406,7 +437,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                           placeholder="This can be your annual salary of an estimated income"
                           className="formfield"
                         />
-                        <ErrorMessage name="register.annualIncome" />
+                        <ErrorMessage component="span" name="register.annualIncome" />
                       </div>
 
                       <Dropzone
@@ -493,7 +524,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokFirstName" />
+                    <ErrorMessage component="span" name="nextOfKin.nokFirstName" />
                   </div>
                   <div className="input-box">
                     <label
@@ -507,7 +538,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokMiddleName" />
+                    <ErrorMessage component="span" name="nextOfKin.nokMiddleName" />
                   </div>
                   <div className="input-box">
                     <label
@@ -521,7 +552,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokLastName" />
+                    <ErrorMessage component="span" name="nextOfKin.nokLastName" />
                   </div>
                   <div className="input-box">
                     <label
@@ -535,7 +566,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokMobileNumber" />
+                    <ErrorMessage component="span" name="nextOfKin.nokMobileNumber" />
                   </div>
                   <div className="input-box">
                     <label htmlFor="nextOfKin.nokEmail" className="input-label">
@@ -546,7 +577,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="email"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokEmail" />
+                    <ErrorMessage component="span" name="nextOfKin.nokEmail" />
                   </div>
                   <div className="input-box">
                     <label
@@ -560,7 +591,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage name="nextOfKin.nokRelationship" />
+                    <ErrorMessage component="span" component="span" name="nextOfKin.nokRelationship" />
                   </div>
 
                   <button className="secondary-btn mt-5" type="submit">

@@ -214,7 +214,7 @@ function Application({ clean, fix, close }) {
 
       <div className="top-section">
         <div className="back">
-          <i className="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left mr-2"></i>
           <span
             className="backs"
             onClick={
@@ -227,9 +227,6 @@ function Application({ clean, fix, close }) {
           >
             Back
           </span>
-        </div>
-        <div className="logo">
-          <img src="../../asset/logo.png" alt="Logo" />
         </div>
       </div>
 

@@ -50,6 +50,7 @@ function RentForm({ close }) {
     area: "",
     description: "",
     sellMySelf: false,
+    helpMeSell: false,
     price: 0,
     rentCollectionTypeId: 0,
     tenantAnnualIncome: "",
@@ -232,6 +233,7 @@ function RentForm({ close }) {
       console.log(error);
     }
   };
+  
   const getRentCollection = async () => {
     try {
       const { status, data } = await Fetch("Property/collection/types");
@@ -391,9 +393,6 @@ function RentForm({ close }) {
             Back
           </span>
         </div>
-        <div className="logo">
-          <img src="/asset/logo.png" alt="Logo" />
-        </div>
       </div>
       {step == 1 ? (
         <form className="content-section mt-4">
@@ -446,12 +445,12 @@ function RentForm({ close }) {
             <div className="select-box">
               <select
                 name="title"
-                value={rentDetails.propertyTitle}
+                value={rentDetails.title}
                 onChange={handleOnChange}
                 className="formfield"
               >
                 <option selected disabled>
-                  Choose a property title
+                  Choose property title
                 </option>
                 {propertyTitles.map((type, i) => {
                   return (
@@ -697,7 +696,7 @@ function RentForm({ close }) {
             <input
               type="checkbox"
               id="rent"
-              name="manageTenantMyself"
+              name="sellMySelf"
               onChange={(e) => {
                 console.log(e.target.checked);
                 setRentDetails({
@@ -705,13 +704,23 @@ function RentForm({ close }) {
                   sellMySelf: e.target.checked,
                 });
               }}
+              disabled={ !rentDetails.helpMeSell ? false : true }
             />
             <label htmlFor="sell" className="checktext">
               I want to manage the tenant myself
             </label>
           </div>
           <div className="checkbox">
-            <input type="checkbox" id="buy" name="firstName" />
+            <input type="checkbox" id="rent" 
+              name="helpMeSell"
+              onChange={(e) => {
+                setRentDetails({
+                  ...rentDetails,
+                  helpMeSell: e.target.checked,
+                });
+              }}
+              disabled={ !rentDetails.sellMySelf ? false : true }  
+            />
             <label htmlFor="buy" className="checktext">
               Help me manage my tenant
             </label>
