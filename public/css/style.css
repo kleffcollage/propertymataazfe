@@ -1090,6 +1090,7 @@ p.fil:last-of-type {
 
 .listing-info {
   padding: 1rem 1rem 0.5rem;
+  margin-bottom: 37px;
 }
 
 .listing-info.for-sell {
