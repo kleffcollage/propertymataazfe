@@ -275,7 +275,7 @@ function Enquires({ isRent }) {
             Cancel Request
           </button>
         </div>
-        <div className="col">
+        <div className="col-lg-8">
           <div className="d-flex h-100">
             <div className="divider" />
             <div className="enq-stp">
