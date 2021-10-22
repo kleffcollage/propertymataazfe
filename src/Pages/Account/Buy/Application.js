@@ -130,8 +130,9 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       }
       if (data.status != "400") {
         setLoading(false);
-        toast.success("Rent application submitted successfully.");
+        toast.success("Application submitted successfully.");
         console.log(data);
+        close();
       } else {
         setLoading(false);
         toast.error(errorMessage);

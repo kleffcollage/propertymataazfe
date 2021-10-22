@@ -42,7 +42,7 @@ function Enquires({ isRent }) {
       // setId(data.data);
     }
   };
-  
+
   const incrementEnquire = async () => {
     var sendData = await Fetch(`Property/addenquiries/${propertyId}`, "get");
 
@@ -213,21 +213,31 @@ function Enquires({ isRent }) {
                   "Submit Application"
                 )}
               </button>
-              <button
-                className="single-step"
-                onClick={() => setPayModal(true)}
-                disabled={
-                  enquiryStatus &&
-                  enquiryStatus.hasApplied &&
-                  enquiryStatus.applicationStatus == "APPROVED" &&
-                  !enquiryStatus.hasPaid
-                    ? false
-                    : true
-                }
-              >
-                <i className="far fa-lock" />
-                Pay securely
-              </button>
+              {propertyDetails.isForRent ? (
+                <button
+                  className="single-step"
+                  onClick={() => setPayModal(true)}
+                  disabled={
+                    enquiryStatus &&
+                    enquiryStatus.hasApplied &&
+                    enquiryStatus.applicationStatus == "APPROVED" &&
+                    !enquiryStatus.hasPaid
+                      ? false
+                      : true
+                  }
+                >
+                  <i className="far fa-lock" />
+                  Pay securely
+                </button>
+              ) : (
+                <button
+                  className="single-step"
+                  onClick={() => setPayModal(true)}
+                >
+                  <i className="far fa-lock" />
+                  Pay securely
+                </button>
+              )}
             </div>
           </div>
           <div className="steps">
