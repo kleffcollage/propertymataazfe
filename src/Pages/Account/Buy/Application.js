@@ -132,6 +132,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
         setLoading(false);
         toast.success("Application submitted successfully.");
         console.log(data);
+        close();
       } else {
         setLoading(false);
         toast.error(errorMessage);
