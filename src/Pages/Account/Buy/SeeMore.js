@@ -31,6 +31,7 @@ export const SeeMore = ({
   const user = useContext(MainContext);
   console.log({user});
   console.log(propertyDetails);
+  console.log({ seller });
   
   const openShareModal = () => {
     setShowModal(!showModal);
@@ -184,7 +185,7 @@ export const SeeMore = ({
               </div>
             </div>
             {!seller ? (
-              propertyDetails.sellMySelf ? (
+              propertyDetails.sellMyself ? (
                 <div
                   className={`contact-section ${
                     showContact ? "show-info" : ""
