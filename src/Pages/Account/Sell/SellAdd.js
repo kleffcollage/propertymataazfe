@@ -18,17 +18,18 @@ Geocode.setRegion("es");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
-function SellAdd({ close, existingProperty = {} }) {
+function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
   const [step, setStep] = useState("a");
-  const [bedroomCounter, setBedroomCounter] = useState(0);
-  const [bathroomCounter, setBathroomCounter] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [bedroomCounter, setBedroomCounter] = useState( existingProperty.numberOfBedrooms || 0);
+  const [bathroomCounter, setBathroomCounter] = useState( existingProperty.numberOfBathrooms || 0);
+  const [price, setPrice] = useState(existingProperty.price || 0);
   console.log({ existingProperty });
+  console.log({ isEdit })
 
   // console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -66,7 +67,7 @@ function SellAdd({ close, existingProperty = {} }) {
       ? existingProperty.description
       : "",
     sellMySelf: false,
-    price: existingProperty.price ? existingProperty.price : 0,
+    price: existingProperty.price ? existingProperty.price : price,
     numberOfBedrooms: existingProperty.numberOfBedrooms
       ? existingProperty.numberOfBedrooms
       : bedroomCounter,
@@ -590,48 +591,51 @@ function SellAdd({ close, existingProperty = {} }) {
                 />
                 <ErrorMessage name="description" />
               </div>
+              { isEdit && (
+                <>
+                <div className="checkbox">
+                  <input
+                    type="checkbox"
+                    id="sell"
+                    name="sellMySelf"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        sellMySelf: e.target.checked,
+                      });
+                    }}
+                    disabled={ !data.helpMeSell ? false : true }
+                  />
+                  <label htmlFor="sellMySelf" className="checktext">
+                    I want to sell myself
+                  </label>
+                </div>
 
-              <div className="checkbox">
-                <input
-                  type="checkbox"
-                  id="sell"
-                  name="sellMySelf"
-                  onChange={(e) => {
-                    setData({
-                      ...data,
-                      sellMySelf: e.target.checked,
-                    });
-                  }}
-                  disabled={ !data.helpMeSell ? false : true }
-                />
-                <label htmlFor="sellMySelf" className="checktext">
-                  I want to sell myself
-                </label>
-              </div>
-
-              <div className="checkbox">
-                <input 
-                  type="checkbox" 
-                  id="buy" 
-                  name="helpMeSell"
-                  onChange={(e) => {
-                    setData({
-                      ...data,
-                      helpMeSell: e.target.checked,
-                    });
-                  }}
-                  disabled={ !data.sellMySelf ? false : true }
-                />
-                <label htmlFor="buy" className="checktext">
-                  Help me sell
-                </label>
-                <i
-                  className="fas fa-info-circle ml-2"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="When we help you sell, your property is listed as verified."
-                />
-              </div>
+                <div className="checkbox">
+                  <input 
+                    type="checkbox" 
+                    id="buy" 
+                    name="helpMeSell"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        helpMeSell: e.target.checked,
+                      });
+                    }}
+                    disabled={ !data.sellMySelf ? false : true }
+                  />
+                  <label htmlFor="buy" className="checktext">
+                    Help me sell
+                  </label>
+                  <i
+                    className="fas fa-info-circle ml-2"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="When we help you sell, your property is listed as verified."
+                  />
+                </div>
+                </>
+              )}
 
               <button className="secondary-btn" onClick={currentStep}>
                 Next

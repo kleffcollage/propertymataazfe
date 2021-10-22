@@ -11,13 +11,16 @@ import { HiBadgeCheck } from "react-icons/hi";
 
 const PropertyDraft = ({ property = {}, seeMore }) => {
 	const [alert, showAlert] = useState(false)
+	const [isEdit, setIsEdit] = useState(false)
 	const [deleting,setDeleting] = useState(false)
 	const [editModal, setEditModal] = useState(false)
 	
 	const close = () => {
+		setIsEdit(true)
 		setEditModal(false)
 	}
 	const open = () => {
+		
 		setEditModal(!editModal)
 	}
 	
@@ -53,7 +56,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 			/>
 				
 			<Modal open={editModal} onClose={() => setEditModal(false)}>
-				<SellAdd close={close} existingProperty={property} />
+				<SellAdd close={close} isEdit={isEdit} existingProperty={property} />
 			</Modal>
 		
 			{ property.isDraft == false ? null : (

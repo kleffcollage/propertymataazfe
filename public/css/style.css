@@ -13,6 +13,15 @@ a {
   text-decoration: none;
 }
 
+.error-tab {
+  color: #191919;
+  font-family: "Baloo Bhai 2";
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  height: 100vh;
+}
+
 button:disabled {
   cursor: not-allowed;
 }
