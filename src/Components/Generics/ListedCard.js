@@ -86,7 +86,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                 }}> 
                                 See More 
                             </button>
-                            {property.createdByUser.id == loggedUser.id 
+                            {!property.sellMyself 
                             ? <button className="list-color-btn" style={{opacity: 0.4 }} disabled>Enquire</button>  
                                 : <Link
                                     className="list-color-btn"
