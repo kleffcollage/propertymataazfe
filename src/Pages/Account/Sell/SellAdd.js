@@ -66,7 +66,7 @@ function SellAdd({ close, existingProperty = {} }) {
       ? existingProperty.description
       : "",
     sellMySelf: false,
-    price: existingProperty.price ? existingProperty.price : price,
+    price: existingProperty.price ? existingProperty.price : 0,
     numberOfBedrooms: existingProperty.numberOfBedrooms
       ? existingProperty.numberOfBedrooms
       : bedroomCounter,
@@ -282,10 +282,10 @@ function SellAdd({ close, existingProperty = {} }) {
     setLoading(true);
     // await getLongAndLat(listingDetails.address);
     // console.log(listingDetails);
-
+    values.price = price
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
-    values.isDraft = false;
+    values.isDraft = data.isDraft;
     values.isForSale = true;
     values.mediafiles = data.mediafiles;
     values.numberOfBathrooms = bathroomCounter;
@@ -328,7 +328,7 @@ function SellAdd({ close, existingProperty = {} }) {
 
   const submitListingToDraft = async (values) => {
     setDrafting(true);
-
+    values.price = price
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
     values.isDraft = data.isDraft;
@@ -419,7 +419,7 @@ function SellAdd({ close, existingProperty = {} }) {
         initialValues={listingDetails}
         onSubmit={async (values, { setSubmitting }) => {
           data.price = price;
-          if (data.isDraft === true) {
+          if (drafting) {
             await submitListingToDraft(values);
             return;
           }
@@ -655,6 +655,7 @@ function SellAdd({ close, existingProperty = {} }) {
                   className="formfield"
                   name="price"
                   placeholder="₦0.00"
+                  defaultValue={listingDetails.price}
                   prefix="₦"
                   decimalsLimit={2}
                   onValueChange={(value, name) => setPrice(value)}
@@ -786,7 +787,7 @@ function SellAdd({ close, existingProperty = {} }) {
                   {drafting ? (
                     <Spinner color={"primary"} />
                   ) : existingProperty.name ? (
-                    "Update draft`"
+                    "Update draft"
                   ) : (
                     "Save to Draft"
                   )}
@@ -802,6 +803,7 @@ function SellAdd({ close, existingProperty = {} }) {
                   )}
                 </button>
               </div>
+              
               <button type="button" className="options my-2" onClick={close}>
                 Cancel
               </button>
