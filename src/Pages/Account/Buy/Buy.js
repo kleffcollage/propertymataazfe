@@ -332,17 +332,24 @@ function Buy() {
                   </div>
                 ) : (
                   <>
-                    {isProperty
-                      .filter((p) => p.isForSale)
-                      .map((property, i) => {
-                        console.log(isProperty);
-                        return (
-                          <ListedCard
-                            property={property}
-                            seeMore={openSeeMore}
-                          />
-                        );
-                      })}
+                    { isProperty.length > 0 ?
+                      isProperty
+                        .filter((p) => p.isForSale)
+                        .map((property, i) => {
+                          console.log(isProperty);
+                          return (
+                            <ListedCard
+                              property={property}
+                              seeMore={openSeeMore}
+                            />
+                          );
+                        })
+                      : (
+                        <div className="d-flex align-items-center justify-content-center">
+                          <h4 className="page-title mb-1"> Products are currently not available...</h4>
+                        </div>
+                      )
+                    }
                   </>
                 )}
               </div>
