@@ -138,14 +138,14 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
                                         ? property.mediaFiles[0].url
                                         : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                                 }
-                                alt={property.name}
+                                alt={property?.name}
                             />
                             <div className="listing-location">{property.area ? property.area : property.state }</div>
                         </div>
                         
                         <div className="listing-info px-3">
                             <div className="title-group mb-3">
-                                <div className="listing-title ">{property.name}</div>
+                                <div className="listing-title ">{property?.name}</div>
                                 { !property.sellMyself &&
                                     <HiBadgeCheck className="badge-verified" />
                                 }
