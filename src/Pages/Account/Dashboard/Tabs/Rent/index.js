@@ -51,7 +51,7 @@ const Rent = () => {
         const data = await Fetch(url)
         
         // console.log('Requested Rents: ', data)
-        
+        console.log({data});
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
