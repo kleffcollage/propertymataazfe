@@ -416,6 +416,13 @@ ul.footer i {
 
 .input-box {
   position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-box span {
+  color: #ee4c3a;
+  font-style: italic;
+  font-size: 0.87rem;
 }
 
 .field-title {
@@ -471,7 +478,7 @@ ul.footer i {
   letter-spacing: -0.47px;
   /* line-height: 45px; */
   outline: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: .167rem;
 }
 
 .formfield::-webkit-input-placeholder {
