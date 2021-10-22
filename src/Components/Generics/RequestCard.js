@@ -66,12 +66,12 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
         
             {/* Property request Modal */}
             <Modal open={requestResults} onClose={() => setRequestResults(false)}>
-                <RequestResults propertyId={propertyId} matches={property.matches} theRequest={property.comment} close={() => setRequestResults(false)} />
+                <RequestResults propertyId={propertyId} matches={property?.matches} theRequest={property?.comment} close={() => setRequestResults(false)} />
             </Modal>
             
             {/* Tenants rental details */}
             <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-                <TenancyDetails isTenant={isForTenants} propertyId={property.id} close={() => setTenancyDetails(false)} />
+                <TenancyDetails isTenant={isForTenants} propertyId={property?.id} close={() => setTenancyDetails(false)} />
             </Modal>
         
         { isRequest  ? (
@@ -79,29 +79,29 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.comment}</div>
+                            <div className="listing-title mb-3">{property?.comment}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing">
                                 <i className="far fa-bed" />
                                 <div className="feature-title">
-                                    {`${property.numberOfBedRooms} Bedrooms`}
+                                    {`${property?.numberOfBedRooms} Bedrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-toilet" />
                                 <div className="feature-title">
-                                    {`${property.numberOfBathrooms} Bathrooms`}
+                                    {`${property?.numberOfBathrooms} Bathrooms`}
                                 </div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-tags" />
-                                <div className="feature-title"><Naira>{property.budget}</Naira></div>
+                                <div className="feature-title"><Naira>{property?.budget}</Naira></div>
                             </div>
                             <div className="feature-sing">
                                 <i className="far fa-award" />
                                 <div className="feature-title">
-                                    { property.propertyType.name.toLowerCase()}
+                                    { property.propertyType?.name.toLowerCase()}
                                 </div>
                             </div>
                         </div>
@@ -138,22 +138,22 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                         <div className="title-group align-items-center mb-4">
                             <div className="relief-amount">
                                 <h6>Relief Amount</h6>
-                                <p className="mb-0"><Naira>{relief.reliefAmount}</Naira></p>
+                                <p className="mb-0"><Naira>{relief?.reliefAmount}</Naira></p>
                             </div>
-                            <div className={`loan-status ${relief.status == "COMPLETED" ? 'bg-success text-white' : ''}`}>{relief.status}</div>                            
+                            <div className={`loan-status ${relief?.status == "COMPLETED" ? 'bg-success text-white' : ''}`}>{relief?.status}</div>                            
                         </div>
                         <div className="d-flex justify-content-between">
                             <div className="relief-amount">
                                 <h6>Interest</h6>
-                                <p className="mb-0">{relief.interest}%</p>
+                                <p className="mb-0">{relief?.interest}%</p>
                             </div>
                             <div className="relief-amount">
                                 <h6>Monthly Instalments</h6>
-                                <p className="mb-0"><Naira>{relief.monthlyInstallment}</Naira></p>
+                                <p className="mb-0"><Naira>{relief?.monthlyInstallment}</Naira></p>
                             </div>
                             <div className="relief-amount">
                                 <h6>Total Repayment</h6>
-                                <p className="mb-0"><Naira>{relief.totalRepayment}</Naira></p>
+                                <p className="mb-0"><Naira>{relief?.totalRepayment}</Naira></p>
                             </div>                            
                         </div>
                     </div>
@@ -164,7 +164,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.property.name}</div>
+                            <div className="listing-title mb-3">{property.property?.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">
@@ -190,7 +190,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.property.name}</div>
+                            <div className="listing-title mb-3">{property.property?.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">
