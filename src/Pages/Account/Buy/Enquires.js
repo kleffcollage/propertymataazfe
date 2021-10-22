@@ -42,6 +42,18 @@ function Enquires({ isRent }) {
       // setId(data.data);
     }
   };
+  
+  const incrementEnquire = async () => {
+    var sendData = await Fetch(`Property/addenquiries/${propertyId}`, "get");
+
+    if (!sendData.status) {
+      console.log(sendData.message);
+      return;
+    }
+    if (sendData.status != 400) {
+      console.log("Issokay");
+    }
+  };
 
   const getEnquiryStatus = async () => {
     try {
@@ -62,6 +74,7 @@ function Enquires({ isRent }) {
     const fetchData = async () => {
       await getPropertyDetails();
       await getEnquiryStatus();
+      await incrementEnquire();
     };
     fetchData();
   }, []);

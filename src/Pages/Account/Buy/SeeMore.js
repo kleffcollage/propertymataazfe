@@ -53,17 +53,6 @@ export const SeeMore = ({
     }
   };
 
-  const incrementEnquire = async (id) => {
-    var sendData = await Fetch(`Property/addenquiries/${id}`, "get");
-
-    if (!sendData.status) {
-      console.log(sendData.message);
-      return;
-    }
-    if (sendData.status != 400) {
-      console.log("Issokay");
-    }
-  };
 
   useEffect(() => {
     console.log("asdfghjkjhgfdsa");
@@ -227,9 +216,7 @@ export const SeeMore = ({
                               : `/buy/enquires/${propertyDetails.id}`
                           }
                           className="list-color-btn w-100 mt-4 mb-3f "
-                          onClick={ async () => {
-                            await incrementEnquire(propertyId);
-                          }}
+                          
                         >
                           Enquire
                         </Link>
