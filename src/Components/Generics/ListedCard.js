@@ -81,13 +81,13 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                     {/* <div className="line" /> */}
                     <div className="listing-info pt-0">
                         <div className="listing-btn">
-                            <button className={`list-no-color-btn ${(property.createdByUser && property.createdByUser.id == loggedUser.id) ? 'w-100' : ''}`} onClick={ async () => {
+                            <button className={`list-no-color-btn ${property.sellMyself ? 'w-100' : ''}`} onClick={ async () => {
                                    await onSeeMoreClicked();
                                 }}> 
                                 See More 
                             </button>
-                            {!property.sellMyself 
-                            ? <button className="list-color-btn" style={{opacity: 0.4 }} disabled>Enquire</button>  
+                            {property.sellMyself 
+                            ? null 
                                 : <Link
                                     className="list-color-btn"
                                     to={ property.isForRent ? `/rent/enquires/${property.id}`
