@@ -208,10 +208,10 @@ export const SeeMore = ({
                     Contact Seller
                   </button>
                   <div className="contact-info">
-                    <div className="contact-name">Segun Apampa</div>
-                    <div className="contact-number">+234 806 430 1234</div>
+                    <div className="contact-name">{propertyDetails.createdByUser?.fullName}</div>
+                    <div className="contact-number">{propertyDetails.createdByUser?.phoneNumber}</div>
                     <div className="contact-number">
-                      segepampam@gmail.com.com
+                      {propertyDetails.createdByUser?.email}
                     </div>
                   </div>
                 </div>
