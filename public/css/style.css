@@ -1043,7 +1043,7 @@ p.fil:last-of-type {
 }
 
 .listing-cards {
-  min-height: 18rem;
+  min-height: 21rem;
   width: 100%;
   border-radius: 7.56px;
   background-color: #ffffff;
@@ -1104,7 +1104,7 @@ p.fil:last-of-type {
 
 .listing-info.for-sell {
   padding: 1rem 1rem 0.5rem;
-  margin-bottom: calc(145px - 57px);
+  margin-bottom: calc(145px - 91px);
 }
 .listing-info.for-request {
   padding: 1rem 1rem 0.5rem;
