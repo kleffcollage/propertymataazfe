@@ -67,7 +67,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     
     const fetchProperty = async () => {
         try {
-            const data = await Fetch(`Property/get/6`);
+            const data = await Fetch(`Property/get/${propertyId}`);
             console.log({data});
             if(!data.status) {
                 console.error(data);
