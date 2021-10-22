@@ -66,7 +66,7 @@ function SellAdd({ close, existingProperty = {} }) {
       ? existingProperty.description
       : "",
     sellMySelf: false,
-    price: existingProperty.price ? existingProperty.price : 0,
+    price: existingProperty.price ? existingProperty.price : price,
     numberOfBedrooms: existingProperty.numberOfBedrooms
       ? existingProperty.numberOfBedrooms
       : bedroomCounter,
@@ -194,19 +194,6 @@ function SellAdd({ close, existingProperty = {} }) {
       if (!data.status) return;
       const titles = data.data;
       setPropertyTitles(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getStates = async () => {
-    try {
-      let data = await fetch(
-        "http://locationsng-api.herokuapp.com/api/v1/states"
-      );
-      data = await data.json();
-      console.log(data);
-      setStates(data);
     } catch (error) {
       console.log(error);
     }
