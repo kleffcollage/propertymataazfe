@@ -63,7 +63,7 @@ function RentForm({ close }) {
     longitude: 0,
     latitude: 0,
     bank: "",
-    accountno: "",
+    accountNumber: "",
     tenantTypeId: 0,
     applicationTypeId: 0,
     propertyTypeId: undefined,
@@ -819,8 +819,8 @@ function RentForm({ close }) {
               type="text"
               className="formfield"
               placeholder="Enter your bank account number"
-              name="accountno"
-              value={rentDetails.accountno}
+              name="accountNumber"
+              value={rentDetails.accountNumber}
               onChange={handleOnChange}
             />
           </div>
