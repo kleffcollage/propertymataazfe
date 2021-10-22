@@ -146,7 +146,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
                         <div className="listing-info px-3">
                             <div className="title-group mb-3">
                                 <div className="listing-title ">{property?.name}</div>
-                                { !property.sellMyself &&
+                                { !property?.sellMyself &&
                                     <HiBadgeCheck className="badge-verified" />
                                 }
                             </div>
