@@ -449,6 +449,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   name="name"
                   placeholder="Give your listing a name that makes it easy to find"
                   className="formfield"
+                  maxLength={50}
                 />
                 <ErrorMessage name="name" />
               </div>
@@ -589,52 +590,53 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   as="textarea"
                   placeholder="Description"
                   className="formfield textarea"
+                  maxLength={250}
                 />
                 <ErrorMessage name="description" />
               </div>
-              { isEdit && (
+              { isEdit ? null : (
                 <>
-                <div className="checkbox">
-                  <input
-                    type="checkbox"
-                    id="sell"
-                    name="sellMySelf"
-                    onChange={(e) => {
-                      setData({
-                        ...data,
-                        sellMySelf: e.target.checked,
-                      });
-                    }}
-                    disabled={ !data.helpMeSell ? false : true }
-                  />
-                  <label htmlFor="sellMySelf" className="checktext">
-                    I want to sell myself
-                  </label>
-                </div>
+                  <div className="checkbox">
+                    <input
+                      type="checkbox"
+                      id="sell"
+                      name="sellMySelf"
+                      onChange={(e) => {
+                        setData({
+                          ...data,
+                          sellMySelf: e.target.checked,
+                        });
+                      }}
+                      disabled={ !data.helpMeSell ? false : true }
+                    />
+                    <label htmlFor="sellMySelf" className="checktext">
+                      I want to sell myself
+                    </label>
+                  </div>
 
-                <div className="checkbox">
-                  <input 
-                    type="checkbox" 
-                    id="buy" 
-                    name="helpMeSell"
-                    onChange={(e) => {
-                      setData({
-                        ...data,
-                        helpMeSell: e.target.checked,
-                      });
-                    }}
-                    disabled={ !data.sellMySelf ? false : true }
-                  />
-                  <label htmlFor="buy" className="checktext">
-                    Help me sell
-                  </label>
-                  <i
-                    className="fas fa-info-circle ml-2"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="When we help you sell, your property is listed as verified."
-                  />
-                </div>
+                  <div className="checkbox">
+                    <input 
+                      type="checkbox" 
+                      id="buy" 
+                      name="helpMeSell"
+                      onChange={(e) => {
+                        setData({
+                          ...data,
+                          helpMeSell: e.target.checked,
+                        });
+                      }}
+                      disabled={ !data.sellMySelf ? false : true }
+                    />
+                    <label htmlFor="buy" className="checktext">
+                      Help me sell
+                    </label>
+                    <i
+                      className="fas fa-info-circle ml-2"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="When we help you sell, your property is listed as verified."
+                    />
+                  </div>
                 </>
               )}
 
@@ -782,7 +784,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 </div>
               </div>
               <div className="joint-btn mg">
-                <button
+                {/* <button
                   className="no-color-btn draft"
                   type="submit"
                   onClick={() => {
@@ -796,6 +798,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   ) : (
                     "Save to Draft"
                   )}
+                </button> */}
+                <button type="button" className="no-color-btn" onClick={close}>
+                  Cancel
                 </button>
 
                 <button className="color-btn draft" type="submit">
@@ -807,11 +812,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     "Submit"
                   )}
                 </button>
+                
               </div>
               
-              <button type="button" className="options my-2" onClick={close}>
-                Cancel
-              </button>
             </div>
           ) : null}
         </Form>

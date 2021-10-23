@@ -10,9 +10,16 @@ import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
-import {ShareSocial} from 'react-share-social'
+// import {ShareSocial} from 'react-share-social'
 import Alert from "../../../Utilities/Alert";
 import MiniModal from "../../../Utilities/Alert/MiniModal";
+// import {
+//   EmailShareButton,
+//   FacebookShareButton,
+//   LinkedinShareButton,
+//   TwitterShareButton,
+//   WhatsappShareButton
+// } from "react-share";
 
 export const SeeMore = ({
   setSeeMore,
@@ -87,13 +94,13 @@ export const SeeMore = ({
             </span>
           </div>
         </div>
-        <ShareSocial 
+        {/* <ShareSocial 
           // style={style}
           url ={`${tenant ? window.origin + `/rent/enquires/${propertyDetails.id}`
                 :  window.origin + `/buy/enquires/${propertyDetails.id}`}
               `}
-          socialTypes={['facebook','twitter','reddit','linkedin']}
-        />
+          socialTypes={['facebook','twitter','instagram', 'whatsapp', 'linkedin']}
+        /> */}
       </Modal>
       {loading ? (
         <div className="loading">
@@ -185,7 +192,7 @@ export const SeeMore = ({
               </div>
             </div>
             {!seller ? (
-              propertyDetails.sellMyself ? (
+              propertyDetails.sellMyself ? (  
                 <div
                   className={`contact-section ${
                     showContact ? "show-info" : ""
@@ -199,10 +206,10 @@ export const SeeMore = ({
                   </button>
                   <div className="contact-info">
                     <div className="contact-name">{propertyDetails.createdByUser?.fullName}</div>
-                    <div className="contact-number">{propertyDetails.createdByUser?.phoneNumber}</div>
-                    <div className="contact-number">
+                    <a href={`tel:${propertyDetails.createdByUser?.phoneNumber}`} className="contact-number">{propertyDetails.createdByUser?.phoneNumber}</a>
+                    <a href={`mailto:${propertyDetails.createdByUser?.email}`} className="contact-number">
                       {propertyDetails.createdByUser?.email}
-                    </div>
+                    </a>
                   </div>
                 </div>
               ) : (
