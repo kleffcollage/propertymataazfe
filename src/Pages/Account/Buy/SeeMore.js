@@ -13,6 +13,13 @@ import Naira from "react-naira";
 import {ShareSocial} from 'react-share-social'
 import Alert from "../../../Utilities/Alert";
 import MiniModal from "../../../Utilities/Alert/MiniModal";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  WhatsappShareButton
+} from "react-share";
 
 export const SeeMore = ({
   setSeeMore,
@@ -92,7 +99,7 @@ export const SeeMore = ({
           url ={`${tenant ? window.origin + `/rent/enquires/${propertyDetails.id}`
                 :  window.origin + `/buy/enquires/${propertyDetails.id}`}
               `}
-          socialTypes={['facebook','twitter','reddit','linkedin']}
+          socialTypes={['facebook','twitter','instagram', 'whatsapp', 'linkedin']}
         />
       </Modal>
       {loading ? (
@@ -185,7 +192,7 @@ export const SeeMore = ({
               </div>
             </div>
             {!seller ? (
-              propertyDetails.sellMyself ? (
+              propertyDetails.sellMyself ? (  
                 <div
                   className={`contact-section ${
                     showContact ? "show-info" : ""

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useHistory } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +12,7 @@ import * as Yup from "yup"
 import "react-datepicker/dist/react-datepicker.css";
 
 function ApplicationForm({ property, isRentForm, close, propertyId }) {
+  const history = useHistory();
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -132,7 +133,8 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
         setLoading(false);
         toast.success("Application submitted successfully.");
         console.log(data);
-        close();
+        close(true);
+        // history.go(0);
       } else {
         setLoading(false);
         toast.error(errorMessage);
