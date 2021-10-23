@@ -56,7 +56,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 			/>
 				
 			<Modal open={editModal} onClose={() => setEditModal(false)}>
-				<SellAdd close={close} isEdit={isEdit} existingProperty={property} />
+				<SellAdd close={close} isEdit={true} existingProperty={property} />
 			</Modal>
 		
 			{ property.isDraft == false ? null : (

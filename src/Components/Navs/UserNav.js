@@ -27,7 +27,7 @@ function UserNav() {
 
 	const logoutUser = () => {
 		localStorage.clear();
-		history.push("/login");
+		history.go("/");
 	};
 	return (
 		<div>
