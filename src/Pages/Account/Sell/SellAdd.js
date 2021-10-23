@@ -126,6 +126,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const grabUploadedFile = (uploadedFiles) => {
+    console.log({uploadedFiles});
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 

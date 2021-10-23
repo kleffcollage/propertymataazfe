@@ -67,7 +67,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     
     const fetchProperty = async () => {
         try {
-            const data = await Fetch(`Property/get/6`);
+            const data = await Fetch(`Property/get/${propertyId}`);
             console.log({data});
             if(!data.status) {
                 console.error(data);
@@ -134,19 +134,19 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
                         <div className="listing-cover-img">
                             <img
                                 src={
-                                    property && property.mediaFiles && property.mediaFiles.length > 0
+                                    property && property?.mediaFiles && property?.mediaFiles.length > 0
                                         ? property.mediaFiles[0].url
                                         : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
                                 }
-                                alt={property.name}
+                                alt={property?.name}
                             />
-                            <div className="listing-location">{property.area ? property.area : property.state }</div>
+                            <div className="listing-location">{property?.area ? property?.area : property?.state }</div>
                         </div>
                         
                         <div className="listing-info px-3">
                             <div className="title-group mb-3">
-                                <div className="listing-title ">{property.name}</div>
-                                { !property.sellMyself &&
+                                <div className="listing-title ">{property?.name}</div>
+                                { !property?.sellMyself &&
                                     <HiBadgeCheck className="badge-verified" />
                                 }
                             </div>

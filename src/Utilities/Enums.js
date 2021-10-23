@@ -5,6 +5,7 @@ export const Statuses = {
     RESOLVED: "RESOLVED",
     VERIFIED: "VERIFIED",
     DRAFTED: "DRAFTED",
+    SOLD:"SOLD"
 }
 
 export const BuildingType = {
