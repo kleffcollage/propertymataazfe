@@ -131,7 +131,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       }
       if (data.status != "400") {
         setLoading(false);
-        toast.success("Application submitted successfully.");
+        toast.success("Application has been submitted successfully.");
         console.log(data);
         close(true);
         history.go(0);
@@ -438,9 +438,17 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                         <Field
                           name="register.annualIncome"
                           type="text"
+                          as="select"
                           placeholder="This can be your annual salary of an estimated income"
                           className="formfield"
-                        />
+                        > 
+                          <option>Choose an option</option>
+                          <option value="50,000 - 250,000">50,000 - 250,000</option>
+                          <option value="">250,000 - 500,000</option>
+                          <option value="">500,000 - 750,000</option>
+                          <option value="">750,000 - 1m</option>
+                          <option value="">1m and above</option>
+                        </Field>
                         <ErrorMessage component="span" name="register.annualIncome" />
                       </div>
 
