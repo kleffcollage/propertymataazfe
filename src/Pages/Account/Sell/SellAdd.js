@@ -563,7 +563,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 <Field
                   name="area"
                   placeholder="Your area"
-                  className="formfield "
+                  className="formfield"
+                  maxLength={15}
                 />
                 <ErrorMessage name="area" />
               </div>
