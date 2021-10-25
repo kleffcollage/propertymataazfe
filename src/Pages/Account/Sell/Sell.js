@@ -25,10 +25,10 @@ function Sell() {
 			setErrormessage(data.message);
 			return;
 		}
-
+		
 		if (data.status != 400) {
 			setLoading(true);
-			setIsProperty(data.data.value);
+			setIsProperty(data.data.value.filter(property => !property.isDraft));
 			setLoading(false);
 			return;
 		}

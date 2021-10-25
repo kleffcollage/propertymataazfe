@@ -8,6 +8,7 @@ import { Box } from "@material-ui/core";
 import PropertyCard from "../../../../../Components/Generics/PropertyCard";
 import Modal from "../../../../../Utilities/Modal";
 import SeeMore from "../../../Buy/SeeMore";
+import SellAdd from "../../../Sell/SellAdd";
 
 const Listings = () => {
     const [errormessage, setErrormessage] = useState("");
@@ -17,6 +18,7 @@ const Listings = () => {
     const [showInfo, setShowInfo] = useState(false)
     const [tab, setTab] = useState("for-sale");
     const [propertyId, setPropertyId] = useState(0);
+    const [addModal, setAddModal] = useState(false);
     
     const currentTab = (tabname) => {
         setTab(tabname);
@@ -28,6 +30,10 @@ const Listings = () => {
     const showDetails = (id) => {
 		setPropertyId(id);
 		setShowInfo(true);
+	};
+    
+    const openModalBox = () => {
+		setAddModal(!addModal);
 	};
     
     const fetchPropertiesForSale = async (url = "Property/user/created/sale") => {
@@ -78,6 +84,10 @@ const Listings = () => {
     
     return (
         <Wrapper className="row">
+            <Modal open={addModal} onclose={() => setAddModal(false)}>
+				<SellAdd close={() => setAddModal(false)} />
+			</Modal>
+            
             <Modal open={showInfo} onClose={() => setShowInfo(false)}>
                 <SeeMore propertyId={propertyId} setSeeMore={setShowInfo} seller={true} />
             </Modal>
@@ -112,7 +122,13 @@ const Listings = () => {
                                     tab === "for-sale" ? (
                                         
                                         <div className="my-3">
-                                            <h5 className="mb-3">For Sale</h5>
+                                            
+                                            <div className="d-flex w-100 justify-content-between h-fit mb-3 align-items-center">
+                                                <h5 className="mb-3">For Sale</h5>
+                                                <button className="secondary-btn sec mb-0" onClick={openModalBox}>
+                                                    + Add Property
+                                                </button>
+                                            </div>
                                             
                                             <div className="row">
                                                 { isForSale.length == 0 

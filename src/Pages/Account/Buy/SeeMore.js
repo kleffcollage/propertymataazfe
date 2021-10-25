@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Statuses } from "../../../Utilities/Enums";
+import { toast } from "react-toastify";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import Modal from "../../../Utilities/Modal";
@@ -10,16 +10,21 @@ import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
-// import {ShareSocial} from 'react-share-social'
-import Alert from "../../../Utilities/Alert";
-import MiniModal from "../../../Utilities/Alert/MiniModal";
-// import {
-//   EmailShareButton,
-//   FacebookShareButton,
-//   LinkedinShareButton,
-//   TwitterShareButton,
-//   WhatsappShareButton
-// } from "react-share";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  WhatsappShareButton
+} from "react-share";
+
+import {
+  EmailIcon,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 
 export const SeeMore = ({
   setSeeMore,
@@ -60,7 +65,17 @@ export const SeeMore = ({
       // setId(data.data);
     }
   };
-
+  
+  const url = tenant 
+  ? window.origin + `/rent/enquires/${propertyDetails.id}`
+  :  window.origin + `/buy/enquires/${propertyDetails.id}`
+  
+  const handleCopyToClipboard = async () => {
+    console.log({url})
+    const copied = await navigator.clipboard.writeText(url);
+    toast.info("Link copied successfully...")
+    // console.log("Copied: ", copied)  
+  }
 
   useEffect(() => {
     console.log("asdfghjkjhgfdsa");
@@ -101,6 +116,26 @@ export const SeeMore = ({
               `}
           socialTypes={['facebook','twitter','instagram', 'whatsapp', 'linkedin']}
         /> */}
+        <div>
+          <div className="d-flex justify-content-start">
+            <FacebookShareButton url={url} className="mb-2 ml-2">
+              <FacebookIcon size={32} round></FacebookIcon>
+            </FacebookShareButton>
+            <TwitterShareButton url={url} className="mb-2 ml-2">
+              <TwitterIcon size={32} round></TwitterIcon>
+            </TwitterShareButton>
+            <LinkedinShareButton url={url} className="mb-2 ml-2">
+              <LinkedinIcon size={32} round></LinkedinIcon>
+            </LinkedinShareButton>
+            <WhatsappShareButton url={url} className="mb-2 ml-2">
+              <WhatsappIcon size={32} round></WhatsappIcon>
+            </WhatsappShareButton>
+          </div>
+          <div className="d-flex align-items-center justify-content-between link-copy p-3 mt-2">
+            <h5 className="mb-0 text-white"> { url }</h5>
+            <button type="button" onClick={() => handleCopyToClipboard()}>Copy</button>
+          </div>
+        </div>
       </Modal>
       {loading ? (
         <div className="loading">

@@ -7,6 +7,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import DatePicker from "react-datepicker";
+import Naira from "react-naira"
 import * as Yup from "yup"
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -131,7 +132,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       }
       if (data.status != "400") {
         setLoading(false);
-        toast.success("Application submitted successfully.");
+        toast.success("Application has been submitted successfully.");
         console.log(data);
         close(true);
         history.go(0);
@@ -438,9 +439,17 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                         <Field
                           name="register.annualIncome"
                           type="text"
+                          as="select"
                           placeholder="This can be your annual salary of an estimated income"
                           className="formfield"
-                        />
+                        > 
+                          <option>Choose an option</option>
+                          <option value="50,000 - 250,000"><Naira>50000</Naira> - <Naira>250000</Naira></option>
+                          <option value="250,000 - 500,000"><Naira>250000</Naira> - <Naira>500000</Naira></option>
+                          <option value="500,000 - 750,000"><Naira>500000</Naira> - <Naira>750000</Naira></option>
+                          <option value="750,000 - 1m"><Naira>750000</Naira> - <Naira>1000000</Naira></option>
+                          <option value="1m and above"><Naira>1000000</Naira> and above </option>
+                        </Field>
                         <ErrorMessage component="span" name="register.annualIncome" />
                       </div>
 

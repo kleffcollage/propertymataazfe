@@ -182,7 +182,7 @@ function Application({ clean, fix, close }) {
       }
       if (data.status != "400") {
         setLoading(false);
-        toast.success(data.message);
+        toast.success("Application has been submitted successfully.");
         history.go(0);
         console.log(data);
       } else {
