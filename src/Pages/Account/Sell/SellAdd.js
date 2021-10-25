@@ -28,6 +28,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const [bedroomCounter, setBedroomCounter] = useState( existingProperty.numberOfBedrooms || 0);
   const [bathroomCounter, setBathroomCounter] = useState( existingProperty.numberOfBathrooms || 0);
   const [price, setPrice] = useState(existingProperty.price || 0);
+  const [ isPublish, setIsPublish ] = useState(false);
   console.log({ existingProperty });
   console.log({ isEdit })
 
@@ -218,6 +219,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
 
     values.id = existingProperty.id;
+    values.isDraft = isPublish ? false : true
 
     try {
       var response = await Fetch("Property/update", "post", values);
@@ -364,21 +366,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       setLoading(false);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const getLgas = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-      );
-      data = await data.json();
-      console.log(data);
-      setLgas(data);
-      handleValidationErrors(data.errors);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -783,6 +770,13 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     +
                   </button>
                 </div>
+              </div>
+              <div className="my-4 d-flex align-items-center">
+                <label for="toggle" className="toggle-label">Publish</label>
+                <label className="switch ml-2">
+                  <input type="checkbox" onChange={(e) => { setIsPublish(e.target.checked)}} />
+                  <span className="slider round"></span>
+                </label>
               </div>
               <div className="joint-btn mg">
                 {/* <button
