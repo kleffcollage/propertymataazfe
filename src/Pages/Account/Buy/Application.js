@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect, useHistory } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,7 +8,7 @@ import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import DatePicker from "react-datepicker";
-import Naira from "react-naira"
+import Naira from "react-naira";
 import * as Yup from "yup"
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -444,12 +445,13 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                           className="formfield"
                         > 
                           <option>Choose an option</option>
-                          <option value="50,000 - 250,000"><Naira>50000</Naira> - <Naira>250000</Naira></option>
-                          <option value="250,000 - 500,000"><Naira>250000</Naira> - <Naira>500000</Naira></option>
-                          <option value="500,000 - 750,000"><Naira>500000</Naira> - <Naira>750000</Naira></option>
-                          <option value="750,000 - 1m"><Naira>750000</Naira> - <Naira>1000000</Naira></option>
-                          <option value="1m and above"><Naira>1000000</Naira> and above </option>
+                          {/* <option value="50,000 - 250,000"><Naira>{50000}</Naira> - <Naira>{250000}</Naira></option>
+                          <option value="250,000 - 500,000"><Naira>{250000}</Naira> - <Naira>{500000}</Naira></option>
+                          <option value="500,000 - 750,000"><Naira>{500000}</Naira> - <Naira>{750000}</Naira></option>
+                          <option value="750,000 - 1m"><Naira>{750000}</Naira> - <Naira>{1000000}</Naira></option> */}
+                          <option value="1m and above"><Naira>{property.price}</Naira></option>
                         </Field>
+                        <Naira>10000</Naira>
                         <ErrorMessage component="span" name="register.annualIncome" />
                       </div>
 
