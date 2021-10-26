@@ -237,7 +237,7 @@ export const SeeMore = ({
                   }}
                 >
                   <button className="color-btn w-100 mt-4">
-                    Contact Seller
+                    {tenant ? "Contact LandLord" : "Contact Seller"}
                   </button>
                   <div className="contact-info">
                     <div className="contact-name">{propertyDetails.createdByUser?.fullName}</div>
