@@ -425,7 +425,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected disabled>
+                <option selected>
                   Choose a property type
                 </option>
                 {propertyTypes.map((type, i) => {
@@ -812,7 +812,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected disabled>
+                <option selected>
                   Choose your bank
                 </option>
                 {banks.map((bank, index) => {
