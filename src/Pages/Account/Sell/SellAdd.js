@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import CurrencyInput from "react-currency-input-field";
+import {IoMdTrash} from "react-icons/io"
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -52,7 +53,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       ? existingProperty.sellMySelf
       : false,
     helpMeSell: false,
-    mediafiles: [],
+    mediaFiles: [],
     longitude: existingProperty.longitude ? existingProperty.longitude : 0,
     latitude: existingProperty.latitude ? existingProperty.latitude : 0,
   });
@@ -213,11 +214,12 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const updateListingDetails = async (values) => {
-    if (values.mediafiles.length == 0) {
+    if (existingProperty.mediaFiles.length == 0 && values.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
+      setLoading(false)
       return;
     }
-
+    values.mediaFiles = existingProperty.mediaFiles
     values.id = existingProperty.id;
     values.isDraft = isPublish ? false : true
 
@@ -291,7 +293,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     values.state = data.state;
     values.isDraft = data.isDraft;
     values.isForSale = true;
-    values.mediafiles = data.mediafiles;
+    values.mediaFiles = data.mediaFiles;
     values.numberOfBathrooms = bathroomCounter;
     values.numberOfBedrooms = bedroomCounter;
 
@@ -408,7 +410,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
         initialValues={listingDetails}
         onSubmit={async (values, { setSubmitting }) => {
           data.price = price;
-          if (drafting) {
+          if(drafting) {
             await submitListingToDraft(values);
             return;
           }
@@ -667,19 +669,19 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     <div
                       {...getRootProps()}
                       className={
-                        data.mediafiles.filter((m) => m.isImage).length > 0
+                        data.mediaFiles.filter((m) => m.isImage).length > 0
                           ? "do-upload uploaded"
                           : "do-upload"
                       }
                     >
                       <input {...getInputProps()} />
-                      {data.mediafiles.filter((m) => m.isImage).length > 0 ? (
+                      {data.mediaFiles.filter((m) => m.isImage).length > 0 ? (
                         <>
                           <div className="d-flex justify-content-between w-100">
                             <div>
                               <i className="far fa-check" />
                               {`${
-                                data.mediafiles.filter((m) => m.isImage).length
+                                data.mediaFiles.filter((m) => m.isImage).length
                               }  Pictures Uploaded`}
                             </div>
                             <div>
@@ -698,6 +700,28 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 )}
               </Dropzone>
 
+              {/* Photos uploaded */}
+              <div className="image-gallery my-2">
+                {existingProperty.mediaFiles.filter((m) => m.isImage).length > 0 ? 
+                  existingProperty.mediaFiles
+                  .filter((m) => m.isImage)
+                  .map((singleImage, i) => {
+                    return (
+                      <div className="single-img uploaded">
+                        <div className="trash-file d-flex justify-content-end">
+                          <IoMdTrash color="#fff" /> 
+                        </div>
+                        <img src={singleImage.url} alt="uploaded-images" />
+                      </div>
+                    );
+                  }) : (
+                    <div className="no-files"> No Images has been uploaded... </div>
+                  )
+                }
+              </div>
+
+
+
               <Dropzone
                 accept="video/mp4"
                 maxFiles={6}
@@ -708,19 +732,19 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     <div
                       {...getRootProps()}
                       className={
-                        data.mediafiles.filter((m) => m.isVideo).length > 0
+                        data.mediaFiles.filter((m) => m.isVideo).length > 0
                           ? "do-upload uploaded"
                           : "do-upload"
                       }
                     >
                       <input {...getInputProps()} />
-                      {data.mediafiles.filter((m) => m.isVideo).length > 0 ? (
+                      {data.mediaFiles.filter((m) => m.isVideo).length > 0 ? (
                         <>
                           <div className="d-flex justify-content-between w-100">
                             <div>
                               <i className="far fa-check" />
                               {`${
-                                data.mediafiles.filter((m) => m.isVideo).length
+                                data.mediaFiles.filter((m) => m.isVideo).length
                               }  Videos Uploaded`}
                             </div>
                             <div>
@@ -738,7 +762,27 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </section>
                 )}
               </Dropzone>
-
+              
+              {/* Videos uploaded */}
+              <div className="image-gallery my-3">
+                { existingProperty.mediaFiles.filter((m) => m.isVideo).length > 0 ?
+                  existingProperty.mediaFiles.filter((m) => m.isVideo)
+                  .map((video, i) => {
+                    return (
+                      <div className="single-img uploaded">
+                        <div className="trash-file d-flex justify-content-end">
+                          <IoMdTrash color="#fff" /> 
+                        </div>
+                        <img src={video.url} alt="uploaded-images" />
+                      </div>
+                    );  
+                  }) : (
+                    <div className="no-files"> No video has been uploaded... </div>
+                  )
+                }
+              </div>
+              
+              
               <div className="counter-pad">
                 <div className="counter-label">Bedrooms</div>
                 <div className="counter-box">
@@ -771,14 +815,17 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </button>
                 </div>
               </div>
-              <div className="my-4 d-flex align-items-center">
-                <label for="toggle" className="toggle-label">Publish</label>
-                <label className="switch ml-2">
-                  <input type="checkbox" onChange={(e) => { setIsPublish(e.target.checked)}} />
-                  <span className="slider round"></span>
-                </label>
-              </div>
-              <div className="joint-btn mg">
+              { isEdit ? (
+                <div className="my-5 d-flex align-items-center justify-content-center">
+                  <label for="toggle" className="toggle-label mr-3">Draft</label>
+                  <label className="switch mx-1">
+                    <input type="checkbox" onChange={(e) => { setIsPublish(e.target.checked)}} />
+                    <span className="slider round"></span>
+                  </label>
+                  <label for="toggle" className="toggle-label ml-3">Live</label>
+                </div>
+              ) : null }
+              <div className="joint-btn mg mt-5">
                 {/* <button
                   className="no-color-btn draft"
                   type="submit"

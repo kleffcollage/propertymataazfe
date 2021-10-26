@@ -22,6 +22,14 @@ a {
   height: 100vh;
 }
 
+.no-files {
+  font-family: "Baloo Bhai 2";
+  color: #191919;
+  font-style: italic;
+  font-size: 0.89rem;
+  font-weight: 500;
+}
+
 button:disabled {
   cursor: not-allowed;
 }
@@ -959,11 +967,11 @@ input:checked + .slider:after
 } */
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #0042ff;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #0042ff;
 }
 
 input:checked + .slider:before {
@@ -984,6 +992,8 @@ input:checked + .slider:before {
   color: #252427;
   font-family: "Baloo Bhai 2";
   font-size: 0.975rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .link-copy {
@@ -1488,6 +1498,23 @@ h2.property-info {
   position: relative;
   flex: 0 0 9.3rem;
   cursor: pointer;
+}
+
+.single-img.uploaded {
+  width: 5.3rem;
+  height: 5rem;
+  background-color: #d8d8d8;
+  margin-bottom: 1rem;
+  margin-right: 2%;
+  position: relative;
+  flex: 0 0 5.3rem;
+  cursor: pointer;
+}
+.trash-file {
+  right: 0;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  padding: .32rem;
 }
 
 .single-img:last-child {
