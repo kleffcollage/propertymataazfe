@@ -445,11 +445,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                           className="formfield"
                         > 
                           <option>Choose an option</option>
-                          {/* <option value="50,000 - 250,000"><Naira>{50000}</Naira> - <Naira>{250000}</Naira></option>
-                          <option value="250,000 - 500,000"><Naira>{250000}</Naira> - <Naira>{500000}</Naira></option>
-                          <option value="500,000 - 750,000"><Naira>{500000}</Naira> - <Naira>{750000}</Naira></option>
-                          <option value="750,000 - 1m"><Naira>{750000}</Naira> - <Naira>{1000000}</Naira></option> */}
-                          <option value="1m and above"><Naira>{property.price}</Naira></option>
+                          <option value="50,000 - 250,000">&#8358;{"50,000"} - &#8358;{"250,000"}</option>
+                          <option value="250,000 - 500,000">&#8358;{"250,000"} - &#8358;{"500,000"}</option>
+                          <option value="500,000 - 750,000">&#8358;{"500,000"} - &#8358;{"750,000"}</option>
+                          <option value="750,000 - 1m">&#8358;{"750,000"} - &#8358;{"1,000,000"}</option>
+                          <option value="1m and above">&#8358;{"1m and above"}</option>
                         </Field>
                         {/* <Naira>10000</Naira> */}
                         <ErrorMessage component="span" name="register.annualIncome" />
