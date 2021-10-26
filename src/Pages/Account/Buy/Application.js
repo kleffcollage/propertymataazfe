@@ -451,7 +451,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                           <option value="750,000 - 1m"><Naira>{750000}</Naira> - <Naira>{1000000}</Naira></option> */}
                           <option value="1m and above"><Naira>{property.price}</Naira></option>
                         </Field>
-                        <Naira>10000</Naira>
+                        {/* <Naira>10000</Naira> */}
                         <ErrorMessage component="span" name="register.annualIncome" />
                       </div>
 
