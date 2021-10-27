@@ -164,7 +164,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
                 <div className="listing-cards for-request pt-4">
                     <div className="listing-info for-request">
                         <div className="title-group">
-                            <div className="listing-title mb-3">{property.property?.name}</div>
+                            <div className="listing-title mb-3">{property.name}</div>
                         </div>
                         <div className="feature-group">
                             <div className="feature-sing w-100">

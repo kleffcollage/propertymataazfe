@@ -152,7 +152,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                             <img src="/asset/@3xGideon.png" alt="gideon" />
                           </div>
                           <div className="applicants-detail mx-3">
-                            <h6>{application.user.fullName}</h6>
+                            <h6>{`${application.user.firstName} ${application.user.middleName} ${application.user.lastName}`}</h6>
                             <p className="mb-1">{application.user.maritalStatus}</p>
                             <p className="mb-1">{application.user.occupation}</p>
                             <p className="mb-1">Earns <Naira>{application.user.annualIncome}</Naira> per year</p>

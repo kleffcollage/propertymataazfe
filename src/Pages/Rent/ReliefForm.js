@@ -14,6 +14,7 @@ import { Box } from "@material-ui/core";
 import { typeOfApplications } from "../../Utilities/Enums"
 import Naira from "react-naira"
 import CurrencyInput from 'react-currency-input-field';
+const CountryList = require("country-list").getNames()
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -21,6 +22,7 @@ Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
 function ReliefForm({ property = null, close }) {
+  console.log({CountryList})
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
@@ -31,7 +33,8 @@ function ReliefForm({ property = null, close }) {
   const [loanCalculation, setLoanCalculation ] = useState({
     interestPerMonth: 0,
     totalRepayment: 0,
-  })  
+  });
+  const [amount, setAmount] = useState(0);
   const { data: { user: user }} = useContext(MainContext);
   // console.log({user})
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -114,7 +117,7 @@ function ReliefForm({ property = null, close }) {
   
   const calculateLoanInterest = () => {
     // console.log({amount})
-    let amount = property && property.price
+    // let amount = amount
     let interest = 0.15
     let time = 12
     // 
@@ -212,19 +215,6 @@ function ReliefForm({ property = null, close }) {
     return fileName.split(".")[1];
   };
 
-  const getStates = async () => {
-    try {
-      let data = await fetch(
-        "http://locationsng-api.herokuapp.com/api/v1/states"
-      );
-      data = await data.json();
-      console.log(data);
-      setStates(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // const getLongAndLat = async (address) => {
   //   const { results } = await Geocode.fromAddress(address);
   //   setReliefData({
@@ -248,6 +238,7 @@ function ReliefForm({ property = null, close }) {
       return;
     }
     // reliefData.firstName = user.firstName
+    reliefDetails.reliefAmount = amount
     reliefDetails.register.passportPhotograph = reliefData.passportPhotograph
     reliefDetails.register.workId = reliefData.workId
     reliefDetails.propertyId = property && property.id
@@ -307,11 +298,11 @@ function ReliefForm({ property = null, close }) {
     const fetchData = async () => {
       // await getStates();
       await getApplicationTypes();
-      calculateLoanInterest()
+      calculateLoanInterest(amount)
     };
     
     fetchData();
-  }, []);
+  }, [amount]);
 
   const handleValidationErrors = (errors) => {
     var ValidationErrors = errors;
@@ -430,14 +421,22 @@ function ReliefForm({ property = null, close }) {
             
             <div className="input-box">
               <div className="input-label">Nationality</div>
-              <input
-                type="text"
-                className="formfield"
-                placeholder="Your nationality, e.g Nigerian"
-                name="register.nationality"
-                {...register("register.nationality")}
-                defaultValue={user.nationality}
-              />
+              <div className="select-box">
+                
+                <select
+                  className="formfield"
+                  name="register.nationality"
+                  {...register("register.nationality")}
+                >
+                  <option value="" selected> Choose your nationality </option>
+                  { CountryList.map((country, index) => {
+                    return (
+                      <option key={index} value={country}> {country} </option>                      
+                      )
+                    })}
+                </select>
+                <div className="arrows" />
+              </div>
             </div>
             
             <div className="input-box">
@@ -448,7 +447,7 @@ function ReliefForm({ property = null, close }) {
                   name="register.martialStatus"
                   {...register("register.maritalStatus")}
                 >
-                  <option value="" selected disabled> Choose an option </option>
+                  <option value="" selected> Choose an option </option>
                   <option value="single"> Single  </option>
                   <option value="married"> Married </option>
                   <option value="divorced"> Divorced </option>    
@@ -503,13 +502,21 @@ function ReliefForm({ property = null, close }) {
               
               <div className="input-box">
                   <div className="input-label">what is you Annual Income?</div>
-                  <input
-                    type="text"
-                    className="formfield"
-                    placeholder="Your income bracket for your tenant"
-                    name="register.annualIncome"
-                    {...register("register.annualIncome")}
-                  />
+                  <div className="select-box">
+                    <select
+                      className="formfield"
+                      name="register.annualIncome"
+                      {...register("register.annualIncome")}
+                    >
+                      <option>Choose an option</option>
+                      <option value="50,000 - 250,000">&#8358;{"50,000"} - &#8358;{"250,000"}</option>
+                      <option value="250,000 - 500,000">&#8358;{"250,000"} - &#8358;{"500,000"}</option>
+                      <option value="500,000 - 750,000">&#8358;{"500,000"} - &#8358;{"750,000"}</option>
+                      <option value="750,000 - 1m">&#8358;{"750,000"} - &#8358;{"1,000,000"}</option>
+                      <option value="1m and above">&#8358;{"1m and above"}</option>  
+                    </select>
+                    <div className="arrows" />
+                  </div>
               </div>
 
               <Dropzone
@@ -651,13 +658,22 @@ function ReliefForm({ property = null, close }) {
               
               <div className="input-box">
                 <div className="input-label"> Relief Amount</div>
-                <input 
+                {/* <input 
                   type="number"
                   className="formfield"
                   placeholder="Relief amount"
                   name="reliefAmount"
                   {...register("reliefAmount")}
-                  defaultValue={property.price}
+                  // defaultValue={property.price}
+                /> */}
+                <CurrencyInput
+                  id="input-example"
+                  className="formfield"
+                  name="reliefAmount"
+                  placeholder="₦0.00"
+                  prefix="₦"
+                  decimalsLimit={2}
+                  onValueChange={(value, name) => setAmount(value)}
                 />
               </div>
               
@@ -694,7 +710,7 @@ function ReliefForm({ property = null, close }) {
                   <Box display="flex" width="100%" flexDirection="row" alignItems="center" justifyContent="space-between" className="my-1">
                       <div className="tab">
                           <h5>Loan Amount</h5>
-                          <p className="amount"><Naira>{ property && property.price }</Naira></p>
+                          <p className="amount"><Naira>{amount}</Naira></p>
                       </div>
                       <div className="tab text-right">
                           <h5>Interest</h5>

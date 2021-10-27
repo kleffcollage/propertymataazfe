@@ -325,18 +325,20 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     await createListingDetails(values);
   };
 
-  const deleteMedia = async (id) => {
+  const deleteMedia = async ( id) => {
+    // e.preventDefault();
     console.log({id});
-    try{
+    try {
       const data = await Fetch(`media/${id}`, "delete");
-      if(!data.status){
+      if(!data.status) {
         toast.error(data.message);
         return;
       }
+      close(true);
       toast.success("Media deleted successfully");
       return;
 
-    }catch(error){
+    } catch(error) {
       console.error(error);
       return;
     }
@@ -748,12 +750,16 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .filter((m) => m.isImage)
                       .map((singleImage, i) => {
                         return (
+                          <>
                           <div className="single-img uploaded" key={i}>
-                            <div className="trash-file d-flex justify-content-end" onCLick={ () =>  deleteMedia(singleImage.id)}>
-                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(singleImage.id)}/>
+                            <div className="trash-file d-flex justify-content-end" 
+                              onClick={() => deleteMedia(singleImage.id)}
+                            >
+                              <IoMdTrash color="#fff" />
                             </div>
                             <img src={singleImage.url} alt="uploaded-images" />
                           </div>
+                          </>
                         );
                       })
                   : null}
@@ -838,8 +844,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .map((video, i) => {
                         return (
                           <div className="single-img uploaded" key={i}>
-                            <div className="trash-file d-flex justify-content-end">
-                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(video.id)}/>
+                            <div className="trash-file d-flex justify-content-end" onClick={ () =>  deleteMedia(video.id)}>
+                              <IoMdTrash color="#fff" />
                             </div>
                             <video src={video.url} alt="uploaded-images" />
                           </div>
@@ -873,7 +879,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   )}
                 </Dropzone>
 
-              <div className="counter-pad">
+              <div className="counter-pad mt-3">
                 <div className="counter-label">Bedrooms</div>
                 <div className="counter-box">
                   <button className="countbtn" onClick={bedDecrement}>
