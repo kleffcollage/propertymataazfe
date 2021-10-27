@@ -325,6 +325,23 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     await createListingDetails(values);
   };
 
+  const deleteMedia = async (id) => {
+    console.log({id});
+    try{
+      const data = await Fetch(`media/${id}`, "delete");
+      if(!data.status){
+        toast.error(data.message);
+        return;
+      }
+      toast.success("Media deleted successfully");
+      return;
+
+    }catch(error){
+      console.error(error);
+      return;
+    }
+  }
+
   const grabUploadedVideoFile = (uploadedFiles) => {
     console.log(uploadedFiles);
     extractPreviewFromFile(uploadedFiles,TextTrackCueList);
@@ -731,9 +748,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .filter((m) => m.isImage)
                       .map((singleImage, i) => {
                         return (
-                          <div className="single-img uploaded">
-                            <div className="trash-file d-flex justify-content-end">
-                              <IoMdTrash color="#fff" />
+                          <div className="single-img uploaded" key={i}>
+                            <div className="trash-file d-flex justify-content-end" onCLick={ () =>  deleteMedia(singleImage.id)}>
+                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(singleImage.id)}/>
                             </div>
                             <img src={singleImage.url} alt="uploaded-images" />
                           </div>
@@ -743,9 +760,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 {previews.map((preview, index) => {
                   return (
                     <div className="single-img uploaded">
-                      <div className="trash-file d-flex justify-content-end">
+                      {/* <div className="trash-file d-flex justify-content-end">
                         <IoMdTrash color="#fff" />
-                      </div>
+                      </div> */}
                       <img src={preview} alt="uploaded-images" />
                     </div>
                   );
@@ -820,9 +837,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .filter((m) => m.isVideo)
                       .map((video, i) => {
                         return (
-                          <div className="single-img uploaded">
+                          <div className="single-img uploaded" key={i}>
                             <div className="trash-file d-flex justify-content-end">
-                              <IoMdTrash color="#fff" />
+                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(video.id)}/>
                             </div>
                             <video src={video.url} alt="uploaded-images" />
                           </div>
@@ -832,9 +849,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 {videoPreviews.map((video, index) => {
                   return (
                     <div className="single-img uploaded">
-                      <div className="trash-file d-flex justify-content-end">
+                      {/* <div className="trash-file d-flex justify-content-end">
                         <IoMdTrash color="#fff" />
-                      </div>
+                      </div> */}
                       <video src={video} alt="uploaded-images" />
                     </div>
                   );
