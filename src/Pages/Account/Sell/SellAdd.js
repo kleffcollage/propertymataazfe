@@ -11,7 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import CurrencyInput from "react-currency-input-field";
-import {IoMdTrash} from "react-icons/io"
+import { IoMdTrash } from "react-icons/io";
+import { GrAdd } from "react-icons/gr";
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -26,12 +27,16 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
   const [step, setStep] = useState("a");
-  const [bedroomCounter, setBedroomCounter] = useState( existingProperty.numberOfBedrooms || 0);
-  const [bathroomCounter, setBathroomCounter] = useState( existingProperty.numberOfBathrooms || 0);
+  const [bedroomCounter, setBedroomCounter] = useState(
+    existingProperty.numberOfBedrooms || 0
+  );
+  const [bathroomCounter, setBathroomCounter] = useState(
+    existingProperty.numberOfBathrooms || 0
+  );
   const [price, setPrice] = useState(existingProperty.price || 0);
-  const [ isPublish, setIsPublish ] = useState(false);
+  const [isPublish, setIsPublish] = useState(false);
   console.log({ existingProperty });
-  console.log({ isEdit })
+  console.log({ isEdit });
 
   // console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -94,6 +99,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const [states, setStates] = useState([]);
   const [lgas, setLgas] = useState([]);
   const [cities, setCities] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
+  const [mediaFiles, setMediaFiles] = useState([]);
 
   const bedIncrement = (e) => {
     e.preventDefault();
@@ -128,7 +136,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const grabUploadedFile = (uploadedFiles) => {
-    console.log({uploadedFiles});
+    console.log({ uploadedFiles });
+    extractPreviewFromFile(uploadedFiles);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -151,8 +160,21 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     });
   };
 
+  const extractPreviewFromFile = async (uploadedFiles, isVideo = false) => {
+    var newState = [];
+    uploadedFiles.map((element) => {
+      console.log(element);
+      newState.push(URL.createObjectURL(element));
+    });
+    if (isVideo) {
+      setVideoPreviews([...videoPreviews, ...newState]);
+      return;
+    }
+    setPreviews([...previews, ...newState]);
+  };
+
   const composeMedia = (bytes, file) => {
-    var files = [];
+    var files = [...mediaFiles];
 
     var newMedia = {
       name: file.name,
@@ -171,10 +193,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
     files.push(newMedia);
     console.log(files);
-    setData({
-      ...data,
-      mediafiles: [...data.mediafiles, newMedia],
-    });
+    setMediaFiles([...files]);
   };
 
   const getFileExtention = (fileName) => {
@@ -214,14 +233,14 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const updateListingDetails = async (values) => {
-    if (existingProperty.mediaFiles.length == 0 && values.mediaFiles.length == 0) {
+    if (mediaFiles.length == 0 && existingProperty.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
-      setLoading(false)
+      setLoading(false);
       return;
     }
-    values.mediaFiles = existingProperty.mediaFiles
+    values.mediaFiles = mediaFiles;
     values.id = existingProperty.id;
-    values.isDraft = isPublish ? false : true
+    values.isDraft = isPublish ? false : true;
 
     try {
       var response = await Fetch("Property/update", "post", values);
@@ -288,12 +307,12 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     setLoading(true);
     // await getLongAndLat(listingDetails.address);
     // console.log(listingDetails);
-    values.price = price
+    values.price = price;
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
     values.isDraft = data.isDraft;
     values.isForSale = true;
-    values.mediaFiles = data.mediaFiles;
+    values.mediaFiles = mediaFiles;
     values.numberOfBathrooms = bathroomCounter;
     values.numberOfBedrooms = bedroomCounter;
 
@@ -306,8 +325,26 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     await createListingDetails(values);
   };
 
+  const deleteMedia = async (id) => {
+    console.log({id});
+    try{
+      const data = await Fetch(`media/${id}`, "delete");
+      if(!data.status){
+        toast.error(data.message);
+        return;
+      }
+      toast.success("Media deleted successfully");
+      return;
+
+    }catch(error){
+      console.error(error);
+      return;
+    }
+  }
+
   const grabUploadedVideoFile = (uploadedFiles) => {
     console.log(uploadedFiles);
+    extractPreviewFromFile(uploadedFiles,TextTrackCueList);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -334,7 +371,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
   const submitListingToDraft = async (values) => {
     setDrafting(true);
-    values.price = price
+    values.price = price;
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
     values.isDraft = data.isDraft;
@@ -410,7 +447,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
         initialValues={listingDetails}
         onSubmit={async (values, { setSubmitting }) => {
           data.price = price;
-          if(drafting) {
+          if (drafting) {
             await submitListingToDraft(values);
             return;
           }
@@ -584,7 +621,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 />
                 <ErrorMessage name="description" />
               </div>
-              { isEdit ? null : (
+              {isEdit ? null : (
                 <>
                   <div className="checkbox">
                     <input
@@ -597,7 +634,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                           sellMySelf: e.target.checked,
                         });
                       }}
-                      disabled={ !data.helpMeSell ? false : true }
+                      disabled={!data.helpMeSell ? false : true}
                     />
                     <label htmlFor="sellMySelf" className="checktext">
                       I want to sell myself
@@ -605,9 +642,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </div>
 
                   <div className="checkbox">
-                    <input 
-                      type="checkbox" 
-                      id="buy" 
+                    <input
+                      type="checkbox"
+                      id="buy"
                       name="helpMeSell"
                       onChange={(e) => {
                         setData({
@@ -615,7 +652,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                           helpMeSell: e.target.checked,
                         });
                       }}
-                      disabled={ !data.sellMySelf ? false : true }
+                      disabled={!data.sellMySelf ? false : true}
                     />
                     <label htmlFor="buy" className="checktext">
                       Help me sell
@@ -702,25 +739,51 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
               {/* Photos uploaded */}
               <div className="image-gallery my-2">
-                {existingProperty.mediaFiles.filter((m) => m.isImage).length > 0 ? 
-                  existingProperty.mediaFiles
-                  .filter((m) => m.isImage)
-                  .map((singleImage, i) => {
-                    return (
-                      <div className="single-img uploaded">
-                        <div className="trash-file d-flex justify-content-end">
-                          <IoMdTrash color="#fff" /> 
-                        </div>
-                        <img src={singleImage.url} alt="uploaded-images" />
-                      </div>
-                    );
-                  }) : (
-                    <div className="no-files"> No Images has been uploaded... </div>
-                  )
-                }
+                {existingProperty &&
+                existingProperty.mediaFiles &&
+                existingProperty.mediaFiles.filter((m) => m.isImage).length > 0
+                  ? existingProperty &&
+                    existingProperty.mediaFiles &&
+                    existingProperty.mediaFiles
+                      .filter((m) => m.isImage)
+                      .map((singleImage, i) => {
+                        return (
+                          <div className="single-img uploaded" key={i}>
+                            <div className="trash-file d-flex justify-content-end" onCLick={ () =>  deleteMedia(singleImage.id)}>
+                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(singleImage.id)}/>
+                            </div>
+                            <img src={singleImage.url} alt="uploaded-images" />
+                          </div>
+                        );
+                      })
+                  : null}
+                {previews.map((preview, index) => {
+                  return (
+                    <div className="single-img uploaded">
+                      {/* <div className="trash-file d-flex justify-content-end">
+                        <IoMdTrash color="#fff" />
+                      </div> */}
+                      <img src={preview} alt="uploaded-images" />
+                    </div>
+                  );
+                })}
+
+                <Dropzone
+                  accept="image/jpeg, image/png"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()} className="admin-img-field">
+                      <input {...getInputProps()} />
+                      {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                    </div>
+                  )}
+                </Dropzone>
               </div>
-
-
 
               <Dropzone
                 accept="video/mp4"
@@ -762,27 +825,54 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </section>
                 )}
               </Dropzone>
-              
+
               {/* Videos uploaded */}
               <div className="image-gallery my-3">
-                { existingProperty.mediaFiles.filter((m) => m.isVideo).length > 0 ?
-                  existingProperty.mediaFiles.filter((m) => m.isVideo)
-                  .map((video, i) => {
-                    return (
-                      <div className="single-img uploaded">
-                        <div className="trash-file d-flex justify-content-end">
-                          <IoMdTrash color="#fff" /> 
-                        </div>
-                        <img src={video.url} alt="uploaded-images" />
-                      </div>
-                    );  
-                  }) : (
-                    <div className="no-files"> No video has been uploaded... </div>
-                  )
-                }
+                {existingProperty &&
+                existingProperty.mediaFiles &&
+                existingProperty.mediaFiles.filter((m) => m.isVideo).length > 0
+                  ? existingProperty &&
+                    existingProperty.mediaFiles &&
+                    existingProperty.mediaFiles
+                      .filter((m) => m.isVideo)
+                      .map((video, i) => {
+                        return (
+                          <div className="single-img uploaded" key={i}>
+                            <div className="trash-file d-flex justify-content-end">
+                              <IoMdTrash color="#fff" onCLick={ () =>  deleteMedia(video.id)}/>
+                            </div>
+                            <video src={video.url} alt="uploaded-images" />
+                          </div>
+                        );
+                      })
+                  : null}
+                {videoPreviews.map((video, index) => {
+                  return (
+                    <div className="single-img uploaded">
+                      {/* <div className="trash-file d-flex justify-content-end">
+                        <IoMdTrash color="#fff" />
+                      </div> */}
+                      <video src={video} alt="uploaded-images" />
+                    </div>
+                  );
+                })}
               </div>
-              
-              
+              <Dropzone
+                  accept="video/mp4"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) => grabUploadedVideoFile(acceptedFiles)}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()} className="admin-img-field">
+                      <input {...getInputProps()} />
+                      {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                    </div>
+                  )}
+                </Dropzone>
+
               <div className="counter-pad">
                 <div className="counter-label">Bedrooms</div>
                 <div className="counter-box">
@@ -815,16 +905,25 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </button>
                 </div>
               </div>
-              { isEdit ? (
+              {isEdit ? (
                 <div className="my-5 d-flex align-items-center justify-content-center">
-                  <label for="toggle" className="toggle-label mr-3">Draft</label>
+                  <label for="toggle" className="toggle-label mr-3">
+                    Draft
+                  </label>
                   <label className="switch mx-1">
-                    <input type="checkbox" onChange={(e) => { setIsPublish(e.target.checked)}} />
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        setIsPublish(e.target.checked);
+                      }}
+                    />
                     <span className="slider round"></span>
                   </label>
-                  <label for="toggle" className="toggle-label ml-3">Live</label>
+                  <label for="toggle" className="toggle-label ml-3">
+                    Live
+                  </label>
                 </div>
-              ) : null }
+              ) : null}
               <div className="joint-btn mg mt-5">
                 {/* <button
                   className="no-color-btn draft"
@@ -854,9 +953,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     "Submit"
                   )}
                 </button>
-                
               </div>
-              
             </div>
           ) : null}
         </Form>
