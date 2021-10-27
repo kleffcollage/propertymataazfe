@@ -657,7 +657,7 @@ function ReliefForm({ property = null, close }) {
                   placeholder="Relief amount"
                   name="reliefAmount"
                   {...register("reliefAmount")}
-                  defaultValue={property.price}
+                  // defaultValue={property.price}
                 />
               </div>
               
