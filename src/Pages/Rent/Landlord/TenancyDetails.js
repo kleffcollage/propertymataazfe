@@ -131,7 +131,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
             <div className="modal-content applied">
                 <div className="col-12 my-1">
                     <div className="listing-cards" style={{ 'minHeight': '40rem' }}>
-                        <div className="listing-cover-img">
+                        <div className="listing-cover-img" style={{ height: '16rem' }}>
                             <img
                                 src={
                                     property && property?.mediaFiles && property?.mediaFiles.length > 0

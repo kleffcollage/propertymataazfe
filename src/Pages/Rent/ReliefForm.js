@@ -14,6 +14,7 @@ import { Box } from "@material-ui/core";
 import { typeOfApplications } from "../../Utilities/Enums"
 import Naira from "react-naira"
 import CurrencyInput from 'react-currency-input-field';
+const CountryList = require("country-list").getNames()
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -21,6 +22,7 @@ Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
 function ReliefForm({ property = null, close }) {
+  console.log({CountryList})
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
@@ -430,14 +432,19 @@ function ReliefForm({ property = null, close }) {
             
             <div className="input-box">
               <div className="input-label">Nationality</div>
-              <input
-                type="text"
-                className="formfield"
-                placeholder="Your nationality, e.g Nigerian"
-                name="register.nationality"
-                {...register("register.nationality")}
-                defaultValue={user.nationality}
-              />
+                <select
+                  className="formfield"
+                  name="register.nationality"
+                  {...register("register.nationality")}
+                >
+                  <option value="" selected> Choose your nationality </option>
+                  { CountryList.map((country, index) => {
+                    return (
+                      <option key={index} value={country}> {country} </option>                      
+                    )
+                  })}
+                </select>
+                <div className="arrows" />
             </div>
             
             <div className="input-box">
@@ -448,7 +455,7 @@ function ReliefForm({ property = null, close }) {
                   name="register.martialStatus"
                   {...register("register.maritalStatus")}
                 >
-                  <option value="" selected disabled> Choose an option </option>
+                  <option value="" selected> Choose an option </option>
                   <option value="single"> Single  </option>
                   <option value="married"> Married </option>
                   <option value="divorced"> Divorced </option>    
