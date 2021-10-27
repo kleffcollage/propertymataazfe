@@ -18,3 +18,33 @@ code {
 .Toastify__toast--success {
   background-color: #28a745;
 }
+
+.admin-img-field {
+  height: 71px;
+  width: 71px;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: 0;
+  border-radius: 6px;
+  background-color: #f8f8f8;
+  position: relative;
+  margin-right: 1rem;
+}
+.admin-img-field::before {
+  content: "";
+  position: absolute;
+  color: #8d8d8d;
+  font-family: "Font Awesome 5 Pro";
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 18px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.admin-img-field img {
+  z-index: 2;
+}
