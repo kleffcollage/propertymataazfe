@@ -270,7 +270,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const createListingDetails = async (values) => {
-    if (values.mediafiles.length == 0) {
+    console.log({values});
+    if (values.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
       setLoading(false);
       return;
