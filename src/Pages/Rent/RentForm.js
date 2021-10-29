@@ -270,34 +270,34 @@ function RentForm({ close }) {
     record.price = price;
     // record.tenantAnnualIncome = tenantAnnualIncome;
 
-    // try {
-    //   var data = await Fetch("Property/create", "post", record);
-    //   console.log("Rent property: ", data);
-    //   if (!data.status) {
-    //     setLoading(false);
-    //     setErrormessage(data.message);
-    //     toast.error(data.message);
-    //     return;
-    //   }
-    //   if (data.status != 400) {
-    //     setLoading(false);
-    //     //   setListingDetails({});
-    //     close(true);
-    //     toast.success("Property successfully listed for rent.");
-    //     history.push("/listings");
-    //     // history.push("/sell");
-    //     // await currentStep();
-    //     return;
-    //   }
+    try {
+      var data = await Fetch("Property/create", "post", record);
+      console.log("Rent property: ", data);
+      if (!data.status) {
+        setLoading(false);
+        setErrormessage(data.message);
+        toast.error(data.message);
+        return;
+      }
+      if (data.status != 400) {
+        setLoading(false);
+        //   setListingDetails({});
+        close(true);
+        toast.success("Property successfully listed for rent.");
+        history.push("/listings");
+        // history.push("/sell");
+        // await currentStep();
+        return;
+      }
 
-    //   toast.error(data.message);
-    //   // history.push("/my-mattaz");
-    //   handleValidationErrors(data.errors);
-    //   setLoading(false);
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.error(error);
-    // }
+      toast.error(data.message);
+      // history.push("/my-mattaz");
+      handleValidationErrors(data.errors);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
