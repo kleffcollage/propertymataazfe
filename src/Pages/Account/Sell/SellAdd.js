@@ -933,7 +933,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 </div>
               ) : null}
               <div className="joint-btn mg mt-5">
-                {/* <button
+              { !isEdit ?
+                <button
                   className="no-color-btn draft"
                   type="submit"
                   onClick={() => {
@@ -947,12 +948,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   ) : (
                     "Save to Draft"
                   )}
-                </button> */}
-                <button type="button" className="no-color-btn" onClick={close}>
-                  Cancel
                 </button>
-
-                <button className="color-btn draft" type="submit">
+              : null }
+              
+                <button className={`color-btn draft ${isEdit ? 'w-100' : '' }`} type="submit">
                   {loading ? (
                     <Spinner />
                   ) : existingProperty.name ? (
@@ -961,7 +960,12 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     "Submit"
                   )}
                 </button>
+                
               </div>
+              
+              <button type="button" className="no-color-btn py-2 w-100 mt-4" onClick={close}>
+                Cancel
+              </button>
             </div>
           ) : null}
         </Form>
