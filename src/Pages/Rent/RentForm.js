@@ -268,36 +268,36 @@ function RentForm({ close }) {
     console.log({ rentDetails });
     let record = rentDetails;
     record.price = price;
-    record.tenantAnnualIncome = tenantAnnualIncome;
+    // record.tenantAnnualIncome = tenantAnnualIncome;
 
-    try {
-      var data = await Fetch("Property/create", "post", record);
-      console.log("Rent property: ", data);
-      if (!data.status) {
-        setLoading(false);
-        setErrormessage(data.message);
-        toast.error(data.message);
-        return;
-      }
-      if (data.status != 400) {
-        setLoading(false);
-        //   setListingDetails({});
-        close(true);
-        toast.success("Property successfully listed for rent.");
-        history.push("/listings");
-        // history.push("/sell");
-        // await currentStep();
-        return;
-      }
+    // try {
+    //   var data = await Fetch("Property/create", "post", record);
+    //   console.log("Rent property: ", data);
+    //   if (!data.status) {
+    //     setLoading(false);
+    //     setErrormessage(data.message);
+    //     toast.error(data.message);
+    //     return;
+    //   }
+    //   if (data.status != 400) {
+    //     setLoading(false);
+    //     //   setListingDetails({});
+    //     close(true);
+    //     toast.success("Property successfully listed for rent.");
+    //     history.push("/listings");
+    //     // history.push("/sell");
+    //     // await currentStep();
+    //     return;
+    //   }
 
-      toast.error(data.message);
-      // history.push("/my-mattaz");
-      handleValidationErrors(data.errors);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error(error);
-    }
+    //   toast.error(data.message);
+    //   // history.push("/my-mattaz");
+    //   handleValidationErrors(data.errors);
+    //   setLoading(false);
+    // } catch (error) {
+    //   setLoading(false);
+    //   console.error(error);
+    // }
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
@@ -749,7 +749,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected disabled>
+                <option selected>
                   Choose an option
                 </option>
                 {tenantType.map((type, i) => {
@@ -769,7 +769,23 @@ function RentForm({ close }) {
 						value={rentDetails.tenantAnnualIncome}
 						onChange={handleOnChange}
 					/> */}
-            <CurrencyInput
+          <div className="select-box">
+            <select
+              className="formfield"
+              name="tenantAnnualIncome"
+              defaultValue={rentDetails.tenantAnnualIncome}
+              onChange={handleOnChange}
+            >
+              <option>Choose an option</option>
+              <option value="50,000 - 250,000">&#8358;{"50,000"} - &#8358;{"250,000"}</option>
+              <option value="250,000 - 500,000">&#8358;{"250,000"} - &#8358;{"500,000"}</option>
+              <option value="500,000 - 750,000">&#8358;{"500,000"} - &#8358;{"750,000"}</option>
+              <option value="750,000 - 1m">&#8358;{"750,000"} - &#8358;{"1,000,000"}</option>
+              <option value="1m and above">&#8358;{"1m and above"}</option>  
+            </select>
+            <div className="arrows" />
+          </div>
+            {/* <CurrencyInput
               id="input-example"
               className="formfield"
               name="price"
@@ -778,7 +794,7 @@ function RentForm({ close }) {
               decimalsLimit={2}
               value={tenantAnnualIncome}
               onValueChange={(value, name) => setTenantAnnualIncome(value)}
-            />
+            /> */}
           </div>
 
           <h6 className="field-title mb-4 mt-2">Rent Collection</h6>
