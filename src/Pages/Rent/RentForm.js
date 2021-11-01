@@ -77,12 +77,27 @@ function RentForm({ close }) {
   const [cities, setCities] = useState([]);
   const [tenantType, setTenantTypes] = useState([]);
   const [rentCollection, setRentCollection] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
+  const [mediaFiles, setMediaFiles] = useState([]);
 
   const handleOnChange = (e) => {
     // showAlert("success", "Something toasted", "Everything works ");
     const { name, value } = e.target;
     setRentDetails({ ...rentDetails, [name]: value });
     // console.log(rentDetails);
+  };
+  const extractPreviewFromFile = async (uploadedFiles, isVideo = false) => {
+    var newState = [];
+    uploadedFiles.map((element) => {
+      console.log(element);
+      newState.push(URL.createObjectURL(element));
+    });
+    if (isVideo) {
+      setVideoPreviews([...videoPreviews, ...newState]);
+      return;
+    }
+    setPreviews([...previews, ...newState]);
   };
 
   const bedIncrement = (e) => {
@@ -138,6 +153,7 @@ function RentForm({ close }) {
   //   };
 
   const grabUploadedFile = (uploadedFiles) => {
+    extractPreviewFromFile(uploadedFiles);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -161,7 +177,7 @@ function RentForm({ close }) {
   };
 
   const composeMedia = (bytes, file) => {
-    var files = [];
+    var files = [...mediaFiles];
 
     var newMedia = {
       name: file.name,
@@ -180,10 +196,7 @@ function RentForm({ close }) {
 
     files.push(newMedia);
     console.log(files);
-    setRentDetails({
-      ...rentDetails,
-      mediafiles: [...rentDetails.mediafiles, newMedia],
-    });
+    setMediaFiles(files);
   };
 
   const getFileExtention = (fileName) => {
@@ -233,7 +246,7 @@ function RentForm({ close }) {
       console.log(error);
     }
   };
-  
+
   const getRentCollection = async () => {
     try {
       const { status, data } = await Fetch("Property/collection/types");
@@ -260,7 +273,7 @@ function RentForm({ close }) {
     e.preventDefault();
     setLoading(true);
 
-    if (rentDetails.mediafiles.length == 0) {
+    if (mediaFiles.length == 0) {
       toast.info("Upload atleast a photo or video for your property.");
       setLoading(false);
       return;
@@ -268,6 +281,7 @@ function RentForm({ close }) {
     console.log({ rentDetails });
     let record = rentDetails;
     record.price = price;
+    record.mediafiles = mediaFiles;
     // record.tenantAnnualIncome = tenantAnnualIncome;
 
     try {
@@ -301,6 +315,7 @@ function RentForm({ close }) {
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
+    extractPreviewFromFile(uploadedFiles, TextTrackCueList);
     console.log(uploadedFiles);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -425,9 +440,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected>
-                  Choose a property type
-                </option>
+                <option selected>Choose a property type</option>
                 {propertyTypes.map((type, i) => {
                   return (
                     <option key={i} value={parseInt(type.id)}>
@@ -449,9 +462,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected>
-                  Choose property title
-                </option>
+                <option selected>Choose property title</option>
                 {propertyTitles.map((type, i) => {
                   return (
                     <option key={i} value={type.name}>
@@ -614,6 +625,36 @@ function RentForm({ close }) {
               </section>
             )}
           </Dropzone>
+          <div className="image-gallery my-2">
+            <Dropzone
+              accept="image/jpeg, image/png"
+              maxFiles={6}
+              onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <div
+                  {...getRootProps()}
+                  className="admin-img-field single-img uploaded"
+                >
+                  <input {...getInputProps()} />
+                  {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                </div>
+              )}
+            </Dropzone>
+            {previews.map((preview, index) => {
+              return (
+                <div className="single-img uploaded">
+                  {/* <div className="trash-file d-flex justify-content-end">
+                        <IoMdTrash color="#fff" />
+                      </div> */}
+                  <img src={preview} alt="uploaded-images" />
+                </div>
+              );
+            })}
+          </div>
 
           <Dropzone
             accept="video/mp4"
@@ -653,6 +694,38 @@ function RentForm({ close }) {
                       Upload Video
                     </>
                   )}
+                </div>
+                <div className="image-gallery my-3">
+                  <Dropzone
+                    accept="video/mp4"
+                    maxFiles={6}
+                    onDrop={(acceptedFiles) =>
+                      grabUploadedVideoFile(acceptedFiles)
+                    }
+                  >
+                    {({ getRootProps, getInputProps }) => (
+                      <div
+                        {...getRootProps()}
+                        className="admin-img-field single-img uploaded"
+                      >
+                        <input {...getInputProps()} />
+                        {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                      </div>
+                    )}
+                  </Dropzone>
+                  {videoPreviews.map((video, index) => {
+                    return (
+                      <div className="single-img uploaded">
+                        {/* <div className="trash-file d-flex justify-content-end">
+                        <IoMdTrash color="#fff" />
+                      </div> */}
+                        <video src={video} alt="uploaded-images" />
+                      </div>
+                    );
+                  })}
                 </div>
               </section>
             )}
@@ -704,14 +777,16 @@ function RentForm({ close }) {
                   sellMySelf: e.target.checked,
                 });
               }}
-              disabled={ !rentDetails.helpMeSell ? false : true }
+              disabled={!rentDetails.helpMeSell ? false : true}
             />
             <label htmlFor="sell" className="checktext">
               I want to manage the tenant myself
             </label>
           </div>
           <div className="checkbox">
-            <input type="checkbox" id="rent" 
+            <input
+              type="checkbox"
+              id="rent"
               name="helpMeSell"
               onChange={(e) => {
                 setRentDetails({
@@ -719,7 +794,7 @@ function RentForm({ close }) {
                   helpMeSell: e.target.checked,
                 });
               }}
-              disabled={ !rentDetails.sellMySelf ? false : true }  
+              disabled={!rentDetails.sellMySelf ? false : true}
             />
             <label htmlFor="buy" className="checktext">
               Help me manage my tenant
@@ -749,9 +824,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected>
-                  Choose an option
-                </option>
+                <option selected>Choose an option</option>
                 {tenantType.map((type, i) => {
                   return <option value={type.id}>{type.name}</option>;
                 })}
@@ -769,22 +842,30 @@ function RentForm({ close }) {
 						value={rentDetails.tenantAnnualIncome}
 						onChange={handleOnChange}
 					/> */}
-          <div className="select-box">
-            <select
-              className="formfield"
-              name="tenantAnnualIncome"
-              defaultValue={rentDetails.tenantAnnualIncome}
-              onChange={handleOnChange}
-            >
-              <option>Choose an option</option>
-              <option value="50,000 - 250,000">&#8358;{"50,000"} - &#8358;{"250,000"}</option>
-              <option value="250,000 - 500,000">&#8358;{"250,000"} - &#8358;{"500,000"}</option>
-              <option value="500,000 - 750,000">&#8358;{"500,000"} - &#8358;{"750,000"}</option>
-              <option value="750,000 - 1m">&#8358;{"750,000"} - &#8358;{"1,000,000"}</option>
-              <option value="1m and above">&#8358;{"1m and above"}</option>  
-            </select>
-            <div className="arrows" />
-          </div>
+            <div className="select-box">
+              <select
+                className="formfield"
+                name="tenantAnnualIncome"
+                defaultValue={rentDetails.tenantAnnualIncome}
+                onChange={handleOnChange}
+              >
+                <option>Choose an option</option>
+                <option value="50,000 - 250,000">
+                  &#8358;{"50,000"} - &#8358;{"250,000"}
+                </option>
+                <option value="250,000 - 500,000">
+                  &#8358;{"250,000"} - &#8358;{"500,000"}
+                </option>
+                <option value="500,000 - 750,000">
+                  &#8358;{"500,000"} - &#8358;{"750,000"}
+                </option>
+                <option value="750,000 - 1m">
+                  &#8358;{"750,000"} - &#8358;{"1,000,000"}
+                </option>
+                <option value="1m and above">&#8358;{"1m and above"}</option>
+              </select>
+              <div className="arrows" />
+            </div>
             {/* <CurrencyInput
               id="input-example"
               className="formfield"
@@ -809,7 +890,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option value="" selected disabled>
+                <option value="" selected>
                   Choose option: Weekly, monthly, yearly
                 </option>
                 {rentCollection.map((type, i) => {
@@ -828,9 +909,7 @@ function RentForm({ close }) {
                 onChange={handleOnChange}
                 className="formfield"
               >
-                <option selected>
-                  Choose your bank
-                </option>
+                <option selected>Choose your bank</option>
                 {banks.map((bank, index) => {
                   return <option value={bank.name}>{bank.name}</option>;
                 })}
@@ -859,9 +938,9 @@ function RentForm({ close }) {
               {loading ? <Spinner /> : "Submit"}
             </button>
           </div>
-            <button type="submit" className="options my-2 mt-0" onClick={close}>
-              Cancel
-            </button>
+          <button type="submit" className="options my-2 mt-0" onClick={close}>
+            Cancel
+          </button>
         </form>
       ) : null}
     </div>

@@ -16,7 +16,7 @@ function Sell() {
 	const [offset, setOffset] = useState(1);
 	const [limit, setLimit] = useState(20);
 
-	const showProperties = async (url = "Property/user/created") => {
+	const showProperties = async (url = "Property/user/created/sale") => {
 		setLoading(true);
 		var data = await Fetch(url);
 		console.log(data);

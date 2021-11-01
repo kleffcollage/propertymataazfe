@@ -61,7 +61,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
       />
 
       <Modal open={editModal} onClose={() => setEditModal(false)}>
-        <SellAdd close={close} existingProperty={property} />
+        <SellAdd close={close} existingProperty={property} isEdit={true}/>
       </Modal>
 
       {property.isDraft === true ? null : (
@@ -87,7 +87,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
                   : property.status === Statuses.VERIFIED
                   ? "verify"
                   : property.status === Statuses.SOLD
-                  ? "CLOSED"
+                  ? "draft"
                   : "pending"
               }`}
             >
@@ -95,6 +95,8 @@ const PropertyCard = ({ property = {}, seeMore }) => {
                 className={
                   property.status === Statuses.VERIFIED
                     ? "text-white status"
+                    : property.status === Statuses.SOLD ?
+                    "status text-white"
                     : "status"
                 }
               >
@@ -114,7 +116,7 @@ const PropertyCard = ({ property = {}, seeMore }) => {
                 }
                 onClick={open}
               >
-                Edit <i className="fas fa-pen ml-2" />
+                {property.status === Statuses.SOLD ? null :<> Edit <i className="fas fa-pen ml-2" /> </>}
               </div>
             </div>
             <div className="listing-info for-sell">

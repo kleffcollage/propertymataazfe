@@ -11,7 +11,7 @@ import { SRLWrapper } from "simple-react-lightbox";
 import TenantDetails from "../../../Pages/Rent/Tenant/TenantDetails";
 
 const PropertyApplied = ({ property = {}, close }) => {
-  const [loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showTenant, setShowTenant] = useState(false);
   const [applications, setApplications] = useState([]);
@@ -24,21 +24,21 @@ const PropertyApplied = ({ property = {}, close }) => {
   console.log({ property });
 
   const getApplications = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const data = await Fetch(`Application/list/${property.id}`);
       console.log({ data });
       if (!data.status) {
         console.log({ data });
-        setLoading(false)
+        setLoading(false);
         return;
       }
       setApplications(data.data.value);
-      setLoading(false)
+      setLoading(false);
       return;
     } catch (error) {
       console.error(error);
-      setLoading(false)
+      setLoading(false);
       return;
     }
   };
@@ -46,7 +46,7 @@ const PropertyApplied = ({ property = {}, close }) => {
   const showApplicantDetails = (application) => {
     setSelectedApplication(application);
     setShowTenant(true);
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +83,7 @@ const PropertyApplied = ({ property = {}, close }) => {
       <div className="modal-content applied">
         <div className="mt-4">
           <div className="listing-cards">
-            <div className="listing-cover-img" style={{ height: '16rem' }}>
+            <div className="listing-cover-img" style={{ height: "16rem" }}>
               <img
                 alt=""
                 src={
@@ -132,37 +132,108 @@ const PropertyApplied = ({ property = {}, close }) => {
                 </div>
                 {/* <div className="listing-title mb-3">{property.property.name}</div> */}
               </div>
-              { loading ?
+              {loading ? (
                 <div className="d-flex">
-                  <Spinner size="40" color="primary" />                  
+                  <Spinner size="40" color="primary" />
                 </div>
-              : (
-                  <>
-                    <div className="property-sub-title mt-2 mb-3">
-                      { (applications.length > 0) ? 'Tenant Applications' : 
-                        applications.status == "APPROVED" ? 'Approved Application' : 'No applications yet.' }
+              ) : (
+                <>
+                  <div className="property-sub-title mt-2 mb-3">
+                    {applications.filter((a) => a.status == "APPROVED").length >
+                    0
+                    ? "Approved Application"
+                    : null}
                     </div>
-                    { applications && applications.map((application, index) => {
-                      return (
-                        <div
-                          className="d-flex applicants my-3"
-                          onClick={() => showApplicantDetails(application)}
-                        >
-                          <div className="applicants-avi flex-shrink-0">
-                            <img src="/asset/@3xGideon.png" alt="gideon" />
-                          </div>
-                          <div className="applicants-detail mx-3">
-                            <h6>{`${application.user.firstName} ${application.user.middleName} ${application.user.lastName}`}</h6>
-                            <p className="mb-1">{application.user.maritalStatus}</p>
-                            <p className="mb-1">{application.user.occupation}</p>
-                            <p className="mb-1">Earns <Naira>{application.user.annualIncome}</Naira> per year</p>
-                          </div>
+                    {applications.filter((a) => a.status == Statuses.APPROVED)
+                      .length > 0 ? (
+                      <div
+                        className="d-flex applicants my-3"
+                        onClick={() =>
+                          showApplicantDetails(
+                            applications.filter(
+                              (a) => a.status == Statuses.APPROVED
+                            )[0]
+                          )
+                        }
+                      >
+                        <div className="applicants-avi flex-shrink-0">
+                          <img src={applications.filter(
+                                (a) => a.status == Statuses.APPROVED
+                              )[0].user.passportPhotograph.url} alt="gideon" />
                         </div>
-                      );
-                    })}
-                  </>
-                )
-              }
+                        <div className="applicants-detail mx-3">
+                          <h6>{`${
+                            applications.filter(
+                              (a) => a.status == Statuses.APPROVED
+                            )[0].user.fullName
+                          }`}</h6>
+                          <p className="mb-1">
+                            {
+                              applications.filter(
+                                (a) => a.status == Statuses.APPROVED
+                              )[0].user.maritalStatus
+                            }
+                          </p>
+                          <p className="mb-1">
+                            {
+                              applications.filter(
+                                (a) => a.status == Statuses.APPROVED
+                              )[0].user.occupation
+                            }
+                          </p>
+                          <p className="mb-1">
+                            Earns{" "}
+                            <Naira>
+                              {
+                                applications.filter(
+                                  (a) => a.status == Statuses.APPROVED
+                                )[0].user.annualIncome
+                              }
+                            </Naira>{" "}
+                            per year
+                          </p>
+                        </div>
+                      </div>
+                    ) : null}
+                  <div className="property-sub-title mt-2 mb-3">
+                    {applications.length > 0
+                      ? "Tenant Applications"
+                      : applications.status == "APPROVED"
+                      ? "Approved Application"
+                      : "No applications yet."}
+                  </div>
+                  {applications &&
+                    applications
+                      .filter((a) => a.status != Statuses.APPROVED)
+                      .map((application, index) => {
+                        console.log({ application });
+                        return (
+                          <div
+                            className="d-flex applicants my-3"
+                            onClick={() => showApplicantDetails(application)}
+                          >
+                            <div className="applicants-avi flex-shrink-0">
+                              <img src="/asset/@3xGideon.png" alt="gideon" />
+                            </div>
+                            <div className="applicants-detail mx-3">
+                              <h6>{`${application.user.fullName}`}</h6>
+                              <p className="mb-1">
+                                {application.user.maritalStatus}
+                              </p>
+                              <p className="mb-1">
+                                {application.user.occupation}
+                              </p>
+                              <p className="mb-1">
+                                Earns{" "}
+                                <Naira>{application.user.annualIncome}</Naira>{" "}
+                                per year
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                </>
+              )}
               {show && (
                 <>
                   <div className="overview-section">

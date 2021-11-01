@@ -74,7 +74,7 @@ const TenantDetails = ({ application, close }) => {
         <div className="applicants mt-4 mb-5 px-2 px-sm-3">
           <div className="d-flex flex-column align-items-center my-3">
             <div className="tenant-avi ">
-              <img src="/asset/@3xGideon.png" alt="gideon" />
+              <img src={application.user.passportPhotograph?.url} alt="gideon" />
             </div>
             <div className="property-title">{application.user.fullName}</div>
           </div>
@@ -205,9 +205,9 @@ const TenantDetails = ({ application, close }) => {
             </div>
           </div>
           <div className="d-flex applicants my-3">
-            <div className="tenant-info-box">
+            <div className="tenant-info-box tenant-avi">
               <h6>Work ID</h6>
-              <img src="/asset/@3xGideon.png" alt="gideon" />
+              <img src={application.user.workId.url} alt="gideon" />
             </div>
           </div>
         </div>
