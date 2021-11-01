@@ -9,7 +9,7 @@ import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
 import DatePicker from "react-datepicker";
 import Naira from "react-naira";
-import * as Yup from "yup"
+import * as Yup from "yup";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -19,7 +19,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const user = useContext(MainContext);
-  const [dob,setDob] = useState(new Date());
+  const [dob, setDob] = useState(new Date());
   // const applicationTypes = useContext(MainContext)
   // console.log({user});
   // console.log({applicationTypes});
@@ -35,7 +35,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       middleName: "",
       lastName: user.data.user.lastName,
       email: user.data.user.email,
-      mobileNumber: user.data.user.phoneNumber || '',
+      phoneNumber: user.data.user.phoneNumber || "",
       address: "",
       nationality: "",
       dateOfBirth: "",
@@ -49,44 +49,53 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       workId: mediafiles.workId,
     },
     nextOfKin: {
-      nokFirstName: "",
-      nokLastName: "",
-      nokEmail: "",
-      nokMobileNumber: "",
-      nokRelationship: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      relationship: "",
     },
     propertyId: 0,
     applicationTypeId: 0,
   };
-  
+
   const userDetailsValidationSchema = Yup.object().shape({
     register: Yup.object({
-      firstName: Yup.string().required('First name is required'),
-      middleName: Yup.string().required('Middle name is required'),
-      lastName: Yup.string().required('Last name is required'),
-      email: Yup.string().email('Invalid email address').required('Email is Required'),
-      mobileNumber: Yup.string().required('Mobile number is required'),
-      address: Yup.string().required('Address is required'),
-      nationality: Yup.string().required('Nationality is required'),
-      dateOfBirth: Yup.date().default(() => { return new Date() }).required('Mobile number is required'),
+      firstName: Yup.string().required("First name is required"),
+      middleName: Yup.string().required("Middle name is required"),
+      lastName: Yup.string().required("Last name is required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is Required"),
+      phoneNumber: Yup.string().required("Mobile number is required"),
+      address: Yup.string().required("Address is required"),
+      nationality: Yup.string().required("Nationality is required"),
+      dateOfBirth: Yup.date()
+        .default(() => {
+          return new Date();
+        })
+        .required("Mobile number is required"),
       maritalStatus: Yup.string()
         .oneOf(
-          ['Single', 'Married', 'Divorced', 'Others'],
-          'Invalid Marital Status'
-        ).required('Marital status is required'),
-      occupation: Yup.string().required('Occupation is required'),
-      employer: Yup.string().required('Employer is required'),
-      workAddress: Yup.string().required('Work Address is required'),
-      annualIncome: Yup.string().required('Annual Income is required'),
+          ["Single", "Married", "Divorced", "Others"],
+          "Invalid Marital Status"
+        )
+        .required("Marital status is required"),
+      occupation: Yup.string().required("Occupation is required"),
+      employer: Yup.string().required("Employer is required"),
+      workAddress: Yup.string().required("Work Address is required"),
+      annualIncome: Yup.string().required("Annual Income is required"),
     }),
     nextOfKin: Yup.object({
-      nokFirstName: Yup.string().required('First name is required'),
-      nokLastName: Yup.string().required('Last name is required'),
-      nokEmail: Yup.string().email('Invalid email address').required('Email is Required'),
-      nokMobileNumber: Yup.string().required('Mobile number is required'),
-      nokRelationship: Yup.string().required('Relationship is required'),
-    })
-  })
+      firstName: Yup.string().required("First name is required"),
+      lastName: Yup.string().required("Last name is required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is Required"),
+      phoneNumber: Yup.string().required("Mobile number is required"),
+      relationship: Yup.string().required("Relationship is required"),
+    }),
+  });
 
   const getApplicationTypes = async () => {
     try {
@@ -103,7 +112,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const formSubmit = async (values) => {
     setLoading(true);
 
-    values.register.passport = mediafiles.passport;
+    values.register.passportPhotograph = mediafiles.passport;
     values.register.workId = mediafiles.workId;
     values.propertyId = propertyId;
     values.applicationTypeId = isRentForm
@@ -113,9 +122,9 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
     console.log({ values });
 
     try {
-      if(isRentForm) {
-        const { workId, passport } = values.register;
-        if (workId == null || passport == null) {
+      if (isRentForm) {
+        const { workId, passportPhotograph } = values.register;
+        if (workId == null || passportPhotograph == null) {
           toast.info("Please, upload a copy of work Id and a passport.");
           setLoading(false);
           return;
@@ -128,6 +137,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       if (!data.status) {
         setLoading(false);
         setErrorMessage(data.message);
+        toast.error(data.message)
         console.log(errorMessage);
         return;
       }
@@ -242,8 +252,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
           </span>
         </div>
       </div>
-      
-      
+
       <Formik
         initialValues={userDetails}
         // validationSchema={userDetailsValidationSchema}
@@ -255,7 +264,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
         }}
       >
         <Form>
-          { page == 1 ? (
+          {page == 1 ? (
             <div className="modal-content">
               <div className="content-section mt-4">
                 <div className="schedule-title mb-4">
@@ -299,17 +308,17 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                 </div>
                 <div className="input-box">
                   <label
-                    htmlFor="register.mobileNumber"
+                    htmlFor="register.phoneNumber"
                     className="input-label"
                   >
                     Mobile Number
                   </label>
                   <Field
-                    name="register.mobileNumber"
+                    name="register.phoneNumber"
                     placeholder="Ezra"
                     className="formfield"
                   />
-                  <ErrorMessage component="span" name="register.mobileNumber" />
+                  <ErrorMessage component="span" name="register.phoneNumber" />
                 </div>
                 <div className="input-box">
                   <label htmlFor="register.email" className="input-label">
@@ -338,7 +347,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                   <label htmlFor="register.dateOfBirth" className="input-label">
                     Date of Birth
                   </label>
-                  <DatePicker selected={dob} onChange={(date) => setDob(date)} className="formfield"/>
+                  <DatePicker
+                    selected={dob}
+                    onChange={(date) => setDob(date)}
+                    className="formfield"
+                  />
                   <ErrorMessage component="span" name="register.dateOfBirth" />
                 </div>
                 <div className="input-box">
@@ -373,7 +386,10 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     </Field>
                     <div className="arrows"></div>
                   </div>
-                  <ErrorMessage component="span" name="register.maritalStatus" />
+                  <ErrorMessage
+                    component="span"
+                    name="register.maritalStatus"
+                  />
                 </div>
 
                 <button
@@ -425,7 +441,10 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="register.workAddress" />
+                    <ErrorMessage
+                      component="span"
+                      name="register.workAddress"
+                    />
                   </div>
 
                   {isRentForm ? (
@@ -443,16 +462,29 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                           as="select"
                           placeholder="This can be your annual salary of an estimated income"
                           className="formfield"
-                        > 
+                        >
                           <option>Choose an option</option>
-                          <option value="50,000 - 250,000">&#8358;{"50,000"} - &#8358;{"250,000"}</option>
-                          <option value="250,000 - 500,000">&#8358;{"250,000"} - &#8358;{"500,000"}</option>
-                          <option value="500,000 - 750,000">&#8358;{"500,000"} - &#8358;{"750,000"}</option>
-                          <option value="750,000 - 1m">&#8358;{"750,000"} - &#8358;{"1,000,000"}</option>
-                          <option value="1m and above">&#8358;{"1m and above"}</option>
+                          <option value="50,000 - 250,000">
+                            &#8358;{"50,000"} - &#8358;{"250,000"}
+                          </option>
+                          <option value="250,000 - 500,000">
+                            &#8358;{"250,000"} - &#8358;{"500,000"}
+                          </option>
+                          <option value="500,000 - 750,000">
+                            &#8358;{"500,000"} - &#8358;{"750,000"}
+                          </option>
+                          <option value="750,000 - 1m">
+                            &#8358;{"750,000"} - &#8358;{"1,000,000"}
+                          </option>
+                          <option value="1m and above">
+                            &#8358;{"1m and above"}
+                          </option>
                         </Field>
                         {/* <Naira>10000</Naira> */}
-                        <ErrorMessage component="span" name="register.annualIncome" />
+                        <ErrorMessage
+                          component="span"
+                          name="register.annualIncome"
+                        />
                       </div>
 
                       <Dropzone
@@ -529,84 +561,100 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
 
                   <div className="input-box">
                     <label
-                      htmlFor="nextOfKin.nokFirstName"
+                      htmlFor="nextOfKin.firstName"
                       className="input-label"
                     >
                       First Name
                     </label>
                     <Field
-                      name="nextOfKin.nokFirstName"
+                      name="nextOfKin.firstName"
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="nextOfKin.nokFirstName" />
+                    <ErrorMessage
+                      component="span"
+                      name="nextOfKin.firstName"
+                    />
                   </div>
                   <div className="input-box">
                     <label
-                      htmlFor="nextOfKin.nokMiddleName"
+                      htmlFor="nextOfKin.middleName"
                       className="input-label"
                     >
                       Middle Name
                     </label>
                     <Field
-                      name="nextOfKin.nokMiddleName"
+                      name="nextOfKin.middleName"
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="nextOfKin.nokMiddleName" />
+                    <ErrorMessage
+                      component="span"
+                      name="nextOfKin.middleName"
+                    />
                   </div>
                   <div className="input-box">
                     <label
-                      htmlFor="nextOfKin.nokLastName"
+                      htmlFor="nextOfKin.lastName"
                       className="input-label"
                     >
                       Surname
                     </label>
                     <Field
-                      name="nextOfKin.nokLastName"
+                      name="nextOfKin.lastName"
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="nextOfKin.nokLastName" />
+                    <ErrorMessage
+                      component="span"
+                      name="nextOfKin.lastName"
+                    />
                   </div>
                   <div className="input-box">
                     <label
-                      htmlFor="nextOfKin.nokMobileNumber"
+                      htmlFor="nextOfKin.phoneNumber"
                       className="input-label"
                     >
                       Mobile Number
                     </label>
                     <Field
-                      name="nextOfKin.nokMobileNumber"
+                      name="nextOfKin.phoneNumber"
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="nextOfKin.nokMobileNumber" />
+                    <ErrorMessage
+                      component="span"
+                      name="nextOfKin.phoneNumber"
+                    />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="nextOfKin.nokEmail" className="input-label">
+                    <label htmlFor="nextOfKin.email" className="input-label">
                       Email
                     </label>
                     <Field
-                      name="nextOfKin.nokEmail"
+                      name="nextOfKin.email"
                       type="email"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" name="nextOfKin.nokEmail" />
+                    <ErrorMessage component="span" name="nextOfKin.email" />
                   </div>
                   <div className="input-box">
                     <label
-                      htmlFor="nextOfKin.nokRelationship"
+                      htmlFor="nextOfKin.relationship"
                       className="input-label"
                     >
                       Relationship
                     </label>
                     <Field
-                      name="nextOfKin.nokRelationship"
+                      name="nextOfKin.relationship"
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage component="span" component="span" name="nextOfKin.nokRelationship" />
+                    <ErrorMessage
+                      component="span"
+                      component="span"
+                      name="nextOfKin.relationship"
+                    />
                   </div>
 
                   <button className="secondary-btn mt-5" type="submit">

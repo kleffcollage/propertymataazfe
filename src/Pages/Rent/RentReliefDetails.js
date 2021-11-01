@@ -178,7 +178,7 @@ function RentReliefDetails({ relief, close }) {
 									<p className="mb-0">{`Instalment ${index + 1}`}</p>
 									<p className="mb-0">+ <Naira>{data.amount}</Naira></p>
 								</div>
-								<p className="mb-0 last-paid">Paid on the {  moment(data.dateDue).format("L") } </p>
+								<p className="mb-0 last-paid">Paid on the {  moment(data.paidOn).format("L") } </p>
 							</div>
 							{/* {console.log(data.amount)} */}
 						</div>

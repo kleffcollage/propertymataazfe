@@ -13,6 +13,7 @@ import NaijaStates from "naija-state-local-government";
 import CurrencyInput from "react-currency-input-field";
 import { IoMdTrash } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
+import Compressor from "compressorjs";
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -34,7 +35,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     existingProperty.numberOfBathrooms || 0
   );
   const [price, setPrice] = useState(existingProperty.price || 0);
-  const [isPublish, setIsPublish] = useState(false);
+  const [isPublish, setIsPublish] = useState(!existingProperty.isDraft);
   console.log({ existingProperty });
   console.log({ isEdit });
 
@@ -138,6 +139,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const grabUploadedFile = (uploadedFiles) => {
     console.log({ uploadedFiles });
     extractPreviewFromFile(uploadedFiles);
+    const newFile = uploadedFiles.map((file) => {
+      return handleImageCompression(file);
+    });
+    console.log({ newFile });
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -157,6 +162,16 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       };
       console.log(file);
       reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageCompression = (file) => {
+    new Compressor(file, {
+      quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
+      success: (compressedResult) => {
+        console.log({ compressedResult });
+        return compressedResult;
+      },
     });
   };
 
@@ -240,7 +255,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
     values.mediaFiles = mediaFiles;
     values.id = existingProperty.id;
-    values.isDraft = isPublish ? false : true;
+    values.isDraft = !isPublish;
 
     try {
       var response = await Fetch("Property/update", "post", values);
@@ -271,7 +286,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
   const createListingDetails = async (values) => {
     // console.log({values});
-    
+
     if (values.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
       setLoading(false);
@@ -301,6 +316,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -327,28 +343,27 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     await createListingDetails(values);
   };
 
-  const deleteMedia = async ( id) => {
+  const deleteMedia = async (id) => {
     // e.preventDefault();
-    console.log({id});
+    console.log({ id });
     try {
       const data = await Fetch(`media/${id}`, "delete");
-      if(!data.status) {
+      if (!data.status) {
         toast.error(data.message);
         return;
       }
       close(true);
       toast.success("Media deleted successfully");
       return;
-
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       return;
     }
-  }
+  };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
     console.log(uploadedFiles);
-    extractPreviewFromFile(uploadedFiles,TextTrackCueList);
+    extractPreviewFromFile(uploadedFiles, TextTrackCueList);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
@@ -406,9 +421,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
         history.push("/sell/drafts");
       }
       handleValidationErrors(response.errors);
-      setLoading(false);
+      setDrafting(false);
     } catch (error) {
       console.error(error);
+      setDrafting(false);
     }
   };
 
@@ -451,7 +467,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
         initialValues={listingDetails}
         onSubmit={async (values, { setSubmitting }) => {
           data.price = price;
-          if (drafting) {
+          if (data.isDraft) {
             await submitListingToDraft(values);
             return;
           }
@@ -704,6 +720,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 accept="image/jpeg, image/png"
                 maxFiles={6}
                 onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+                // style={{position:"fixed"}}
               >
                 {({ getRootProps, getInputProps }) => (
                   <section>
@@ -743,6 +760,24 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
               {/* Photos uploaded */}
               <div className="image-gallery my-2">
+                <Dropzone
+                  accept="image/jpeg, image/png"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className="admin-img-field single-img uploaded"
+                    >
+                      <input {...getInputProps()} />
+                      {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                    </div>
+                  )}
+                </Dropzone>
                 {existingProperty &&
                 existingProperty.mediaFiles &&
                 existingProperty.mediaFiles.filter((m) => m.isImage).length > 0
@@ -753,14 +788,18 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .map((singleImage, i) => {
                         return (
                           <>
-                          <div className="single-img uploaded" key={i}>
-                            <div className="trash-file d-flex justify-content-end" 
-                              onClick={() => deleteMedia(singleImage.id)}
-                            >
-                              <IoMdTrash color="#fff" />
+                            <div className="single-img uploaded" key={i}>
+                              <div
+                                className="trash-file d-flex justify-content-end"
+                                onClick={() => deleteMedia(singleImage.id)}
+                              >
+                                <IoMdTrash color="#fff" />
+                              </div>
+                              <img
+                                src={singleImage.url}
+                                alt="uploaded-images"
+                              />
                             </div>
-                            <img src={singleImage.url} alt="uploaded-images" />
-                          </div>
                           </>
                         );
                       })
@@ -775,22 +814,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     </div>
                   );
                 })}
-
-                <Dropzone
-                  accept="image/jpeg, image/png"
-                  maxFiles={6}
-                  onDrop={(acceptedFiles) => grabUploadedFile(acceptedFiles)}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <div {...getRootProps()} className="admin-img-field">
-                      <input {...getInputProps()} />
-                      {/* <div className="trash-file d-flex justify-content-end">
-                    <IoMdAdd color="#fff" /> 
-                  </div>
-                  <GrAdd /> */}
-                    </div>
-                  )}
-                </Dropzone>
               </div>
 
               <Dropzone
@@ -836,6 +859,26 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
               {/* Videos uploaded */}
               <div className="image-gallery my-3">
+                <Dropzone
+                  accept="video/mp4"
+                  maxFiles={6}
+                  onDrop={(acceptedFiles) =>
+                    grabUploadedVideoFile(acceptedFiles)
+                  }
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className="admin-img-field single-img uploaded"
+                    >
+                      <input {...getInputProps()} />
+                      {/* <div className="trash-file d-flex justify-content-end">
+                    <IoMdAdd color="#fff" /> 
+                  </div>
+                  <GrAdd /> */}
+                    </div>
+                  )}
+                </Dropzone>
                 {existingProperty &&
                 existingProperty.mediaFiles &&
                 existingProperty.mediaFiles.filter((m) => m.isVideo).length > 0
@@ -846,7 +889,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       .map((video, i) => {
                         return (
                           <div className="single-img uploaded" key={i}>
-                            <div className="trash-file d-flex justify-content-end" onClick={ () =>  deleteMedia(video.id)}>
+                            <div
+                              className="trash-file d-flex justify-content-end"
+                              onClick={() => deleteMedia(video.id)}
+                            >
                               <IoMdTrash color="#fff" />
                             </div>
                             <video src={video.url} alt="uploaded-images" />
@@ -865,21 +911,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   );
                 })}
               </div>
-              <Dropzone
-                  accept="video/mp4"
-                  maxFiles={6}
-                  onDrop={(acceptedFiles) => grabUploadedVideoFile(acceptedFiles)}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <div {...getRootProps()} className="admin-img-field">
-                      <input {...getInputProps()} />
-                      {/* <div className="trash-file d-flex justify-content-end">
-                    <IoMdAdd color="#fff" /> 
-                  </div>
-                  <GrAdd /> */}
-                    </div>
-                  )}
-                </Dropzone>
 
               <div className="counter-pad mt-3">
                 <div className="counter-label">Bedrooms</div>
@@ -921,7 +952,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   <label className="switch mx-1">
                     <input
                       type="checkbox"
+                      defaultChecked={!existingProperty.isDraft}
+                      defaultValue={existingProperty.isDraft}
                       onChange={(e) => {
+                        console.log(e.target.checked);
                         setIsPublish(e.target.checked);
                       }}
                     />
@@ -933,25 +967,28 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 </div>
               ) : null}
               <div className="joint-btn mg mt-5">
-              { !isEdit ?
+                {!isEdit ? (
+                  <button
+                    className="no-color-btn draft"
+                    type="submit"
+                    onClick={() => {
+                      setData({ ...data, isDraft: true });
+                    }}
+                  >
+                    {drafting ? (
+                      <Spinner color={"primary"} />
+                    ) : existingProperty.name ? (
+                      "Update draft"
+                    ) : (
+                      "Save to Draft"
+                    )}
+                  </button>
+                ) : null}
+
                 <button
-                  className="no-color-btn draft"
+                  className={`color-btn draft ${isEdit ? "w-100" : ""}`}
                   type="submit"
-                  onClick={() => {
-                    setData({ ...data, isDraft: true });
-                  }}
                 >
-                  {drafting ? (
-                    <Spinner color={"primary"} />
-                  ) : existingProperty.name ? (
-                    "Update draft"
-                  ) : (
-                    "Save to Draft"
-                  )}
-                </button>
-              : null }
-              
-                <button className={`color-btn draft ${isEdit ? 'w-100' : '' }`} type="submit">
                   {loading ? (
                     <Spinner />
                   ) : existingProperty.name ? (
@@ -960,10 +997,13 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     "Submit"
                   )}
                 </button>
-                
               </div>
-              
-              <button type="button" className="no-color-btn py-2 w-100 mt-4" onClick={close}>
+
+              <button
+                type="button"
+                className="no-color-btn py-2 w-100 mt-4"
+                onClick={close}
+              >
                 Cancel
               </button>
             </div>

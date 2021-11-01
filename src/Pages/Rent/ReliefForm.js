@@ -251,6 +251,7 @@ function ReliefForm({ property = null, close }) {
       console.log('Rent property: ', data);
       if (!data.status) {
         setLoading(false);
+        toast.error(data.message)
         setErrormessage(data.message);
         return;
       }
