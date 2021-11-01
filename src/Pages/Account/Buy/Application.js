@@ -10,8 +10,9 @@ import Spinner from "../../../Utilities/Spinner";
 import DatePicker from "react-datepicker";
 import Naira from "react-naira";
 import * as Yup from "yup"
-
 import "react-datepicker/dist/react-datepicker.css";
+
+const CountryList = require("country-list").getNames()
 
 function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const history = useHistory();
@@ -348,8 +349,16 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                   <Field
                     name="register.nationality"
                     type="text"
+                    as="select"
                     className="formfield"
-                  />
+                  >
+                    <option value="" selected> Choose your nationality </option>
+                    { CountryList.map((country, index) => {
+                      return (
+                        <option key={index} value={country}> {country} </option>                      
+                        )
+                      })}
+                  </Field>
                   <ErrorMessage component="span" name="register.nationality" />
                 </div>
                 <div className="input-box">
