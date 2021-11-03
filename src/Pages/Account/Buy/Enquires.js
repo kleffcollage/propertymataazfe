@@ -1,31 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import Fetch from "../../../Utilities/Fetch";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MapView } from "../../../Components/Generics/MapView";
 import Modal from "../../../Utilities/Modal";
 import MiniModal from "../../../Utilities/Alert/MiniModal";
+import Alert from "../../../Utilities/Alert/index";
 import ApplicationForm from "./Application";
 import Pay from "./Pay";
 import Naira from "react-naira";
 import ScheduleInspect from "./Schedule/ScheduleInspect";
 import Reciept from "./Receipt";
 import Documentation from "./Documents";
+import { toast } from "react-toastify";
+import Spinner from "../../../Utilities/Spinner";
+import "react-toastify/dist/ReactToastify.css";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
+  const history = useHistory();
   // console.log(propertyId);
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [seeMore, setSeeMore] = useState(false);
   const [payModal, setPayModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const [canceling, setCanceling] = useState(false);
   const [scheduleModal, setScheduleModal] = useState(false);
   const [openReceipt, setOpenReceipt] = useState(false);
   const [openDocumentation, setOpenDocumentation] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [enquiryStatus, setEnquiryStatus] = useState({});
+  
+  const openCancelModal = () => {
+		setCancelModal(!cancelModal)
+	}
 
+  const cancelEnquiryRequest = async () => {
+    setLoading(true)
+    var data = await Fetch(`Property/enquiry/cancel/${propertyId}`, "post");
+    console.log({ data });
+    if(!data.status) {
+      setLoading(false);
+      console.log(data.message);
+      return;
+    }
+    if (data.status != 400) {
+      setLoading(false);
+      toast.success('Enquiry successfully cancelled.')
+      setCancelModal(false)
+      history.go(0)
+      // setId(data.data);
+    }
+  }
+  
   const getPropertyDetails = async () => {
     setLoading(true);
     var data = await Fetch(`Property/get/${propertyId}`, "get");
@@ -82,6 +111,14 @@ function Enquires({ isRent }) {
   return (
     <>
       {/* Application modal */}
+      <Alert
+        showAlert={cancelModal}
+        setShowAlert={setCancelModal}
+        callback={() => cancelEnquiryRequest()}
+        isCancel={true}
+        loading={loading}
+      />
+      
       <Modal
         open={seeMore}
         onClose={() => {
@@ -271,7 +308,7 @@ function Enquires({ isRent }) {
               </button>
             </div>
           </div>
-          <button className="single-step justify-content-center">
+          <button className="single-step justify-content-center" onClick={() => openCancelModal()}>
             Cancel Request
           </button>
         </div>
