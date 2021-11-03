@@ -491,7 +491,7 @@ function RentForm({ close }) {
                   });
                 }}
               >
-                <option value="" selected disabled>
+                <option value="" selected>
                   What state in Nigeria do you want the property
                 </option>
                 {NaijaStates.states().map((state, i) => {
@@ -515,7 +515,7 @@ function RentForm({ close }) {
                   onChange={handleOnChange}
                   className="formfield"
                 >
-                  <option value="" selected disabled>
+                  <option value="" selected>
                     Choose a locality
                   </option>
                   {NaijaStates.lgas(rentDetails.state).lgas.map((lga, i) => {

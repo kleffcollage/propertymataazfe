@@ -6,7 +6,7 @@ const DetailsCard = ({ details, close }) => {
     console.log({ details })
     
     const formattedDate = moment(details.dateCreated).format("Do MMMM YYYY")
-    const proposedDate = moment(details.cleaningQuote.proposedDate).format("L")
+    const proposedDate = details.cleaningQuote !== null ? moment(details.cleaningQuote.proposedDate).format("L") : 'awaiting...'
     
     return (
         <>
@@ -33,7 +33,7 @@ const DetailsCard = ({ details, close }) => {
                             <div className="tabs-group my-3">
                                 <h5 className="mb-1">Quote</h5>
                                 <p className="mb-0">
-                                    <Naira>{details.cleaningQuote.quote}</Naira>
+                                    <Naira>{details.cleaningQuote && details.cleaningQuote.quote}</Naira>
                                 </p>
                             </div>
                             <div className="tabs-group my-3">

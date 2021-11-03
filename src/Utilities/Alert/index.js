@@ -39,7 +39,7 @@ const Alert = ({ showAlert, setShowAlert, callback, loading = false, confirm = f
                                         </Icon>
                                         <h5>Are you sure you want to delete this property?</h5>
                                         <div className="buttons">
-                                            <button type="button" className="confirm mx-1" onClick={callback}> 
+                                            <button type="button" className="confirm mx-1 d-flex justify-content-center" onClick={callback}> 
                                                 { loading ? <Spinner /> : "Yes" } 
                                             </button>
                                             <button type="button" className="cancel mx-1" onClick={() => setShowAlert(false)}> Cancel </button>    
@@ -52,7 +52,7 @@ const Alert = ({ showAlert, setShowAlert, callback, loading = false, confirm = f
                                         </Icon>
                                         <h5>Are you sure you want to cancel?</h5>
                                         <div className="buttons">
-                                            <button type="button" className="confirm mx-1" onClick={callback}> 
+                                            <button type="button" className="confirm mx-1 d-flex justify-content-center" onClick={callback}> 
                                                 { loading ? <Spinner /> : "Yes" } 
                                             </button>
                                             <button type="button" className="cancel mx-1" onClick={() => setShowAlert(false)}> Cancel </button>    
