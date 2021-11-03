@@ -69,8 +69,10 @@ function SignUp() {
 		handleValidationErrors(data.errors);
 		setLoading(false);
 	};
+	
 	const verifyUser = async (e) => {
 		setLoading(true);
+		setErrorMessage('')
 		e.preventDefault();
 		console.log(token);
 		let data = await Fetch(
