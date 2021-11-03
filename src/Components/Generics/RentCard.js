@@ -1,5 +1,6 @@
 import React,{ useState} from 'react'
-import SeeMore from '../../Pages/Account/Buy/SeeMore';
+import SellAdd from '../../Pages/Account/Sell/SellAdd';
+import { Statuses } from '../../Utilities/Enums';
 import Fetch from '../../Utilities/Fetch';
 import Naira from "react-naira";
 import { HiBadgeCheck } from 'react-icons/hi';
@@ -7,6 +8,16 @@ import Modal from '../../Utilities/Modal'
 import PropertyApplied from '../../Pages/Rent/Tenant/PropertyApplied';
 
 export default function RentCard({ property = {}, seeMore, isProperty, requests = {} }) {
+    const [editModal, setEditModal] = useState(false);
+    
+    const open = () => {
+        setEditModal(!editModal);
+    };
+    
+    const close = () => {
+      setEditModal(false);
+    };
+    
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
 		//console.log("This is an Id " + id);
@@ -37,6 +48,10 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
                 <PropertyApplied property={property} close={() => { setSeeApplicants(false) }} />
 			</Modal>
             
+            <Modal open={editModal} onClose={() => setEditModal(false)}>
+                <SellAdd close={close} existingProperty={property} isEdit={true}/>
+            </Modal>
+            
             
             {(property.isDraft == true )  ? null : (
                 <div className="col-lg-4">
@@ -51,6 +66,45 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
                                 alt=''
                             />
                             <div className="listing-location">{property.area}</div>
+                        </div>
+                        <div
+                            className={`tag ${
+                                property.isDraft === true
+                                ? "draft"
+                                : property.status === Statuses.VERIFIED
+                                ? "verify"
+                                : property.status === Statuses.SOLD
+                                ? "draft"
+                                : "pending"
+                            }`}
+                        >
+                            <div
+                                className={
+                                property.status === Statuses.VERIFIED
+                                    ? "text-white status"
+                                    : property.status === Statuses.SOLD ?
+                                    "status text-white"
+                                    : "status"
+                                }
+                            >
+                                {property.isDraft === true
+                                ? "Only visible to you"
+                                : property.status === Statuses.VERIFIED
+                                ? "Live"
+                                : property.status === Statuses.SOLD
+                                ? "CLOSED"
+                                : "Listing is pending"}
+                            </div>
+                            <div
+                                className={
+                                property.status === Statuses.VERIFIED
+                                    ? "text-white status"
+                                    : "status"
+                                }
+                                onClick={open}
+                            >
+                                {property.status === Statuses.SOLD ? null :<> Edit <i className="fas fa-pen ml-2" /> </>}
+                            </div>
                         </div>
                         <div className="listing-info">
                             <div className="title-group mb-3">

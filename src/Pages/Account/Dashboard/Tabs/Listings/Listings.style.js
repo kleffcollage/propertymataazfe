@@ -31,8 +31,17 @@ export const Wrapper = styled.div`
         
     }
     
-    .tabbar.req {
-        -webkit-transform: translateX(50%);
-        transform: translateX(50%);
+    .tabs .tab-bar {
+        width: 33.33%;
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%); 
+    } 
+    .tab-bar.req {
+        -webkit-transform: translateX(0%);
+        transform: translateX(0%);
+    }    
+    .tab-bar.roc {
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
     }
 `
