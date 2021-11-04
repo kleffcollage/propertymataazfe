@@ -15,6 +15,24 @@ export const Wrapper = styled.div`
         font-size: 0.89rem;
     }
     
+    .subtabs {
+        height: 38px;
+        width: 100%;
+        border-radius: 4.8px;
+        background-color: #f7f7f7;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        position: relative;
+        padding: 5px;
+        margin-bottom: 2rem;
+        cursor: pointer;        
+    }
     .tabbar {
         width: 49.6%;
         position: absolute;

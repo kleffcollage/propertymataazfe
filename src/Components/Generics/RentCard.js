@@ -53,7 +53,7 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
             </Modal>
             
             
-            {(property.isDraft == true )  ? null : (
+            {(property.isDraft == true ) ? null : (
                 <div className="col-lg-4">
                     <div className="listing-cards">
                         <div className="listing-cover-img">
