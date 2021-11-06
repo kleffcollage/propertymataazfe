@@ -95,7 +95,7 @@ function Login() {
                   <div className="text-center mb-2">
                     <span className="text-danger text-center">
                       {errorMessage}
-					  {showLoginPrompt ? "Only registered users can perform that action. Please Sign Up or Login to continue." : ""}
+					  {!errorMessage && showLoginPrompt ? "Only registered users can perform that action. Please Sign Up or Login to continue." : ""}
                     </span>
                   </div>
                 ) : null}
