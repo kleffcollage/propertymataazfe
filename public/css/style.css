@@ -2181,6 +2181,11 @@ span.cost {
 .tag.pending {
   background-color: #ffc82c;
 }
+
+.tag.rejected {
+  background-color: #ff0000;
+}
+
 .tag.draft {
   background-color: #6c757d;
 }
