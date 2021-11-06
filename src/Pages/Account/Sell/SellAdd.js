@@ -323,6 +323,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const submitListingDetails = async (values) => {
     console.log({ listingDetails });
     setLoading(true);
+    setDrafting(false);
     // await getLongAndLat(listingDetails.address);
     // console.log(listingDetails);
     values.price = price;
@@ -386,10 +387,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     });
   };
 
-  // TODO: provide user option to toggle draft
-
   const submitListingToDraft = async (values) => {
     setDrafting(true);
+    setLoading(false);
     values.price = price;
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
@@ -405,13 +405,13 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       await updateListingDetails(values);
       return;
     }
-
     try {
       var response = await Fetch("Property/create", "post", values);
       console.log(response);
       if (!response.status) {
         setDrafting(false);
         setErrormessage(response.message);
+        toast.error(response.message);
         return;
       }
       if (response.status != 400) {
@@ -988,6 +988,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 <button
                   className={`color-btn draft ${isEdit ? "w-100" : ""}`}
                   type="submit"
+                  onClick={() => {
+                    setData({ ...data, isDraft: false });
+                  }}
                 >
                   {loading ? (
                     <Spinner />
