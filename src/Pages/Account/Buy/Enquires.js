@@ -15,6 +15,7 @@ import Documentation from "./Documents";
 import { toast } from "react-toastify";
 import Spinner from "../../../Utilities/Spinner";
 import "react-toastify/dist/ReactToastify.css";
+import ReactHtmlParser from 'react-html-parser';
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
@@ -359,7 +360,7 @@ function Enquires({ isRent }) {
                 </div>
                 <div className="overview-section">
                   <h2 className="property-info">Overview</h2>
-                  <p>{propertyDetails.description}</p>
+                  <p>{ReactHtmlParser(propertyDetails.description)}</p>
                 </div>
                 <SRLWrapper>
                   {files.filter((m) => m.isImage).length > 0 && (

@@ -84,7 +84,7 @@ function Documentation({ property, close, isRent }) {
 					: (
 						<div className="receipt-modal-wrap py-4">
 							<div className="description py-2">
-								<h5>{`${property.name}, ${property.description}`}</h5>
+								<h5>{`${property.name}`}</h5>
 								<h6 className="mt-3">Documents</h6>
 							</div>
 							<div className="d-flex align-items-center document-wrap my-2 py-2 px-3">
