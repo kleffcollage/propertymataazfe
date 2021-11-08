@@ -73,24 +73,20 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
 	
 	const handleSubmit = async () => {
 		setLoading(true);
-        
         // complaintDetails.propertyId = property.id
-        
         console.log({complaintDetails})
-        
         try {
             let data = await Fetch('Complaints/Create', 'post', complaintDetails);
             console.log({data})
-            
             if(!data.status) {
                 setLoading(false)
                 setErrormessage(data.message)
                 return
             }
-            
             if(data.status !== 400) {
                 setLoading(false)
                 toast.success("Complaint submitted successfully.")
+                close();
                 return
             }
             

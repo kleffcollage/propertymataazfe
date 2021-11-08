@@ -213,7 +213,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                             onClick={() => showApplicantDetails(application)}
                           >
                             <div className="applicants-avi flex-shrink-0">
-                              <img src="/asset/@3xGideon.png" alt="gideon" />
+                              <img src={application.user.passportPhotograph.url} alt="gideon" />
                             </div>
                             <div className="applicants-detail mx-3">
                               <h6>{`${application.user.fullName}`}</h6>
