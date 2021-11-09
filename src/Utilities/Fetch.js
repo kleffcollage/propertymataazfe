@@ -42,7 +42,7 @@ export default function Fetch(
 			localStorage.clear();
 			localStorage.setItem("Unauthorized","true");
 			// history.push("/login");
-			window.location.href = "/login";
+			window.location.href = "/";
 		}
 	});
 	Response = Response.then((res) => res.json());

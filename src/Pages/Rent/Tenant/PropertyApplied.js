@@ -9,6 +9,7 @@ import Naira from "react-naira";
 import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import TenantDetails from "../../../Pages/Rent/Tenant/TenantDetails";
+import ReactHtmlParser from "react-html-parser";
 
 const PropertyApplied = ({ property = {}, close }) => {
   const [loading, setLoading] = useState(false);
@@ -141,60 +142,65 @@ const PropertyApplied = ({ property = {}, close }) => {
                   <div className="property-sub-title mt-2 mb-3">
                     {applications.filter((a) => a.status == "APPROVED").length >
                     0
-                    ? "Approved Application"
-                    : null}
-                    </div>
-                    {applications.filter((a) => a.status == Statuses.APPROVED)
-                      .length > 0 ? (
-                      <div
-                        className="d-flex applicants my-3"
-                        onClick={() =>
-                          showApplicantDetails(
+                      ? "Approved Application"
+                      : null}
+                  </div>
+                  {applications.filter((a) => a.status == Statuses.APPROVED)
+                    .length > 0 ? (
+                    <div
+                      className="d-flex applicants my-3"
+                      onClick={() =>
+                        showApplicantDetails(
+                          applications.filter(
+                            (a) => a.status == Statuses.APPROVED
+                          )[0]
+                        )
+                      }
+                    >
+                      <div className="applicants-avi flex-shrink-0">
+                        <img
+                          src={
                             applications.filter(
                               (a) => a.status == Statuses.APPROVED
-                            )[0]
-                          )
-                        }
-                      >
-                        <div className="applicants-avi flex-shrink-0">
-                          <img src={applications.filter(
-                                (a) => a.status == Statuses.APPROVED
-                              )[0].user.passportPhotograph.url} alt="gideon" />
-                        </div>
-                        <div className="applicants-detail mx-3">
-                          <h6>{`${
-                            applications.filter(
-                              (a) => a.status == Statuses.APPROVED
-                            )[0].user.fullName
-                          }`}</h6>
-                          <p className="mb-1">
-                            {
-                              applications.filter(
-                                (a) => a.status == Statuses.APPROVED
-                              )[0].user.maritalStatus
-                            }
-                          </p>
-                          <p className="mb-1">
-                            {
-                              applications.filter(
-                                (a) => a.status == Statuses.APPROVED
-                              )[0].user.occupation
-                            }
-                          </p>
-                          <p className="mb-1">
-                            Earns{" "}
-                            <Naira>
-                              {
-                                applications.filter(
-                                  (a) => a.status == Statuses.APPROVED
-                                )[0].user.annualIncome
-                              }
-                            </Naira>{" "}
-                            per year
-                          </p>
-                        </div>
+                            )[0].user.passportPhotograph.url
+                          }
+                          alt="gideon"
+                        />
                       </div>
-                    ) : null}
+                      <div className="applicants-detail mx-3">
+                        <h6>{`${
+                          applications.filter(
+                            (a) => a.status == Statuses.APPROVED
+                          )[0].user.fullName
+                        }`}</h6>
+                        <p className="mb-1">
+                          {
+                            applications.filter(
+                              (a) => a.status == Statuses.APPROVED
+                            )[0].user.maritalStatus
+                          }
+                        </p>
+                        <p className="mb-1">
+                          {
+                            applications.filter(
+                              (a) => a.status == Statuses.APPROVED
+                            )[0].user.occupation
+                          }
+                        </p>
+                        <p className="mb-1">
+                          Earns{" "}
+                          <Naira>
+                            {
+                              applications.filter(
+                                (a) => a.status == Statuses.APPROVED
+                              )[0].user.annualIncome
+                            }
+                          </Naira>{" "}
+                          per year
+                        </p>
+                      </div>
+                    </div>
+                  ) : null}
                   <div className="property-sub-title mt-2 mb-3">
                     {applications.length > 0
                       ? "Tenant Applications"
@@ -213,7 +219,10 @@ const PropertyApplied = ({ property = {}, close }) => {
                             onClick={() => showApplicantDetails(application)}
                           >
                             <div className="applicants-avi flex-shrink-0">
-                              <img src="/asset/@3xGideon.png" alt="gideon" />
+                              <img
+                                src={application.user.passportPhotograph.url}
+                                alt="gideon"
+                              />
                             </div>
                             <div className="applicants-detail mx-3">
                               <h6>{`${application.user.fullName}`}</h6>
@@ -266,7 +275,7 @@ const PropertyApplied = ({ property = {}, close }) => {
                   </div>
                   <div className="overview-section">
                     <h2 className="property-info">Description</h2>
-                    <p>{property.description}</p>
+                    <p>{ReactHtmlParser(property.description)}</p>
                   </div>
                   <SRLWrapper>
                     <div className="picture-overview">

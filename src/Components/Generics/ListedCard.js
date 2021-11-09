@@ -93,7 +93,7 @@ export default function ListedCard({ property = {}, seeMore, isProperty, request
                                     to={ property.isForRent ? `/rent/enquires/${property.id}`
                                         : `/buy/enquires/${property.id}`
                                     }
-                                    disabled={(property.createdByUser && property.createdByUser.id == loggedUser.id) ? true : false}
+                                    disabled={(property.createdByUser && loggedUser && property.createdByUser.id == loggedUser.id) ? true : false}
                                 >
                                     Enquire
                                 </Link>                                

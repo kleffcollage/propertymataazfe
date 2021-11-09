@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router";
 import Fetch from "../../Utilities/Fetch";
 import Spinner from "../../Utilities/Spinner";
@@ -11,6 +11,7 @@ import Geocode from "react-geocode";
 import NaijaStates from "naija-state-local-government";
 import CurrencyInput from "react-currency-input-field";
 import banks from "../../Utilities/banks.json";
+import { Editor } from "@tinymce/tinymce-react";
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("es");
@@ -19,6 +20,7 @@ Geocode.enableDebug();
 
 function RentForm({ close }) {
   const history = useHistory();
+  const editorRef = useRef(null);
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,7 @@ function RentForm({ close }) {
   const [bathroomCounter, setBathroomCounter] = useState(0);
   const [price, setPrice] = useState(0);
   const [tenantAnnualIncome, setTenantAnnualIncome] = useState(0);
+  const [description, setDescription] = useState("");
 
   //   console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
@@ -273,15 +276,16 @@ function RentForm({ close }) {
     e.preventDefault();
     setLoading(true);
 
-    if (mediaFiles.length == 0) {
-      toast.info("Upload atleast a photo or video for your property.");
-      setLoading(false);
-      return;
-    }
+    // if (mediaFiles.length == 0) {
+    //   toast.info("Upload atleast a photo or video for your property.");
+    //   setLoading(false);
+    //   return;
+    // }
     console.log({ rentDetails });
     let record = rentDetails;
     record.price = price;
     record.mediafiles = mediaFiles;
+    record.description = description;
     // record.tenantAnnualIncome = tenantAnnualIncome;
 
     try {
@@ -556,7 +560,29 @@ function RentForm({ close }) {
           </div>
           <div class="input-box">
             <div class="input-label">Description</div>
-            <textarea
+            <Editor
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              onEditorChange={(evt) => setDescription(evt)}
+              initialValue=""
+              apiKey={"h48cw4xuitutcnrtl0o32kl2h1u1pedw4y94bnxabwnr74dg"}
+              init={{
+                height: 398,
+                menubar: false,
+                plugins: [
+                  "advlist autolink lists link image charmap print preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table paste code help wordcount",
+                ],
+                toolbar:
+                  "undo redo | formatselect | " +
+                  "bold italic backcolor | alignleft aligncenter " +
+                  "alignright alignjustify | bullist numlist outdent indent | " +
+                  "removeformat | help",
+                content_style:
+                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+              }}
+            />
+            {/* <textarea
               type="text"
               class="formfield textarea"
               cols="10"
@@ -565,8 +591,8 @@ function RentForm({ close }) {
               value={rentDetails.description}
               onChange={handleOnChange}
             >
-              {/* Description */}
-            </textarea>
+              Description
+            </textarea> */}
           </div>
 
           <div className="input-box">
@@ -775,9 +801,10 @@ function RentForm({ close }) {
                 setRentDetails({
                   ...rentDetails,
                   sellMySelf: e.target.checked,
+                  helpMeSell: !e.target.checked,
                 });
               }}
-              disabled={!rentDetails.helpMeSell ? false : true}
+              checked={rentDetails.sellMySelf}
             />
             <label htmlFor="sell" className="checktext">
               I want to manage the tenant myself
@@ -792,9 +819,10 @@ function RentForm({ close }) {
                 setRentDetails({
                   ...rentDetails,
                   helpMeSell: e.target.checked,
+                  sellMySelf: !e.target.checked,
                 });
               }}
-              disabled={!rentDetails.sellMySelf ? false : true}
+              checked={rentDetails.helpMeSell}
             />
             <label htmlFor="buy" className="checktext">
               Help me manage my tenant

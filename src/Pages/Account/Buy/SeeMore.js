@@ -10,6 +10,7 @@ import { MapView } from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
+import ReactHtmlParser from 'react-html-parser';
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -271,7 +272,7 @@ export const SeeMore = ({
 
             <div className="overview-section">
               <h2 className="property-info">Overview</h2>
-              <p>{propertyDetails.description}</p>
+              <p>{ReactHtmlParser(propertyDetails.description)}</p>
             </div>
             <SRLWrapper>
               { files.filter((m) => m.isImage).length > 0  && 

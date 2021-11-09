@@ -8,7 +8,7 @@ export const Statuses = {
     SOLD:"SOLD",
     APPROVED: "APPROVED",
     ACTIVE: 'ACTIVE',
-    REJECTED: "REJECTED"
+    REJECTED: "REJECTED",
 }
 
 export const BuildingType = {

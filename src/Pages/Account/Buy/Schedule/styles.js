@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
     /* display: flex;
     flex-direction: row; */
 `
-export const Content = styled.button`
+export const Content = styled.div`
     color: #252427;
     font-family: "Baloo Bhai 2";
     width: 100px;

@@ -85,6 +85,11 @@ const ScheduleInspect = ({ close }) => {
     console.log({ setSelectedDate });
     console.log({ user });
     console.log({ values });
+    if(values.inspectionTimeId == 0)
+    {
+      toast.warning("please select a time to continue");
+      return;
+    }
     try {
       const data = await Fetch(`Property/inspections/schedule`, "post", values);
       if (!data.status) {
@@ -172,7 +177,9 @@ const ScheduleInspect = ({ close }) => {
                         as="select"
                         className="formfield"
                       >
+                        <option value={0}>Select a convenient time</option>
                         {selectedDate.times.map((time, i) => {
+                          console.log({time});
                           const formattedTime = moment(time.time).format("LT");
                           console.log({ time });
                           return (

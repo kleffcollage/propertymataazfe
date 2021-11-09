@@ -88,6 +88,8 @@ const PropertyCard = ({ property = {}, seeMore }) => {
                   ? "verify"
                   : property.status === Statuses.SOLD
                   ? "draft"
+                  : property.status === Statuses.REJECTED
+                  ? "rejected"
                   : "pending"
               }`}
             >
@@ -106,6 +108,8 @@ const PropertyCard = ({ property = {}, seeMore }) => {
                   ? "Live"
                   : property.status === Statuses.SOLD
                   ? "CLOSED"
+                  : property.status === Statuses.REJECTED
+                  ? "Rejected"
                   : "Listing is pending"}
               </div>
               <div

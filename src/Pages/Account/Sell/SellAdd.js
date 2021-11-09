@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, } from "react";
 import { useHistory } from "react-router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Fetch from "../../../Utilities/Fetch";
@@ -14,6 +14,7 @@ import CurrencyInput from "react-currency-input-field";
 import { IoMdTrash } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
 import Compressor from "compressorjs";
+import { Editor } from "@tinymce/tinymce-react";
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -63,6 +64,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     longitude: existingProperty.longitude ? existingProperty.longitude : 0,
     latitude: existingProperty.latitude ? existingProperty.latitude : 0,
   });
+  const [description, setDescription] = useState(existingProperty?.description);
 
   const listingDetails = {
     name: existingProperty.name ? existingProperty.name : "",
@@ -137,6 +139,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const grabUploadedFile = (uploadedFiles) => {
+    if (mediaFiles.filter((m) => m.isImage).length >= 10) {
+      toast.info("You can only add a maximum of 10 images to a property");
+      return;
+    }
     console.log({ uploadedFiles });
     extractPreviewFromFile(uploadedFiles);
     const newFile = uploadedFiles.map((file) => {
@@ -323,6 +329,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const submitListingDetails = async (values) => {
     console.log({ listingDetails });
     setLoading(true);
+    setDrafting(false);
     // await getLongAndLat(listingDetails.address);
     // console.log(listingDetails);
     values.price = price;
@@ -333,6 +340,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     values.mediaFiles = mediaFiles;
     values.numberOfBathrooms = bathroomCounter;
     values.numberOfBedrooms = bedroomCounter;
+    values.description = description;
 
     console.log({ values });
 
@@ -386,18 +394,18 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     });
   };
 
-  // TODO: provide user option to toggle draft
-
   const submitListingToDraft = async (values) => {
     setDrafting(true);
+    setLoading(false);
     values.price = price;
     values.sellMySelf = data.sellMySelf;
     values.state = data.state;
     values.isDraft = data.isDraft;
     values.isForSale = false;
-    values.mediafiles = data.mediafiles;
+    values.mediaFiles = mediaFiles;
     values.numberOfBathrooms = bathroomCounter;
     values.numberOfBedrooms = bedroomCounter;
+    values.description = description;
 
     console.log({ values });
 
@@ -405,13 +413,13 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       await updateListingDetails(values);
       return;
     }
-
     try {
       var response = await Fetch("Property/create", "post", values);
       console.log(response);
       if (!response.status) {
         setDrafting(false);
         setErrormessage(response.message);
+        toast.error(response.message);
         return;
       }
       if (response.status != 400) {
@@ -610,6 +618,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   name="area"
                   placeholder="Your area"
                   className="formfield"
+                  required
                   maxLength={15}
                 />
                 <ErrorMessage name="area" />
@@ -633,12 +642,36 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   Description
                 </label>
                 <Field
+                  as={Editor}
+                  init={{
+                    height: 398,
+                    menubar: false,
+                    plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount",
+                    ],
+                    skin: "material-classic",
+                    toolbar:
+                      "bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link",
+                  }}
+                  onEditorChange={(e) => {
+                    console.log(e);
+                    setDescription(e);
+                  }}
+                  apiKey={"h48cw4xuitutcnrtl0o32kl2h1u1pedw4y94bnxabwnr74dg"}
+                  id="description"
+                  name="description"
+                  className="formfield"
+                  style={{ height: "150px" }}
+                />
+                {/* <Field
                   name="description"
                   as="textarea"
                   placeholder="Description"
                   className="formfield textarea"
                   maxLength={250}
-                />
+                /> */}
                 <ErrorMessage name="description" />
               </div>
               {isEdit ? null : (
@@ -652,9 +685,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                         setData({
                           ...data,
                           sellMySelf: e.target.checked,
+                          helpMeSell: !e.target.checked,
                         });
                       }}
-                      disabled={!data.helpMeSell ? false : true}
+                      checked={data.sellMySelf}
                     />
                     <label htmlFor="sellMySelf" className="checktext">
                       I want to sell myself
@@ -670,9 +704,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                         setData({
                           ...data,
                           helpMeSell: e.target.checked,
+                          sellMySelf: !e.target.checked,
                         });
                       }}
-                      disabled={!data.sellMySelf ? false : true}
+                      checked={data.helpMeSell}
                     />
                     <label htmlFor="buy" className="checktext">
                       Help me sell
@@ -988,6 +1023,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 <button
                   className={`color-btn draft ${isEdit ? "w-100" : ""}`}
                   type="submit"
+                  onClick={() => {
+                    setData({ ...data, isDraft: false });
+                  }}
                 >
                   {loading ? (
                     <Spinner />
