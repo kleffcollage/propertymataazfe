@@ -829,14 +829,23 @@ function RentForm({ close }) {
             </label>
             <i className="fas fa-info-circle ml-2" />
           </div>
-
-          <button
-            type="button"
-            className="secondary-btn"
-            onClick={() => setStep(step + 1)}
-          >
-            Next
-          </button>
+          {rentDetails.sellMySelf ? (
+            <button
+              className="secondary-btn"
+              type="submit"
+              onClick={submitRentRequest}
+            >
+              {loading ? <Spinner /> : "Submit"}
+            </button>
+            ) : (
+            <button
+              type="button"
+              className="secondary-btn"
+              onClick={() => setStep(step + 1)}
+            >
+              Next
+            </button>
+          )}
         </form>
       ) : step == 2 ? (
         <form className="content-section mt-4">
