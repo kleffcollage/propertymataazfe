@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import Spinner from "../../../Utilities/Spinner";
 import "react-toastify/dist/ReactToastify.css";
 import ReactHtmlParser from 'react-html-parser';
+import { Statuses } from "../../../Utilities/Enums";
 
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
@@ -243,11 +244,16 @@ function Enquires({ isRent }) {
                 }
               >
                 <i className="far fa-paper-plane" />
-                {enquiryStatus &&
-                enquiryStatus.hasApplied &&
-                !enquiryStatus.hasPaid ? (
+                { enquiryStatus &&
+                enquiryStatus.applicationStatus == Statuses.APPROVED ?
+                  <span>Approved:&nbsp; awaiting payment.</span>
+                : enquiryStatus.applicationStatus == Statuses.ACTIVE ?
                   <span>Application is being reviewed</span>
-                ) : (
+                : enquiryStatus.applicationStatus == Statuses.REJECTED ? 
+                  <span>Application declined</span>
+                : enquiryStatus.hasApplied ?
+                  <span>Property paid for by you.</span>
+                : (
                   "Submit Application"
                 )}
               </button>
@@ -258,7 +264,7 @@ function Enquires({ isRent }) {
                   disabled={
                     enquiryStatus &&
                     enquiryStatus.hasApplied &&
-                    enquiryStatus.applicationStatus == "APPROVED" &&
+                    enquiryStatus.applicationStatus == Statuses.APPROVED &&
                     !enquiryStatus.hasPaid
                       ? false
                       : true

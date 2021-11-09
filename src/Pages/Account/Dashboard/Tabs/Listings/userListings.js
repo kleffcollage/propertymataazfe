@@ -111,13 +111,13 @@ const UserListings = () => {
                                 className={`texts ${tab == "for-sale" ? "current" : ""}`}
                                 onClick={() => currentTab("for-sale")}
                             >
-                                Properties for Sale
+                                For Sale
                             </div>
                             <div
                                 className={`texts ${tab == "for-rent" ? "current" : ""}`}
                                 onClick={() => currentTab("for-rent")}
                             >
-                                Properties for Rent
+                                For Rent
                             </div>
                             {/* <div className={tab === "my-listings" ? "tab-bar" : tab === "my-enquiries" ? "tab-bar req" : "tab-bar roc"}  /> */}
                             {/* <div className={tab == "for-sale" ? "tabbar" : "tabbar req"} /> */}
