@@ -7,13 +7,15 @@ import Dropzone from "react-dropzone";
 import { MainContext } from "../../../Context/MainContext";
 import Fetch from "../../../Utilities/Fetch";
 import Spinner from "../../../Utilities/Spinner";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import { DatePicker } from "@mui/lab";
 import Naira from "react-naira";
 import * as Yup from "yup";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { TextField } from "@material-ui/core";
 
-const CountryList = require("country-list").getNames()
+const CountryList = require("country-list").getNames();
 
 function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const history = useHistory();
@@ -139,7 +141,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       if (!data.status) {
         setLoading(false);
         setErrorMessage(data.message);
-        toast.error(data.message)
+        toast.error(data.message);
         console.log(errorMessage);
         return;
       }
@@ -309,10 +311,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                   <ErrorMessage component="span" name="register.lastName" />
                 </div>
                 <div className="input-box">
-                  <label
-                    htmlFor="register.phoneNumber"
-                    className="input-label"
-                  >
+                  <label htmlFor="register.phoneNumber" className="input-label">
                     Mobile Number
                   </label>
                   <Field
@@ -349,10 +348,26 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                   <label htmlFor="register.dateOfBirth" className="input-label">
                     Date of Birth
                   </label>
-                  <DatePicker
+                  {/* <DatePicker
                     selected={dob}
                     onChange={(date) => setDob(date)}
                     className="formfield"
+                  /> */}
+                  <DatePicker
+                    label=""
+                    value={dob}
+                    onChange={(newValue) => {
+                      console.log(newValue._d);
+                      setDob(newValue._d);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        variant="outlined"
+                        
+                        className="formfield"
+                        {...params}
+                      />
+                    )}
                   />
                   <ErrorMessage component="span" name="register.dateOfBirth" />
                 </div>
@@ -366,12 +381,18 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     as="select"
                     className="formfield"
                   >
-                    <option value="" selected> Choose your nationality </option>
-                    { CountryList.map((country, index) => {
+                    <option value="" selected>
+                      {" "}
+                      Choose your nationality{" "}
+                    </option>
+                    {CountryList.map((country, index) => {
                       return (
-                        <option key={index} value={country}> {country} </option>                      
-                        )
-                      })}
+                        <option key={index} value={country}>
+                          {" "}
+                          {country}{" "}
+                        </option>
+                      );
+                    })}
                   </Field>
                   <ErrorMessage component="span" name="register.nationality" />
                 </div>
@@ -581,10 +602,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage
-                      component="span"
-                      name="nextOfKin.firstName"
-                    />
+                    <ErrorMessage component="span" name="nextOfKin.firstName" />
                   </div>
                   <div className="input-box">
                     <label
@@ -604,10 +622,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     />
                   </div>
                   <div className="input-box">
-                    <label
-                      htmlFor="nextOfKin.lastName"
-                      className="input-label"
-                    >
+                    <label htmlFor="nextOfKin.lastName" className="input-label">
                       Surname
                     </label>
                     <Field
@@ -615,10 +630,7 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                       type="text"
                       className="formfield"
                     />
-                    <ErrorMessage
-                      component="span"
-                      name="nextOfKin.lastName"
-                    />
+                    <ErrorMessage component="span" name="nextOfKin.lastName" />
                   </div>
                   <div className="input-box">
                     <label

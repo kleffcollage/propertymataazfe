@@ -143,7 +143,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       toast.info("You can only add a maximum of 10 images to a property");
       return;
     }
-    console.log({ uploadedFiles });
+    // console.log({ uploadedFiles });
     extractPreviewFromFile(uploadedFiles);
     const newFile = uploadedFiles.map((file) => {
       return handleImageCompression(file);
@@ -161,7 +161,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
+        // console.log(reader.result);
         //console.log(binaryStr);
         console.log(binaryStr);
         composeMedia(binaryStr, file);
@@ -193,9 +193,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
     setPreviews([...previews, ...newState]);
   };
+  let efiles = [];
 
   const composeMedia = (bytes, file) => {
-    var files = [...mediaFiles];
+    var files = [...efiles];
 
     var newMedia = {
       name: file.name,
@@ -213,8 +214,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     };
 
     files.push(newMedia);
-    console.log(files);
-    setMediaFiles([...files]);
+    console.log({files});
+    efiles = [...files];
+    setMediaFiles([...mediaFiles,...files]);
   };
 
   const getFileExtention = (fileName) => {
@@ -291,39 +293,39 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const createListingDetails = async (values) => {
-    // console.log({values});
+    console.log({values});
 
-    if (values.mediaFiles.length == 0) {
-      toast.info("Please upload at least one image of your property");
-      setLoading(false);
-      return;
-    }
-    try {
-      var response = await Fetch("Property/create", "post", values);
-      console.log(response);
+    // if (values.mediaFiles.length == 0) {
+    //   toast.info("Please upload at least one image of your property");
+    //   setLoading(false);
+    //   return;
+    // }
+    // try {
+    //   var response = await Fetch("Property/create", "post", values);
+    //   console.log(response);
 
-      if (!response.status) {
-        setLoading(false);
-        setErrormessage(response.message);
-        toast.error(response.message);
-        return;
-      }
-      if (response.status != 400) {
-        setLoading(false);
-        // setListingDetails({});
-        close(true);
-        toast.success("Property Successfully added.");
-        history.push("/sell");
-        // history.push("/sell");
-        await currentStep();
-        return;
-      }
-      handleValidationErrors(response.errors);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
+    //   if (!response.status) {
+    //     setLoading(false);
+    //     setErrormessage(response.message);
+    //     toast.error(response.message);
+    //     return;
+    //   }
+    //   if (response.status != 400) {
+    //     setLoading(false);
+    //     // setListingDetails({});
+    //     close(true);
+    //     toast.success("Property Successfully added.");
+    //     history.push("/sell");
+    //     // history.push("/sell");
+    //     await currentStep();
+    //     return;
+    //   }
+    //   handleValidationErrors(response.errors);
+    //   setLoading(false);
+    // } catch (error) {
+    //   console.error(error);
+    //   setLoading(false);
+    // }
   };
 
   const submitListingDetails = async (values) => {

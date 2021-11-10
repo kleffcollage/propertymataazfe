@@ -20,6 +20,7 @@ import ValidatePayment from "./Pages/Payment/ValidatePayment";
 import Listings from "./Pages/Account/Dashboard/Tabs/Listings";
 import RentPage from "./Pages/Account/Dashboard/Tabs/Rent";
 import Sessions from "./Pages/Account/Dashboard/Tabs/Sessions";
+import Profile from "./Components/Profile/Profile";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -91,6 +92,7 @@ const ROUTES = [
 		],
 	},
 	{ path: "/my-mattaz", key: "ROOT", exact: true, component: () => <Dashboard /> },
+	{ path: "/profile", key: "ROOT", exact: true, component: () => <Profile /> },
 	{ path: "/listings", key: "ROOT", exact: true, component: () => <Listings /> },
 	{ path: "/my-rent", key: "ROOT", exact: true, component: () => <RentPage /> },
 	{ path: "/sessions", key: "ROOT", exact: true, component: () => <Sessions /> },

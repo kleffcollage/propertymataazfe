@@ -3,8 +3,10 @@ import ROUTES, { RenderRoutes } from "../../Routes";
 import { MainContext } from "../../Context/MainContext";
 import Template from "../Generics/Template";
 import Fetch from "../../Utilities/Fetch";
+import DateAdapter from '@mui/lab/AdapterMoment';
 import "./App.css";
 import { ToastContainer } from "react-toastify";
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 function App() {
   const sampledata = {
@@ -65,6 +67,7 @@ function App() {
 
   return (
     <>
+    <LocalizationProvider dateAdapter={DateAdapter}>
       <MainContext.Provider
         value={{ data, setUser, setApplication, showAlert }}
       >
@@ -73,6 +76,7 @@ function App() {
           <RenderRoutes routes={ROUTES} />
         </Template>
       </MainContext.Provider>
+      </LocalizationProvider>
     </>
   );
 }

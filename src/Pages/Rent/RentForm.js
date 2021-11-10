@@ -837,7 +837,7 @@ function RentForm({ close }) {
             >
               {loading ? <Spinner /> : "Submit"}
             </button>
-            ) : (
+          ) : (
             <button
               type="button"
               className="secondary-btn"
@@ -968,16 +968,16 @@ function RentForm({ close }) {
 
           <div className="joint-btn mg">
             <button
-              className="secondary-btn draft"
+              className="color-btn draft"
               type="submit"
               onClick={submitRentRequest}
             >
               {loading ? <Spinner /> : "Submit"}
             </button>
+            <button type="button" className=" no-color-btn  draft" onClick={close}>
+              Cancel
+            </button>
           </div>
-          <button type="submit" className="options my-2 mt-0" onClick={close}>
-            Cancel
-          </button>
         </form>
       ) : null}
     </div>
