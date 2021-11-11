@@ -22,7 +22,6 @@ Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
 function ReliefForm({ property = null, close }) {
-  console.log({CountryList})
   const history = useHistory();
   const { showAlert } = useContext(MainContext);
   const [drafting, setDrafting] = useState(false);
@@ -45,7 +44,7 @@ function ReliefForm({ property = null, close }) {
   
   const onSubmit = data => {
     data.register.passport = reliefData.passport
-    console.log(data)
+    console.log({ data })
   };
 
   // console.log(NaijaStates.states());
@@ -116,11 +115,11 @@ function ReliefForm({ property = null, close }) {
   };
   
   const calculateLoanInterest = () => {
-    // console.log({amount})
+    // console.log(reliefDetails.repaymentFrequency)
     // let amount = amount
     let interest = 0.15
     let time = 12
-    // 
+    
     let interestPerMonth = parseInt(amount) * interest
     let totalRepayment = (interestPerMonth * time ) + parseInt(amount)
     
@@ -225,7 +224,6 @@ function ReliefForm({ property = null, close }) {
   //   console.log(results);
   // };
   
-  console.log({ property })
 
   const submitReliefRequest = async (reliefDetails) => {
     setLoading(true);
@@ -611,7 +609,7 @@ function ReliefForm({ property = null, close }) {
                   <input
                       type="text"
                       className="formfield"
-                      placeholder="Enter your placeholder text or enter space bar"
+                      placeholder="+234 832 439 4321"
                       name="nextOfKin.phoneNumber"
                       {...register("nextOfKin.phoneNumber")}
                   />
@@ -622,7 +620,7 @@ function ReliefForm({ property = null, close }) {
                   <input
                       type="email"
                       className="formfield"
-                      placeholder="Enter your placeholder text or enter space bar"
+                      placeholder="pm@email.com"
                       name="nextOfKin.email"
                       {...register("nextOfKin.email")}
                   />
@@ -632,7 +630,7 @@ function ReliefForm({ property = null, close }) {
                   <input
                       type="text"
                       className="formfield"
-                      placeholder="Enter your placeholder text or enter space bar"
+                      placeholder="Input an address"
                       name="nextOfKin.address"
                       {...register("nextOfKin.address")}
                   />
@@ -642,7 +640,7 @@ function ReliefForm({ property = null, close }) {
                   <input
                       type="text"
                       className="formfield"
-                      placeholder="Enter your placeholder text or enter space bar"
+                      placeholder="Your relationship with your next of kin"
                       name="nextOfKin.relationship"
                       {...register("nextOfKin.relationship")}
                   />
@@ -696,7 +694,7 @@ function ReliefForm({ property = null, close }) {
                         name="repaymentFrequency"
                         {...register("repaymentFrequency")}
                       >
-                        <option value="" selected disabled> Choose a property type </option>
+                        <option value="" selected> Select how you want to payback </option>
                         <option value="weekly"> Weekly </option>
                         <option value="month"> Monthly </option>
                         <option value="annual"> Yearly </option>
