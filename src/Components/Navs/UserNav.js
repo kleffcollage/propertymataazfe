@@ -38,7 +38,7 @@ function UserNav() {
       },
       {
         title: 'Rent',
-        path: '/my-rents',
+        path: '/my-rent',
         callback: null,
       },
       {
