@@ -72,7 +72,6 @@ function UserNav() {
   return (
     <div>
       <div className="white-bg w-100">
-        <style></style>
         <div className="container">
           <div className="mobile-sec">
             <Link to="/">
@@ -187,7 +186,7 @@ export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation
     <li onClick={() => setShowDropdown(!showDropdown)} className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
       {(navigation.title != `${data.user.firstName}`) ? (
         <>
-          <a href="#" className={`mr-1 ${getNavAnchorClass("/my")}`}>
+          <a className={`mr-1 ${getNavAnchorClass("/my")}`}>
             {navigation.title}
           </a>
           <i className="fas fa-chevron-down icon-small" />

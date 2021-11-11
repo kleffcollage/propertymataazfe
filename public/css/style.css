@@ -2455,6 +2455,10 @@ a.small-cards {
   .hover-dropdown:hover .icon-small {
     color: #ffffff;
   }
+  
+  .dropdown-content.visible {
+    display: contents !important;
+  }
 }
 
 .hover-dropdown:hover .dropdown-content {
@@ -2787,7 +2791,7 @@ a.small-cards {
     background-color: transparent;
   }
   .user-info {
-    justify-content: center;
+    justify-content: flex-start;
   }
   .cards {
     display: block;
