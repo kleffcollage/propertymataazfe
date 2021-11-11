@@ -229,7 +229,10 @@ export const SeeMore = ({
             </div>
             {!seller ? (
               propertyDetails.sellMyself ? (  
-                <div
+                (propertyDetails.createdByUser) && 
+                  propertyDetails.createdByUser?.id == user.data.user?.id 
+                ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>Cannot contact self on owned property</button>
+                : <div
                   className={`contact-section ${
                     showContact ? "show-info" : ""
                   }`}
