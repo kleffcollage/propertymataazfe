@@ -698,7 +698,7 @@ function ReliefForm({ property = null, close }) {
                       >
                         <option value="" selected disabled> Choose a property type </option>
                         <option value="weekly"> Weekly </option>
-                        <option value="month"> Month </option>
+                        <option value="month"> Monthly </option>
                         <option value="annual"> Yearly </option>
                         <option value="biannual"> 2 years </option>
                       </select>
