@@ -743,6 +743,31 @@ a.tc,
   opacity: 1;
 }
 
+@media only screen and (max-width: 992px) {
+  
+  .tabs .texts {
+    font-size: 13.8px !important;
+  }
+  
+  .tabs .texts.current {
+    font-size: 13.8px;
+  }
+  .subtab-bar.request {
+    -webkit-transform: translateX(-70%) !important;
+    transform: translateX(-70%) !important;
+  }
+  .subtab-bar.relief {
+    -webkit-transform: translateX(41%) !important;
+    transform: translateX(41%) !important;
+    width: 22.5%;
+  }
+  .subtab-bar.tenancy {
+    -webkit-transform: translateX(155%) !important;
+    transform: translateX(155%) !important;
+    width: 22.8%;
+  }
+}
+
 .tabs .texts {
   opacity: 0.5;
   color: #191919;
@@ -2479,13 +2504,14 @@ a.small-cards {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: #979797;
+  /* background-color: #979797; */
   margin-left: 0.5rem;
 }
 
 .avatar img {
-  width: 100%;
-  height: 100%;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
   -o-object-fit: cover;
   object-fit: cover;
   border: none;

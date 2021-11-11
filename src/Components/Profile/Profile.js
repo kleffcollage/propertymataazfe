@@ -83,7 +83,7 @@ export default function Profile() {
         return;
       }
       setUser(data.data);
-      localStorage.setItem("user",data.data);
+      localStorage.setItem("user",JSON.stringify(data.data));
       setLoading(false);
       return;
     } catch (error) {
@@ -95,7 +95,7 @@ export default function Profile() {
 
   console.log({ data });
   return (
-    <div className="row">
+    <div className="row mb-4">
       <div className="col-lg-4">
         <div className="avatar-upload">
           <div className="avatar-edit">
