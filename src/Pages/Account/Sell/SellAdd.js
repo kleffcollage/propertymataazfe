@@ -614,7 +614,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
               <div className="input-box">
                 <label htmlFor="area" className="input-label">
-                  Area (Optional)
+                  Area
                 </label>
                 <Field
                   name="area"

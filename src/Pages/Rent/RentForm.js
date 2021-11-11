@@ -510,33 +510,35 @@ function RentForm({ close }) {
             </div>
           </div>
           <div className="input-box">
-            <div className="input-label">Locality (Optional)</div>
             {rentDetails.state ? (
-              <div className="select-box">
-                <select
-                  name="lga"
-                  value={rentDetails.lga}
-                  onChange={handleOnChange}
-                  className="formfield"
-                >
-                  <option value="" selected>
-                    Choose a locality
-                  </option>
-                  {NaijaStates.lgas(rentDetails.state).lgas.map((lga, i) => {
-                    return (
-                      <option key={i} value={lga}>
-                        {lga}
-                      </option>
-                    );
-                  })}
-                </select>
-                <div className="arrows" />
-              </div>
+              <>
+                <div className="input-label">Locality (Optional)</div>
+                <div className="select-box">
+                  <select
+                    name="lga"
+                    value={rentDetails.lga}
+                    onChange={handleOnChange}
+                    className="formfield"
+                  >
+                    <option value="" selected>
+                      Choose a locality
+                    </option>
+                    {NaijaStates.lgas(rentDetails.state).lgas.map((lga, i) => {
+                      return (
+                        <option key={i} value={lga}>
+                          {lga}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <div className="arrows" />
+                </div>
+              </>
             ) : null}
           </div>
 
           <div className="input-box">
-            <div className="input-label">Area (Optional)</div>
+            <div className="input-label">Area</div>
             <input
               type="text"
               className="formfield"
