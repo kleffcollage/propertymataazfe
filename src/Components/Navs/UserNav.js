@@ -14,6 +14,7 @@ function UserNav() {
 
   const getNavLinkClass = (path) =>
     location.pathname.startsWith(path) ? "active" : "";
+    
   const getNavAnchorClass = (path) =>
     location.pathname.startsWith(path) ? "active-link" : "";
 
@@ -26,10 +27,46 @@ function UserNav() {
     }
     setNav(!nav);
   };
+  
+  const myMataazMenu = {
+    title: "My Mataaz",
+    subMenus: [
+      {
+        title: 'Listings',
+        path: '/listings',
+        callback: null,
+      },
+      {
+        title: 'Rent',
+        path: '/my-rents',
+        callback: null,
+      },
+      {
+        title: 'Sessions',
+        path: '/sessions',
+        callback: null,
+      },
+    ]
+  }
+  const profileMenu = {
+    title: `${data.user.firstName}`,
+    subMenus: [
+      {
+        title: 'Profile',
+        path: '/profile',
+        callback: null,
+      },
+      {
+        title: 'Logout',
+        path: '/',
+        callback: () => logoutUser(),
+      },
+    ]
+  }
 
   const logoutUser = () => {
     localStorage.clear();
-	window.location.href = '/';
+	  window.location.href = '/';
     history.go("/");
   };
   return (
@@ -60,10 +97,10 @@ function UserNav() {
         <nav className={`container ${!nav ? "" : "display"}`}>
           <ul className="left-menu">
             <li className={`hover-dropdown ${getNavLinkClass("/sell")}`}>
-              <Link to="" className={getNavAnchorClass("/sell")}>
+              <Link to="/sell" className={getNavAnchorClass("/sell")}>
                 Sell
               </Link>
-              <i className="fas fa-chevron-down icon-small" />
+              {/* <i className="fas fa-chevron-down icon-small" />
               <div className="dropdown-content">
                 <ul>
                   <li onClick={() => history.push("/sell")}>My Listings</li>
@@ -71,7 +108,7 @@ function UserNav() {
                     My Drafts
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </li>
             <li className={`${getNavLinkClass("/buy")}`}>
               <Link to="/buy" className={getNavAnchorClass("/buy")}>
@@ -106,54 +143,20 @@ function UserNav() {
 						<li className={`${getNavLinkClass("/getloan")}`}>
 							<Link to="/getloan">Get Rent Loan</Link>
 						</li> */}
-            <li className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-              <a href="#" className={`mr-1 ${getNavAnchorClass("/my")}`}>
-                {" "}
-                My Mataaz{" "}
-              </a>
-              <i className="fas fa-chevron-down icon-small" />
-              <div className="dropdown-content">
-                <ul>
-                  <li>
-                    <Link to="/listings">Listings</Link>
-                  </li>
-                  <li>
-                    <Link to="/my-rent">Rent</Link>
-                  </li>
-                  <li>
-                    <Link to="/sessions">Sessions</Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
+            <DropdownContent 
+              getNavLinkClass={getNavLinkClass}
+              getNavAnchorClass={getNavLinkClass}
+              navigation={myMataazMenu}
+            />
 
             {data.user ? (
               <>
-                <li
-                  className={` hover-dropdown ${getNavLinkClass("/welcome")}`}
-                >
-                  <div className="user-info">
-                    <a href="#" className="mr-2">
-                      {data.user.firstName}
-                    </a>
-                    <div className="avatar ml-0">
-                      <img
-                        src="/asset/user/user-icon.png"
-                        alt={data.user ? data.user.firstName : "default-user"}
-                      />
-                    </div>
-                    <i className="fas fa-chevron-down icon-small" />
-                  </div>
-                  <div className="dropdown-content">
-                    <ul>
-                      <li>
-                        <Link to="/profile">Profile</Link>
-                      </li>
-                      {/* <li>Settings</li> */}
-                      <li onClick={logoutUser}>Logout</li>
-                    </ul>
-                  </div>
-                </li>
+                <DropdownContent 
+                  getNavLinkClass={getNavLinkClass}
+                  getNavAnchorClass={getNavLinkClass}
+                  navigation={profileMenu}
+                  avatar={`${data.user.profilePicture}`}
+                />
               </>
             ) : null}
 
@@ -173,3 +176,47 @@ function UserNav() {
 }
 
 export default UserNav;
+
+
+
+export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation, avatar = null, }) => {
+  const { data } = useContext(MainContext);
+  const [ showDropdown, setShowDropdown] = useState(false);
+  
+  return (
+    <li onClick={() => setShowDropdown(!showDropdown)} className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
+      {(navigation.title != `${data.user.firstName}`) ? (
+        <>
+          <a href="#" className={`mr-1 ${getNavAnchorClass("/my")}`}>
+            {navigation.title}
+          </a>
+          <i className="fas fa-chevron-down icon-small" />
+        </>
+      )      
+      : (
+        <div className="user-info">
+          <a href="#" className="mr-2">
+            {data.user.firstName}
+          </a>
+          <div className="avatar ml-0">
+            <img
+              src={`${ avatar && "/asset/user/user-icon.png"}`}
+              alt={data.user ? data.user.firstName : "default-user"}
+            />
+          </div>
+          <i className="fas fa-chevron-down icon-small" />
+        </div>
+      )}
+      
+      <div className={`dropdown-content ${showDropdown ? 'visible' : ''}`}>
+        <ul>
+          {navigation.subMenus.map((menu, index) => {
+            return <li key={index} onClick={ menu.callback && menu.callback}>
+                <Link to={menu.path}>{menu.title}</Link>
+              </li>
+          })}
+        </ul>
+      </div>
+    </li>
+  )
+}
