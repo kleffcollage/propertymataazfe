@@ -589,11 +589,11 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
               </div>
 
               <div className="input-box">
-                <label htmlFor="lga" className="input-label">
-                  Locality (Optional)
-                </label>
                 {data.state ? (
                   <>
+                    <label htmlFor="lga" className="input-label">
+                      Locality (Optional)
+                    </label>
                     <div className="select-box">
                       <Field name="lga" as="select" className="formfield">
                         <option>Choose an locality</option>
@@ -614,7 +614,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
               <div className="input-box">
                 <label htmlFor="area" className="input-label">
-                  Area (Optional)
+                  Area
                 </label>
                 <Field
                   name="area"
