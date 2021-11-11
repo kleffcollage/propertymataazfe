@@ -2436,6 +2436,10 @@ a.small-cards {
   display: block;
 }
 
+.dropdown-content.visible {
+  display: block;
+}
+
 .dropdown-content {
   display: none;
   background-color: white;
