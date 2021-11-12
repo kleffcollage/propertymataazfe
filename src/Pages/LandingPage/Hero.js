@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Hero({search, setSearch, trigger, properties, clear }) {
+  
   const handleKeyPress = (e) => {
     console.log({ e });
     if (e.charCode !== 13) return;
     trigger();
   };
+  
   return (
     <div className="hero">
       <div className="content">
