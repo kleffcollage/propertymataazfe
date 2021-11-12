@@ -186,9 +186,16 @@ export default UserNav;
 export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation, avatar = null, }) => {
   const { data } = useContext(MainContext);
   const [ showDropdown, setShowDropdown] = useState(false);
+  const ddRef = useRef();
+  
+  const closeDropdownContent = (e) => {
+    if(ddRef.current === e.target ) {
+      setShowDropdown(!showDropdown)
+    }
+  }
   
   return (
-    <li onClick={() => setShowDropdown(!showDropdown)} className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
+    <li onClick={(e) => closeDropdownContent(e)} ref={ddRef} className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
       {(navigation.title != `${data.user.firstName}`) ? (
         <>
           <a className={`mr-1 ${getNavAnchorClass("/my")}`}>
