@@ -37,6 +37,11 @@ function UserNav() {
         callback: null,
       },
       {
+        title: 'Drafts',
+        path: '/sell/drafts',
+        callback: null,
+      },
+      {
         title: 'Rent',
         path: '/my-rent',
         callback: null,
