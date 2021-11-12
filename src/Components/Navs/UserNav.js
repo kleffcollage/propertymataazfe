@@ -199,7 +199,7 @@ export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation
           </a>
           <div className="avatar ml-0">
             <img
-              src={`${ avatar != null ? avatar : "/asset/user/user-icon.png" }`}  
+              src={`${ avatar && "/asset/user/user-icon.png" }`}  
               alt={data.user ? data.user.firstName : "default-user"}
             />
           </div>

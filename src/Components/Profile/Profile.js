@@ -4,6 +4,7 @@ import Spinner from "../../Utilities/Spinner";
 import Fetch from "../../Utilities/Fetch";
 import { toast } from "react-toastify";
 import Dropzone from "react-dropzone";
+import { FaUserEdit } from "react-icons/fa"
 
 export default function Profile() {
   const [loading, setLoading] = useState(false);
@@ -84,6 +85,7 @@ export default function Profile() {
       }
       setUser(data.data);
       localStorage.setItem("user",JSON.stringify(data.data));
+      toast.success("Profile updated successfully.")
       setLoading(false);
       return;
     } catch (error) {
@@ -112,7 +114,7 @@ export default function Profile() {
                   id="imageUpload"
                 >
                   <input {...getInputProps()} />
-                  <label for="imageUpload"></label>
+                  <label for="imageUpload" className="d-flex align-items-center justify-content-center"> <FaUserEdit /> </label>
                   {/* <div className="trash-file d-flex justify-content-end">
                     <IoMdAdd color="#fff" /> 
                   </div>
