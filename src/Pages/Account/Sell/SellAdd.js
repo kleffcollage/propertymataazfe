@@ -295,37 +295,37 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const createListingDetails = async (values) => {
     console.log({values});
 
-    // if (values.mediaFiles.length == 0) {
-    //   toast.info("Please upload at least one image of your property");
-    //   setLoading(false);
-    //   return;
-    // }
-    // try {
-    //   var response = await Fetch("Property/create", "post", values);
-    //   console.log(response);
+    if (values.mediaFiles.length == 0) {
+      toast.info("Please upload at least one image of your property");
+      setLoading(false);
+      return;
+    }
+    try {
+      var response = await Fetch("Property/create", "post", values);
+      console.log(response);
 
-    //   if (!response.status) {
-    //     setLoading(false);
-    //     setErrormessage(response.message);
-    //     toast.error(response.message);
-    //     return;
-    //   }
-    //   if (response.status != 400) {
-    //     setLoading(false);
-    //     // setListingDetails({});
-    //     close(true);
-    //     toast.success("Property Successfully added.");
-    //     history.push("/sell");
-    //     // history.push("/sell");
-    //     await currentStep();
-    //     return;
-    //   }
-    //   handleValidationErrors(response.errors);
-    //   setLoading(false);
-    // } catch (error) {
-    //   console.error(error);
-    //   setLoading(false);
-    // }
+      if (!response.status) {
+        setLoading(false);
+        setErrormessage(response.message);
+        toast.error(response.message);
+        return;
+      }
+      if (response.status != 400) {
+        setLoading(false);
+        // setListingDetails({});
+        close(true);
+        toast.success("Property Successfully added.");
+        history.push("/sell");
+        // history.push("/sell");
+        await currentStep();
+        return;
+      }
+      handleValidationErrors(response.errors);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const submitListingDetails = async (values) => {
@@ -571,7 +571,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       });
                     }}
                   >
-                    <option disabled>
+                    <option selected>
                       {" "}
                       What state in Nigeria do you want the property{" "}
                     </option>
