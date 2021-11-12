@@ -30,6 +30,8 @@ function RentPropertyList() {
   const [prevUrl, setPrevUrl] = useState("");
   const [lastUrl, setLastUrl] = useState("");
   const [firstUrl, setFirstUrl] = useState("");
+  const [searchTerm, setSearchTerm] = useState("")
+  
   const [filterOptions, setFilterOptions] = useState({
     isResidential: false,
     isCommercial: false,
@@ -108,21 +110,22 @@ function RentPropertyList() {
   const currentTab = (tabname) => {
     setTab(tabname);
   };
+  
   const increment = () => {
     setCounter(counter + 1);
-    console.log(counter);
+    // console.log(counter);
   };
   const decrement = () => {
     setCounter((counter) => Math.max(counter - 1, 0));
-    console.log(counter);
+    // console.log(counter);
   };
   const bathIncrement = () => {
     setBathroomCounter(bathroomCounter + 1)
-    console.log(bathroomCounter);
+    // console.log(bathroomCounter);
   };
   const bathDecrement = () => {
     setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 0));
-    console.log(bathroomCounter);
+    // console.log(bathroomCounter);
   };
   const showNext = async () => {
     showProperties(nextUrl);
@@ -142,6 +145,32 @@ function RentPropertyList() {
       return;
     }
   };
+  
+  const handleKeyPress = (e) => {
+    console.log({ e });
+    if (e.charCode !== 13) return;
+    handleSearchProperties();
+  };
+  
+  const clear = () => {
+    setSearchTerm("");
+    showProperties()
+  };
+  
+  const handleSearchProperties = async () => {
+    let url = `Property/list?search=${searchTerm}`
+    setLoading(true);
+    var result = await Fetch(url);
+    console.log({result});
+    if (!result.status) {
+      setLoading(false);
+      setErrormessage(result.message);
+      return;
+    }
+    setIsProperty(result.data.value);
+    setLoading(false)
+    return;
+  }
 
   const showProperties = async (
     url = `Property/list/rent?offset=${offset}&limit=${limit}`
@@ -222,33 +251,44 @@ function RentPropertyList() {
                   type="search"
                   className="search-rec"
                   placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e)}
                 />
-                <div className="search-box">
-                  {/* <img src="asset/searchicon.svg" alt /> */}
-                  <svg width="20px" height="20px" viewBox="0 0 20 20">
-                    <g
-                      id="Web-Application"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                    >
-                      <g
-                        id="1-Home"
-                        transform="translate(-1159.000000, -344.000000)"
-                        fill="#252427"
-                        fill-rule="nonzero"
-                        stroke="#252427"
-                        stroke-width="0.5"
-                      >
-                        <path
-                          d="M1166.90212,345 C1171.05871,345 1174.42665,348.272872 1174.42665,352.312141 C1174.42665,354.140176 1173.73571,355.810016 1172.59618,357.093156 L1172.59618,357.093156 L1173.07366,357.093156 C1173.18943,357.093156 1173.29796,357.135348 1173.38116,357.216197 L1173.38116,357.216197 L1177.77289,361.48397 C1177.94292,361.649169 1177.94292,361.916364 1177.77289,362.081597 L1177.77289,362.081597 L1176.95534,362.876075 C1176.7853,363.041308 1176.51035,363.041308 1176.34035,362.876075 L1176.34035,362.876075 L1171.94862,358.608302 C1171.86902,358.527454 1171.822,358.42199 1171.822,358.309489 L1171.822,358.309489 L1171.822,357.845477 C1170.50159,358.952844 1168.78325,359.624282 1166.90212,359.624282 C1162.74553,359.624282 1159.37759,356.351409 1159.37759,352.312141 C1159.37759,348.272872 1162.74553,345 1166.90212,345 Z M1166.90212,346.687417 C1163.70418,346.687417 1161.11402,349.204467 1161.11402,352.312141 C1161.11402,355.419814 1163.70418,357.936865 1166.90212,357.936865 C1170.10006,357.936865 1172.69022,355.419814 1172.69022,352.312141 C1172.69022,349.204467 1170.10006,346.687417 1166.90212,346.687417 Z"
-                          id="Search-Icon"
-                        ></path>
-                      </g>
-                    </g>
-                  </svg>
-                </div>
+                <button className="search-box">
+                    {/* <img src="asset/searchicon.svg" alt /> */}
+                    {searchTerm == "" ? (
+                      <div className="home-search-icon" onClick={() => handleSearchProperties()}>
+                        <svg width="20px" height="20px" viewBox="0 0 20 20">
+                          <g
+                            id="Web-Application"
+                            stroke="none"
+                            stroke-width="1"
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <g
+                              id="1-Home"
+                              transform="translate(-1159.000000, -344.000000)"
+                              fill="#252427"
+                              fill-rule="nonzero"
+                              stroke="#252427"
+                              stroke-width="0.5"
+                            >
+                              <path
+                                d="M1166.90212,345 C1171.05871,345 1174.42665,348.272872 1174.42665,352.312141 C1174.42665,354.140176 1173.73571,355.810016 1172.59618,357.093156 L1172.59618,357.093156 L1173.07366,357.093156 C1173.18943,357.093156 1173.29796,357.135348 1173.38116,357.216197 L1173.38116,357.216197 L1177.77289,361.48397 C1177.94292,361.649169 1177.94292,361.916364 1177.77289,362.081597 L1177.77289,362.081597 L1176.95534,362.876075 C1176.7853,363.041308 1176.51035,363.041308 1176.34035,362.876075 L1176.34035,362.876075 L1171.94862,358.608302 C1171.86902,358.527454 1171.822,358.42199 1171.822,358.309489 L1171.822,358.309489 L1171.822,357.845477 C1170.50159,358.952844 1168.78325,359.624282 1166.90212,359.624282 C1162.74553,359.624282 1159.37759,356.351409 1159.37759,352.312141 C1159.37759,348.272872 1162.74553,345 1166.90212,345 Z M1166.90212,346.687417 C1163.70418,346.687417 1161.11402,349.204467 1161.11402,352.312141 C1161.11402,355.419814 1163.70418,357.936865 1166.90212,357.936865 C1170.10006,357.936865 1172.69022,355.419814 1172.69022,352.312141 C1172.69022,349.204467 1170.10006,346.687417 1166.90212,346.687417 Z"
+                                id="Search-Icon"
+                              ></path>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="home-search-icon" onClick={() => clear() }>
+                        <i className="far fa-times" />
+                      </div>
+                    )}
+                </button>
               </div>
               <div className="filter-box">
                 <p className={`fil ${filterOptions.isResidential ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isResidential: !filterOptions.isResidential})}>Residential</p>
