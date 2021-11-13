@@ -137,7 +137,7 @@ function ReliefForm({ property = null, close }) {
     let numberOfDaysTillLoanDueDate = Math.floor(differenceInTime / (1000 * 3600 * 24));
     let numberOfInstallments = (numberOfDaysTillLoanDueDate / (repaymentFrequency == "Monthly" ? 12 : repaymentFrequency == "Weekly" ? 7 : 1));
     let installmentAmount = totalRepayment / numberOfInstallments;
-    console.log({numberOfDaysTillLoanDueDate});
+    // console.log({numberOfDaysTillLoanDueDate});
 
 
     const calculations = {

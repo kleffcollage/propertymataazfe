@@ -577,7 +577,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       });
                     }}
                   >
-                    <option disabled>
+                    <option selected>
                       {" "}
                       What state in Nigeria do you want the property{" "}
                     </option>

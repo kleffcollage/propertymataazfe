@@ -24,8 +24,9 @@ function Home() {
       setErrorMessage(data.message);
       return;
     }
-	setProperties(data.data.value);
-	return;
+    
+    setProperties(data.data.value);
+    return;
   };
 
   const clear = () => {
