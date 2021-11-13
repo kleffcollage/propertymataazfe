@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router";
 import Fetch from "../../../Utilities/Fetch";
 import { SRLWrapper } from "simple-react-lightbox";
-import { MapView } from "../../../Components/Generics/MapView";
+import  {MapView} from "../../../Components/Generics/MapView";
 import Modal from "../../../Utilities/Modal";
 import MiniModal from "../../../Utilities/Alert/MiniModal";
 import Alert from "../../../Utilities/Alert/index";
@@ -419,6 +419,8 @@ function Enquires({ isRent }) {
                       loadingElement={<div style={{ height: `100%` }} />}
                       containerElement={<div style={{ height: `400px` }} />}
                       mapElement={<div style={{ height: `100%` }} />}
+                      lng={propertyDetails.longitude}
+                      lat={propertyDetails.latitude}
                     />
                   </div>
                 </div>

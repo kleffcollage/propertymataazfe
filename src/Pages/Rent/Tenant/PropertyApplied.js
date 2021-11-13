@@ -6,7 +6,7 @@ import Spinner from "../../../Utilities/Spinner";
 import Alert from "../../../Utilities/Alert/index";
 import Modal from "../../../Utilities/Modal";
 import Naira from "react-naira";
-import { MapView } from "../../../Components/Generics/MapView";
+import {MapView} from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import TenantDetails from "../../../Pages/Rent/Tenant/TenantDetails";
 import ReactHtmlParser from "react-html-parser";
@@ -323,6 +323,8 @@ const PropertyApplied = ({ property = {}, close }) => {
                         loadingElement={<div style={{ height: `100%` }} />}
                         containerElement={<div style={{ height: `400px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
+                        lng={property.longitude}
+                        lat={property.latitude}
                       />
                     </div>
                   </div>

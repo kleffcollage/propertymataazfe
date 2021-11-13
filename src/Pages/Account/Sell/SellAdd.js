@@ -18,7 +18,7 @@ import { Editor } from "@tinymce/tinymce-react";
 // console.log({NaijaStates})
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-Geocode.setRegion("es");
+Geocode.setRegion("ng");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
@@ -245,23 +245,27 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
   };
 
-  const getLongAndLat = async (address) => {
+  const getLongAndLat = async (values) => {
+    console.log("here");
     try {
-      const { results } = await Geocode.fromAddress(address);
+      const { results } = await Geocode.fromAddress(values.address);
       console.log(results);
-      setData({
-        ...data,
-        latitude: results[0].geometry.location.lat,
-        longitude: results[0].geometry.location.lng,
-      });
-      return;
+      values.latitude = results[0].geometry.location.lat;
+      values.longitude = results[0].geometry.location.lng;
+      // setData({
+      //   ...data,
+      //   latitude: results[0].geometry.location.lat,
+      //   longitude: results[0].geometry.location.lng,
+      // });
+      return values;
     } catch (error) {
       console.error({ error });
-      return;
+      return values;
     }
   };
 
   const updateListingDetails = async (values) => {
+    values = await getLongAndLat(values);
     if (mediaFiles.length == 0 && existingProperty.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
       setLoading(false);
@@ -299,8 +303,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const createListingDetails = async (values) => {
+    
+    values = await getLongAndLat(values);
+    
     console.log({ values });
-
     if (values.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
       setLoading(false);
@@ -335,6 +341,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const submitListingDetails = async (values) => {
+    values = await getLongAndLat(values);
     console.log({ listingDetails });
     setLoading(true);
     setDrafting(false);
@@ -403,6 +410,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const submitListingToDraft = async (values) => {
+    values = await getLongAndLat(values);
     setDrafting(true);
     setLoading(false);
     values.price = price;

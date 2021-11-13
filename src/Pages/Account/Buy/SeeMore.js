@@ -6,17 +6,17 @@ import Spinner from "../../../Utilities/Spinner";
 import Modal from "../../../Utilities/Modal";
 import { ReportProperty } from "../../../Components/Generics/ReportProperty";
 import { withGoogleMap, GoogleMap, withScriptjs } from "react-google-maps";
-import { MapView } from "../../../Components/Generics/MapView";
+import {MapView} from "../../../Components/Generics/MapView";
 import { SRLWrapper } from "simple-react-lightbox";
 import { MainContext } from "../../../Context/MainContext";
 import Naira from "react-naira";
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from "react-html-parser";
 import {
   EmailShareButton,
   FacebookShareButton,
   LinkedinShareButton,
   TwitterShareButton,
-  WhatsappShareButton
+  WhatsappShareButton,
 } from "react-share";
 
 import {
@@ -39,16 +39,16 @@ export const SeeMore = ({
   const [showContact, setShowContact] = useState(false);
   const [files, setFiles] = useState([]);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-  const [showModal, setShowModal ] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   const user = useContext(MainContext);
-  console.log({user});
+  console.log({ user });
   console.log(propertyDetails);
   console.log({ seller });
-  
+
   const openShareModal = () => {
     setShowModal(!showModal);
-  }
+  };
 
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -66,25 +66,23 @@ export const SeeMore = ({
       // setId(data.data);
     }
   };
-  
-  const url = tenant 
-  ? window.origin + `/rent/enquires/${propertyDetails.id}`
-  :  window.origin + `/buy/enquires/${propertyDetails.id}`
-  
+
+  const url = tenant
+    ? window.origin + `/rent/enquires/${propertyDetails.id}`
+    : window.origin + `/buy/enquires/${propertyDetails.id}`;
+
   const handleCopyToClipboard = async () => {
-    console.log({url})
+    console.log({ url });
     const copied = await navigator.clipboard.writeText(url);
-    toast.info("Link copied successfully...")
-    // console.log("Copied: ", copied)  
-  }
+    toast.info("Link copied successfully...");
+    // console.log("Copied: ", copied)
+  };
 
   useEffect(() => {
     console.log("asdfghjkjhgfdsa");
     console.log(propertyId);
     getPropertyDetails();
   }, []);
-  
-  
 
   return (
     <>
@@ -97,15 +95,12 @@ export const SeeMore = ({
           close={() => setIsReportModalOpen(false)}
         />
       </Modal>
-      
+
       <Modal open={showModal} onClose={() => setShowModal(false)}>
         <div className="top-section">
           <div className="back">
             <i className="fas fa-chevron-left mr-2"></i>
-            <span
-              className="backs"
-              onClick={() => setShowModal(false)}
-            >
+            <span className="backs" onClick={() => setShowModal(false)}>
               Back
             </span>
           </div>
@@ -133,8 +128,10 @@ export const SeeMore = ({
             </WhatsappShareButton>
           </div>
           <div className="d-flex align-items-center justify-content-between link-copy p-3 mt-2">
-            <h5 className="mb-0 text-white"> { url }</h5>
-            <button type="button" onClick={() => handleCopyToClipboard()}>Copy</button>
+            <h5 className="mb-0 text-white"> {url}</h5>
+            <button type="button" onClick={() => handleCopyToClipboard()}>
+              Copy
+            </button>
           </div>
         </div>
       </Modal>
@@ -178,30 +175,30 @@ export const SeeMore = ({
             </div>
           </div>
           <div className="content-section">
-              <div className="property-title">{propertyDetails.name}</div>
-              {seller ? (
-                <div className="activities">
-                  <div className="d-flex justify-content-between">
-                    <div className="views">
-                      <i className="fal fa-eye"></i>
-                      <div className="count">{propertyDetails.views}</div>
-                      <div className="viewtext">Views</div>
-                    </div>
-                    <div className="views">
-                      <i className="fal fa-eye"></i>
-                      <div className="count">{propertyDetails.enquiries}</div>
-                      <div className="viewtext">Enquires</div>
-                    </div>
+            <div className="property-title">{propertyDetails.name}</div>
+            {seller ? (
+              <div className="activities">
+                <div className="d-flex justify-content-between">
+                  <div className="views">
+                    <i className="fal fa-eye"></i>
+                    <div className="count">{propertyDetails.views}</div>
+                    <div className="viewtext">Views</div>
                   </div>
-                  <div className="views full">
-                    <div className="groups d-flex ml-5">
-                      <i className="far fa-scroll mr-5"></i>
-                      <div className="count">Payment</div>
-                    </div>
-                    <div className="viewtext">Pending Sale</div>
+                  <div className="views">
+                    <i className="fal fa-eye"></i>
+                    <div className="count">{propertyDetails.enquiries}</div>
+                    <div className="viewtext">Enquires</div>
                   </div>
                 </div>
-              ) : null}
+                <div className="views full">
+                  <div className="groups d-flex ml-5">
+                    <i className="far fa-scroll mr-5"></i>
+                    <div className="count">Payment</div>
+                  </div>
+                  <div className="viewtext">Pending Sale</div>
+                </div>
+              </div>
+            ) : null}
             <div className="feature-group">
               <div className="feature-sing">
                 <i className="far fa-bed" />
@@ -228,48 +225,71 @@ export const SeeMore = ({
               </div>
             </div>
             {!seller ? (
-              propertyDetails.sellMyself ? (  
-                (propertyDetails.createdByUser) && 
-                  propertyDetails.createdByUser?.id == user.data.user?.id 
-                ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>Cannot contact self on owned property</button>
-                : <div
-                  className={`contact-section ${
-                    showContact ? "show-info" : ""
-                  }`}
-                  onClick={() => {
-                    setShowContact(!showContact);
-                  }}
-                >
-                  <button className="color-btn w-100 mt-4">
-                    {tenant ? "Contact LandLord" : "Contact Seller"}
+              propertyDetails.sellMyself ? (
+                propertyDetails.createdByUser &&
+                propertyDetails.createdByUser?.id == user.data.user?.id ? (
+                  <button
+                    className="color-btn w-100 py-2 mt-2"
+                    style={{ opacity: 0.4 }}
+                    disabled
+                  >
+                    Cannot contact self on owned property
                   </button>
-                  <div className="contact-info">
-                    <div className="contact-name">{propertyDetails.createdByUser?.fullName}</div>
-                    <a href={`tel:${propertyDetails.createdByUser?.phoneNumber}`} className="contact-number">{propertyDetails.createdByUser?.phoneNumber}</a>
-                    <a href={`mailto:${propertyDetails.createdByUser?.email}`} className="contact-number">
-                      {propertyDetails.createdByUser?.email}
-                    </a>
+                ) : (
+                  <div
+                    className={`contact-section ${
+                      showContact ? "show-info" : ""
+                    }`}
+                    onClick={() => {
+                      setShowContact(!showContact);
+                    }}
+                  >
+                    <button className="color-btn w-100 mt-4">
+                      {tenant ? "Contact LandLord" : "Contact Seller"}
+                    </button>
+                    <div className="contact-info">
+                      <div className="contact-name">
+                        {propertyDetails.createdByUser?.fullName}
+                      </div>
+                      <a
+                        href={`tel:${propertyDetails.createdByUser?.phoneNumber}`}
+                        className="contact-number"
+                      >
+                        {propertyDetails.createdByUser?.phoneNumber}
+                      </a>
+                      <a
+                        href={`mailto:${propertyDetails.createdByUser?.email}`}
+                        className="contact-number"
+                      >
+                        {propertyDetails.createdByUser?.email}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )
               ) : (
-                  <>
-                    {  (propertyDetails.createdByUser) && 
-                        propertyDetails.createdByUser?.id == user.data.user?.id 
-                        ? <button className="color-btn w-100 py-2 mt-2" style={{opacity: 0.4 }} disabled>You cannot enquire on owned property</button>
-                        : <Link
-                          to={
-                            tenant
-                              ? `/rent/enquires/${propertyDetails.id}`
-                              : `/buy/enquires/${propertyDetails.id}`
-                          }
-                          className="list-color-btn w-100 mt-4 mb-3f "
-                          
-                        >
-                          Enquire
-                        </Link>
-                      
-                    }
-                  </>
+                <>
+                  {propertyDetails.createdByUser &&
+                  propertyDetails.createdByUser?.id == user.data.user?.id ? (
+                    <button
+                      className="color-btn w-100 py-2 mt-2"
+                      style={{ opacity: 0.4 }}
+                      disabled
+                    >
+                      You cannot enquire on owned property
+                    </button>
+                  ) : (
+                    <Link
+                      to={
+                        tenant
+                          ? `/rent/enquires/${propertyDetails.id}`
+                          : `/buy/enquires/${propertyDetails.id}`
+                      }
+                      className="list-color-btn w-100 mt-4 mb-3f "
+                    >
+                      Enquire
+                    </Link>
+                  )}
+                </>
               )
             ) : null}
 
@@ -278,8 +298,7 @@ export const SeeMore = ({
               <p>{ReactHtmlParser(propertyDetails.description)}</p>
             </div>
             <SRLWrapper>
-              { files.filter((m) => m.isImage).length > 0  && 
-              
+              {files.filter((m) => m.isImage).length > 0 && (
                 <div className="picture-overview">
                   <h2 className="property-info">Pictures</h2>
                   <div className="image-gallery">
@@ -294,10 +313,9 @@ export const SeeMore = ({
                       })}
                   </div>
                 </div>
-              }
-              
-              { files.filter((m) => m.isVideo).length > 0 &&
-              
+              )}
+
+              {files.filter((m) => m.isVideo).length > 0 && (
                 <div className="video-overview">
                   <h2 className="property-info">Video Tour</h2>
                   <div className="video-gallery">
@@ -319,7 +337,7 @@ export const SeeMore = ({
                       })}
                   </div>
                 </div>
-              }
+              )}
             </SRLWrapper>
             <div className="map-overview">
               <h2 className="property-info">Map/Street view</h2>
@@ -330,6 +348,8 @@ export const SeeMore = ({
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `400px` }} />}
                   mapElement={<div style={{ height: `100%` }} />}
+                  lng={propertyDetails.longitude}
+                  lat={propertyDetails.latitude}
                 />
               </div>
             </div>
@@ -352,8 +372,9 @@ export const SeeMore = ({
             >
               Report This Listing
             </button>
-            <button className="preview-btn" onClick={() => openShareModal()}>Share This Listing</button>
-            
+            <button className="preview-btn" onClick={() => openShareModal()}>
+              Share This Listing
+            </button>
           </div>
         </div>
       )}
