@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Fetch from "../../../Utilities/Fetch";
@@ -214,9 +214,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     };
 
     files.push(newMedia);
-    console.log({files});
+    console.log({ files });
     efiles = [...files];
-    setMediaFiles([...mediaFiles,...files]);
+    setMediaFiles([...mediaFiles, ...files]);
   };
 
   const getFileExtention = (fileName) => {
@@ -246,13 +246,19 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const getLongAndLat = async (address) => {
-    const { results } = await Geocode.fromAddress(address);
-    setData({
-      ...data,
-      latitude: results[0].geometry.location.lat,
-      longitude: results[0].geometry.location.lng,
-    });
-    console.log(results);
+    try {
+      const { results } = await Geocode.fromAddress(address);
+      console.log(results);
+      setData({
+        ...data,
+        latitude: results[0].geometry.location.lat,
+        longitude: results[0].geometry.location.lng,
+      });
+      return;
+    } catch (error) {
+      console.error({ error });
+      return;
+    }
   };
 
   const updateListingDetails = async (values) => {
@@ -293,39 +299,39 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const createListingDetails = async (values) => {
-    console.log({values});
+    console.log({ values });
 
-    // if (values.mediaFiles.length == 0) {
-    //   toast.info("Please upload at least one image of your property");
-    //   setLoading(false);
-    //   return;
-    // }
-    // try {
-    //   var response = await Fetch("Property/create", "post", values);
-    //   console.log(response);
+    if (values.mediaFiles.length == 0) {
+      toast.info("Please upload at least one image of your property");
+      setLoading(false);
+      return;
+    }
+    try {
+      var response = await Fetch("Property/create", "post", values);
+      console.log(response);
 
-    //   if (!response.status) {
-    //     setLoading(false);
-    //     setErrormessage(response.message);
-    //     toast.error(response.message);
-    //     return;
-    //   }
-    //   if (response.status != 400) {
-    //     setLoading(false);
-    //     // setListingDetails({});
-    //     close(true);
-    //     toast.success("Property Successfully added.");
-    //     history.push("/sell");
-    //     // history.push("/sell");
-    //     await currentStep();
-    //     return;
-    //   }
-    //   handleValidationErrors(response.errors);
-    //   setLoading(false);
-    // } catch (error) {
-    //   console.error(error);
-    //   setLoading(false);
-    // }
+      if (!response.status) {
+        setLoading(false);
+        setErrormessage(response.message);
+        toast.error(response.message);
+        return;
+      }
+      if (response.status != 400) {
+        setLoading(false);
+        // setListingDetails({});
+        close(true);
+        toast.success("Property Successfully added.");
+        history.push("/sell");
+        // history.push("/sell");
+        await currentStep();
+        return;
+      }
+      handleValidationErrors(response.errors);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const submitListingDetails = async (values) => {
