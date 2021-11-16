@@ -13,7 +13,7 @@ ReactDOM.render(
         <App />
       </SimpleReactLightbox>
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 

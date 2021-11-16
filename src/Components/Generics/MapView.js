@@ -1,17 +1,19 @@
 import {withGoogleMap, GoogleMap,withScriptjs,Marker } from "react-google-maps";
 import React from 'react'
 
-export const MapView = withScriptjs(withGoogleMap(()=> 
+export const MapView = withScriptjs(withGoogleMap(({lng,lat})=> 
     <GoogleMap
-    defaultZoom={15}
-    defaultCenter={{ lat: 6.5321906, lng: 3.3161349 }}
+    defaultZoom={5}
+    defaultCenter={{ lat: lat, lng: lng }}
   >
       <Marker
           position={{
-            lat: 6.5321906,
-            lng: 3.3161349
+            lat: lat,
+            lng: lng
           }}
           
         />
   </GoogleMap>
 ))
+
+export default MapView;

@@ -230,14 +230,22 @@ function RentForm({ close }) {
     }
   };
 
-  const getLongAndLat = async (address) => {
-    const { results } = await Geocode.fromAddress(address);
-    setRentDetails({
-      ...rentDetails,
-      latitude: results[0].geometry.location.lat,
-      longitude: results[0].geometry.location.lng,
-    });
-    console.log("LongAndLat: ", results);
+  const getLongAndLat = async (values) => {
+    try {
+      const { results } = await Geocode.fromAddress(values.address);
+      console.log(results);
+      values.latitude = results[0].geometry.location.lat;
+      values.longitude = results[0].geometry.location.lng;
+      // setData({
+      //   ...data,
+      //   latitude: results[0].geometry.location.lat,
+      //   longitude: results[0].geometry.location.lng,
+      // });
+      return values;
+    } catch (error) {
+      console.error({ error });
+      return values;
+    }
   };
 
   const getTenantTypes = async () => {
@@ -283,6 +291,7 @@ function RentForm({ close }) {
     // }
     console.log({ rentDetails });
     let record = rentDetails;
+    record = await getLongAndLat(record);
     record.price = price;
     record.mediafiles = mediaFiles;
     record.description = description;
@@ -976,7 +985,11 @@ function RentForm({ close }) {
             >
               {loading ? <Spinner /> : "Submit"}
             </button>
-            <button type="button" className=" no-color-btn  draft" onClick={close}>
+            <button
+              type="button"
+              className=" no-color-btn  draft"
+              onClick={close}
+            >
               Cancel
             </button>
           </div>
