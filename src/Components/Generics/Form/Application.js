@@ -302,7 +302,12 @@ function Application({ clean, fix, close }) {
                       onChange={handleOnChange}
                       className="formfield"
                     >
-                      <option>Choose an option</option>
+                      <option selected>Choose an option</option>
+                      <option value="post construction">Post Construction</option> 
+                      <option value="new and occupied">New and occupied </option>
+                      <option value="new and unoccupied">New and unoccupied</option>
+                      <option value="old and occupied">Old and occupied </option>
+                      <option value="old and unoccupied">Old and unoccupied</option>
                     </select>
                     <div className="arrows"></div>
                   </div>
@@ -442,14 +447,12 @@ function Application({ clean, fix, close }) {
                       onChange={handleOnChange}
                       className="formfield"
                     >
-                      <option>Choose an option</option>
-                      {buildingType.map((_building, index) => {
-                        return (
-                          <option key={index} value={_building.name}>
-                            {_building.name}
-                          </option>
-                        );
-                      })}
+                      <option selected>Choose an option</option>
+                      <option value="post construction">Post Construction</option> 
+                      <option value="new and occupied">New and occupied </option>
+                      <option value="new and unoccupied">New and unoccupied</option>
+                      <option value="old and occupied">Old and occupied </option>
+                      <option value="old and unoccupied">Old and unoccupied</option>
                     </select>
                     <div className="arrows"></div>
                   </div>
