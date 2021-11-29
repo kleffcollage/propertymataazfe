@@ -112,19 +112,15 @@ function Buy() {
   };
   const increment = () => {
     setCounter(counter + 1);
-    console.log(counter);
   };
   const decrement = () => {
     setCounter((counter) => Math.max(counter - 1, 0));
-    console.log(counter);
   };
   const bathIncrement = () => {
     setBathroomCounter(bathroomCounter + 1);
-    console.log(bathroomCounter);
   };
   const bathDecrement = () => {
     setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 0));
-    console.log(bathroomCounter);
   };
   const showNext = async () => {
     showProperties(nextUrl);
@@ -146,7 +142,6 @@ function Buy() {
   };
   
   const handleKeyPress = (e) => {
-    console.log({ e });
     if (e.charCode !== 13) return;
     handleSearchProperties();
   };
@@ -160,7 +155,6 @@ function Buy() {
     let url = `Property/list?search=${searchTerm}`
     setLoading(true);
     var result = await Fetch(url);
-    console.log({result});
     if (!result.status) {
       setLoading(false);
       setErrormessage(result.message);
@@ -176,7 +170,6 @@ function Buy() {
   ) => {
     setLoading(true);
     var data = await Fetch(url);
-    console.log(data);
     if (!data.status) {
       setLoading(false);
       setErrormessage(data.message);
@@ -185,11 +178,9 @@ function Buy() {
 
     if (data.status != 400) {
       setLoading(true);
-      console.log(data.data.value);
       setIsProperty(data.data.value);
 
       setNextUrl(data.data.next && data.data.next.href.split("/list")[1]);
-      console.log(data.data.next && data.data.next.href.split("/list")[1]);
 
       setPrevUrl(data.data.next && data.data.next.href.split("/list")[1]);
       setFirstUrl(data.data.next && data.data.next.href.split("/list")[1]);
@@ -376,7 +367,6 @@ function Buy() {
                       isProperty
                         .filter((p) => p.isForSale)
                         .map((property, i) => {
-                          console.log(isProperty);
                           return (
                             <ListedCard
                               property={property}

@@ -27,13 +27,13 @@ const Verify = () => {
             setLoading(true)
             let data  = await Fetch(`LandSearch/user/list?offset=${offset}&limit=${limit}`);
             // data = data.data.json();
-            console.log('Verify: ', data)
+            // console.log('Verify: ', data)
             setRequests(data.data.value)
             setLoading(false)
         } catch (error) {
             setLoading(false)
             // toast.warn("Unable to fetch land search requests.")
-            console.log({ error })
+            console.error({ error })
         }
     }
     

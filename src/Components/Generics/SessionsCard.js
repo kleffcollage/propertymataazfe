@@ -11,8 +11,7 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ propertyId, setPropertyId ] = useState('')
     
-    const formattedDate = moment(data.dateNeeded).format("Do MMMM YYYY")
-    // console.log({formattedDate})
+    const formattedDate = moment(data.dateNeeded).format("Do MMMM YYYY");
     
     const popModal = () => {
         if(isClean) {
@@ -21,7 +20,6 @@ export default function SessionsCard({ data = {}, isClean = false, isLandSearch 
         }
         return
     }
-    console.log({ data })
 
     return (
         <>

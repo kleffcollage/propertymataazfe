@@ -43,7 +43,7 @@ const PropertyDraft = ({ property = {}, seeMore }) => {
 		} catch(error){
 			setDeleting(false);
 			toast.error("There was an error deleting this property. Please try again after sometime");
-			console.log(error);
+			console.error(error);
 		}
 	} 
 	

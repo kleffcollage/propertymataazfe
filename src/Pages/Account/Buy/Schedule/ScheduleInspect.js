@@ -60,11 +60,9 @@ const ScheduleInspect = ({ close }) => {
 
     try {
       let data = await Fetch(`Property/inspectiondates/list/${propertyId}`);
-      console.log(data);
 
       if (!data.status) {
         setLoading(false);
-        console.log(data.message);
         return;
       }
       if (data.status != 400) {
@@ -82,9 +80,6 @@ const ScheduleInspect = ({ close }) => {
     values.inspectionDateId = selectedDate.id;
     values.propertyId = propertyId;
     values.userId = user.id;
-    console.log({ setSelectedDate });
-    console.log({ user });
-    console.log({ values });
     if(values.inspectionTimeId == 0)
     {
       toast.warning("please select a time to continue");
@@ -146,8 +141,6 @@ const ScheduleInspect = ({ close }) => {
               initialValues={scheduleData}
               onSubmit={async (values, { setSubmitting }) => {
                 await requestInspection(values);
-                //   console.log({ values });
-                // alert(JSON.stringify(values, null, 2));
               }}
             >
               <Form>
@@ -179,9 +172,7 @@ const ScheduleInspect = ({ close }) => {
                       >
                         <option value={0}>Select a convenient time</option>
                         {selectedDate.times.map((time, i) => {
-                          console.log({time});
                           const formattedTime = moment(time.time).format("LT");
-                          console.log({ time });
                           return (
                             // <Moment format="h:m" date="2021-08-13T02:42:04.584" />
                             <option key={i} value={time.id}>

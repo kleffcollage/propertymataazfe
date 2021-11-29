@@ -13,7 +13,6 @@ function Pay({ property, close, isRent }) {
 	const [loading, setLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
-	// console.log(property)
 
 	const tax = (7.5 / 100) * property.price;
 	
@@ -29,19 +28,16 @@ function Pay({ property, close, isRent }) {
 		
 		try {
 			var data = await Fetch("Payment/initiate", "post", payData);
-			console.log(data);
 			
 			if (!data.status) {
 				setLoading(false);
 				toast.success(data.message)
-				// console.log(data.message);
 				return;
 			}
 			if (data.status != 400) {
 				window.open(data.message);
 				setLoading(false);
 				toast.success("Payment initiated successfully.")
-				// history.go(data.message)
 			}
 		} catch (error) {
 			setErrorMessage(error.message)

@@ -103,7 +103,7 @@ function RentPropertyList() {
     filterOptions.bathrooms = bathroomCounter
     
     let urlParams = `Property/list/rent?Residential=${filterOptions.isResidential}&Commercial=${filterOptions.isCommercial}&Mixed=${filterOptions.isMixed}&Bungalow=${filterOptions.isBungalow}&Flat=${filterOptions.isFlat}&Duplex=${filterOptions.isDuplex}&Terrace=${filterOptions.isTerrace}&Bathrooms=${filterOptions.bathrooms}&Bedrooms=${filterOptions.bedrooms}`
-    // console.log({urlParams})
+
     showProperties(urlParams)    
   }
 
@@ -113,19 +113,15 @@ function RentPropertyList() {
   
   const increment = () => {
     setCounter(counter + 1);
-    // console.log(counter);
   };
   const decrement = () => {
     setCounter((counter) => Math.max(counter - 1, 0));
-    // console.log(counter);
   };
   const bathIncrement = () => {
     setBathroomCounter(bathroomCounter + 1)
-    // console.log(bathroomCounter);
   };
   const bathDecrement = () => {
     setBathroomCounter((bathroomCounter) => Math.max(bathroomCounter - 1, 0));
-    // console.log(bathroomCounter);
   };
   const showNext = async () => {
     showProperties(nextUrl);
@@ -147,7 +143,7 @@ function RentPropertyList() {
   };
   
   const handleKeyPress = (e) => {
-    console.log({ e });
+    // console.log({ e });
     if (e.charCode !== 13) return;
     handleSearchProperties();
   };
@@ -161,7 +157,6 @@ function RentPropertyList() {
     let url = `Property/list?search=${searchTerm}`
     setLoading(true);
     var result = await Fetch(url);
-    console.log({result});
     if (!result.status) {
       setLoading(false);
       setErrormessage(result.message);
@@ -177,7 +172,6 @@ function RentPropertyList() {
   ) => {
     setLoading(true);
     var data = await Fetch(url);
-    console.log(data);
     if (!data.status) {
       setLoading(false);
       setErrormessage(data.message);
@@ -186,10 +180,10 @@ function RentPropertyList() {
 
     if (data.status != 400) {
       setLoading(true);
-      console.log(data.data.value);
+      // console.log(data.data.value);
       setIsProperty(data.data.value);
       setNextUrl(data.data.next && data.data.next.href.split("api/")[1]);
-      console.log(data.data.next && data.data.next.href.split("api/")[1]);
+      // console.log(data.data.next && data.data.next.href.split("api/")[1]);
       setPrevUrl(data.data.next && data.data.next.href.split("api/")[1]);
       setFirstUrl(data.data.next && data.data.next.href.split("api/")[1]);
       setLastUrl(data.data.next && data.data.next.href.split("api/")[1]);
@@ -368,7 +362,6 @@ function RentPropertyList() {
                       isProperty
                         .filter((p) => p.isForRent)
                         .map((property, i) => {
-                          console.log(isProperty);
                           return (
                             <ListedCard
                               property={property}

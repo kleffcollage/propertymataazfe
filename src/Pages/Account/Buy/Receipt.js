@@ -17,7 +17,6 @@ function Reciept({ property, close,  }) {
 	const [loading, setLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
-	console.log({property})
 	
 	const price = 0.75 * property.price
 	
@@ -31,12 +30,10 @@ function Reciept({ property, close,  }) {
 		
 		try {
 			var data = await Fetch("Payment/initiate", "post", payData);
-			console.log(data);
 			
 			if (!data.status) {
 				setLoading(false);
 				toast.success(data.message)
-				// console.log(data.message);
 				return;
 			}
 			if (data.status != 400) {

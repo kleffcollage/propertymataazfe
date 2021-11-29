@@ -19,33 +19,29 @@ export default function Profile() {
   const extractPreviewFromFile = async (uploadedFiles, isVideo = false) => {
     var newState = [];
     uploadedFiles.map((element) => {
-      console.log(element);
       newState.push(URL.createObjectURL(element));
     });
     setPreviews([...previews, ...newState]);
   };
 
   const processImage = (file) => {
-    console.log({ file });
     extractPreviewFromFile(file);
     file.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
         //console.log(binaryStr);
-        console.log(binaryStr);
+        // console.log(binaryStr);
         composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -65,7 +61,6 @@ export default function Profile() {
       isVideo: getFileExtention(file.name) == "mp4" ? true : false,
       isDocument: getFileExtention(file.name) == "pdf" ? true : false,
     };
-    console.log({ newMedia });
     setUserUpdateDetails({ ...userUpdateDetails, profilePicture: newMedia });
   };
 
@@ -75,7 +70,6 @@ export default function Profile() {
 
   const updateUserDetails = async () => {
     setLoading(true);
-    console.log({ userUpdateDetails });
     try {
       const data = await Fetch("user/update", "put", userUpdateDetails);
       if (!data.status) {
@@ -95,7 +89,7 @@ export default function Profile() {
     }
   };
 
-  console.log({ data });
+  
   return (
     <div className="row mb-4">
       <div className="col-lg-4">

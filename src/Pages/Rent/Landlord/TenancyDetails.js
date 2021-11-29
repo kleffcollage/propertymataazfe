@@ -27,7 +27,6 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     const [receipt, setOpenReceipt ] = useState(false);
     const [renewTenancy, setRenewTenancy ] = useState(false);
     
-    // console.log({ property })
     
     const openModal = (term) => {
         switch (term) {
@@ -68,7 +67,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     const fetchProperty = async () => {
         try {
             const data = await Fetch(`Property/get/${propertyId}`);
-            console.log({data});
+            // console.log({data});
             if(!data.status) {
                 console.error(data);
                 return;

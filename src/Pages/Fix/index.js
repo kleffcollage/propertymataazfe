@@ -20,12 +20,12 @@ const Fix = () => {
             setLoading(true)
             let data  = await Fetch(`Clean/requests/user?offset=${offset}&limit=${limit}`)
             // data = data.data.json();
-            console.log('Fix requests: ', data)
+            // console.log('Fix requests: ', data)
             setRequest(data.data.value)
             setLoading(false)
         } catch (error) {
             setLoading(false)
-            // console.log( error)
+            console.error(error)
         }
     }
     

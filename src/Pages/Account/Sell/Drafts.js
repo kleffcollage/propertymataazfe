@@ -20,7 +20,6 @@ function Drafts() {
 	const showProperties = async (url = "Property/user/drafts") => {
 		setLoading(true);
 		var data = await Fetch(url);
-		console.log(data);
 		if (!data.status) {
 			setLoading(false);
 			setErrormessage(data.message);

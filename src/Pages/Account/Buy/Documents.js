@@ -14,7 +14,6 @@ function Documentation({ property, close, isRent }) {
 	const [errorMessage, setErrorMessage] = useState('')
 	const user = useContext(MainContext)
 	
-	// console.log({property})
 	
 
     // useEffect(() => {

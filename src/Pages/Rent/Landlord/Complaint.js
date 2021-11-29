@@ -43,18 +43,15 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
     
     const setSelectedCategory = id => {
         let selectedObj = categories.filter(item => item.id == id);
-        console.log({selectedObj})
         setSelected(selectedObj[0])
     }
 	
     const getCategories = async () => {
         try {
             let data = await Fetch('Complaints/categories/list')
-            // console.log({data})
             setCategories(data.data)
-            
         } catch (error) {
-            console.log({error})
+            console.error({error})
         }
     }
     const getLandlordComplaints = async () => {
@@ -67,17 +64,15 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
             setLoading(false)
             
         } catch (error) {
-            console.log({error})
+            console.error({error})
         }
     }
 	
 	const handleSubmit = async () => {
 		setLoading(true);
         // complaintDetails.propertyId = property.id
-        console.log({complaintDetails})
         try {
             let data = await Fetch('Complaints/Create', 'post', complaintDetails);
-            console.log({data})
             if(!data.status) {
                 setLoading(false)
                 setErrormessage(data.message)
@@ -91,7 +86,7 @@ const TenantComplaint = ({ property, isTenant = false, close }) => {
             }
             
         } catch(error) {
-            console.log({error})
+            console.error({error})
         }
 	}
     
