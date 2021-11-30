@@ -26,9 +26,7 @@ export default function Fetch(
 		headers = { ...headers, "content-type": "application/json" };
 	}
 
-	console.log(process.env.REACT_APP_APIBASEURl);
 	var ModifiedUrl = process.env.REACT_APP_APIBASEURl + Url;
-	console.log(ModifiedUrl);
 
 	var Response = fetch(ModifiedUrl, {
 		method: Method,

@@ -25,8 +25,6 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const user = useContext(MainContext);
   const [dob, setDob] = useState(new Date());
   // const applicationTypes = useContext(MainContext)
-  // console.log({user});
-  // console.log({applicationTypes});
   const [applicationTypes, setApplicationTypes] = useState([]);
   const [mediafiles, setMediaFiles] = useState({
     passport: null,
@@ -104,14 +102,11 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
   const getApplicationTypes = async () => {
     try {
       let { data } = await Fetch("Application/types");
-      // console.log("Application types: ", data);
       setApplicationTypes(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
-  // console.log(userDetails.workId.length)
 
   const formSubmit = async (values) => {
     setLoading(true);
@@ -123,7 +118,6 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       ? applicationTypes.find((type) => type.name == "RENT").id
       : applicationTypes.find((type) => type.name == "BUY").id;
 
-    console.log({ values });
 
     try {
       if (isRentForm) {
@@ -136,25 +130,21 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       }
 
       let data = await Fetch("Application/new", "post", values);
-      console.log("Enquire Rent:", data);
 
       if (!data.status) {
         setLoading(false);
         setErrorMessage(data.message);
         toast.error(data.message);
-        console.log(errorMessage);
         return;
       }
       if (data.status != "400") {
         setLoading(false);
         toast.success("Application has been submitted successfully.");
-        console.log(data);
         close(true);
         history.go(0);
       } else {
         setLoading(false);
         toast.error(errorMessage);
-        console.log(errorMessage);
       }
     } catch (error) {
       setLoading(false);
@@ -167,20 +157,16 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        // console.log(reader.result);
-        //console.log(binaryStr);
-        // console.log("GrabUp", binaryStr);
         composeMedia(binaryStr, file, isPassport);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -204,7 +190,6 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
     };
 
     files.push(newMedia);
-    console.log(files);
 
     if (isPassport) {
       setMediaFiles({
@@ -357,7 +342,6 @@ function ApplicationForm({ property, isRentForm, close, propertyId }) {
                     label=""
                     value={dob}
                     onChange={(newValue) => {
-                      console.log(newValue._d);
                       setDob(newValue._d);
                     }}
                     renderInput={(params) => (

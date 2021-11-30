@@ -21,7 +21,6 @@ import { Statuses } from "../../../Utilities/Enums";
 function Enquires({ isRent }) {
   const { propertyId } = useParams();
   const history = useHistory();
-  // console.log(propertyId);
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,10 +41,8 @@ function Enquires({ isRent }) {
   const cancelEnquiryRequest = async () => {
     setLoading(true)
     var data = await Fetch(`Property/enquiry/cancel/${propertyId}`, "post");
-    console.log({ data });
     if(!data.status) {
       setLoading(false);
-      console.log(data.message);
       return;
     }
     if (data.status != 400) {
@@ -60,10 +57,8 @@ function Enquires({ isRent }) {
   const getPropertyDetails = async () => {
     setLoading(true);
     var data = await Fetch(`Property/get/${propertyId}`, "get");
-    console.log(data);
     if (!data.status) {
       setLoading(false);
-      console.log(data.message);
       return;
     }
     if (data.status != 400) {
@@ -78,18 +73,18 @@ function Enquires({ isRent }) {
     var sendData = await Fetch(`Property/addenquiries/${propertyId}`, "get");
 
     if (!sendData.status) {
-      console.log(sendData.message);
+      // console.log(sendData.message);
       return;
     }
     if (sendData.status != 400) {
-      console.log("Issokay");
+      return
+      // console.log("Issokay");
     }
   };
 
   const getEnquiryStatus = async () => {
     try {
       const data = await Fetch(`Application/get/user/property/${propertyId}`);
-      console.log({ data });
       if (!data.status) {
         console.error(data);
         return;

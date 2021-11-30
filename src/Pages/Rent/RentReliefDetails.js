@@ -16,20 +16,17 @@ function RentReliefDetails({ relief, close }) {
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
   
-  let data = relief.installments.filter(item => item.status == 'PENDING')
-  const [paymentData, setPaymentData] = useState({
-	amount: relief ? relief.monthlyInstallment : 0,
-	rentReliefId: relief ? relief.id : 0,
-	installmentId: (relief.installments && data.length > 0) ? data[0].id : 0
-  });
-  
-  console.log({relief})
+	let data = relief.installments.filter(item => item.status == 'PENDING')
+	const [paymentData, setPaymentData] = useState({
+		amount: relief ? relief.monthlyInstallment : 0,
+		rentReliefId: relief ? relief.id : 0,
+		installmentId: (relief.installments && data.length > 0) ? data[0].id : 0
+	});
   	
 
 	const handleOnChange = (e) => {
 		// showAlert("success", "Something toasted", "Everything works ");
 		const { name, value } = e.target;
-		// console.log(rentDetails);
 	};
 	
 	const getOustandingBalance = () => {
@@ -39,14 +36,11 @@ function RentReliefDetails({ relief, close }) {
 			return value.amount
 		})
 		outStandingBalance = unPaidInstalment.reduce((a, b) => { return a + b }, 0)
-		// console.log({total})
-		// console.log({unPaidInstalment})
 		return outStandingBalance
 	}
 	const getNextPaymentData = () => {
 		let nextPayDate = relief.installments.filter(amount => amount.status == "PENDING").map( item => { return item.dateDue })[0]
 		nextPayDate = nextPayDate ? moment(nextPayDate).format("L") : '-'
-		console.log({nextPayDate})
 		return nextPayDate
 	}
 	
@@ -58,11 +52,10 @@ function RentReliefDetails({ relief, close }) {
 	
 	const handlePayment = async () => {
 		setLoading(true);
-		console.log({paymentData});
 		
 		try {
 			var data = await Fetch("Payment/initiate", "post", paymentData);
-			console.log('Relief Data response: ', data);
+			// console.log('Relief Data response: ', data);
 			if (!data.status) {
 				setLoading(false);
 				setErrormessage(data);
@@ -180,7 +173,6 @@ function RentReliefDetails({ relief, close }) {
 								</div>
 								<p className="mb-0 last-paid">Paid on the {  moment(data.paidOn).format("L") } </p>
 							</div>
-							{/* {console.log(data.amount)} */}
 						</div>
 					)	
 				})}

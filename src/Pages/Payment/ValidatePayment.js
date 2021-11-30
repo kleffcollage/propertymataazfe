@@ -28,7 +28,7 @@ export default function ValidatePayment() {
     setValidating(true);
     try {
       const data = await Fetch(`payment/validate/${tx_ref}/${transaction_id}`);
-      console.log({ data });
+      // console.log({ data });
       if (!data.status) {
         setValidating(false);
         setPaymentStatus(false);

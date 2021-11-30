@@ -20,23 +20,17 @@ export default function RentCard({ property = {}, seeMore, isProperty, requests 
     
     const incrementView = async (id) => {
 		var sendData = await Fetch(`Property/addview/${id}`, "get");
-		//console.log("This is an Id " + id);
 		if(!sendData.status){
-			console.log(sendData.message)
+			// console.log(sendData.message)
 			return;
 		}
 		if(sendData.status != 400 ){
-			console.log("Issokay");
+            return
 		}
 	};
 
     const [seeApplicants, setSeeApplicants] = useState(false);
 
-    // const onSeeMoreClicked = async () => {
-    //     console.log(property);
-    //     seeMore(property.id);
-    //     // await incrementView(property.id);
-    // };
 
     return (
         <>

@@ -19,7 +19,6 @@ function Login() {
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails({ ...loginDetails, [name]: value });
-    console.log(loginDetails);
   };
 
   const togglePasswordVisibility = () => {
@@ -32,7 +31,7 @@ function Login() {
       //   data = await data.json();
       setApplication(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -41,7 +40,7 @@ function Login() {
     e.preventDefault();
     try {
       var data = await Fetch("user/token", "post", loginDetails);
-      console.log(data);
+      
 
       if (!data.status) {
         setLoading(false);
@@ -61,7 +60,7 @@ function Login() {
       handleValidationErrors(data.errors);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

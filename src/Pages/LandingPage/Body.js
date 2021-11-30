@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 function Body({ properties }) {
   const [seemore, setSeeMore] = useState(false);
   const [propertyId, setPropertyId] = useState(0);
-  console.log({ properties });
 
   const showPopUp = (id) => {
     setPropertyId(id);

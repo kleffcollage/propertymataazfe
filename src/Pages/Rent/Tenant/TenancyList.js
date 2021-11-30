@@ -37,8 +37,6 @@ const TenancyList = () => {
         setLoading(true)
         const data = await Fetch(`Tenancy/landlord?offset=${offset}&limit=${limit}`)
         
-        // console.log('Requested Rents: ', data)
-        
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
@@ -57,8 +55,6 @@ const TenancyList = () => {
         setLoading(true)
         const data = await Fetch(`Tenancy/user?offset=${offset}&limit=${limit}`)
         
-        // console.log('Requested Rents: ', data)
-        
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
@@ -67,7 +63,6 @@ const TenancyList = () => {
         if(data.status != 400) {
             setLoading(true)
             setUserTenancy(data.data)
-            // console.log('Tenancy rents: ', data.data.value)
             setLoading(false)
             return
         }

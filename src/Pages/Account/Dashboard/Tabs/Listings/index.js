@@ -33,6 +33,7 @@ const Listings = () => {
     // const showDetails = (id) => {
     //     setShowInfo(true)
     // }
+    
     const showDetails = (id) => {
 		setPropertyId(id);
 		setShowInfo(true);
@@ -46,7 +47,6 @@ const Listings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('Enquired Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -56,7 +56,6 @@ const Listings = () => {
         if(data.status != 400) {
             setLoading(true)
             setIsProperty(data.data.value)
-            // console.log('Enquired Properties: ', data.data.value)
             setLoading(false)
             return
         }
@@ -66,8 +65,6 @@ const Listings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('Requested Rents: ', data)
-        console.log({data});
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
@@ -76,7 +73,6 @@ const Listings = () => {
         if(data.status != 400) {
             setLoading(true)
             setRequestRents(data.data.value)
-            // console.log('Requested rents: ', data.data.value)
             setLoading(false)
             return
         }

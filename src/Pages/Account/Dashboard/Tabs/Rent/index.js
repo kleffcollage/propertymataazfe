@@ -31,7 +31,6 @@ const Rent = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('Enquired Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -41,7 +40,6 @@ const Rent = () => {
         if(data.status != 400) {
             setLoading(true)
             setIsProperty(data.data.value)
-            // console.log('Enquired Properties: ', data.data.value)
             setLoading(false)
             return
         }
@@ -50,8 +48,7 @@ const Rent = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('Requested Rents: ', data)
-        console.log({data});
+        
         if(!data.status) {
             setLoading(false)
             setErrormessage(data.message)
@@ -60,7 +57,6 @@ const Rent = () => {
         if(data.status != 400) {
             setLoading(true)
             setRequestRents(data.data.value)
-            // console.log('Requested rents: ', data.data.value)
             setLoading(false)
             return
         }
@@ -69,7 +65,6 @@ const Rent = () => {
         setLoading(true)
         const data = await Fetch(`Relief/user?offset=${offset}&limit=${limit}`)
         
-        // console.log('Requested Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -79,7 +74,6 @@ const Rent = () => {
         if(data.status != 400) {
             setLoading(true)
             setRentReliefs(data.data)
-            // console.log('Requested rents: ', data.data.value)
             setLoading(false)
             return
         }

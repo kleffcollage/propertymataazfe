@@ -20,7 +20,7 @@ function Reset(props) {
 	});
 
 	useEffect(() => {
-		console.log(code);
+		
 		if(code) {
 			setEmailSent(true) 
 			setResetCode(code) 
@@ -31,7 +31,6 @@ function Reset(props) {
 		e.preventDefault();
 		setLoading(true);
 		var data = await Fetch(`User/reset/initiate/${email}`, "get");
-		console.log(data);
 		if (!data.status) {
 			setLoading(false);
 			setErrorMessage(data.message);

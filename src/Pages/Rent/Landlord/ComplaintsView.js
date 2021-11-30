@@ -9,13 +9,12 @@ const TenantComplaintView = ({ complaint, close }) => {
     const [loading, setLoading ] = useState(false);
     const [errorMessage, setErrormessage] = useState("");
     const [ property, setProperty ] = useState([]);
-    // console.log({ complaint })
     
     const handleComplaintApproval = async () => {
         try {
             setLoading(true);
             let data = await Fetch(`Complaints/authorize/${complaint.id}`)
-            console.log({data})
+            // console.log({data})
             if (!data.status) {
                 setLoading(false);
                 setErrormessage(data.message);
@@ -28,11 +27,9 @@ const TenantComplaintView = ({ complaint, close }) => {
             }
             
         } catch(error) {
-            console.log({error})
+            console.error({error})
         }
     }
-    
-    console.log({ complaint })
 	
 	
 	return (

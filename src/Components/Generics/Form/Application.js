@@ -31,7 +31,6 @@ function Application({ clean, fix, close }) {
   const [states, setStates] = useState([]);
 
   const user = useContext(MainContext);
-  // console.log(user);
 
   const selectType = (type) => {
     setType(type);
@@ -54,7 +53,6 @@ function Application({ clean, fix, close }) {
       ...userDetails,
       numberOfBedrooms: Math.max(rooms - 1, 1),
     });
-    // console.log(counter);
   };
   const bathRoomIncrease = () => {
     setBathroom(bathroom + 1);
@@ -92,7 +90,6 @@ function Application({ clean, fix, close }) {
       ...userDetails,
       [name]: value,
     });
-    console.log({ userDetails });
   };
 
   const [userDetails, setUserDetails] = useState({
@@ -124,10 +121,9 @@ function Application({ clean, fix, close }) {
   const fetchApplicationTypes = async () => {
     try {
       let { data } = await Fetch("Application/types");
-      // console.log("Application types: ", data);
       setApplicationTypes(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -135,10 +131,9 @@ function Application({ clean, fix, close }) {
     try {
       let { data } = await Fetch("Property/types");
       // data = data.data.json();
-      console.log("BuidingTypes", data);
       setBuildingType(data);
     } catch (error) {
-      // console.log("building error: ", error)
+      console.error(error)
     }
   };
 
@@ -148,10 +143,9 @@ function Application({ clean, fix, close }) {
         await fetch("http://locationsng-api.herokuapp.com/api/v1/states")
       ).json();
       // data = data.data.json();
-      console.log("States", data);
       setStates(data);
     } catch (error) {
-      // console.log("states error: ", error)
+      console.error(error)
     }
   };
 
@@ -168,26 +162,20 @@ function Application({ clean, fix, close }) {
       endpoint = "LandSearch/create";
     }
 
-    // console.log({clean})
-    console.log({ userDetails });
 
     try {
       let data = await Fetch(`${endpoint}`, "post", userDetails);
-      console.log(data);
       if (!data.status) {
         setLoading(false);
         setErrorMessage(data.message);
-        console.log(errorMessage);
         return;
       }
       if (data.status != "400") {
         setLoading(false);
         toast.success("Application has been submitted successfully.");
         history.go(0);
-        console.log(data);
       } else {
         toast.error(errorMessage);
-        console.log(errorMessage);
       }
     } catch (error) {
       setLoading(false);

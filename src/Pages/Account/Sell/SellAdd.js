@@ -15,7 +15,7 @@ import { IoMdTrash } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
 import Compressor from "compressorjs";
 import { Editor } from "@tinymce/tinymce-react";
-// console.log({NaijaStates})
+
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 Geocode.setRegion("ng");
@@ -37,10 +37,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   );
   const [price, setPrice] = useState(existingProperty.price || 0);
   const [isPublish, setIsPublish] = useState(!existingProperty.isDraft);
-  console.log({ existingProperty });
-  console.log({ isEdit });
 
-  // console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
     Name: [],
     PropertyTypeId: [],
@@ -143,30 +140,29 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       toast.info("You can only add a maximum of 10 images to a property");
       return;
     }
-    // console.log({ uploadedFiles });
+    
     extractPreviewFromFile(uploadedFiles);
     const newFile = uploadedFiles.map((file) => {
       return handleImageCompression(file);
     });
-    console.log({ newFile });
+    
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
         // console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
+        // //console.log(binaryStr);
+        // console.log(binaryStr);
         composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -175,7 +171,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     new Compressor(file, {
       quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
       success: (compressedResult) => {
-        console.log({ compressedResult });
+        console.error({ compressedResult });
         return compressedResult;
       },
     });
@@ -184,7 +180,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const extractPreviewFromFile = async (uploadedFiles, isVideo = false) => {
     var newState = [];
     uploadedFiles.map((element) => {
-      console.log(element);
       newState.push(URL.createObjectURL(element));
     });
     if (isVideo) {
@@ -214,7 +209,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     };
 
     files.push(newMedia);
-    console.log({ files });
     efiles = [...files];
     setMediaFiles([...mediaFiles, ...files]);
   };
@@ -230,7 +224,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
       setPropertyTypes(data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -241,15 +235,14 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       const titles = data.data;
       setPropertyTitles(data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const getLongAndLat = async (values) => {
-    console.log("here");
+    
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      console.log(results);
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       // setData({
@@ -277,7 +270,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
     try {
       var response = await Fetch("Property/update", "post", values);
-      console.log(response);
 
       if (!response.status) {
         setLoading(false);
@@ -306,7 +298,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     
     values = await getLongAndLat(values);
     
-    console.log({ values });
     if (values.mediaFiles.length == 0) {
       toast.info("Please upload at least one image of your property");
       setLoading(false);
@@ -314,7 +305,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
     try {
       var response = await Fetch("Property/create", "post", values);
-      console.log(response);
 
       if (!response.status) {
         setLoading(false);
@@ -342,7 +332,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
   const submitListingDetails = async (values) => {
     values = await getLongAndLat(values);
-    console.log({ listingDetails });
+    
     setLoading(true);
     setDrafting(false);
     // await getLongAndLat(listingDetails.address);
@@ -357,8 +347,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     values.numberOfBedrooms = bedroomCounter;
     values.description = description;
 
-    console.log({ values });
-
     if (existingProperty.name) {
       await updateListingDetails(values);
       return;
@@ -368,7 +356,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
   const deleteMedia = async (id) => {
     // e.preventDefault();
-    console.log({ id });
+    
     try {
       const data = await Fetch(`media/${id}`, "delete");
       if (!data.status) {
@@ -385,26 +373,25 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
-    console.log(uploadedFiles);
+    
     extractPreviewFromFile(uploadedFiles, TextTrackCueList);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = async () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
+        // console.error(reader.result);
+        // //console.log(binaryStr);
+        // console.error(binaryStr);
         await composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -423,15 +410,12 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     values.numberOfBedrooms = bedroomCounter;
     values.description = description;
 
-    console.log({ values });
-
     if (existingProperty.name) {
       await updateListingDetails(values);
       return;
     }
     try {
       var response = await Fetch("Property/create", "post", values);
-      console.log(response);
       if (!response.status) {
         setDrafting(false);
         setErrormessage(response.message);
@@ -672,7 +656,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       "bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link",
                   }}
                   onEditorChange={(e) => {
-                    console.log(e);
+                    // console.log(e);
                     setDescription(e);
                   }}
                   apiKey={"h48cw4xuitutcnrtl0o32kl2h1u1pedw4y94bnxabwnr74dg"}
@@ -1006,7 +990,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                       defaultChecked={!existingProperty.isDraft}
                       defaultValue={existingProperty.isDraft}
                       onChange={(e) => {
-                        console.log(e.target.checked);
+                        // console.log(e.target.checked);
                         setIsPublish(e.target.checked);
                       }}
                     />

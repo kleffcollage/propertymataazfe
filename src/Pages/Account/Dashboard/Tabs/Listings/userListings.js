@@ -33,6 +33,7 @@ const UserListings = () => {
     // const showDetails = (id) => {
     //     setShowInfo(true)
     // }
+    
     const showDetails = (id) => {
 		setPropertyId(id);
 		setShowInfo(true);
@@ -46,7 +47,6 @@ const UserListings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('For Sale P: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -65,7 +65,6 @@ const UserListings = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('For Rent P: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -75,7 +74,6 @@ const UserListings = () => {
         if(data.status != 400) {
             setLoading(true)
             setIsForRent(data.data.value)
-            // console.log('Req rents: ', data.data)
             setLoading(false)
             return
         }

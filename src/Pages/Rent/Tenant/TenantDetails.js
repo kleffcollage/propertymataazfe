@@ -23,7 +23,7 @@ const TenantDetails = ({ application, close }) => {
             const data = await Fetch(`Application/decline/${application.id}`);
             
             if (!data.status) {
-                console.log(data.message);
+                // console.log(data.message);
                 toast.error(data.message);
                 return;
             }
@@ -43,7 +43,7 @@ const TenantDetails = ({ application, close }) => {
     try {
         const data = await Fetch(`Application/approve/${application.id}`);
         if (!data.status) {
-            console.log(data.message);
+            // console.log(data.message);
             toast.error(data.message);
             return;
         }
@@ -57,7 +57,6 @@ const TenantDetails = ({ application, close }) => {
     }
   };
 
-  console.log({ application });
 
   return (
     <>

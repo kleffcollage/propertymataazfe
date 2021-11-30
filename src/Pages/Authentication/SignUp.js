@@ -40,7 +40,6 @@ function SignUp() {
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
 		setUserDetails({ ...userDetails, [name]: value });
-		console.log(userDetails);
 	};
 
 	// 	const gotoNextPage = () =>{
@@ -56,7 +55,7 @@ function SignUp() {
 		setLoading(true);
 		e.preventDefault();
 		var data = await Fetch("User/register", "post", userDetails);
-		console.log(data);
+		
 		if (!data.status) {
 			setLoading(false);
 			setErrorMessage(data.message);
@@ -74,12 +73,11 @@ function SignUp() {
 		setLoading(true);
 		setErrorMessage('')
 		e.preventDefault();
-		console.log(token);
 		let data = await Fetch(
 			`User/verifyUser/${token}/${userDetails.email}`,
 			"get"
 		);
-		console.log(data);
+		
 		if (!data.status) {
 			setLoading(false);
 			setErrorMessage(data.message);

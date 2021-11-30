@@ -18,7 +18,7 @@ function Home() {
 	let url = `Property/list?search=${search}`
     setLoading(true);
     var data = await Fetch(url);
-    console.log(data);
+    // console.log(data);
     if (!data.status) {
       setLoading(false);
       setErrorMessage(data.message);

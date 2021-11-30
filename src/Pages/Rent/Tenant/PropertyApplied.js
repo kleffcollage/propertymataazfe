@@ -22,15 +22,13 @@ const PropertyApplied = ({ property = {}, close }) => {
     setShow((prev) => !prev);
   };
 
-  console.log({ property });
 
   const getApplications = async () => {
     setLoading(true);
     try {
       const data = await Fetch(`Application/list/${property.id}`);
-      console.log({ data });
+      // console.log({ data });
       if (!data.status) {
-        console.log({ data });
         setLoading(false);
         return;
       }
@@ -212,7 +210,6 @@ const PropertyApplied = ({ property = {}, close }) => {
                     applications
                       .filter((a) => a.status != Statuses.APPROVED)
                       .map((application, index) => {
-                        console.log({ application });
                         return (
                           <div
                             className="d-flex applicants my-3"

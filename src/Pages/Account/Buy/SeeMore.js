@@ -42,9 +42,6 @@ export const SeeMore = ({
   const [showModal, setShowModal] = useState(false);
 
   const user = useContext(MainContext);
-  console.log({ user });
-  console.log(propertyDetails);
-  console.log({ seller });
 
   const openShareModal = () => {
     setShowModal(!showModal);
@@ -53,10 +50,9 @@ export const SeeMore = ({
   const getPropertyDetails = async () => {
     setLoading(true);
     var data = await Fetch(`Property/get/${propertyId}`, "get");
-    console.log(data);
     if (!data.status) {
       setLoading(false);
-      console.log(data.message);
+      // console.log(data.message);
       return;
     }
     if (data.status != 400) {
@@ -72,15 +68,11 @@ export const SeeMore = ({
     : window.origin + `/buy/enquires/${propertyDetails.id}`;
 
   const handleCopyToClipboard = async () => {
-    console.log({ url });
     const copied = await navigator.clipboard.writeText(url);
     toast.info("Link copied successfully...");
-    // console.log("Copied: ", copied)
   };
 
   useEffect(() => {
-    console.log("asdfghjkjhgfdsa");
-    console.log(propertyId);
     getPropertyDetails();
   }, []);
 

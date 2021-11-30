@@ -31,13 +31,11 @@ const Sessions = () => {
             setLoading(true)
             let data  = await Fetch(`Clean/requests/user?offset=${offset}&limit=${limit}`)
             // data = data.data.json();
-            console.log('Clean req: ', data)
             setCleanList(data.data.value)
             setLoading(false)
         } catch (error) {
             setLoading(false)
             setErrormessage(error.message)
-            // console.log( error)
         }
     }
     
@@ -45,7 +43,6 @@ const Sessions = () => {
         setLoading(true)
         const data = await Fetch(url)
         
-        // console.log('Enquired Rents: ', data)
         
         if(!data.status) {
             setLoading(false)
@@ -55,7 +52,6 @@ const Sessions = () => {
         if(data.status != 400) {
             setLoading(true)
             setVerifyList(data.data.value)
-            // console.log('Enquired Properties: ', data.data.value)
             setLoading(false)
             return
         }

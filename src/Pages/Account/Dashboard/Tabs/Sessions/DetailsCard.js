@@ -3,7 +3,6 @@ import Naira from "react-naira"
 import moment from 'moment'
 
 const DetailsCard = ({ details, close }) => {
-    console.log({ details })
     
     const formattedDate = moment(details.dateCreated).format("Do MMMM YYYY")
     const proposedDate = details.cleaningQuote !== null ? moment(details.cleaningQuote.proposedDate).format("L") : 'awaiting...'

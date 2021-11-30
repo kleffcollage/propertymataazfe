@@ -33,7 +33,6 @@ function Request() {
 	const handleOnChange = (e) => {
 		const { name, value } = e.target;
 		setRequest({ ...request, [name]: value });
-		console.log(request);
 	};
 
 	const bedIncrement = (e) => {
@@ -43,7 +42,6 @@ function Request() {
 			...request,
 			numberOfBedrooms: bedroomCounter + 1,
 		});
-		console.log(request);
 	};
 
 	const bedDecrement = (e) => {
@@ -53,7 +51,6 @@ function Request() {
 			...request,
 			numberOfBedrooms: Math.max(bedroomCounter - 1, 1),
 		});
-		console.log(request);
 	};
 
 	const bathIncrement = (e) => {
@@ -63,7 +60,6 @@ function Request() {
 			...request,
 			numberOfBathrooms: bathroomCounter + 1,
 		});
-		console.log(request);
 	};
 
 	const bathDecrement = (e) => {
@@ -73,7 +69,6 @@ function Request() {
 			...request,
 			numberOfBathrooms: Math.max(bathroomCounter - 1, 1),
 		});
-		console.log(request);
 	};
 
 	const getPropertyTypes = async () => {
@@ -83,23 +78,11 @@ function Request() {
 
 			setPropertyTypes(data.data);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	};
 
-	const getStates = async () => {
-		try {
-			let data = await fetch(
-				"http://locationsng-api.herokuapp.com/api/v1/states"
-			);
-			data = await data.json();
-			console.log(data);
-			setStates(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
+	
 	useEffect(() => {
 		const fetchData = async () => {
 			await getPropertyTypes();
@@ -109,14 +92,14 @@ function Request() {
 	}, []);
 
 	const submitRequets = async (e) => {
-		console.log(request);
+		// console.log(request);
 		e.preventDefault();
 		let record = request;
 		record.budget = budget;
 		
 		setLoading(true);
 		var data = await Fetch("PropertyRequest/new", "post", record);
-		console.log(data);
+		// console.log(data);
 		//return;
 		if (!data.status) {
 			setLoading(false);

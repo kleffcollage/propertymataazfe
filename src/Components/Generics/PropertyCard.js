@@ -45,11 +45,10 @@ const PropertyCard = ({ property = {}, seeMore }) => {
       toast.error(
         "There was an error deleting this property. Please try again after sometime"
       );
-      console.log(error);
+      console.error(error);
     }
   };
 
-  console.log({ property });
   return (
     <>
       <Alert

@@ -10,9 +10,9 @@ import Moment from "react-moment";
 
 
 const DateWrap = ({ dates ={}, setSelectedDate={}, close }) => {
-    console.log(dates.date)
+    // console.log(dates.date)
     const a = new Date(dates.date)
-    console.log(a)
+    // console.log(a)
     
     return  (
         // <Wrapper>

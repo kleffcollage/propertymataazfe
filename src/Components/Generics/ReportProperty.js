@@ -11,10 +11,6 @@ export const  ReportProperty = ({property, close}) => {
     //const [errors, setErrors] = use
  //   const [LoggedIn, setLoggedIn] = useState(false);
 
-    console.log(user);
-    //console.log(user.id);
-    console.log(property);
-    console.log(property.name);
 
     const [reportDetails, setReportDetails] = useState({
         propertyId: property.id,
@@ -27,17 +23,14 @@ export const  ReportProperty = ({property, close}) => {
     const handleOnChange = (e) => {
         const {name, value} = e.target;
         setReportDetails({...reportDetails, [name]: value});
-        console.log(reportDetails);
     }
 
     const submitReport = async (e) => {
         e.preventDefault();
-        console.log(user);
         if(user){
             reportDetails.userId = user.id;
             reportDetails.email = user.email;
         }
-        // console.log("Here");
         setLoading(true);
         // var data = {reportDetails};
         var data = await Fetch("Report/create", "post", reportDetails);
@@ -52,7 +45,6 @@ export const  ReportProperty = ({property, close}) => {
             toast.success(data.message);
             close();
         }
-        console.log(data);
         setLoading(false);
     }
 

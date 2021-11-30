@@ -21,7 +21,6 @@ function App() {
   };
 
   const setApplication = (types) => {
-    console.log({ data });
     setContextData({ ...data, applicationTypes: types });
   };
 
@@ -29,10 +28,9 @@ function App() {
     try {
       let { data } = await Fetch("Application/types");
       //   data = await data.json();
-      console.log("Application types: ", data);
       setApplication(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -62,7 +60,7 @@ function App() {
     // fetchData();
     let user = localStorage.getItem("user");
     setUser(JSON.parse(user));
-    console.log(JSON.parse(user));
+    // console.log(JSON.parse(user));
   }, []);
 
   return (

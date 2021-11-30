@@ -7,7 +7,7 @@ function Alert(props) {
   const { data } = useContext(MainContext);
   
   const displayToast = () => {
-	  console.log(data.alert.message);
+	  // console.log(data.alert.message);
 	  toast(data.alert.message);
   }
 

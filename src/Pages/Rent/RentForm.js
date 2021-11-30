@@ -32,7 +32,6 @@ function RentForm({ close }) {
   const [tenantAnnualIncome, setTenantAnnualIncome] = useState(0);
   const [description, setDescription] = useState("");
 
-  //   console.log(NaijaStates.states());
   const [errors, setErrors] = useState({
     Name: [],
     PropertyTypeId: [],
@@ -88,12 +87,10 @@ function RentForm({ close }) {
     // showAlert("success", "Something toasted", "Everything works ");
     const { name, value } = e.target;
     setRentDetails({ ...rentDetails, [name]: value });
-    // console.log(rentDetails);
   };
   const extractPreviewFromFile = async (uploadedFiles, isVideo = false) => {
     var newState = [];
     uploadedFiles.map((element) => {
-      console.log(element);
       newState.push(URL.createObjectURL(element));
     });
     if (isVideo) {
@@ -110,7 +107,6 @@ function RentForm({ close }) {
       ...rentDetails,
       numberOfBedrooms: bedroomCounter + 1,
     });
-    console.log(rentDetails);
   };
 
   const bedDecrement = (e) => {
@@ -120,7 +116,6 @@ function RentForm({ close }) {
       ...rentDetails,
       numberOfBedrooms: Math.max(bedroomCounter - 1, 1),
     });
-    console.log(rentDetails);
   };
 
   const bathIncrement = (e) => {
@@ -130,7 +125,6 @@ function RentForm({ close }) {
       ...rentDetails,
       numberOfBathrooms: bathroomCounter + 1,
     });
-    console.log(rentDetails);
   };
 
   const bathDecrement = (e) => {
@@ -140,7 +134,6 @@ function RentForm({ close }) {
       ...rentDetails,
       numberOfBathrooms: Math.max(bathroomCounter - 1, 1),
     });
-    console.log(rentDetails);
   };
 
   //   const currentStep = async () => {
@@ -161,20 +154,19 @@ function RentForm({ close }) {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
+        // console.log(reader.result);
         //console.log(binaryStr);
-        console.log(binaryStr);
+        // console.log(binaryStr);
         composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -198,7 +190,6 @@ function RentForm({ close }) {
     };
 
     files.push(newMedia);
-    console.log(files);
     setMediaFiles(files);
   };
 
@@ -213,27 +204,14 @@ function RentForm({ close }) {
 
       setPropertyTypes(data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const getStates = async () => {
-    try {
-      let data = await fetch(
-        "http://locationsng-api.herokuapp.com/api/v1/states"
-      );
-      data = await data.json();
-      //   console.log(data);
-      setStates(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getLongAndLat = async (values) => {
     try {
       const { results } = await Geocode.fromAddress(values.address);
-      console.log(results);
       values.latitude = results[0].geometry.location.lat;
       values.longitude = results[0].geometry.location.lng;
       // setData({
@@ -254,18 +232,17 @@ function RentForm({ close }) {
       if (!status) return;
       setTenantTypes(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const getRentCollection = async () => {
     try {
       const { status, data } = await Fetch("Property/collection/types");
-      // console.log(data)
       if (!status) return;
       setRentCollection(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -276,7 +253,7 @@ function RentForm({ close }) {
       const titles = data.data;
       setPropertyTitles(data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -289,7 +266,6 @@ function RentForm({ close }) {
     //   setLoading(false);
     //   return;
     // }
-    console.log({ rentDetails });
     let record = rentDetails;
     record = await getLongAndLat(record);
     record.price = price;
@@ -299,7 +275,6 @@ function RentForm({ close }) {
 
     try {
       var data = await Fetch("Property/create", "post", record);
-      console.log("Rent property: ", data);
       if (!data.status) {
         setLoading(false);
         setErrormessage(data.message);
@@ -329,62 +304,26 @@ function RentForm({ close }) {
 
   const grabUploadedVideoFile = (uploadedFiles) => {
     extractPreviewFromFile(uploadedFiles, TextTrackCueList);
-    console.log(uploadedFiles);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = async () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
+        // console.log(reader.result);
         //console.log(binaryStr);
-        console.log(binaryStr);
+        // console.log(binaryStr);
         await composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
-
-  const getLgas = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/lgas`
-      );
-      data = await data.json();
-      console.log(data);
-      setLgas(data);
-      handleValidationErrors(data.errors);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getCities = async (state) => {
-    try {
-      let data = await fetch(
-        `http://locationsng-api.herokuapp.com/api/v1/states/${state}/cities`
-      );
-      data = await data.json();
-      console.log(data);
-      if (data.status != 404) {
-        setCities(data);
-        handleValidationErrors(data.errors);
-        setLoading(false);
-      }
-      setCities([...cities, state]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  //   console.log(NaijaStates.lgas("oyo"));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -495,7 +434,6 @@ function RentForm({ close }) {
                 className="formfield"
                 value={rentDetails.state}
                 onChange={(e) => {
-                  // console.log(e.target.value);
                   // await getLgas(e.target.value);
                   // await getCities(e.target.value);
                   setRentDetails({
@@ -808,7 +746,7 @@ function RentForm({ close }) {
               id="rent"
               name="sellMySelf"
               onChange={(e) => {
-                console.log(e.target.checked);
+                // console.log(e.target.checked);
                 setRentDetails({
                   ...rentDetails,
                   sellMySelf: e.target.checked,

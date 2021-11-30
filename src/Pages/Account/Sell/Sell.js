@@ -19,7 +19,7 @@ function Sell() {
 	const showProperties = async (url = "Property/user/created/sale") => {
 		setLoading(true);
 		var data = await Fetch(url);
-		console.log(data);
+		
 		if (!data.status) {
 			setLoading(false);
 			setErrormessage(data.message);
@@ -40,7 +40,6 @@ function Sell() {
 	};
 	const deleteProperty = async (id) => {
 		var data = await Fetch(`Property/delete/${id}`, "get");
-		console.log(data);
 		if (!data.status) {
 			setErrormessage(data.message);
 			return;

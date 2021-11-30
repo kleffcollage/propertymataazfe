@@ -54,7 +54,7 @@ function UserNav() {
     ]
   }
   const profileMenu = {
-    title: `${data.user.firstName}`,
+    title: `${ (data && data.user) && data.user.firstName}`,
     subMenus: [
       {
         title: 'Profile',
@@ -147,22 +147,25 @@ function UserNav() {
 						<li className={`${getNavLinkClass("/getloan")}`}>
 							<Link to="/getloan">Get Rent Loan</Link>
 						</li> */}
-            <DropdownContent 
-              getNavLinkClass={getNavLinkClass}
-              getNavAnchorClass={getNavLinkClass}
-              navigation={myMataazMenu}
-            />
 
-            {data.user ? (
+            { (data && data.user) ? (
               <>
                 <DropdownContent 
                   getNavLinkClass={getNavLinkClass}
                   getNavAnchorClass={getNavLinkClass}
+                  navigation={myMataazMenu}
+                />
+                
+                <DropdownContent 
+                  getNavLinkClass={getNavLinkClass}
+                  getNavAnchorClass={getNavLinkClass}
                   navigation={profileMenu}
-                  avatar={`${data.user.profilePicture}`}
+                  avatar={`${data.user && data.user.profilePicture}`}
                 />
               </>
-            ) : null}
+            ) : (
+              <RightNavItems getNavLinkClass={getNavLinkClass} />
+            )}
 
             {/* { data.user  ?
 							<li className={`user-info mr-0 ${getNavLinkClass("/welcome")}`}>
@@ -196,7 +199,7 @@ export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation
   
   return (
     <li onClick={(e) => closeDropdownContent(e)} ref={ddRef} className={`hover-dropdown ${getNavLinkClass("/welcome")}`}>
-      {(navigation.title != `${data.user.firstName}`) ? (
+      {(navigation.title != `${data.user && data.user.firstName}`) ? (
         <>
           <a className={`mr-1 ${getNavAnchorClass("/my")}`}>
             {navigation.title}
@@ -229,5 +232,28 @@ export const DropdownContent = ({ getNavLinkClass, getNavAnchorClass, navigation
         </ul>
       </div>
     </li>
+  )
+}
+
+
+// Right unsigned in menu 
+export const RightNavItems = ({ getNavLinkClass }) => {
+  return (
+    <>
+      <li>
+				<Link to="/login">Verify</Link>
+			</li>
+			<li>
+				<Link to="/login">Get Rent Loan</Link>
+			</li>
+      <li className={`${getNavLinkClass("/login")}`}>
+        <Link to="/login">Login</Link>
+      </li>
+      <li className={`mr-0 ${getNavLinkClass("/signup")}`}>
+        <Link to="/signup" className="mr-0">
+          Sign Up
+        </Link>
+      </li>
+    </>
   )
 }

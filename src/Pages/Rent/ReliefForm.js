@@ -40,7 +40,6 @@ function ReliefForm({ property = null, close }) {
   const {
     data: { user: user },
   } = useContext(MainContext);
-  // console.log({user})
   const {
     register,
     handleSubmit,
@@ -53,10 +52,9 @@ function ReliefForm({ property = null, close }) {
 
   const onSubmit = (data) => {
     data.register.passport = reliefData.passport;
-    console.log({ data });
   };
 
-  // console.log(NaijaStates.states());
+  //  (NaijaStates.states());
   const [inputErrors, setInputErrors] = useState({
     Name: [],
     PropertyTypeId: [],
@@ -120,14 +118,11 @@ function ReliefForm({ property = null, close }) {
       ...reliefData,
       [reliefData.register.name]: value,
     });
-    console.log(reliefData);
   };
 
   const calculateLoanInterest = () => {
-    // console.log(reliefDetails.repaymentFrequency)
     // let amount = amount
 
-    console.log({ repaymentFrequency });
     let interest = 0.15;
     let time = repaymentFrequency == "Monthly" ? 12 : repaymentFrequency == "Weekly" ? 7 : 1;
 
@@ -137,7 +132,6 @@ function ReliefForm({ property = null, close }) {
     let numberOfDaysTillLoanDueDate = Math.floor(differenceInTime / (1000 * 3600 * 24));
     let numberOfInstallments = (numberOfDaysTillLoanDueDate / (repaymentFrequency == "Monthly" ? 12 : repaymentFrequency == "Weekly" ? 7 : 1));
     let installmentAmount = totalRepayment / numberOfInstallments;
-    // console.log({numberOfDaysTillLoanDueDate});
 
 
     const calculations = {
@@ -145,17 +139,15 @@ function ReliefForm({ property = null, close }) {
       totalRepayment,
       installmentAmount,
     };
-    // console.log({ calculations });
     setLoanCalculation(calculations);
   };
 
   const getApplicationTypes = async () => {
     try {
       let { data } = await Fetch("Application/types");
-      // console.log("Application types: ", data);
       setApplicationTypes(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -176,10 +168,10 @@ function ReliefForm({ property = null, close }) {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = () => {
         // Do whatever you want with the file contents
@@ -189,7 +181,6 @@ function ReliefForm({ property = null, close }) {
         // console.log("GrabUp", binaryStr);
         composeMedia(binaryStr, file, isPassport);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };
@@ -213,7 +204,6 @@ function ReliefForm({ property = null, close }) {
     };
 
     files.push(newMedia);
-    console.log("Compose file: ", files);
     if (isPassport) {
       setReliefData({
         ...reliefData,
@@ -239,7 +229,6 @@ function ReliefForm({ property = null, close }) {
   //     latitude: results[0].geometry.location.lat,
   //     longitude: results[0].geometry.location.lng,
   //   });
-  //   console.log(results);
   // };
 
   const submitReliefRequest = async (reliefDetails) => {
@@ -261,11 +250,9 @@ function ReliefForm({ property = null, close }) {
       (type) => type.name == typeOfApplications.RELIEF
     ).id;
 
-    // console.log({ reliefDetails });
 
     try {
       var data = await Fetch("Application/new ", "post", reliefDetails);
-      console.log("Rent property: ", data);
       if (!data.status) {
         setLoading(false);
         toast.error(data.message);
@@ -282,30 +269,25 @@ function ReliefForm({ property = null, close }) {
       handleValidationErrors(data.errors);
       setLoading(false);
     } catch (error) {
-      console.log({ error });
+      console.error({ error });
     }
   };
 
   const grabUploadedVideoFile = (uploadedFiles) => {
-    console.log(uploadedFiles);
     uploadedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onerror = () => {
-        console.log("Errrrrrrrrrrrrrooooooooooorrrrrrr");
+        console.error("Errrrrrrrrrrrrrooooooooooorrrrrrr");
       };
       reader.onload = async () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result.split(",")[1];
-        console.log(reader.result);
-        //console.log(binaryStr);
-        console.log(binaryStr);
         await composeMedia(binaryStr, file);
       };
-      console.log(file);
       reader.readAsDataURL(file);
     });
   };

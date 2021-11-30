@@ -11,7 +11,6 @@ const RequestPay = ({ close }) => {
     const [loading, setLoading ] = useState(false);
     const [ property, setProperty ] = useState([]);
     
-    // console.log({ property })
     const rentDetails = {
         collectionType: "",
         bank: "",
