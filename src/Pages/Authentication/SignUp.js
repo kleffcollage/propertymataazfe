@@ -16,6 +16,7 @@ function SignUp() {
 		Password: [],
 		Email: [],
 		PhoneNumber: [],
+		PhoneNumber1: [],
 	});
 	// const [offset,setOffset] = useState(0);
 	// const [limit,setLimit] = useState(20);
@@ -26,6 +27,7 @@ function SignUp() {
 		lastName: "",
 		email: "",
 		mobileNumber: "",
+		phoneNumber: "",
 		password: "",
 		repeatPassword: "",
 	});
@@ -179,6 +181,25 @@ function SignUp() {
 												className="formfield"
 												placeholder="Type in your mobile number"
 												name="mobileNumber"
+												onChange={handleOnChange}
+											/>
+										</div>
+										{errors ? (
+											<div className="text-center mb-2">
+												<span className="text-danger text-center">
+													{errors.PhoneNumber1.map((error, index) => {
+														return <span>{error}</span>;
+													})}
+												</span>
+											</div>
+										) : null}
+										<div className="input-box">
+											<div className="input-label">Mobile Number 2</div>
+											<input
+												type="text"
+												className="formfield"
+												placeholder="Type in your mobile number"
+												name="phoneNumber2"
 												onChange={handleOnChange}
 											/>
 										</div>
