@@ -50,11 +50,11 @@ function Nav() {
 						<li>
 							<Link to="/login">Clean</Link>
 						</li>
-						<li>
+						{/* <li>
 							<Link to="login" className="mr-0">
 								Fix
 							</Link>
-						</li>
+						</li> */}
 					</ul>
 
 					<Link to="/">
