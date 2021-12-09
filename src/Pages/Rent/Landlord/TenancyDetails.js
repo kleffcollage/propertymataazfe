@@ -27,6 +27,8 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     const [terminate, setOpenTerminate] = useState(false);
     const [receipt, setOpenReceipt ] = useState(false);
     const [renewTenancy, setRenewTenancy ] = useState(false);
+    // toggle
+    const [renewable, setRenewable ] = useState(false);
     
     
     const openModal = (term) => {
@@ -68,7 +70,7 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     const fetchProperty = async () => {
         try {
             const data = await Fetch(`Property/get/${propertyId}`);
-            // console.log({data});
+            console.log({data});
             if(!data.status) {
                 console.error(data);
                 return;
@@ -164,6 +166,8 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
                                     <ToggleButton 
                                         onLabel="Renewable"
                                         offLabel="Non-renewable"
+                                        isRenewable={renewable}
+                                        setIsRenewable={setRenewable}
                                     />
                                 </div>
                             </div>
@@ -216,12 +220,12 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
 									<p className="mb-0">Tenancy Agreement</p>
 								</div>
 							</button>
-                            <button className="d-flex align-items-center document-wrap w-100 my-3 py-2 px-3" onClick={() => openModal("renewTenancy")} disabled>
+                            { renewable && <button className="d-flex align-items-center document-wrap w-100 my-3 py-2 px-3" onClick={() => openModal("renewTenancy")} disabled>
 								<div className="icon"> <FaRecycle /> </div>
 								<div className="item ml-3">
 									<p className="mb-0">Renew Tenancy</p>
 								</div>
-							</button>
+							</button> }
                         </div>
                     </div>
                 </div>

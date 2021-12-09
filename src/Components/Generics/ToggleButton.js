@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ToggleButton({ onLabel, offLabel }) {
+export default function ToggleButton({ onLabel, offLabel, isRenewable, setIsRenewable }) {
     return (
         <>
             <label for="toggle" className="toggle-label mr-3">
@@ -9,12 +9,10 @@ export default function ToggleButton({ onLabel, offLabel }) {
             <label className="switch mx-1">
                 <input
                 type="checkbox"
-                // // defaultChecked={!existingProperty.isDraft}
-                // defaultValue={existingProperty.isDraft}
-                // onChange={(e) => {
-                //     // console.log(e.target.checked);
-                //     setIsPublish(e.target.checked);
-                // }}
+                defaultValue={isRenewable}
+                onChange={(e) => {
+                    setIsRenewable(e.target.checked);
+                }}
                 />
                 <span className="slider round"></span>
             </label>
