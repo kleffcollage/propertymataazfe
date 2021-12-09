@@ -25,6 +25,7 @@ function SignUp() {
 	const [userDetails, setUserDetails] = useState({
 		firstName: "",
 		lastName: "",
+		companyName: "",
 		email: "",
 		mobileNumber: "",
 		phoneNumber: "",
@@ -162,6 +163,16 @@ function SignUp() {
 												className="formfield"
 												placeholder="Type in your email"
 												name="email"
+												onChange={handleOnChange}
+											/>
+										</div>
+										<div className="input-box">
+											<div className="input-label">Company Name</div>
+											<input
+												type="text"
+												className="formfield"
+												placeholder="Type in your company's name"
+												name="companyName"
 												onChange={handleOnChange}
 											/>
 										</div>
