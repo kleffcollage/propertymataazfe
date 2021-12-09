@@ -108,8 +108,8 @@ function SignUp() {
 							<h1 className="intro-text">
 								Enter your very own Property One-stop shop!
 							</h1>
-							<div className="display-image">
-								<img src alt="signupimage" />
+							<div className="login-image">
+								<img src="/asset/buyorsell.png" alt="signupimage" />
 							</div>
 						</div>
 						<div className="col" />
@@ -297,7 +297,7 @@ function SignUp() {
 										</Link>
 									</div>
 								)}
-								<div className="or">or</div>
+								{/* <div className="or">or</div>
 								<button className="other-signup">
 									<img src="/asset/google.svg" alt />
 									<span>Log in with Google</span>
@@ -305,7 +305,7 @@ function SignUp() {
 								<button className="other-signup">
 									<img src="/asset/google.svg" alt />
 									<span>Log in with Google</span>
-								</button>
+								</button> */}
 								<div className="line" />
 								<div className="create-text">
 									By creating an account you agree to our{" "}
