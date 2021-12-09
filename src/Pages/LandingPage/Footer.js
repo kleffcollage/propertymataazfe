@@ -6,7 +6,7 @@ function Footer() {
 		<footer className="container-fluid">
 			<div className="container">
 				<div className="row">
-					<div className="col-6 col-sm-2 mt-2 mt-sm-0">
+					<div className="col-6 col-md-2 mt-3 mt-sm-0">
 						<label className="foot-title">PropertyMataaz</label>
 						<ul className="footer">
 							<li>
@@ -17,7 +17,7 @@ function Footer() {
 							</li>
 						</ul>
 					</div>
-					<div className="col-6 col-sm-2 mt-2 mt-sm-0">
+					<div className="col-6 col-md-2 mt-3 mt-sm-0">
 						<label className="foot-title">Legal</label>
 						<ul className="footer">
 							<li>
@@ -30,7 +30,7 @@ function Footer() {
 							</li>
 						</ul>
 					</div>
-					<div className="col-6 col-sm-2 mt-2 mt-sm-0">
+					<div className="col-6 col-md-2 mt-3 mt-sm-0">
 						<label className="foot-title">Features</label>
 						<ul className="footer">
 							<li>
@@ -55,7 +55,7 @@ function Footer() {
 							</li>
 						</ul>
 					</div>
-					<div className="col-6 col-sm-2 mt-2 mt-sm-0">
+					<div className="col-6 col-md-2 mt-3 mt-sm-0">
 						<label className="foot-title">Enquiry</label>
 						<ul className="footer">
 							<li>
@@ -70,7 +70,7 @@ function Footer() {
 							</li>
 						</ul>
 					</div>
-					<div className="col-6 col-sm-2 mt-2 mt-sm-0">
+					<div className="col-6 col-md-2 mt-3 mt-sm-0">
 						<label className="foot-title">Social media</label>
 						<ul className="footer">
 							<li>

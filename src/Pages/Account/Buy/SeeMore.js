@@ -241,13 +241,22 @@ export const SeeMore = ({
                     </button>
                     <div className="contact-info">
                       <div className="contact-name">
-                        {propertyDetails.createdByUser?.fullName}
+                        { propertyDetails.createdByUser?.companyName ?
+                          propertyDetails.createdByUser?.companyName
+                          : propertyDetails.createdByUser?.fullName
+                        }
                       </div>
                       <a
                         href={`tel:${propertyDetails.createdByUser?.phoneNumber}`}
                         className="contact-number"
                       >
                         {propertyDetails.createdByUser?.phoneNumber}
+                      </a>
+                      <a
+                        href={`tel:${ propertyDetails.createdByUser?.phoneNumber1 }`}
+                        className="contact-number"
+                      >
+                        { propertyDetails.createdByUser?.phoneNumber1 }
                       </a>
                       <a
                         href={`mailto:${propertyDetails.createdByUser?.email}`}

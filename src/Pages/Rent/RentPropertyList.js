@@ -284,11 +284,11 @@ function RentPropertyList() {
                     )}
                 </button>
               </div>
-              <div className="filter-box">
+              {/* <div className="filter-box">
                 <p className={`fil ${filterOptions.isResidential ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isResidential: !filterOptions.isResidential})}>Residential</p>
                 <p className={`fil ${filterOptions.isCommercial ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isCommercial: !filterOptions.isCommercial})}>Commercial</p>
                 <p className={`fil ${filterOptions.isMixed ? 'active-select' : ''}`} onClick={() => setFilterOptions({...filterOptions, isMixed: !filterOptions.isMixed})}>mixed</p>
-              </div>
+              </div> */}
               <div className="filter-imgs">
                 <div className="singlefil"  onClick={() => setFilterOptions({...filterOptions, isBungalow: !filterOptions.isBungalow})}>
                   <div className={`iconfil ${!filterOptions.isBungalow ? '' : 'active-select'}`}>

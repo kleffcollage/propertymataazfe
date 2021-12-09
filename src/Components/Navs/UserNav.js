@@ -129,11 +129,11 @@ function UserNav() {
                 Clean
               </Link>
             </li>
-            <li className={`mr-0 ${getNavLinkClass("/fix")}`}>
+            {/* <li className={`mr-0 ${getNavLinkClass("/fix")}`}>
               <Link to="fix" className={`mr-0 ${getNavAnchorClass("/fix")}`}>
                 Fix
               </Link>
-            </li>
+            </li> */}
           </ul>
           <Link to="/">
             <div className="logo">
