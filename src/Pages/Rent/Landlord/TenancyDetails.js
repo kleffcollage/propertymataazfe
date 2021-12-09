@@ -15,6 +15,7 @@ import Reciept from "../../Account/Buy/Receipt";
 import RequestPay from "./RequestPay";
 import TenantComplaint from "./Complaint";
 import ReliefForm from "../ReliefForm";
+import ToggleButton from '../../../Components/Generics/ToggleButton'
 
 const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
     const [loading, setLoading ] = useState(false);
@@ -155,6 +156,15 @@ const TenancyDetails = ({ propertyId, isTenant = false, close }) => {
                                     <div className="feature-title w-100">
                                         Next rent is due in 365 Days
                                     </div>
+                                </div>
+                            </div>
+                            <div className="mt-3">
+                                <p className="mb-0 font-weight-600">Toggle Renewability</p>
+                                <div className="my-2 d-flex align-items-center justify-content-start">
+                                    <ToggleButton 
+                                        onLabel="Renewable"
+                                        offLabel="Non-renewable"
+                                    />
                                 </div>
                             </div>
                         </div>
