@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function ToggleButton({ onLabel, offLabel, isRenewable, setIsRenewable }) {
+    console.log(isRenewable);
     return (
         <>
             <label for="toggle" className="toggle-label mr-3">
@@ -9,7 +10,7 @@ export default function ToggleButton({ onLabel, offLabel, isRenewable, setIsRene
             <label className="switch mx-1">
                 <input
                 type="checkbox"
-                defaultValue={isRenewable}
+                defaultChecked={isRenewable ? true : false}
                 onChange={(e) => {
                     setIsRenewable(e.target.checked);
                 }}

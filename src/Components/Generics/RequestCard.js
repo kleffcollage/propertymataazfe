@@ -8,14 +8,14 @@ import RentReliefDetails from '../../Pages/Rent/RentReliefDetails';
 import RequestResults from '../../Pages/Rent/RequestResults';
 import TenancyDetails from '../../Pages/Rent/Landlord/TenancyDetails';
 
-export default function RequestCard({ property = {}, relief= {}, seeMore, isRequest = false, isRelief = false, isForTenants = false, }) {
+export default function RequestCard({ property = {}, relief= {}, seeMore, isRequest = false, isRelief = false, isForTenants = false,tenancy = null }) {
     const [ cancelModal, setCancelModal ] = useState(false)
     const [ openDetails, setOpenDetails ] = useState(false)
     const [ tenancyDetails, setTenancyDetails ] = useState(false)
     const [ requestResults, setRequestResults ] = useState(false)
     const [ propertyId, setPropertyId ] = useState('')
     const [selectedRelief, setSelectedRelief] = useState(null)
-    
+    console.log({property});
     
     const openRentDetails = () => {
         setOpenDetails(!openDetails)
@@ -67,7 +67,7 @@ export default function RequestCard({ property = {}, relief= {}, seeMore, isRequ
             
             {/* Tenants rental details */}
             <Modal open={tenancyDetails} onClose={() => setTenancyDetails(false)}>
-                <TenancyDetails isTenant={isForTenants} propertyId={property?.id} close={() => setTenancyDetails(false)} />
+                <TenancyDetails isTenant={isForTenants} propertyId={property?.id} close={() => setTenancyDetails(false)}  tenancy={tenancy}/>
             </Modal>
         
         { isRequest  ? (
