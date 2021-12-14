@@ -15,6 +15,8 @@ import { IoMdTrash } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
 import Compressor from "compressorjs";
 import { Editor } from "@tinymce/tinymce-react";
+import * as yup from 'yup';
+import ValidationRule from './SellValidationRule/ValidationRule'
 
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
@@ -28,7 +30,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const [drafting, setDrafting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
-  const [step, setStep] = useState("a");
+  const [step, setStep] = useState(0);
+  const currentValidationRule = ValidationRule[step];
+  console.log({ currentValidationRule })
   const [bedroomCounter, setBedroomCounter] = useState(
     existingProperty.numberOfBedrooms || 0
   );
@@ -92,6 +96,23 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     longitude: 0,
     latitude: 0,
   };
+  
+  const AddPropertyValidateSchema = yup.object().shape({
+    name: yup.string().required('Field is required'),
+    title: yup.string().required('Field is required'),
+    address: yup.string().required('Field is required'),
+    state: yup.string().required('Field is required'),
+    lga: yup.string().required('Field is required'),
+    area: yup.string().required('Field is required'),
+    description: yup.string().required('Field is required'),
+    sellMySelf: yup.boolean(),
+    price: yup.string().required('Field is required').po,
+    numberOfBedrooms: yup.string().required('Field is required'),
+    numberOfBathrooms: yup.string().required('Field is required'),
+    longitude: yup.string().required('Field is required'),
+    latitude: yup.string().required('Field is required'),
+  });
+  
   // FIX: existingProperty.propertyType ? propertyTypes && propertyTypes.first(t => t.name == existingProperty.propertyType).id : 0,
 
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -124,11 +145,11 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   };
 
   const currentStep = async () => {
-    if (step == "a") {
-      setStep("b");
+    if (step == 0) {
+      setStep(1);
       return;
     }
-    if (step == "b") {
+    if (step == 1) {
       close(true);
       history.push("/sell");
       return;
@@ -435,6 +456,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       setDrafting(false);
     }
   };
+  
+  const _handleSubmission = ( value ) => {
+    console.log({ currentValidationRule })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -459,9 +484,9 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
           <span
             className="backs"
             onClick={
-              step == "b"
+              step == 1
                 ? () => {
-                    setStep("a");
+                    setStep(0);
                   }
                 : close
             }
@@ -473,19 +498,22 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
 
       <Formik
         initialValues={listingDetails}
-        onSubmit={async (values, { setSubmitting }) => {
-          data.price = price;
-          if (data.isDraft) {
-            await submitListingToDraft(values);
-            return;
-          }
-          await submitListingDetails(values);
-          // console.log({values})
-          // alert(JSON.stringify(values, null, 2));
-        }}
+        validationSchema={currentValidationRule}
+        initialTouched={{ field: true }}
+        onSubmit={_handleSubmission}
+        // onSubmit={async (values, { setSubmitting }) => {
+        //   data.price = price;
+        //   if (data.isDraft) {
+        //     await submitListingToDraft(values);
+        //     return;
+        //   }
+        //   await submitListingDetails(values);
+        //   // console.log({values})
+        //   // alert(JSON.stringify(values, null, 2));
+        // }}
       >
         <Form>
-          {step == "a" ? (
+          {step == 0 ? (
             <div className="content-section mt-4">
               {/* {errors ? (
                 <div className="text-center mb-2">
@@ -494,7 +522,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   </span>
                 </div>
               ) : null} */}
-
+              
               <div className="input-box">
                 <label htmlFor="name" className="input-label">
                   Name
@@ -504,6 +532,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   placeholder="Give your listing a name that makes it easy to find"
                   className="formfield"
                   maxLength={50}
+                  initialTouched={true}
                 />
                 <ErrorMessage name="name" />
               </div>
@@ -560,7 +589,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   <Field
                     name="state"
                     as="select"
-                    value={data.state}
+                    defaultValue={data.state}
                     className="formfield"
                     onChange={(e) => {
                       setData({
@@ -726,7 +755,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 Next
               </button>
             </div>
-          ) : step == "b" ? (
+          ) : step == 1 ? (
             <div className="content-section mt-4">
               <div className="input-box">
                 <label htmlFor="price" className="input-label">
@@ -1000,41 +1029,45 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     Live
                   </label>
                 </div>
-              ) : null}
-              <div className="joint-btn mg mt-5">
-                {!isEdit ? (
-                  <button
-                    className="no-color-btn draft"
-                    type="submit"
-                    onClick={() => {
-                      setData({ ...data, isDraft: true });
-                    }}
-                  >
-                    {drafting ? (
-                      <Spinner color={"primary"} />
-                    ) : existingProperty.name ? (
-                      "Update draft"
-                    ) : (
-                      "Save to Draft"
-                    )}
-                  </button>
-                ) : null}
+              ) : null }
+              
+            </div>
+          ) : null}
+          
+          <div className="joint-btn mg mt-5">
+            { (!isEdit &&step == 1) ? (
+              <button
+                className="no-color-btn draft"
+                type="submit"
+                onClick={() => {
+                  setData({ ...data, isDraft: true });
+                }}
+              >
+                {drafting ? (
+                  <Spinner color={"primary"} />
+                ) : existingProperty.name ? (
+                  "Update draft"
+                ) : (
+                  "Save to Draft"
+                )}
+              </button>
+            ) : null}
 
-                <button
-                  className={`color-btn draft ${isEdit ? "w-100" : ""}`}
-                  type="submit"
-                  onClick={() => {
-                    setData({ ...data, isDraft: false });
-                  }}
-                >
-                  {loading ? (
-                    <Spinner />
-                  ) : existingProperty.name ? (
-                    "Update"
-                  ) : (
-                    "Submit"
-                  )}
-                </button>
+            <button
+              className={`color-btn draft mx-4 ${(isEdit || step != 1 )? "w-100" : ""}`}
+              type="submit"
+              onClick={() => {
+                setData({ ...data, isDraft: false });
+              }}
+            >
+              {loading ? (
+                <Spinner />
+              ) : existingProperty.name ? (
+                "Update"
+              ) : step != 1 ? ( "Next") : (
+                "Submit"
+              )}
+            </button>
               </div>
 
               <button
@@ -1044,8 +1077,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
               >
                 Cancel
               </button>
-            </div>
-          ) : null}
+          
         </Form>
       </Formik>
     </div>
