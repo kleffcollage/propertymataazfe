@@ -4,7 +4,7 @@ import { Background, Wrapper, Content } from "./Alert.styles";
 import Spinner from "../Spinner";
 
 const MiniModal = ({ showAlert, setShowAlert,children }) => {
-    const alertRef = useRef()
+    const alertRef = useRef();
     
     const closeAlert = (e) => {
         if(alertRef.current === e.target ) {

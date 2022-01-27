@@ -15,6 +15,7 @@ import { IoMdTrash } from "react-icons/io";
 import { GrAdd } from "react-icons/gr";
 import Compressor from "compressorjs";
 import { Editor } from "@tinymce/tinymce-react";
+import DraftEditor from "./DraftEditor";
 import * as yup from 'yup';
 import ValidationRule from './SellValidationRule/ValidationRule'
 
@@ -30,9 +31,12 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
   const [drafting, setDrafting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errormessage, setErrormessage] = useState("");
+  // steps and validation rules
   const [step, setStep] = useState(0);
   const currentValidationRule = ValidationRule[step];
-  console.log({ currentValidationRule })
+  const isLastStep = step == ValidationRule.length - 1;
+  // console.log({ currentValidationRule })
+  
   const [bedroomCounter, setBedroomCounter] = useState(
     existingProperty.numberOfBedrooms || 0
   );
@@ -71,7 +75,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     name: existingProperty.name ? existingProperty.name : "",
     title: existingProperty.title ? existingProperty.title : "",
     address: existingProperty.address ? existingProperty.address : "",
-    state: existingProperty.state ? existingProperty.state : "",
+    state: data.state,
     lga: existingProperty.lga ? existingProperty.lga : "",
     area: existingProperty.area ? existingProperty.area : "",
     description: existingProperty.description
@@ -97,21 +101,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     latitude: 0,
   };
   
-  const AddPropertyValidateSchema = yup.object().shape({
-    name: yup.string().required('Field is required'),
-    title: yup.string().required('Field is required'),
-    address: yup.string().required('Field is required'),
-    state: yup.string().required('Field is required'),
-    lga: yup.string().required('Field is required'),
-    area: yup.string().required('Field is required'),
-    description: yup.string().required('Field is required'),
-    sellMySelf: yup.boolean(),
-    price: yup.string().required('Field is required').po,
-    numberOfBedrooms: yup.string().required('Field is required'),
-    numberOfBathrooms: yup.string().required('Field is required'),
-    longitude: yup.string().required('Field is required'),
-    latitude: yup.string().required('Field is required'),
-  });
   
   // FIX: existingProperty.propertyType ? propertyTypes && propertyTypes.first(t => t.name == existingProperty.propertyType).id : 0,
 
@@ -457,8 +446,16 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
     }
   };
   
-  const _handleSubmission = ( value ) => {
-    console.log({ currentValidationRule })
+  const _handleSubmission = ( value, actions ) => {
+    console.log(isLastStep);
+    if(isLastStep) {
+      console.log({ value });      
+    } else {
+      setStep(step + 1 )
+      actions.setTouched({});
+      actions.setSubmitting(false)
+    }
+    console.log({ listingDetails })
   }
 
   useEffect(() => {
@@ -499,7 +496,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
       <Formik
         initialValues={listingDetails}
         validationSchema={currentValidationRule}
-        initialTouched={{ field: true }}
+        enableReinitialize={true}
         onSubmit={_handleSubmission}
         // onSubmit={async (values, { setSubmitting }) => {
         //   data.price = price;
@@ -512,7 +509,8 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
         //   // alert(JSON.stringify(values, null, 2));
         // }}
       >
-        <Form>
+        {({ values }) => (
+          <Form>
           {step == 0 ? (
             <div className="content-section mt-4">
               {/* {errors ? (
@@ -589,18 +587,17 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   <Field
                     name="state"
                     as="select"
-                    defaultValue={data.state}
+                    // value={data.state}
                     className="formfield"
-                    onChange={(e) => {
-                      setData({
-                        ...data,
-                        state: e.target.value,
-                      });
-                    }}
+                    // onChange={(e) => {
+                    //   setData({
+                    //     ...data,
+                    //     state: e.target.value,
+                    //   });
+                    // }}
                   >
                     <option selected>
-                      {" "}
-                      What state in Nigeria do you want the property{" "}
+                      What state in Nigeria do you want the property
                     </option>
                     {NaijaStates.states().map((state, i) => {
                       return (
@@ -616,7 +613,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
               </div>
 
               <div className="input-box">
-                {data.state ? (
+                {values.state ? (
                   <>
                     <label htmlFor="lga" className="input-label">
                       Locality (Optional)
@@ -624,7 +621,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                     <div className="select-box">
                       <Field name="lga" as="select" className="formfield">
                         <option>Choose an locality</option>
-                        {NaijaStates.lgas(data.state).lgas.map((lga, i) => {
+                        {NaijaStates.lgas(values.state).lgas.map((lga, i) => {
                           return (
                             <option key={i * 2} value={lga}>
                               {lga}
@@ -647,7 +644,6 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                   name="area"
                   placeholder="Your area"
                   className="formfield"
-                  required
                   maxLength={15}
                 />
                 <ErrorMessage name="area" />
@@ -666,43 +662,27 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 <ErrorMessage name="address" />
               </div>
 
-              <div className="input-box">
+              {/* <div className="input-box">
                 <label htmlFor="description" className="input-label">
                   Description
                 </label>
                 <Field
-                  as={Editor}
-                  init={{
-                    height: 398,
-                    menubar: false,
-                    plugins: [
-                      "advlist autolink lists link image charmap print preview anchor",
-                      "searchreplace visualblocks code fullscreen",
-                      "insertdatetime media table paste code help wordcount",
-                    ],
-                    skin: "material-classic",
-                    toolbar:
-                      "bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link",
-                  }}
-                  onEditorChange={(e) => {
-                    // console.log(e);
-                    setDescription(e);
-                  }}
-                  apiKey={"h48cw4xuitutcnrtl0o32kl2h1u1pedw4y94bnxabwnr74dg"}
-                  id="description"
+                  as={DraftEditor}
                   name="description"
+                  id="description"
+                  label="Write an article"
                   className="formfield"
-                  style={{ height: "150px" }}
-                />
-                {/* <Field
+                  placeholder="content here"
+                /> 
+                <Field
                   name="description"
                   as="textarea"
                   placeholder="Description"
                   className="formfield textarea"
                   maxLength={250}
-                /> */}
+                />
                 <ErrorMessage name="description" />
-              </div>
+              </div> */}
               {isEdit ? null : (
                 <>
                   <div className="checkbox">
@@ -751,9 +731,10 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 </>
               )}
 
-              <button className="secondary-btn" onClick={currentStep}>
+              {/* <button className="secondary-btn" onClick={currentStep}>
                 Next
-              </button>
+              </button> */}
+              
             </div>
           ) : step == 1 ? (
             <div className="content-section mt-4">
@@ -1035,7 +1016,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
           ) : null}
           
           <div className="joint-btn mg mt-5">
-            { (!isEdit &&step == 1) ? (
+            { (!isEdit && step == 1) ? (
               <button
                 className="no-color-btn draft"
                 type="submit"
@@ -1054,7 +1035,7 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
             ) : null}
 
             <button
-              className={`color-btn draft mx-4 ${(isEdit || step != 1 )? "w-100" : ""}`}
+              className={`color-btn draft mx-4 ${(isEdit || step != 1 ) ? "w-100" : ""}`}
               type="submit"
               onClick={() => {
                 setData({ ...data, isDraft: false });
@@ -1064,21 +1045,21 @@ function SellAdd({ close, isEdit = false, existingProperty = {} }) {
                 <Spinner />
               ) : existingProperty.name ? (
                 "Update"
-              ) : step != 1 ? ( "Next") : (
+              ) : step != 1 ? ( "Next" ) : (
                 "Submit"
               )}
             </button>
-              </div>
+          </div>
 
-              <button
-                type="button"
-                className="no-color-btn py-2 w-100 mt-4"
-                onClick={close}
-              >
-                Cancel
-              </button>
-          
+          <button
+            type="button"
+            className="no-color-btn py-2 w-100 mt-4"
+            onClick={close}
+          >
+            Cancel
+          </button>
         </Form>
+        )}
       </Formik>
     </div>
   );
