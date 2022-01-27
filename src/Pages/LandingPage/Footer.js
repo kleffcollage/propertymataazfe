@@ -21,9 +21,10 @@ function Footer() {
 						<label className="foot-title">Legal</label>
 						<ul className="footer">
 							<li>
-								<a href="asset/disclaimers/PRIVACY_POLICY.docx">
-									Privacy Policy
-								</a>
+								<Link to="/privacy-policy">Privacy Policy</Link>
+								{/* <a href="asset/disclaimers/PRIVACY_POLICY.docx">
+									y
+								</a> */}
 							</li>
 							<li>
 								<a href="#" />

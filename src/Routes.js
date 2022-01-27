@@ -21,6 +21,7 @@ import Listings from "./Pages/Account/Dashboard/Tabs/Listings";
 import RentPage from "./Pages/Account/Dashboard/Tabs/Rent";
 import Sessions from "./Pages/Account/Dashboard/Tabs/Sessions";
 import Profile from "./Components/Profile/Profile";
+import PrivacyPolicy from "./Pages/LandingPage/PrivacyPolicy";
 
 const ROUTES = [
 	{ path: "/", key: "ROOT", exact: true, component: () => <Home /> },
@@ -28,6 +29,7 @@ const ROUTES = [
 	{ path: "/clean", key: "ROOT", exact: true, component: () => <Clean /> },
 	{ path: "/fix", key: "ROOT", exact: true, component: () => <Fix /> },
 	{ path: "/signup", key: "ROOT", exact: true, component: () => <SignUp /> },
+	{ path: "/privacy-policy", key: "ROOT", exact: true, component: () => <PrivacyPolicy /> },
 	{
 		path: "/login",
 		key: "AUTH",
