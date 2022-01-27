@@ -23,9 +23,9 @@ const TenantDetails = ({ application, close }) => {
             const data = await Fetch(`Application/decline/${application.id}`);
             
             if (!data.status) {
-                // console.log(data.message);
-                toast.error(data.message);
-                return;
+              // console.log(data.message);
+              toast.error(data.message);
+              return;
             }
             toast.success("Tenant declined successfully.");
             setDeclining(false);
