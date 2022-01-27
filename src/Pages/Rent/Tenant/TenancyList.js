@@ -119,7 +119,7 @@ const TenancyList = () => {
                                                     : <>
                                                         { userTenancy.map((rent, index) => {
                                                             return (
-                                                                <RequestCard key={index} property={rent.property} isForTenants={true} seeMore={showDetails}  />                    
+                                                                <RequestCard key={index} property={rent.property} isForTenants={true} seeMore={showDetails} tenancy={rent} />                    
                                                             )
                                                         })}
                                                     </>
@@ -137,7 +137,7 @@ const TenancyList = () => {
                                                     : <>
                                                         { landlordTenancy.map((rents, index) => {
                                                             return (
-                                                                <RequestCard property={rents.property} seeMore={showDetails} key={index} />                    
+                                                                <RequestCard property={rents.property} seeMore={showDetails} key={index} tenancy={rents}/>                    
                                                             )
                                                         })}
                                                     </>
